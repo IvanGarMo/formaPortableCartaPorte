@@ -18,6 +18,7 @@
 
     'Esto solo aplica si es material peligroso
     Private _ClaveMaterialPeligroso As String
+    Private _DescripcionMaterialPeligroso As String
     Private _Embalaje As String
     Private _DescripcionEmbalaje As String
 

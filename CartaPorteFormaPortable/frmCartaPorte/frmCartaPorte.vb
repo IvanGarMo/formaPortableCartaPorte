@@ -1699,12 +1699,21 @@ Public Class frmCartaPorte
     '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
     '''''''DATOS DE MERCANCIAS
     '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-    Private ESTA_LIMPIANDO_PANEL_MERCANCIAS As Boolean = False 'Esto para evitar eventos no deseados
     Private ESTA_CREANDO_MERCANCIA As Boolean = False
     Private ESTA_MODIFICANDO_MERCANCIA As Boolean = False
     Private EXISTE_MERCANCIA_MATERIAL_PELIGROSO As Boolean = False
+    Private INFORMACION_VALIDA_MERCANCIA As Boolean = False
+
+    Private Sub PreparaPestanaMercancias()
+        BindGridMovimientosMercancias()
+        LimpiaPanelInformacionMercancias()
+        If dgvMercanciasPorMovimiento.Rows IsNot Nothing Then
+            dgvMercanciasPorMovimiento.Rows.Clear()
+        End If
+        dgvMercanciasPorMovimiento.DataSource = Nothing
+    End Sub
+
     Private Sub LimpiaPanelInformacionMercancias()
-        ESTA_LIMPIANDO_PANEL_MERCANCIAS = True
         BindCombobox(cbOpcionDimensiones, conexionesCartaPorte.Get_ObtenPosiblesDimensiones())
         txtClaveProdServMercancia.Text = String.Empty
         txtDescripcionProducto.Text = String.Empty
@@ -1720,23 +1729,8 @@ Public Class frmCartaPorte
         numLongitud.Value = 0
         numLongitud.Minimum = 0
         rbNoMaterialPeligroso.Checked = True
-        txtClaveMaterialPeligroso.Text = String.Empty
-        txtClaveMaterialPeligroso.Enabled = False
-        txtDescripcionMaterialPeligroso.Text = String.Empty
-        txtDescripcionMaterialPeligroso.Enabled = False
-        txtEmbalaje.Text = String.Empty
-        txtEmbalaje.Enabled = False
-        txtDescripcionEmbalaje.Text = String.Empty
-        txtDescripcionEmbalaje.Enabled = False
         rbComercioInternacionalNo.Checked = True
-        txtPedimento.Text = String.Empty
-        txtPedimento.Enabled = False
-        txtFraccionArancelaria.Text = String.Empty
-        txtFraccionArancelaria.Enabled = False
-        ESTA_MODIFICANDO_MERCANCIA = False
-        ESTA_CREANDO_MERCANCIA = False
         mercanciaEnModificacion = Nothing
-        ESTA_LIMPIANDO_PANEL_MERCANCIAS = False
     End Sub
 
     Private Sub BindGridMovimientosMercancias()
@@ -1746,10 +1740,11 @@ Public Class frmCartaPorte
 
         dgvListadoMovimientosPestanaMercancia.DataSource = Nothing
 
-        Dim listaTodosLosMovimientos As List(Of OrigenDestino)
+        Dim listaTodosLosMovimientos As List(Of OrigenDestino) = New List(Of OrigenDestino)
+        listaTodosLosMovimientos.AddRange(datosDestinosIntermediosParaCartaPorte)
         listaTodosLosMovimientos = datosDestinosIntermediosParaCartaPorte.OrderBy(Of DateTime)(Function(x) x.FechaHora)
-        listaTodosLosMovimientos.Insert(0, datosOrigenParaCartaPorte)
         listaTodosLosMovimientos.Add(datosDestinoParaCartaPorte)
+
         dgvListadoMovimientosPestanaMercancia.AutoGenerateColumns = False
         dgvListadoMovimientosPestanaMercancia.Columns("MovimientoMercanciaClm").DataPropertyName = NameOf(OrigenDestino.Movimiento)
         dgvListadoMovimientosPestanaMercancia.Columns("DestinoMercanciaClm").DataPropertyName = NameOf(OrigenDestino.DestinoDesplegado)
@@ -1781,20 +1776,15 @@ Public Class frmCartaPorte
         Dim columnaAnadirMercancia As Int32 = dgvListadoMovimientosPestanaMercancia.Columns.IndexOf(dgvListadoMovimientosPestanaMercancia.Columns("AnadirMercanciaMovimientoClm"))
         Dim columnaIdUbicacion As Int32 = dgvListadoMovimientosPestanaMercancia.Columns.IndexOf(dgvListadoMovimientosPestanaMercancia.Columns("IdUbicacionMovimientoPestanaMercanciaClm"))
         Dim idUbicacion As String = dgvListadoMovimientosPestanaMercancia.Rows(e.RowIndex).Cells(columnaIdUbicacion).Value
-        If e.ColumnIndex = columnaVerDetalle Then
+        If e.ColumnIndex = columnaVerDetalle Or e.ColumnIndex = columnaAnadirMercancia Then
             LimpiaPanelInformacionMercancias()
             listadoMercanciasPorMovimiento = dictMercancias(idUbicacion)
             BindGridDetalleMercanciasPorMovimiento(listadoMercanciasPorMovimiento)
-        ElseIf e.ColumnIndex = columnaAnadirMercancia Then
-            LimpiaPanelInformacionMercancias()
-            listadoMercanciasPorMovimiento = dictMercancias(idUbicacion)
-            ESTA_CREANDO_MERCANCIA = True
+            ESTA_CREANDO_MERCANCIA = (e.ColumnIndex = columnaAnadirMercancia)
         End If
     End Sub
 
     Private Sub ToggleComercioInternacional()
-        If ESTA_LIMPIANDO_PANEL_MERCANCIAS Then Return
-
         If rbComercioInternacionalSi.Checked Then
             txtFraccionArancelaria.Enabled = True
             txtPedimento.Enabled = True
@@ -1806,44 +1796,33 @@ Public Class frmCartaPorte
                 txtFraccionArancelaria.Text = mercanciaEnModificacion.FraccionArancelaria
             End If
         ElseIf rbComercioInternacionalNo.Checked Then
-            txtFraccionArancelaria.Enabled = False
-            txtFraccionArancelaria.Text = String.Empty
-            txtPedimento.Enabled = False
             txtPedimento.Text = String.Empty
+            txtPedimento.Enabled = False
+            LimpiaDesactivaTextbox(txtFraccionArancelaria)
         End If
     End Sub
 
     Private Sub ToggleMaterialPeligroso()
-        If ESTA_LIMPIANDO_PANEL_MERCANCIAS Then Return
-
         If rbNoMaterialPeligroso.Checked Then
-            txtClaveMaterialPeligroso.Text = String.Empty
-            txtClaveMaterialPeligroso.Enabled = False
-            txtDescripcionMaterialPeligroso.Text = String.Empty
-            txtDescripcionMaterialPeligroso.Enabled = False
-            txtEmbalaje.Text = String.Empty
-            txtEmbalaje.Enabled = False
-            txtDescripcionEmbalaje.Text = String.Empty
-            txtDescripcionEmbalaje.Enabled = False
+            LimpiaDesactivaTextbox(txtClaveMaterialPeligroso)
+            LimpiaDesactivaTextbox(txtDescripcionMaterialPeligroso)
+            LimpiaDesactivaTextbox(txtEmbalaje)
+            LimpiaDesactivaTextbox(txtDescripcionEmbalaje)
         ElseIf rbSiMaterialPeligroso.Checked Then
-            txtDescripcionMaterialPeligroso.Enabled = False
-            txtDescripcionEmbalaje.Enabled = False
-            If ESTA_CREANDO_MERCANCIA Then
-                txtClaveMaterialPeligroso.Text = String.Empty
-                txtClaveMaterialPeligroso.Enabled = True
-                txtDescripcionMaterialPeligroso.Text = String.Empty
-                txtEmbalaje.Text = String.Empty
-                txtEmbalaje.Enabled = True
-                txtDescripcionEmbalaje.Text = String.Empty
-            Else
+            txtDescripcionMaterialPeligroso.Enabled = True
+            txtClaveMaterialPeligroso.Enabled = True
+            txtEmbalaje.Enabled = True
+            txtDescripcionEmbalaje.Enabled = True
+            If ESTA_MODIFICANDO_MERCANCIA Then
+                txtDescripcionMaterialPeligroso.Text = mercanciaEnModificacion.DescripcionMaterialPeligroso
                 txtClaveMaterialPeligroso.Text = mercanciaEnModificacion.ClaveMaterialPeligroso
                 txtEmbalaje.Text = mercanciaEnModificacion.Embalaje
+                txtDescripcionEmbalaje.Text = mercanciaEnModificacion.DescripcionEmbalaje
             End If
         End If
     End Sub
 
     Private Sub CargaDetallesMercancia(ByRef mercancia As Mercancia)
-        ESTA_LIMPIANDO_PANEL_MERCANCIAS = True
         txtClaveProdServMercancia.Text = mercancia.ClaveProdServ
         txtDescripcionProducto.Text = conexionesCartaPorte.Get_ObtenDescripcionPorClaveProdServ(mercancia.ClaveProdServ)
         txtCantidadMercancia.Text = mercancia.Cantidad.ToString
@@ -1883,7 +1862,7 @@ Public Class frmCartaPorte
             rbComercioInternacionalNo.Checked = True
         End If
         ESTA_MODIFICANDO_MERCANCIA = True
-        ESTA_LIMPIANDO_PANEL_MERCANCIAS = False
+        ESTA_CREANDO_MERCANCIA = False
     End Sub
 
     Private Sub rbSiMaterialPeligroso_CheckedChanged(sender As Object, e As EventArgs) Handles rbSiMaterialPeligroso.CheckedChanged
@@ -1929,6 +1908,7 @@ Public Class frmCartaPorte
     End Sub
 
     Private Sub ValidarInformacionMercancia()
+        INFORMACION_VALIDA_MERCANCIA = False
         Dim claveProdServ As String = String.Empty
         Dim descripcionProducto As String = String.Empty
         Dim cantidadMercancia As String = String.Empty
@@ -1950,12 +1930,12 @@ Public Class frmCartaPorte
 
         'Validación de la clave prod serv
         Dim longitudClaveProdServ As Int32 = CInt(ObtenParametroPorLlave("LONGITUD_CLAVE_PROD_SERV"))
-        claveProdServ = Trim(txtClaveProdServMercancia.Text)
+        claveProdServ = ObtenValorTextbox(txtClaveProdServMercancia)
         If claveProdServ.Length <> longitudClaveProdServ Then AlertaMensaje(ObtenParametroPorLlave("CLAVE_PROD_SERV_NOVALIDA")) : Return
         Dim regExpClaveProdServ As String = ObtenParametroPorLlave("REGEXP_CLAVE_PROD_SERV")
         If Not Regex.IsMatch(claveProdServ, regExpClaveProdServ) Then AlertaMensaje(ObtenParametroPorLlave("CLAVE_PROD_SERV_NOVALIDA")) : Return
 
-        cantidadMercancia = Trim(txtCantidadMercancia.Text)
+        cantidadMercancia = ObtenValorTextbox(txtCantidadMercancia)
         Dim regExpNumeroDecimal As String = ObtenParametroPorLlave("REGEXP_NUMERO_DECIMAL")
         If Not Regex.IsMatch(cantidadMercancia, regExpNumeroDecimal) Then
             Dim mensaje = ObtenParametroPorLlave("CAMPO_SOLO_ACEPTA_NUMEROS")
@@ -1970,14 +1950,14 @@ Public Class frmCartaPorte
         If EsCadenaVacia(descripcionUnidad) Then AlertaMensaje(ObtenParametroPorLlave("INGRESE_CLAVE_UNIDAD")) : Return
         txtUnidadClaveMercancia.Text = UCase(descripcionUnidad)
 
-        peso = Trim(txtPeso.Text)
+        peso = ObtenValorTextbox(txtPeso)
         If Not Regex.IsMatch(peso, regExpNumeroDecimal) Then
             Dim mensaje = ObtenParametroPorLlave("CAMPO_SOLO_ACEPTA_NUMEROS")
             AlertaMensaje(String.Format(mensaje, "PESO"))
             Return
         End If
 
-        valor = Trim(txtValor.Text)
+        valor = ObtenValorTextbox(txtValor)
         If Not Regex.IsMatch(valor, regExpNumeroDecimal) Then
             Dim mensaje = ObtenParametroPorLlave("CAMPO_SOLO_ACEPTA_NUMEROS")
             AlertaMensaje(String.Format(mensaje, "VALOR"))
@@ -2000,7 +1980,7 @@ Public Class frmCartaPorte
 
         If rbComercioInternacionalSi.Checked Then
             comercioInternacional = True
-            pedimento = ObtenValorTextbox(txtPedimento)
+            pedimento = txtPedimento.Text
             fraccionArancelaria = ObtenValorTextbox(txtFraccionArancelaria)
             If EsCadenaVacia(pedimento) Then AlertaMensaje(ObtenParametroPorLlave("INGRESE_PEDIMENTO")) : Return
         Else
@@ -2046,6 +2026,7 @@ Public Class frmCartaPorte
             BindGridDetalleMercanciasPorMovimiento(listadoMercanciasPorMovimiento)
         End If
         LimpiaPanelInformacionMercancias()
+        INFORMACION_VALIDA_MERCANCIA = True
     End Sub
 
     Private Sub btnGuardarMercancia_Click(sender As Object, e As EventArgs) Handles btnGuardarMercancia.Click
@@ -2057,16 +2038,13 @@ Public Class frmCartaPorte
             Dim resp = MsgBox(ObtenParametroPorLlave("MERCANCIA_EN_MODIFICACION"), vbQuestion + vbYesNo, "Alerta")
             If resp = MsgBoxResult.No Then Return
         End If
-        LimpiaPanelInformacionMercancias()
-        TabControl1.SelectedIndex = TabControl1.SelectedIndex + 1
+        ValidarInformacionMercancia()
+        If INFORMACION_VALIDA_MERCANCIA Then
+            TabControl1.SelectedIndex = TabControl1.SelectedIndex + 1
+        End If
     End Sub
 
     Private Sub btnAtrasMercancia_Click(sender As Object, e As EventArgs) Handles btnAtrasMercancia.Click
-        If ESTA_CREANDO_MERCANCIA Or ESTA_MODIFICANDO_MERCANCIA Then
-            Dim resp = MsgBox(ObtenParametroPorLlave("MERCANCIA_EN_MODIFICACION"), vbQuestion + vbYesNo, "Alerta")
-            If resp = MsgBoxResult.No Then Return
-        End If
-        LimpiaPanelInformacionMercancias()
         TabControl1.SelectedIndex = TabControl1.SelectedIndex - 1
     End Sub
 
@@ -2080,10 +2058,11 @@ Public Class frmCartaPorte
             mercanciaEnModificacion = mercancia
             LimpiaPanelInformacionMercancias()
             CargaDetallesMercancia(mercancia)
+            ESTA_CREANDO_MERCANCIA = False
+            ESTA_MODIFICANDO_MERCANCIA = True
         ElseIf e.ColumnIndex = indiceEliminar Then
             Dim mercancia As Mercancia = listadoMercanciasPorMovimiento.Find(Function(m) m.ClaveProdServ.Equals(claveProdServ))
             LimpiaPanelInformacionMercancias()
-            CargaDetallesMercancia(mercancia)
             EliminaMercanciaDeMovimiento(mercancia)
         End If
     End Sub
@@ -2094,7 +2073,13 @@ Public Class frmCartaPorte
             listadoMercanciasPorMovimiento.Remove(mercancia)
             BindGridDetalleMercanciasPorMovimiento(listadoMercanciasPorMovimiento)
         End If
+        btnLimpiarMercancia_Click(Nothing, Nothing)
+    End Sub
+
+    Private Sub btnLimpiarMercancia_Click(sender As Object, e As EventArgs) Handles btnLimpiarMercancia.Click
         LimpiaPanelInformacionMercancias()
+        ESTA_MODIFICANDO_MERCANCIA = False
+        ESTA_CREANDO_MERCANCIA = False
     End Sub
 
     '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''

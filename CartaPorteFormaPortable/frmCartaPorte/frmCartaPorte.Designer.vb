@@ -210,6 +210,7 @@ Partial Class frmCartaPorte
         Me.btnAtrasDestinosIntermedios = New System.Windows.Forms.Button()
         Me.btnReiniciarDestinosIntermedios = New System.Windows.Forms.Button()
         Me.btnGuardarDestinosIntermedios = New System.Windows.Forms.Button()
+        Me.btnLimpiarDestinosIntermedios = New System.Windows.Forms.Button()
         Me.TabPage4 = New System.Windows.Forms.TabPage()
         Me.tlpPrincipalMercancias = New System.Windows.Forms.TableLayoutPanel()
         Me.tlpContenedorGridMovimientosPestanaMercancias = New System.Windows.Forms.TableLayoutPanel()
@@ -278,6 +279,7 @@ Partial Class frmCartaPorte
         Me.btnAtrasMercancia = New System.Windows.Forms.Button()
         Me.btnGuardarMercancia = New System.Windows.Forms.Button()
         Me.btnSiguienteMercancia = New System.Windows.Forms.Button()
+        Me.btnLimpiarMercancia = New System.Windows.Forms.Button()
         Me.TabPage5 = New System.Windows.Forms.TabPage()
         Me.tlpContenedorPrincipalTransporte = New System.Windows.Forms.TableLayoutPanel()
         Me.TableLayoutPanel6 = New System.Windows.Forms.TableLayoutPanel()
@@ -412,7 +414,6 @@ Partial Class frmCartaPorte
         Me.tlpBotonesGenerarAtras = New System.Windows.Forms.TableLayoutPanel()
         Me.btnAtrasConfirmacion = New System.Windows.Forms.Button()
         Me.btnGenerarCartaPorte = New System.Windows.Forms.Button()
-        Me.btnLimpiarDestinosIntermedios = New System.Windows.Forms.Button()
         Me.TabControl1.SuspendLayout()
         Me.TabPage1.SuspendLayout()
         Me.tlpPrincipalOrigen.SuspendLayout()
@@ -2466,6 +2467,16 @@ Partial Class frmCartaPorte
         Me.btnGuardarDestinosIntermedios.Text = "Guardar"
         Me.btnGuardarDestinosIntermedios.UseVisualStyleBackColor = True
         '
+        'btnLimpiarDestinosIntermedios
+        '
+        Me.btnLimpiarDestinosIntermedios.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.btnLimpiarDestinosIntermedios.Location = New System.Drawing.Point(594, 3)
+        Me.btnLimpiarDestinosIntermedios.Name = "btnLimpiarDestinosIntermedios"
+        Me.btnLimpiarDestinosIntermedios.Size = New System.Drawing.Size(155, 51)
+        Me.btnLimpiarDestinosIntermedios.TabIndex = 5
+        Me.btnLimpiarDestinosIntermedios.Text = "Limpiar"
+        Me.btnLimpiarDestinosIntermedios.UseVisualStyleBackColor = True
+        '
         'TabPage4
         '
         Me.TabPage4.Controls.Add(Me.tlpPrincipalMercancias)
@@ -3186,29 +3197,30 @@ Partial Class frmCartaPorte
         '
         'tlpSiguienteAtrasMercancias
         '
-        Me.tlpSiguienteAtrasMercancias.ColumnCount = 4
-        Me.tlpSiguienteAtrasMercancias.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
-        Me.tlpSiguienteAtrasMercancias.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 16.66667!))
-        Me.tlpSiguienteAtrasMercancias.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 16.66667!))
-        Me.tlpSiguienteAtrasMercancias.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 16.66667!))
+        Me.tlpSiguienteAtrasMercancias.ColumnCount = 5
+        Me.tlpSiguienteAtrasMercancias.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 40.0!))
+        Me.tlpSiguienteAtrasMercancias.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 15.0!))
+        Me.tlpSiguienteAtrasMercancias.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 15.0!))
+        Me.tlpSiguienteAtrasMercancias.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 15.0!))
+        Me.tlpSiguienteAtrasMercancias.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 15.0!))
         Me.tlpSiguienteAtrasMercancias.Controls.Add(Me.btnAtrasMercancia, 1, 0)
-        Me.tlpSiguienteAtrasMercancias.Controls.Add(Me.btnGuardarMercancia, 2, 0)
-        Me.tlpSiguienteAtrasMercancias.Controls.Add(Me.btnSiguienteMercancia, 3, 0)
+        Me.tlpSiguienteAtrasMercancias.Controls.Add(Me.btnGuardarMercancia, 3, 0)
+        Me.tlpSiguienteAtrasMercancias.Controls.Add(Me.btnSiguienteMercancia, 4, 0)
+        Me.tlpSiguienteAtrasMercancias.Controls.Add(Me.btnLimpiarMercancia, 2, 0)
         Me.tlpSiguienteAtrasMercancias.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tlpSiguienteAtrasMercancias.Location = New System.Drawing.Point(3, 556)
         Me.tlpSiguienteAtrasMercancias.Name = "tlpSiguienteAtrasMercancias"
         Me.tlpSiguienteAtrasMercancias.RowCount = 1
         Me.tlpSiguienteAtrasMercancias.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
-        Me.tlpSiguienteAtrasMercancias.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 56.0!))
         Me.tlpSiguienteAtrasMercancias.Size = New System.Drawing.Size(1083, 56)
         Me.tlpSiguienteAtrasMercancias.TabIndex = 3
         '
         'btnAtrasMercancia
         '
         Me.btnAtrasMercancia.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.btnAtrasMercancia.Location = New System.Drawing.Point(544, 3)
+        Me.btnAtrasMercancia.Location = New System.Drawing.Point(436, 3)
         Me.btnAtrasMercancia.Name = "btnAtrasMercancia"
-        Me.btnAtrasMercancia.Size = New System.Drawing.Size(174, 50)
+        Me.btnAtrasMercancia.Size = New System.Drawing.Size(156, 50)
         Me.btnAtrasMercancia.TabIndex = 0
         Me.btnAtrasMercancia.Text = "Atrás"
         Me.btnAtrasMercancia.UseVisualStyleBackColor = True
@@ -3216,9 +3228,9 @@ Partial Class frmCartaPorte
         'btnGuardarMercancia
         '
         Me.btnGuardarMercancia.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.btnGuardarMercancia.Location = New System.Drawing.Point(724, 3)
+        Me.btnGuardarMercancia.Location = New System.Drawing.Point(760, 3)
         Me.btnGuardarMercancia.Name = "btnGuardarMercancia"
-        Me.btnGuardarMercancia.Size = New System.Drawing.Size(174, 50)
+        Me.btnGuardarMercancia.Size = New System.Drawing.Size(156, 50)
         Me.btnGuardarMercancia.TabIndex = 1
         Me.btnGuardarMercancia.Text = "Guardar"
         Me.btnGuardarMercancia.UseVisualStyleBackColor = True
@@ -3226,12 +3238,22 @@ Partial Class frmCartaPorte
         'btnSiguienteMercancia
         '
         Me.btnSiguienteMercancia.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.btnSiguienteMercancia.Location = New System.Drawing.Point(904, 3)
+        Me.btnSiguienteMercancia.Location = New System.Drawing.Point(922, 3)
         Me.btnSiguienteMercancia.Name = "btnSiguienteMercancia"
-        Me.btnSiguienteMercancia.Size = New System.Drawing.Size(176, 50)
+        Me.btnSiguienteMercancia.Size = New System.Drawing.Size(158, 50)
         Me.btnSiguienteMercancia.TabIndex = 2
         Me.btnSiguienteMercancia.Text = "Siguiente"
         Me.btnSiguienteMercancia.UseVisualStyleBackColor = True
+        '
+        'btnLimpiarMercancia
+        '
+        Me.btnLimpiarMercancia.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.btnLimpiarMercancia.Location = New System.Drawing.Point(598, 3)
+        Me.btnLimpiarMercancia.Name = "btnLimpiarMercancia"
+        Me.btnLimpiarMercancia.Size = New System.Drawing.Size(156, 50)
+        Me.btnLimpiarMercancia.TabIndex = 3
+        Me.btnLimpiarMercancia.Text = "Limpiar"
+        Me.btnLimpiarMercancia.UseVisualStyleBackColor = True
         '
         'TabPage5
         '
@@ -4740,16 +4762,6 @@ Partial Class frmCartaPorte
         Me.btnGenerarCartaPorte.Text = "Generar carta porte"
         Me.btnGenerarCartaPorte.UseVisualStyleBackColor = True
         '
-        'btnLimpiarDestinosIntermedios
-        '
-        Me.btnLimpiarDestinosIntermedios.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.btnLimpiarDestinosIntermedios.Location = New System.Drawing.Point(594, 3)
-        Me.btnLimpiarDestinosIntermedios.Name = "btnLimpiarDestinosIntermedios"
-        Me.btnLimpiarDestinosIntermedios.Size = New System.Drawing.Size(155, 51)
-        Me.btnLimpiarDestinosIntermedios.TabIndex = 5
-        Me.btnLimpiarDestinosIntermedios.Text = "Limpiar"
-        Me.btnLimpiarDestinosIntermedios.UseVisualStyleBackColor = True
-        '
         'frmCartaPorte
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(9.0!, 20.0!)
@@ -5250,4 +5262,5 @@ Partial Class frmCartaPorte
     Friend WithEvents Label138 As Label
     Friend WithEvents txtNumLicenciaOperador As TextBox
     Friend WithEvents btnLimpiarDestinosIntermedios As Button
+    Friend WithEvents btnLimpiarMercancia As Button
 End Class
