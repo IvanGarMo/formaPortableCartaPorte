@@ -238,4 +238,18 @@ Public Class ConexionesCartaPorte
         Cm.ExecuteNonQuery()
         Return Cm.Parameters("@ParCadDescripcion").Value
     End Function
+
+    Public Function Get_ObtenFigurasDeTransporte(ByVal propiedadAjena As Boolean) As DataTable
+        Dim Cm As SqlCommand = Nothing
+        Cm = New SqlCommand("sat.SP_CCP_ObtenTiposFiguraTransporte", mockConexion)
+        Cm.CommandType = CommandType.StoredProcedure
+
+        Cm.Parameters.AddWithValue("@ParBitPropiedadAjena", propiedadAjena)
+        Cm.Parameters("@ParBitPropiedadAjena").Direction = ParameterDirection.Input
+
+        Dim sqlAdapter As New SqlDataAdapter
+        Dim dataSet As New DataSet
+        sqlAdapter.Fill(dataSet)
+        Return dataSet.Tables(0)
+    End Function
 End Class

@@ -2359,7 +2359,23 @@ Public Class frmCartaPorte
     Private txtLocalidadOperador As TextBox = Nothing
     Private txtMunicipioOperador As TextBox = Nothing
     Private txtColoniaOperador As TextBox = Nothing
+
+    Private refCbEstadoOperador As ComboBox = Nothing
+    Private refCbMunicipioOperador As ComboBox = Nothing
+    Private refCbLocalidadOperador As ComboBox = Nothing
+    Private refCbColoniaOperador As ComboBox = Nothing
+
     Private listaParteTransporte As List(Of ItemTransporte)
+
+    Private Sub PreparaDatosOperador()
+        refCbEstadoOperador = cbEstadoOperador
+        refCbMunicipioOperador = cbMunicipioOperador
+        refCbLocalidadOperador = cbLocalidadOperador
+        refCbColoniaOperador = cbColoniaOperador
+        BindCombobox(cbPaisOperador, ObtenListadoPaises())
+        ValidaPropiedadAjena()
+        BindCombobox(cbTipoFiguraOperador, conexionesCartaPorte.Get_ObtenFigurasDeTransporte(PARTE_DEL_REMOLQUE_ES_AJENA))
+    End Sub
 
     Private Sub LimpiaInformacionOperador()
         LimpiaDesactivaCombobox(cbOpcionesOperador)
@@ -2406,62 +2422,42 @@ Public Class frmCartaPorte
             cbTipoFiguraOperador.SelectedValue = datosOperador.TipoFigura
             txtNumLicenciaOperador.Text = datosOperador.NumLicencia
             listaParteTransporte = datosOperador.ParteTransporte
+            cbPaisOperador.SelectedValue = datosOperador.Domicilio.Pais
+            txtCpOperador.Text = datosOperador.Domicilio.CodigoPostal
             BindGridPartesTransporteOperador()
 
             If datosOperador.EsTransportistaNacional Then
-                cbPaisOperador.SelectedValue = datosOperador.Domicilio.Pais
                 cbEstadoOperador.SelectedValue = datosOperador.Domicilio.Estado
                 cbMunicipioOperador.SelectedValue = datosOperador.Domicilio.Municipio
                 cbLocalidadOperador.SelectedValue = datosOperador.Domicilio.Localidad
-                txtCpOperador.Text = datosOperador.Domicilio.CodigoPostal
                 cbColoniaOperador.SelectedValue = datosOperador.Domicilio.Colonia
                 txtCalleOperador.Text = datosOperador.Domicilio.Calle
                 txtReferenciaOperador.Text = datosOperador.Domicilio.Referencia
                 txtNoIntDestino.Text = datosOperador.Domicilio.NumeroInterior
                 txtNoExtDestino.Text = datosOperador.Domicilio.NumeroExterior
             Else
-                Dim pais As String = datosOperador.Domicilio.Pais
-                Dim separador As String = ObtenParametroPorLlave("SEPARADOR")
-                Dim listadoPaisesConEstados As String = ObtenParametroPorLlave("PAISES_CON_ESTADO")
-                Dim listadoPaisesConMunicipioLocalidad As String = ObtenParametroPorLlave("PAISES_CON_MUNICIPIO_LOCALIDAD")
-                Dim listadoPaisesConColonia As String = ObtenParametroPorLlave("PAISES_CON_COLONIAS")
-
-                'Cargo estados
-                If SeEncuentraValor(pais, listadoPaisesConEstados, separador) Then
-                    RemueveDeGrid(txtEstadoOperador, tlpDireccionOperador)
-                    txtEstadoOperador = Nothing
-                    BindCombobox(cbEstadoOperador, ObtenEstadosPorPais(pais))
-                    cbEstadoOperador.SelectedValue = datosOperador.Domicilio.Estado
-                Else
-                    ReemplazaEnGrid(txtEstadoOperador, cbEstadoOperador, tlpNoExtDomicilioOperador)
+                If refCbEstadoOperador IsNot Nothing Then
+                    refCbEstadoOperador.SelectedValue = datosOperador.Domicilio.Estado
+                ElseIf txtEstadoOperador IsNot Nothing Then
                     txtEstadoOperador.Text = datosOperador.Domicilio.Estado
                 End If
 
-                'Cargo municipios y localidades
-                If SeEncuentraValor(pais, listadoPaisesConMunicipioLocalidad, separador) Then
-                    RemueveDeGrid(txtMunicipioOperador, tlpDireccionOperador)
-                    RemueveDeGrid(txtLocalidadOperador, tlpDireccionOperador)
-                    txtMunicipioOperador = Nothing
-                    txtLocalidadOperador = Nothing
-                    BindCombobox(cbMunicipioOperador, ObtenMunicipiosPorEstado(datosOperador.Domicilio.Estado))
-                    BindCombobox(cbLocalidadOperador, ObtenLocalidadesPorEstado(datosOperador.Domicilio.Localidad))
-                    cbMunicipioOperador.SelectedValue = datosOperador.Domicilio.Municipio
-                    cbLocalidadOperador.SelectedValue = datosOperador.Domicilio.Localidad
-                Else
-                    ReemplazaEnGrid(txtMunicipioOperador, cbMunicipioOperador, tlpDireccionOperador)
-                    ReemplazaEnGrid(txtLocalidadOperador, cbLocalidadOperador, tlpDireccionOperador)
+                If refCbMunicipioOperador IsNot Nothing Then
+                    refCbMunicipioOperador.SelectedValue = datosOperador.Domicilio.Municipio
+                ElseIf txtMunicipioOperador IsNot Nothing Then
                     txtMunicipioOperador.Text = datosOperador.Domicilio.Municipio
+                End If
+
+                If refCbLocalidadOperador IsNot Nothing Then
+                    refCbLocalidadOperador.SelectedValue = datosOperador.Domicilio.Localidad
+                ElseIf txtLocalidadOperador IsNot Nothing Then
                     txtLocalidadOperador.Text = datosOperador.Domicilio.Localidad
                 End If
 
-                'Cargo colonias
-                If SeEncuentraValor(pais, listadoPaisesConColonia, separador) Then
-                    txtCpOperador.Text = datosOperador.Domicilio.CodigoPostal
-                    cbColoniaOperador.SelectedValue = datosOperador.Domicilio.Colonia
-                Else
-                    ReemplazaEnGrid(txtColoniaOperador, cbColoniaOperador, tlpDireccionOperador)
+                If refCbColoniaOperador IsNot Nothing Then
+                    refCbColoniaOperador.SelectedValue = datosOperador.Domicilio.Colonia
+                ElseIf txtColoniaOperador IsNot Nothing Then
                     txtColoniaOperador.Text = datosOperador.Domicilio.Colonia
-                    txtCpOperador.Text = datosOperador.Domicilio.CodigoPostal
                 End If
 
                 'Finalmente cargo el resto de datos
@@ -2475,14 +2471,18 @@ Public Class frmCartaPorte
 
     Private Sub ToggleDatosOperador()
         If rbOperadorExtranjero.Checked Then
-            txtRfcOperador.Text = ObtenParametroPorLlave("XEXX010101000")
+            txtRfcOperador.Text = ObtenParametroPorLlave("RFC_GENERICO_EXTRANJERO")
             txtNumRegIdTribFiscOperador.Enabled = True
             txtRfcOperador.Enabled = False
+            cbPaisOperador.Enabled = True
+            cbPaisOperador.SelectedValue = "-01"
         ElseIf rbOperadorMexicano.Checked Then
             txtRfcOperador.Text = String.Empty
             txtRfcOperador.Enabled = True
             txtNumRegIdTribFiscOperador.Text = String.Empty
             txtNumRegIdTribFiscOperador.Enabled = False
+            cbPaisOperador.Enabled = False
+            cbPaisOperador.SelectedValue = "MEX"
         End If
     End Sub
 
@@ -2504,7 +2504,7 @@ Public Class frmCartaPorte
         Dim nuevoId As Int32
         Dim existeId As Boolean = True
         While existeId
-            nuevoId = Math.Ceiling(Rnd() * 100)
+            nuevoId = Math.Ceiling(Rnd() * 1000)
             Dim transRep As ItemTransporte = listaParteTransporte.Where(Function(it) it.Id = nuevoId).FirstOrDefault()
             existeId = (transRep IsNot Nothing)
         End While
@@ -2547,53 +2547,72 @@ Public Class frmCartaPorte
     End Sub
 
     Private Sub cbPaisOperador_SelectedValueChanged(sender As Object, e As EventArgs) Handles cbPaisOperador.SelectedValueChanged
-        If cbPaisOperador.SelectedValue = "-01" Then Return
+        If ObtenValorCombobox(cbPaisOperador) = "-01" Then Return
 
         Dim paisSeleccionado As String = cbPaisOperador.SelectedValue
-        Dim listaPaisesConEstados As String = ObtenParametroPorLlave("PAISES_CON_ESTADO")
-        Dim listaPaisesConMunicipioLocalidad As String = ObtenParametroPorLlave("PAISES_CON_MUNICIPIO_LOCALIDAD")
-        Dim listaPaisesConColonia As String = ObtenParametroPorLlave("PAISES_CON_COLONIAS")
-        Dim separador As String = ObtenParametroPorLlave("SEPARADOR")
 
         'Igual, validación de países con estados
-        If SeEncuentraValor(paisSeleccionado, listaPaisesConEstados, separador) Then
-            RemueveDeGrid(txtEstadoOperador, tlpDireccionOperador)
-            txtEstadoOperador = Nothing
-            BindCombobox(cbEstadoOperador, ObtenEstadosPorPais(paisSeleccionado))
+        If PaisTieneEstados(paisSeleccionado) Then
+            If refCbEstadoOperador Is Nothing Then
+                refCbEstadoOperador = New ComboBox
+                LimpiaDesactivaCombobox(refCbEstadoOperador)
+                SustituyeEnGrid(txtEstadoOperador, refCbEstadoOperador, tlpDireccionOperador)
+            End If
+            BindCombobox(refCbEstadoOperador, ObtenEstadosPorPais(paisSeleccionado))
+            AddHandler refCbEstadoOperador.SelectedValueChanged, AddressOf cbEstadoOperador_SelectedValueChanged
         Else
-            txtEstadoOperador = New TextBox
-            txtEstadoOperador.Text = String.Empty
-            ReemplazaEnGrid(txtEstadoOperador, cbEstadoOperador, tlpDireccionOperador)
+            If txtEstadoOperador Is Nothing Then
+                txtEstadoOperador = New TextBox
+                txtEstadoOperador.Text = String.Empty
+                SustituyeEnGrid(refCbEstadoOperador, txtEstadoOperador, tlpDireccionOperador)
+            End If
         End If
 
         'Luego validación de países con municipios y localidades
-        If SeEncuentraValor(paisSeleccionado, listaPaisesConMunicipioLocalidad, separador) Then
-            RemueveDeGrid(txtMunicipioOperador, tlpDireccionOperador)
-            RemueveDeGrid(txtLocalidadOperador, tlpDireccionOperador)
-            txtMunicipioOperador = Nothing
-            txtLocalidadOperador = Nothing
+        If PaisTieneMunicipioLocalidad(paisSeleccionado) Then
+            If refCbMunicipioOperador Is Nothing Then
+                refCbMunicipioOperador = New ComboBox
+                LimpiaDesactivaCombobox(refCbMunicipioOperador)
+                SustituyeEnGrid(txtMunicipioOperador, refCbMunicipioOperador, tlpDireccionOperador)
+            End If
+            If refCbLocalidadOperador Is Nothing Then
+                refCbLocalidadOperador = New ComboBox
+                LimpiaDesactivaCombobox(refCbLocalidadOperador)
+                SustituyeEnGrid(txtLocalidadOperador, refCbLocalidadOperador, tlpDireccionOperador)
+            End If
+            cbEstadoOperador_SelectedValueChanged(Nothing, Nothing)
         Else
-            txtMunicipioOperador = New TextBox
-            txtMunicipioOperador.Text = String.Empty
-            txtLocalidadOperador = New TextBox
-            txtLocalidadOperador.Text = String.Empty
-            ReemplazaEnGrid(txtMunicipioOperador, cbMunicipioOperador, tlpDireccionOperador)
-            ReemplazaEnGrid(txtLocalidadOperador, cbLocalidadOperador, tlpDireccionOperador)
+            If txtMunicipioOperador Is Nothing Then
+                txtMunicipioOperador = New TextBox
+                txtMunicipioOperador.Text = String.Empty
+                SustituyeEnGrid(refCbMunicipioOperador, txtMunicipioOperador, tlpDireccionOperador)
+            End If
+            If txtLocalidadOperador Is Nothing Then
+                txtLocalidadOperador = New TextBox
+                txtLocalidadOperador.Text = String.Empty
+                SustituyeEnGrid(refCbLocalidadOperador, txtLocalidadOperador, tlpDireccionOperador)
+            End If
         End If
 
         'Luego validación de paises con colonias
-        If SeEncuentraValor(paisSeleccionado, listaPaisesConColonia, separador) Then
-            RemueveDeGrid(txtColoniaOperador, tlpDireccionOperador)
-            txtColoniaOperador = Nothing
+        If PaisTieneColonias(paisSeleccionado) Then
+            If refCbColoniaOperador Is Nothing Then
+                refCbColoniaOperador = New ComboBox
+                LimpiaDesactivaCombobox(refCbColoniaOperador)
+                SustituyeEnGrid(txtColoniaOperador, refCbColoniaOperador, tlpDireccionOperador)
+            End If
+            txtCpOperador_TextChanged(Nothing, Nothing)
         Else
-            txtColoniaOperador = New TextBox
-            txtColoniaOperador.Text = String.Empty
-            ReemplazaEnGrid(txtColoniaOperador, cbColoniaOperador, tlpDireccionOperador)
+            If txtColoniaOperador Is Nothing Then
+                txtColoniaOperador = New TextBox
+                txtColoniaOperador.Text = String.Empty
+                SustituyeEnGrid(refCbColoniaOperador, txtColoniaOperador, tlpDireccionOperador)
+            End If
         End If
     End Sub
 
     Private Sub cbEstadoOperador_SelectedValueChanged(sender As Object, e As EventArgs) Handles cbEstadoOperador.SelectedValueChanged
-        If txtEstadoOperador IsNot Nothing Then Return
+        If ObtenValorCombobox(cbEstadoOperador) = "-01" Then Return
         BindCombobox(cbMunicipioOperador, ObtenMunicipiosPorEstado(cbEstadoOperador.SelectedValue))
         BindCombobox(cbLocalidadOperador, ObtenLocalidadesPorEstado(cbEstadoOperador.SelectedValue))
     End Sub
@@ -2610,7 +2629,7 @@ Public Class frmCartaPorte
 
         Dim regExpCP As String = ObtenParametroPorLlave("REGEXP_CODIGO_POSTAL")
         If Regex.IsMatch(Trim(txtCpOperador.Text), regExpCP) Then
-            BindCombobox(cbColoniaOperador, ObtenColoniasPorCodigoPostal(Trim(txtCpOperador))
+            BindCombobox(cbColoniaOperador, ObtenColoniasPorCodigoPostal(Trim(txtCpOperador.Text))
         End If
     End Sub
 
@@ -2637,7 +2656,7 @@ Public Class frmCartaPorte
         Dim noExtOperador As String = String.Empty
         Dim noIntOperador As String = String.Empty
 
-        If cbOpcionesOperador.SelectedValue = "-01" Then AlertaMensaje(ObtenParametroPorLlave("SELECCIONE_OPERADOR")) : Return
+        If ObtenValorCombobox(cbOpcionesOperador) = "-01" Then AlertaMensaje(ObtenParametroPorLlave("SELECCIONE_OPERADOR")) : Return
         esOperadorNacional = rbOperadorMexicano.Checked
         esOperadorExtranjero = rbOperadorExtranjero.Checked
         rfcOperador = ObtenValorTextbox(txtRfcOperador)
@@ -2653,7 +2672,7 @@ Public Class frmCartaPorte
                 Return
             End If
         ElseIf esOperadorExtranjero Then
-            If EsCadenaVacia(Trim(numRegIdTribOperador)) Then AlertaMensaje(ObtenParametroPorLlave("NUM_REG_IDTRIB_NO_VALIDO")) : Return
+            If EsCadenaVacia(numRegIdTribOperador) Then AlertaMensaje(ObtenParametroPorLlave("NUM_REG_IDTRIB_NO_VALIDO")) : Return
         End If
 
         nombreOperador = ObtenValorTextbox(txtNombreOperador)
@@ -2661,15 +2680,15 @@ Public Class frmCartaPorte
         apMaternoOperador = ObtenValorTextbox(txtApMaternoOperador)
         If EsCadenaVacia(nombreOperador) Then AlertaMensaje(ObtenParametroPorLlave("INGRESE_NOMBRE")) : Return
 
-        tipoFiguraOperador = cbTipoFiguraOperador.SelectedValue
+        tipoFiguraOperador = ObtenValorCombobox(cbTipoFiguraOperador)
         If tipoFiguraOperador = "-01" Then AlertaMensaje(ObtenParametroPorLlave("INGRESE_TIPO_FIGURA")) : Return
 
         If esOperadorNacional Then
-            paisOperador = cbPaisOperador.SelectedValue
-            estadoOperador = ObtenValorCombobox(cbEstadoOperador)
-            localidadOperador = ObtenValorCombobox(cbLocalidadOperador)
-            municipioOperador = ObtenValorCombobox(cbMunicipioOperador)
-            coloniaOperador = ObtenValorCombobox(cbLocalidadOperador)
+            paisOperador = ObtenValorCombobox(cbPaisOperador)
+            estadoOperador = ObtenValorCombobox(refCbEstadoOperador)
+            localidadOperador = ObtenValorCombobox(refCbLocalidadOperador)
+            municipioOperador = ObtenValorCombobox(refCbMunicipioOperador)
+            coloniaOperador = ObtenValorCombobox(refCbLocalidadOperador)
             If paisOperador = "-01" Then AlertaMensaje(ObtenParametroPorLlave("INGRESE_PAIS")) : Return
             If estadoOperador = "-01" Then AlertaMensaje(ObtenParametroPorLlave("INGRESE_ESTADO")) : Return
             If municipioOperador = "-01" Then AlertaMensaje(ObtenParametroPorLlave("INGRESE_MUNICIPIO")) : Return
@@ -2678,9 +2697,9 @@ Public Class frmCartaPorte
         Else
             paisOperador = ObtenValorCombobox(cbPaisOperador)
             estadoOperador = IIf(txtEstadoOperador IsNot Nothing, ObtenValorTextbox(txtEstadoOperador), ObtenValorCombobox(cbEstadoOperador))
-            municipioOperador = IIf(txtMunicipioOperador IsNot Nothing, ObtenValorTextbox(txtMunicipioOperador), ObtenValorCombobox(cbMunicipioOperador))
-            localidadOperador = IIf(txtLocalidadOperador IsNot Nothing, ObtenValorTextbox(txtLocalidadOperador), ObtenValorCombobox(cbLocalidadOperador))
-            coloniaOperador = IIf(txtColoniaOperador IsNot Nothing, ObtenValorTextbox(txtColoniaOperador), ObtenValorCombobox(cbColoniaOperador))
+            municipioOperador = IIf(txtMunicipioOperador IsNot Nothing, ObtenValorTextbox(txtMunicipioOperador), ObtenValorCombobox(refCbMunicipioOperador))
+            localidadOperador = IIf(txtLocalidadOperador IsNot Nothing, ObtenValorTextbox(txtLocalidadOperador), ObtenValorCombobox(refCbLocalidadOperador))
+            coloniaOperador = IIf(txtColoniaOperador IsNot Nothing, ObtenValorTextbox(txtColoniaOperador), ObtenValorCombobox(refCbColoniaOperador))
 
             If paisOperador = "-01" Then AlertaMensaje(ObtenParametroPorLlave("INGRESE_PAIS")) : Return
             If estadoOperador = "-01" Then AlertaMensaje(ObtenParametroPorLlave("INGRESE_ESTADO")) : Return
@@ -2688,7 +2707,7 @@ Public Class frmCartaPorte
             If coloniaOperador = "-01" Or EsCadenaVacia(coloniaOperador) Then AlertaMensaje(ObtenParametroPorLlave("INGRESE_COLONIA")) : Return
         End If
 
-        cpOperador = Trim(txtCpOperador.Text)
+        cpOperador = ObtenValorTextbox(txtCpOperador)
         If Not Regex.IsMatch(cpOperador, ObtenParametroPorLlave("REGEXP_CADENA_SOLO_NUMEROS'")) Then AlertaMensaje(String.Format(ObtenParametroPorLlave("CAMPO_SOLO_ACEPTA_NUMEROS"), "CP OPERADOR")) : Return
         calleOperador = ObtenValorTextbox(txtCalleOperador)
         If EsCadenaVacia(calleOperador) Then AlertaMensaje(ObtenParametroPorLlave("INGRESE_CALLE")) : Return
