@@ -236,4 +236,12 @@
         End Get
     End Property
 
+    Public Property DescripcionMaterialPeligroso As String
+        Get
+            Return _DescripcionMaterialPeligroso
+        End Get
+        Set(value As String)
+            _DescripcionMaterialPeligroso = value
+        End Set
+    End Property
 End Class
