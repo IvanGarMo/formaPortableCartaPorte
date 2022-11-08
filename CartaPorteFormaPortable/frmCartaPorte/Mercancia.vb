@@ -6,6 +6,7 @@
     'Esta es la cantidad que no ha sido asignada a un destino en
     'especifico
     Private _CantidadSinAsignar As Int32
+    Private _RelacionMercanciaDestino As List(Of RelacionMercanciaOrigenDestino)
 
     Private _ClaveUnidad As String
     Private _Unidad As String
@@ -244,4 +245,47 @@
             _DescripcionMaterialPeligroso = value
         End Set
     End Property
+
+    Public Property RelacionMercanciaDestino As List(Of RelacionMercanciaOrigenDestino)
+        Get
+            If _RelacionMercanciaDestino IsNot Nothing Then
+                Return _RelacionMercanciaDestino
+            Else
+                Return New List(Of RelacionMercanciaOrigenDestino)
+            End If
+        End Get
+        Set(value As List(Of RelacionMercanciaOrigenDestino))
+            _RelacionMercanciaDestino = value
+        End Set
+    End Property
+
+    Public Shared Function CreaCopiaMercancia(ByRef mercancia As Mercancia)
+        Dim merc As New Mercancia
+
+        merc.ClaveProdServ = mercancia.ClaveProdServ
+        merc.Descripcion = mercancia.Descripcion
+        merc.Cantidad = mercancia.Cantidad
+        merc.CantidadSinAsignar = mercancia.CantidadSinAsignar
+        merc.RelacionMercanciaDestino = mercancia.RelacionMercanciaDestino
+        merc.ClaveUnidad = mercancia.ClaveUnidad
+        merc.Unidad = mercancia.Unidad
+        merc.Longitud = mercancia.Longitud
+        merc.Altura = mercancia.Altura
+        merc.Anchura = mercancia.Anchura
+        merc.EsCentimetros = mercancia.EsCentimetros
+        merc.EsPulgadas = mercancia.EsPulgadas
+        merc.MaterialPeligroso = mercancia.MaterialPeligroso
+        merc.ClaveMaterialPeligroso = mercancia.ClaveMaterialPeligroso
+        merc.DescripcionMaterialPeligroso = mercancia.DescripcionMaterialPeligroso
+        merc.Embalaje = mercancia.Embalaje
+        merc.DescripcionEmbalaje = mercancia.DescripcionEmbalaje
+        merc.PesoEnKg = mercancia.PesoEnKg
+        merc.ValorMercancia = mercancia.ValorMercancia
+        merc.Moneda = mercancia.Moneda
+        merc.EsComercioInternacional = mercancia.EsComercioInternacional
+        merc.FraccionArancelaria = mercancia.FraccionArancelaria
+        merc.Pedimento = mercancia.Pedimento
+
+        Return merc
+    End Function
 End Class
