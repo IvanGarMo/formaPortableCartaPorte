@@ -111,6 +111,7 @@
     <Compile Include="frmCartaPorte\Mercancia.vb" />
     <Compile Include="frmCartaPorte\OrigenDestino.vb" />
     <Compile Include="frmCartaPorte\RelacionMercanciaOrigenDestino.vb" />
+    <Compile Include="frmCartaPorte\TiposCartaPorte.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>

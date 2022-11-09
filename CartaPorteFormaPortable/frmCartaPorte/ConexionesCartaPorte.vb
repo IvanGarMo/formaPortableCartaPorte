@@ -8,6 +8,12 @@ Public Class ConexionesCartaPorte
         tiposCartaPorte = New TiposCartaPorte
     End Sub
 
+    Private Function obtenConexion() As SqlConnection
+        Dim con = New SqlConnection("Server=dwh.eimportacion.com.mx,65069;Database=BD_IJGM;User Id=ijgm;Password=qw3ry22@;")
+        con.Open()
+        Return con
+    End Function
+
     Public Function GeneraXmlCartaPorte(ByVal tipoCfdi As String,
                                         ByVal transporteInternacional As Boolean,
                                         ByVal entradaSalida As String,
@@ -23,7 +29,7 @@ Public Class ConexionesCartaPorte
                                         ByRef datosOperador As DatosTransportista
                                         ) As String
         Dim Cm As SqlCommand = Nothing
-        Cm = New SqlCommand("sat.SP_CCP_CreacionComplementoCartaPorte", mockConexion)
+        Cm = New SqlCommand("sat.SP_CCP_CreacionComplementoCartaPorte", obtenConexion())
         Cm.CommandType = CommandType.StoredProcedure
 
         Cm.Parameters.AddWithValue("@ParCadTipoCfdi", tipoCfdi)
@@ -167,24 +173,28 @@ Public Class ConexionesCartaPorte
 
     Public Function Get_ObtenParametros() As DataTable
         Dim Cm As SqlCommand = Nothing
-        Cm = New SqlCommand("sat.SP_CCP_ObtenParametros", mockConexion)
+        Cm = New SqlCommand("sat.SP_CCP_ObtenParametros", obtenConexion())
         Cm.CommandType = CommandType.StoredProcedure
 
-        Dim sqlAdapter As New SqlDataAdapter
+        Dim sqlAdapter As New SqlDataAdapter(Cm)
         Dim dataSet As New DataSet
         sqlAdapter.Fill(dataSet)
         Return dataSet.Tables(0)
     End Function
 
-    Public Function Get_ObtenPaises(ByVal opcionPorDefecto As Boolean) As DataTable
+    Public Function Get_ObtenPaises(ByVal opcionPorDefecto As Boolean,
+                                    Optional ByVal cadPais As String = "") As DataTable
         Dim Cm As SqlCommand = Nothing
-        Cm = New SqlCommand("sat.SP_CCP_ObtenPaises", mockConexion)
+        Cm = New SqlCommand("sat.SP_CCP_ObtenPaises", obtenConexion())
         Cm.CommandType = CommandType.StoredProcedure
 
         Cm.Parameters.AddWithValue("@ParBitOpcionPorDefecto", opcionPorDefecto)
         Cm.Parameters("@ParBitOpcionPorDefecto").Direction = ParameterDirection.Input
 
-        Dim sqlAdapter As New SqlDataAdapter
+        Cm.Parameters.AddWithValue("@ParCadPais", cadPais)
+        Cm.Parameters("@ParCadPais").Direction = ParameterDirection.Input
+
+        Dim sqlAdapter As New SqlDataAdapter(Cm)
         Dim dataSet As New DataSet
         sqlAdapter.Fill(dataSet)
         Return dataSet.Tables(0)
@@ -192,7 +202,7 @@ Public Class ConexionesCartaPorte
 
     Public Function Get_ObtenDescripcionPais(ByVal cadPais As String) As String
         Dim Cm As SqlCommand = Nothing
-        Cm = New SqlCommand("sat.SP_CCP_ObtenDescripcionPais", mockConexion)
+        Cm = New SqlCommand("sat.SP_CCP_ObtenDescripcionPais", obtenConexion())
         Cm.CommandType = CommandType.StoredProcedure
 
         Cm.Parameters.AddWithValue("@ParCadClavePais", cadPais)
@@ -207,7 +217,7 @@ Public Class ConexionesCartaPorte
 
     Public Function Get_ObtenEstados(ByVal opcionPorDefecto As Boolean, ByVal cadPais As String) As DataTable
         Dim Cm As SqlCommand = Nothing
-        Cm = New SqlCommand("sat.SP_CCP_ObtenEstadosPais", mockConexion)
+        Cm = New SqlCommand("sat.SP_CCP_ObtenEstadosPais", obtenConexion())
         Cm.CommandType = CommandType.StoredProcedure
 
         Cm.Parameters.AddWithValue("@ParBitOpcionPorDefecto", opcionPorDefecto)
@@ -216,7 +226,7 @@ Public Class ConexionesCartaPorte
         Cm.Parameters.AddWithValue("@ParCadPais", cadPais)
         Cm.Parameters("@ParCadPais").Direction = ParameterDirection.Input
 
-        Dim sqlAdapter As New SqlDataAdapter
+        Dim sqlAdapter As New SqlDataAdapter(Cm)
         Dim dataSet As New DataSet
         sqlAdapter.Fill(dataSet)
         Return dataSet.Tables(0)
@@ -225,7 +235,7 @@ Public Class ConexionesCartaPorte
     Public Function Get_ObtenMunicipiosPorEstado(ByVal opcionPorDefecto As Boolean,
                                                             ByVal cadEstado As String) As DataTable
         Dim Cm As SqlCommand = Nothing
-        Cm = New SqlCommand("sat.SP_CCP_ObtenMunicipiosEstado", mockConexion)
+        Cm = New SqlCommand("sat.SP_CCP_ObtenMunicipiosEstado", obtenConexion())
         Cm.CommandType = CommandType.StoredProcedure
 
         Cm.Parameters.AddWithValue("@ParBitOpcionPorDefecto", opcionPorDefecto)
@@ -234,7 +244,7 @@ Public Class ConexionesCartaPorte
         Cm.Parameters.AddWithValue("@ParCadEstado", cadEstado)
         Cm.Parameters("@ParCadEstado").Direction = ParameterDirection.Input
 
-        Dim sqlAdapter As New SqlDataAdapter
+        Dim sqlAdapter As New SqlDataAdapter(Cm)
         Dim dataSet As New DataSet
         sqlAdapter.Fill(dataSet)
         Return dataSet.Tables(0)
@@ -243,7 +253,7 @@ Public Class ConexionesCartaPorte
     Public Function Get_ObtenLocalidadesPorEstado(ByVal opcionPorDefecto As Boolean,
                                                            ByVal cadEstado As String) As DataTable
         Dim Cm As SqlCommand = Nothing
-        Cm = New SqlCommand("sat.SP_CCP_ObtenLocalidadesEstado", mockConexion)
+        Cm = New SqlCommand("sat.SP_CCP_ObtenLocalidadesEstado", obtenConexion())
         Cm.CommandType = CommandType.StoredProcedure
 
         Cm.Parameters.AddWithValue("@ParBitOpcionPorDefecto", opcionPorDefecto)
@@ -252,7 +262,7 @@ Public Class ConexionesCartaPorte
         Cm.Parameters.AddWithValue("@ParCadEstado", cadEstado)
         Cm.Parameters("@ParCadEstado").Direction = ParameterDirection.Input
 
-        Dim sqlAdapter As New SqlDataAdapter
+        Dim sqlAdapter As New SqlDataAdapter(Cm)
         Dim dataSet As New DataSet
         sqlAdapter.Fill(dataSet)
         Return dataSet.Tables(0)
@@ -261,7 +271,7 @@ Public Class ConexionesCartaPorte
     Public Function Get_ObtenColoniasPorCodigoPostal(ByVal opcionPorDefecto As Boolean,
                                                            ByVal codigoPostal As String) As DataTable
         Dim Cm As SqlCommand = Nothing
-        Cm = New SqlCommand("sat.SP_CCP_ObtenColoniasCodigoPostal", mockConexion)
+        Cm = New SqlCommand("sat.SP_CCP_ObtenColoniasCodigoPostal", obtenConexion())
         Cm.CommandType = CommandType.StoredProcedure
 
         Cm.Parameters.AddWithValue("@ParBitOpcionPorDefecto", opcionPorDefecto)
@@ -270,7 +280,7 @@ Public Class ConexionesCartaPorte
         Cm.Parameters.AddWithValue("@ParCadCodigoPostal", codigoPostal)
         Cm.Parameters("@ParCadCodigoPostal").Direction = ParameterDirection.Input
 
-        Dim sqlAdapter As New SqlDataAdapter
+        Dim sqlAdapter As New SqlDataAdapter(Cm)
         Dim dataSet As New DataSet
         sqlAdapter.Fill(dataSet)
         Return dataSet.Tables(0)
@@ -278,7 +288,7 @@ Public Class ConexionesCartaPorte
 
     Public Function Get_ObtenDescripcionPorClaveProdServ(ByRef claveProdServ As String) As String
         Dim Cm As SqlCommand = Nothing
-        Cm = New SqlCommand("sat.SP_CCP_CargaDescripcionProducto", mockConexion)
+        Cm = New SqlCommand("sat.SP_CCP_CargaDescripcionProducto", obtenConexion())
         Cm.CommandType = CommandType.StoredProcedure
 
         Cm.Parameters.AddWithValue("@ParCadClaveProdServ", claveProdServ)
@@ -292,7 +302,7 @@ Public Class ConexionesCartaPorte
 
     Public Function Get_ClaveUnidadPeso(ByRef clave As String) As String
         Dim Cm As SqlCommand = Nothing
-        Cm = New SqlCommand("sat.SP_CCP_ClaveUnidadPeso", mockConexion)
+        Cm = New SqlCommand("sat.SP_CCP_ClaveUnidadPeso", obtenConexion())
         Cm.CommandType = CommandType.StoredProcedure
 
         Cm.Parameters.AddWithValue("@ParCadClaveUnidad", clave)
@@ -306,7 +316,7 @@ Public Class ConexionesCartaPorte
 
     Public Function Get_DescripcionMoneda(ByRef clave As String) As String
         Dim Cm As SqlCommand = Nothing
-        Cm = New SqlCommand("sat.SP_CCP_ObtenDescripcionMoneda", mockConexion)
+        Cm = New SqlCommand("sat.SP_CCP_ObtenDescripcionMoneda", obtenConexion())
         Cm.CommandType = CommandType.StoredProcedure
 
         Cm.Parameters.AddWithValue("@ParCadClaveMoneda", clave)
@@ -320,10 +330,10 @@ Public Class ConexionesCartaPorte
 
     Public Function Get_ObtenPosiblesDimensiones() As DataTable
         Dim Cm As SqlCommand = Nothing
-        Cm = New SqlCommand("sat.SP_CCP_ObtenOpcionesDimensiones", mockConexion)
+        Cm = New SqlCommand("sat.SP_CCP_ObtenOpcionesDimensiones", obtenConexion())
         Cm.CommandType = CommandType.StoredProcedure
 
-        Dim sqlAdapter As New SqlDataAdapter
+        Dim sqlAdapter As New SqlDataAdapter(Cm)
         Dim dataSet As New DataSet
         sqlAdapter.Fill(dataSet)
         Return dataSet.Tables(0)
@@ -331,10 +341,10 @@ Public Class ConexionesCartaPorte
 
     Public Function Get_ObtenPosiblesTiposRemolque() As DataTable
         Dim Cm As SqlCommand = Nothing
-        Cm = New SqlCommand("sat.SP_CCP_TiposRemolque", mockConexion)
+        Cm = New SqlCommand("sat.SP_CCP_TiposRemolque", obtenConexion())
         Cm.CommandType = CommandType.StoredProcedure
 
-        Dim sqlAdapter As New SqlDataAdapter
+        Dim sqlAdapter As New SqlDataAdapter(Cm)
         Dim dataSet As New DataSet
         sqlAdapter.Fill(dataSet)
         Return dataSet.Tables(0)
@@ -342,7 +352,7 @@ Public Class ConexionesCartaPorte
 
     Public Function Get_ObtenDescripcionPorTipoSubRemolque(ByRef claveTransporte As String) As String
         Dim Cm As SqlCommand = Nothing
-        Cm = New SqlCommand("sat.SP_CCP_CargaDescripcionTipoTransporte", mockConexion)
+        Cm = New SqlCommand("sat.SP_CCP_CargaDescripcionTipoTransporte", obtenConexion())
         Cm.CommandType = CommandType.StoredProcedure
 
         Cm.Parameters.AddWithValue("@ParCadClaveTransporte", claveTransporte)
@@ -356,10 +366,10 @@ Public Class ConexionesCartaPorte
 
     Public Function Get_OpcionesPropiedadTransporte() As DataTable
         Dim Cm As SqlCommand = Nothing
-        Cm = New SqlCommand("sat.SP_CCP_CargaPropiedadTransporte", mockConexion)
+        Cm = New SqlCommand("sat.SP_CCP_CargaPropiedadTransporte", obtenConexion())
         Cm.CommandType = CommandType.StoredProcedure
 
-        Dim sqlAdapter As New SqlDataAdapter
+        Dim sqlAdapter As New SqlDataAdapter(Cm)
         Dim dataSet As New DataSet
         sqlAdapter.Fill(dataSet)
         Return dataSet.Tables(0)
@@ -367,10 +377,10 @@ Public Class ConexionesCartaPorte
 
     Public Function Get_OpcionesTipoPermiso() As DataTable
         Dim Cm As SqlCommand = Nothing
-        Cm = New SqlCommand("sat.SP_CCP_ObtenTiposPermiso", mockConexion)
+        Cm = New SqlCommand("sat.SP_CCP_ObtenTiposPermiso", obtenConexion())
         Cm.CommandType = CommandType.StoredProcedure
 
-        Dim sqlAdapter As New SqlDataAdapter
+        Dim sqlAdapter As New SqlDataAdapter(Cm)
         Dim dataSet As New DataSet
         sqlAdapter.Fill(dataSet)
         Return dataSet.Tables(0)
@@ -378,10 +388,10 @@ Public Class ConexionesCartaPorte
 
     Public Function Get_OpcionesConfiguracionVehicular() As DataTable
         Dim Cm As SqlCommand = Nothing
-        Cm = New SqlCommand("sat.SP_CPP_CargaConfiguracionAutoTransporte", mockConexion)
+        Cm = New SqlCommand("sat.SP_CPP_CargaConfiguracionAutoTransporte", obtenConexion())
         Cm.CommandType = CommandType.StoredProcedure
 
-        Dim sqlAdapter As New SqlDataAdapter
+        Dim sqlAdapter As New SqlDataAdapter(Cm)
         Dim dataSet As New DataSet
         sqlAdapter.Fill(dataSet)
         Return dataSet.Tables(0)
@@ -389,7 +399,7 @@ Public Class ConexionesCartaPorte
 
     Public Function Get_ObtenDescripcionConfiguracionAutoTransporte(ByRef claveConf As String) As String
         Dim Cm As SqlCommand = Nothing
-        Cm = New SqlCommand("sat.SP_CPP_CargaDescripcionConfigAutoTransporte", mockConexion)
+        Cm = New SqlCommand("sat.SP_CPP_CargaDescripcionConfigAutoTransporte", obtenConexion())
         Cm.CommandType = CommandType.StoredProcedure
 
         Cm.Parameters.AddWithValue("@ParCadClave", claveConf)
@@ -403,13 +413,13 @@ Public Class ConexionesCartaPorte
 
     Public Function Get_ObtenFigurasDeTransporte(ByVal propiedadAjena As Boolean) As DataTable
         Dim Cm As SqlCommand = Nothing
-        Cm = New SqlCommand("sat.SP_CCP_ObtenTiposFiguraTransporte", mockConexion)
+        Cm = New SqlCommand("sat.SP_CCP_ObtenTiposFiguraTransporte", obtenConexion())
         Cm.CommandType = CommandType.StoredProcedure
 
         Cm.Parameters.AddWithValue("@ParBitPropiedadAjena", propiedadAjena)
         Cm.Parameters("@ParBitPropiedadAjena").Direction = ParameterDirection.Input
 
-        Dim sqlAdapter As New SqlDataAdapter
+        Dim sqlAdapter As New SqlDataAdapter(Cm)
         Dim dataSet As New DataSet
         sqlAdapter.Fill(dataSet)
         Return dataSet.Tables(0)

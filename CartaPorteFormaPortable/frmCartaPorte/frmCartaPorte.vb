@@ -15,10 +15,56 @@ Public Class frmCartaPorte
     Private datosAutoTransporte As Autotransporte
     Private listadoRelacionMercanciasMovimiento As List(Of RelacionMercanciaOrigenDestino)
 
+    'Este para evitar que el usuario se mueva en la pestaña
+    Private ESTOY_CAMBIANDO_MEDIANTE_INDICE = False
     '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
     '''''''MÉTODOS COMUNES
     '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+    Public Sub New()
 
+        ' This call is required by the designer.
+        InitializeComponent()
+
+        ' Add any initialization after the InitializeComponent() call.
+        conexionesCartaPorte = New ConexionesCartaPorte()
+        CargaParametros()
+        PreparaPestanaOrigen()
+    End Sub
+
+    Private Sub TabControl1_Selecting(sender As Object, e As TabControlCancelEventArgs) Handles TabControl1.Selecting
+        If ESTOY_CAMBIANDO_MEDIANTE_INDICE Then Return
+        e.Cancel = True
+    End Sub
+
+    Private Sub TabControl1_SelectedIndexChanged(sender As Object, e As EventArgs) Handles TabControl1.SelectedIndexChanged
+        Dim nuevoIndice = TabControl1.SelectedIndex
+        Dim indiceTabOrigen = TabControl1.TabPages("tabOrigen").TabIndex
+        Dim indiceTabDestino = TabControl1.TabPages("tabDestino").TabIndex
+        Dim indiceTabDestinosIntermedios = TabControl1.TabPages("tabDestinosIntermedios").TabIndex
+        Dim indiceTabMercancias = TabControl1.TabPages("tabMercancias").TabIndex
+        Dim indiceTabTransporte = TabControl1.TabPages("tabTransporte").TabIndex
+        Dim indiceTabOperador = TabControl1.TabPages("tabOperador").TabIndex
+        Dim indiceTabConfirmacion = TabControl1.TabPages("tabConfirmacion").TabIndex
+
+        Select Case nuevoIndice
+            Case indiceTabOrigen
+                PreparaPestanaOrigen()
+            Case indiceTabDestino
+                PreparaPestanaDestino()
+            Case indiceTabDestinosIntermedios
+                PreparaPestanaDestinoIntermedio()
+            Case indiceTabMercancias
+                PreparaPestanaMercancias()
+            Case indiceTabTransporte
+                PreparaPestanaTransporte()
+            Case indiceTabOperador
+                PreparaDatosOperador()
+            Case indiceTabConfirmacion
+                PreparaPestanaConfirmacion()
+        End Select
+
+
+    End Sub
     Private Sub CargaParametros()
         parametrosFormaCartaPorte = conexionesCartaPorte.Get_ObtenParametros()
     End Sub
@@ -42,6 +88,10 @@ Public Class frmCartaPorte
 
     Private Function ObtenListadoPaises() As DataTable
         Return conexionesCartaPorte.Get_ObtenPaises(True)
+    End Function
+
+    Private Function ObtenListadoPaises(ByVal cadena As String) As DataTable
+        Return conexionesCartaPorte.Get_ObtenPaises(True, cadena)
     End Function
 
     Private Function ObtenDescripcionPais(ByVal codigoPais As String) As String
@@ -116,11 +166,19 @@ Public Class frmCartaPorte
     End Sub
 
     Private Function ObtenValorCombobox(ByRef combo As ComboBox) As String
-        If Not combo.Enabled Then
+        If combo Is Nothing Then
             Return "-01"
         End If
 
+        'If Not combo.Enabled Then
+        '    Return "-01"
+        'End If
+
         If combo.Items.Count = 0 Then
+            Return "-01"
+        End If
+
+        If combo.SelectedValue Is Nothing Then
             Return "-01"
         End If
 
@@ -129,7 +187,7 @@ Public Class frmCartaPorte
 
     Private Function ObtenValorTextbox(ByRef text As TextBox) As String
         If text Is Nothing Then Return String.Empty
-        Return ObtenValorTextbox(text)
+        Return UCase(Trim(text.Text))
     End Function
 
     Private Sub RemueveDeGrid(ByRef control As Control, ByRef panel As TableLayoutPanel)
@@ -189,6 +247,8 @@ Public Class frmCartaPorte
     Private refCbColoniaOrigen As ComboBox
 
     Private Sub PreparaPestanaOrigen()
+        txtTipoUbicacion.Text = "Origen"
+        txtTipoUbicacion.Enabled = False
         INFORMACION_VALIDA_DATOS_ORIGEN = False
         refCbEstadoOrigen = cbEstadoRemitente
         refCbMunicipioOrigen = cbMunicipioRemitente
@@ -198,6 +258,7 @@ Public Class frmCartaPorte
         LimpiaDetallesOrigen()
         BindCombobox(cbPaisRemitente, ObtenListadoPaises())
         AddHandler cbPaisRemitente.SelectedValueChanged, AddressOf dtPaisRemitente_SelectedValueChanged
+        TogglePersonaFisicaMoralExtranjeroOrigen()
     End Sub
 
     Private Sub LimpiarDatosOrigen()
@@ -253,8 +314,9 @@ Public Class frmCartaPorte
             LimpiaDesactivaTextbox(txtNumRegidTribRemitente)
             LimpiaDesactivaTextbox(txtPaisResidenciaFiscalRemitente)
             LimpiaDesactivaCombobox(cbResidenciaFiscalRemitente)
+            BindCombobox(cbPaisRemitente, ObtenListadoPaises("MEX"))
             cbPaisRemitente.SelectedValue = "MEX"
-            cbPaisRemitente.Enabled = False
+            cbPaisRemitente.Enabled = True
 
         ElseIf rbPersonaFisicaOrigen.Checked Then
             REMITENTE_ES_PERSONA_MORAL = False
@@ -267,8 +329,9 @@ Public Class frmCartaPorte
             LimpiaDesactivaTextbox(txtNumRegidTribRemitente)
             LimpiaDesactivaTextbox(txtPaisResidenciaFiscalRemitente)
             LimpiaDesactivaCombobox(cbResidenciaFiscalRemitente)
+            BindCombobox(cbPaisRemitente, ObtenListadoPaises("MEX"))
             cbPaisRemitente.SelectedValue = "MEX"
-            cbPaisRemitente.Enabled = False
+            cbPaisRemitente.Enabled = True
 
         ElseIf rbExtranjeroOrigen.Checked Then
             REMITENTE_ES_PERSONA_MORAL = False
@@ -296,7 +359,7 @@ Public Class frmCartaPorte
         Dim numRegIdTribRemitente As String = ObtenValorTextbox(txtNumRegidTribRemitente)
 
         'La validación de id de origen es de a fuerza
-        Dim regExpIdOrigen = ObtenParametroPorLlave("INGRESE_ID_ORIGEN")
+        Dim regExpIdOrigen = ObtenParametroPorLlave("REGEXP_ID_ORIGEN")
         If Not Regex.IsMatch(idUbicacion, regExpIdOrigen) Then AlertaMensaje(ObtenParametroPorLlave("INGRESE_ID_ORIGEN")) : Return
 
         'Primero, aplico las validaciones que dependen de un escenario
@@ -356,7 +419,7 @@ Public Class frmCartaPorte
         If horaSalida.Length <> longitudHora Then AlertaMensaje(ObtenParametroPorLlave("HORA_MALFORMADA")) : Return
         If Not Regex.IsMatch(horaSalida, regExpHora) Then AlertaMensaje(ObtenParametroPorLlave("HORA_MALFORMADA")) : Return
 
-        Dim paisSeleccionado As String = ObtenValorCombobox(cbPaisDestino)
+        Dim paisSeleccionado As String = ObtenValorCombobox(cbPaisRemitente)
         Dim estadoRemitente As String = String.Empty
         Dim municipioRemitente As String = String.Empty
         Dim localidadRemitente As String = String.Empty
@@ -450,7 +513,9 @@ Public Class frmCartaPorte
     Private Sub btnSiguienteOrigen_Click(sender As Object, e As EventArgs) Handles btnSiguienteOrigen.Click
         ValidarDatosOrigen()
         If INFORMACION_VALIDA_DATOS_ORIGEN Then
+            ESTOY_CAMBIANDO_MEDIANTE_INDICE = True
             TabControl1.SelectedIndex = TabControl1.SelectedIndex + 1
+            ESTOY_CAMBIANDO_MEDIANTE_INDICE = False
         End If
     End Sub
 
@@ -553,18 +618,18 @@ Public Class frmCartaPorte
     End Sub
 
     Private Sub cbEstadoRemitente_SelectedValueChanged(sender As Object, e As EventArgs) Handles cbEstadoRemitente.SelectedValueChanged
-        If ObtenValorCombobox(refCbEstadoOrigen.SelectedValue) = "-01" Then 'No interesa proceder si seleccionó la opc por defecto
+        If ObtenValorCombobox(refCbEstadoOrigen) = "-01" Then 'No interesa proceder si seleccionó la opc por defecto
             Return
         End If
 
         Dim paisSeleccionado = cbPaisRemitente.SelectedValue
-        If PaisTieneEstados(paisSeleccionado) Then
+        If PaisTieneMunicipioLocalidad(paisSeleccionado) Then
             RemueveDeGrid(txtMunicipioOrigen, tlpDetalleDomicilioOrigen)
             RemueveDeGrid(txtLocalidadOrigen, tlpDetalleDomicilioOrigen)
             LimpiaDesactivaCombobox(refCbMunicipioOrigen)
             LimpiaDesactivaCombobox(refCbLocalidadOrigen)
-            BindCombobox(refCbMunicipioOrigen, ObtenMunicipiosPorEstado(refCbEstadoOrigen.SelectedValue))
-            BindCombobox(refCbLocalidadOrigen, ObtenLocalidadesPorEstado(refCbEstadoOrigen.SelectedValue))
+            BindCombobox(refCbMunicipioOrigen, ObtenMunicipiosPorEstado(ObtenValorCombobox(refCbEstadoOrigen)))
+            BindCombobox(refCbLocalidadOrigen, ObtenLocalidadesPorEstado(ObtenValorCombobox(refCbEstadoOrigen)))
         End If
     End Sub
 
@@ -667,6 +732,7 @@ Public Class frmCartaPorte
         refCbEstadoDestino = cbEstadoDestino
         LimpiarDatosDestino()
         LimpiarDatosOrigen()
+        rbPersonaFisicaDestino.Checked = True
     End Sub
 
     Private Sub LimpiarDatosDestino()
@@ -701,8 +767,9 @@ Public Class frmCartaPorte
             ES_PERSONA_FISICA_DESTINO = True
             ES_PERSONA_MORAL_DESTINO = False
             ES_EXTRANJERO_DESTINO = False
+            BindCombobox(cbPaisDestino, ObtenListadoPaises("MEX"))
             cbPaisDestino.SelectedValue = "MEX"
-            cbPaisDestino.Enabled = False
+            cbPaisDestino.Enabled = True
             txtRfcDestino.Enabled = True
             txtNombreDestino.Enabled = True
             txtApPaternoDestino.Enabled = True
@@ -711,8 +778,9 @@ Public Class frmCartaPorte
             ES_PERSONA_FISICA_DESTINO = False
             ES_PERSONA_MORAL_DESTINO = True
             ES_EXTRANJERO_DESTINO = False
+            BindCombobox(cbPaisDestino, ObtenListadoPaises("MEX"))
             cbPaisDestino.SelectedValue = "MEX"
-            cbPaisDestino.Enabled = False
+            cbPaisDestino.Enabled = True
             txtRfcDestino.Enabled = True
             txtNombreDestino.Enabled = True
         ElseIf rbEsExtranjeroDestino.Checked Then
@@ -761,10 +829,10 @@ Public Class frmCartaPorte
             If refCbEstadoDestino Is Nothing Then
                 refCbEstadoDestino = New ComboBox
                 LimpiaDesactivaCombobox(refCbEstadoDestino)
-                BindCombobox(refCbEstadoDestino, ObtenEstadosPorPais(paisDestino))
                 SustituyeEnGrid(txtEstadoDestino, refCbEstadoDestino, tlpDatosDestino)
                 AddHandler refCbEstadoDestino.SelectedValueChanged, AddressOf cbEstadoDestino_SelectedValueChanged
             End If
+            BindCombobox(refCbEstadoDestino, ObtenEstadosPorPais(paisDestino))
         Else
             If txtEstadoDestino Is Nothing Then
                 txtEstadoDestino = New TextBox
@@ -832,7 +900,7 @@ Public Class frmCartaPorte
 
     Private Sub txtCpDestino_TextChanged(sender As Object, e As EventArgs) Handles txtCpDestino.TextChanged
         Dim cp As String = ObtenValorTextbox(txtCpDestino)
-        If cp.Length <> 5 Then Return '5 es la longitud de un código postal válido
+        If cp.Length <> 5 Then LimpiaDesactivaCombobox(refCbColoniaDestino) : Return '5 es la longitud de un código postal válido
 
         Dim paisDestino = ObtenValorCombobox(cbPaisDestino)
         If PaisTieneColonias(paisDestino) Then 'Si tenemos un país con colonias
@@ -846,12 +914,16 @@ Public Class frmCartaPorte
     Private Sub btnSiguienteDestino_Click(sender As Object, e As EventArgs) Handles btnSiguienteDestino.Click
         ValidarDatosDestino()
         If INFORMACION_VALIDA_DESTINO Then
+            ESTOY_CAMBIANDO_MEDIANTE_INDICE = True
             TabControl1.SelectedIndex = TabControl1.SelectedIndex + 1
+            ESTOY_CAMBIANDO_MEDIANTE_INDICE = False
         End If
     End Sub
 
     Private Sub btnAtrasDestino_Click(sender As Object, e As EventArgs) Handles btnAtrasDestino.Click
+        ESTOY_CAMBIANDO_MEDIANTE_INDICE = True
         TabControl1.SelectedIndex = TabControl1.SelectedIndex - 1
+        ESTOY_CAMBIANDO_MEDIANTE_INDICE = False
     End Sub
 
     Private Sub ValidarDatosDestino()
@@ -1183,8 +1255,9 @@ Public Class frmCartaPorte
             txtNombreDestinoIntermedio.Enabled = True
             txtApPaternoDestinoIntermedio.Enabled = True
             txtApMaternoDestinoIntermedio.Enabled = True
+            BindCombobox(cbPaisDestinoIntermedio, ObtenListadoPaises("MEX"))
             cbPaisDestinoIntermedio.SelectedValue = "MEX"
-            cbPaisDestinoIntermedio.Enabled = False
+            cbPaisDestinoIntermedio.Enabled = True
 
         ElseIf rbEsPersonaMoralDestinoIntermedio.Checked Then
             ES_PERSONA_MORAL_DESTINO_INTERMEDIO = True
@@ -1192,8 +1265,9 @@ Public Class frmCartaPorte
             ES_EXTRANJERO_DESTINO_INTERMEDIO = False
             txtRfcDestinoIntermedio.Enabled = True
             txtNombreDestinoIntermedio.Enabled = True
+            BindCombobox(cbPaisDestinoIntermedio, ObtenListadoPaises("MEX"))
             cbPaisDestinoIntermedio.SelectedValue = "MEX"
-            cbPaisDestinoIntermedio.Enabled = False
+            cbPaisDestinoIntermedio.Enabled = True
 
         ElseIf rbEsExtranjeroDestinoIntermedio.Checked Then
             ES_PERSONA_MORAL_DESTINO_INTERMEDIO = False
@@ -1518,12 +1592,16 @@ Public Class frmCartaPorte
     End Sub
 
     Private Sub btnAtrasDestinosIntermedios_Click(sender As Object, e As EventArgs) Handles btnAtrasDestinosIntermedios.Click
+        ESTOY_CAMBIANDO_MEDIANTE_INDICE = True
         TabControl1.SelectedIndex = TabControl1.SelectedIndex - 1
+        ESTOY_CAMBIANDO_MEDIANTE_INDICE = False
     End Sub
     Private Sub btnSiguienteDestinosIntermedios_Click(sender As Object, e As EventArgs) Handles btnSiguienteDestinosIntermedios.Click
         btnGuardarDestinosIntermedios_Click(Nothing, Nothing)
         If datosDestinoIntermedioEnModificacion Is Nothing Then
+            ESTOY_CAMBIANDO_MEDIANTE_INDICE = True
             TabControl1.SelectedIndex = TabControl1.SelectedIndex + 1
+            ESTOY_CAMBIANDO_MEDIANTE_INDICE = False
         End If
     End Sub
 
@@ -2041,12 +2119,16 @@ Public Class frmCartaPorte
         End If
         ValidarInformacionMercancia()
         If INFORMACION_VALIDA_MERCANCIA Then
+            ESTOY_CAMBIANDO_MEDIANTE_INDICE = True
             TabControl1.SelectedIndex = TabControl1.SelectedIndex + 1
+            ESTOY_CAMBIANDO_MEDIANTE_INDICE = False
         End If
     End Sub
 
     Private Sub btnAtrasMercancia_Click(sender As Object, e As EventArgs) Handles btnAtrasMercancia.Click
+        ESTOY_CAMBIANDO_MEDIANTE_INDICE = True
         TabControl1.SelectedIndex = TabControl1.SelectedIndex - 1
+        ESTOY_CAMBIANDO_MEDIANTE_INDICE = False
     End Sub
 
     Private Sub dgvMercanciasPorMovimiento_CellContentClick(sender As Object, e As DataGridViewCellEventArgs) Handles dgvMercanciasPorMovimiento.CellContentClick
@@ -2343,12 +2425,16 @@ Public Class frmCartaPorte
     Private Sub btnSiguienteTransporte_Click(sender As Object, e As EventArgs) Handles btnSiguienteTransporte.Click
         ValidaDatosTransporte()
         If INFORMACION_VALIDA_TRANSPORTE Then
+            ESTOY_CAMBIANDO_MEDIANTE_INDICE = True
             TabControl1.SelectedIndex = TabControl1.SelectedIndex + 1
+            ESTOY_CAMBIANDO_MEDIANTE_INDICE = False
         End If
     End Sub
 
     Private Sub btnAtrasTransporte_Click(sender As Object, e As EventArgs) Handles btnAtrasTransporte.Click
+        ESTOY_CAMBIANDO_MEDIANTE_INDICE = True
         TabControl1.SelectedIndex = TabControl1.SelectedIndex - 1
+        ESTOY_CAMBIANDO_MEDIANTE_INDICE = False
     End Sub
 
     '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -2482,8 +2568,9 @@ Public Class frmCartaPorte
             txtRfcOperador.Enabled = True
             txtNumRegIdTribFiscOperador.Text = String.Empty
             txtNumRegIdTribFiscOperador.Enabled = False
-            cbPaisOperador.Enabled = False
+            BindCombobox(cbPaisOperador, ObtenListadoPaises("MEX"))
             cbPaisOperador.SelectedValue = "MEX"
+            cbPaisOperador.Enabled = True
         End If
     End Sub
 
@@ -2630,7 +2717,7 @@ Public Class frmCartaPorte
 
         Dim regExpCP As String = ObtenParametroPorLlave("REGEXP_CODIGO_POSTAL")
         If Regex.IsMatch(Trim(txtCpOperador.Text), regExpCP) Then
-            BindCombobox(cbColoniaOperador, ObtenColoniasPorCodigoPostal(Trim(txtCpOperador.Text))
+            BindCombobox(cbColoniaOperador, ObtenColoniasPorCodigoPostal(Trim(txtCpOperador.Text)))
         End If
     End Sub
 
@@ -2753,12 +2840,16 @@ Public Class frmCartaPorte
     Private Sub btnSiguienteOperador_Click(sender As Object, e As EventArgs) Handles btnSiguienteOperador.Click
         ValidaInformacionOperador()
         If INFORMACION_VALIDA_OPERADOR Then
+            ESTOY_CAMBIANDO_MEDIANTE_INDICE = True
             TabControl1.SelectedIndex = TabControl1.SelectedIndex + 1
+            ESTOY_CAMBIANDO_MEDIANTE_INDICE = False
         End If
     End Sub
 
     Private Sub btnAtrasOperador_Click(sender As Object, e As EventArgs) Handles btnAtrasOperador.Click
+        ESTOY_CAMBIANDO_MEDIANTE_INDICE = True
         TabControl1.SelectedIndex = TabControl1.SelectedIndex - 1
+        ESTOY_CAMBIANDO_MEDIANTE_INDICE = False
     End Sub
 
     '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -2767,6 +2858,11 @@ Public Class frmCartaPorte
     Private sumatoriaFinalMercancias As List(Of Mercancia)
     Private listaMercanciasSinDueno As List(Of Mercancia)
     Private listadoFinalRelaciones As List(Of RelacionMercanciaOrigenDestino)
+
+    Private Sub PreparaPestanaConfirmacion()
+
+    End Sub
+
     Private Sub RelacionaMercanciasConMovimientos()
         listadoFinalRelaciones = New List(Of RelacionMercanciaOrigenDestino)
 
@@ -2780,7 +2876,7 @@ Public Class frmCartaPorte
             Dim listaTempMercancias As List(Of Mercancia) = dictMercancias(key)
             For Each producto In listaTempMercancias
                 Dim claveProdServ As String = producto.ClaveProdServ
-                Dim existeMerc As Mercancia = sumatoriaFinalMercancias.FirstOrDefault(Function(m) m.ClaveProdServ = claveProdServ).
+                Dim existeMerc As Mercancia = sumatoriaFinalMercancias.FirstOrDefault(Function(m) m.ClaveProdServ = claveProdServ)
                 'Si ya existe algún producto con esa claveprodserv, 
                 'solo creo otro objeto relación
                 If existeMerc IsNot Nothing Then
@@ -2854,12 +2950,17 @@ Public Class frmCartaPorte
         dgvMercanciasSinUbicaciones.Columns("AsignarCantidadRestanteClm").DataPropertyName = NameOf(Mercancia.CantidadSinAsignar)
         dgvMercanciasSinUbicaciones.Columns("AsignarCantidadRestanteClm").ReadOnly = True
 
-        Dim columna As DataGridViewTextBoxColumn
-        columna.ReadOnly = False
-        columna.ValueType
+        'Dim columna As DataGridViewTextBoxColumn
+        'columna.ReadOnly = False
+        'columna.ValueType
 
 
 
     End Sub
 
+    Private Sub btnAtrasConfirmacion_Click(sender As Object, e As EventArgs) Handles btnAtrasConfirmacion.Click
+        ESTOY_CAMBIANDO_MEDIANTE_INDICE = True
+        TabControl1.SelectedIndex = TabControl1.SelectedIndex - 1
+        ESTOY_CAMBIANDO_MEDIANTE_INDICE = False
+    End Sub
 End Class
