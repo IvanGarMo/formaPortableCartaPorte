@@ -367,3 +367,138 @@ BEGIN
   END  
 END
 ;
+IF OBJECT_ID('sat.SP_CCP_ValidaCodigoPostal') IS NOT NULL
+	BEGIN
+		DROP PROCEDURE sat.SP_CCP_ObtenTiposFiguraTransporte;
+	END
+;
+CREATE PROCEDURE sat.SP_CCP_ValidaCodigoPostal(
+	@ParCadCodigoPostal VARCHAR(8),
+	@ParCadCodigoEstado VARCHAR(5),
+	@ParCadMunicipio VARCHAR(5),
+	@ParCadLocalidad VARCHAR(5),
+	@ParBitValido BIT OUTPUT,
+	@ParCadMensaje VARCHAR(500) OUTPUT
+)
+AS
+BEGIN
+    --Primero tengo que ver que el código postal exista
+	IF NOT EXISTS(SELECT 1 FROM sat.c_CodigoPostal WHERE c_CodigoPostal=@ParCadCodigoPostal)
+		BEGIN
+			SELECT @ParBitValido = 0;
+			SELECT @ParCadMensaje = 'El código postal ingresado no existe';
+			RETURN;
+		END
+	DECLARE @VarCadCodigoEstado VARCHAR(5), @VarCadCodigoMunicipio VARCHAR(5), @VarCadCodigoLocalidad VARCHAR(5);
+
+	--Luego aplico validacion de estados
+	IF NOT EXISTS(SELECT 1 FROM sat.c_CodigoPostal WHERE c_CodigoPostal=@ParCadCodigoPostal AND c_Estado=@ParCadCodigoEstado)
+		BEGIN
+			SELECT @ParBitValido=0;
+			SELECT @ParCadMensaje='El código postal ingresado no coincide con el estado ingresado'
+		END
+
+	--Luego, si hay uno que tenga tanto municipio como localidad, si puedo validar
+	IF EXISTS(SELECT 1 FROM sat.c_CodigoPostal WHERE c_CodigoPostal=@ParCadCodigoPostal
+				AND c_Estado IS NOT NULL
+				AND c_Estado=@ParCadCodigoEstado
+				AND c_Municipío IS NOT NULL
+				AND c_Municipío=@ParCadMunicipio
+				AND c_Localidad IS NOT NULL
+				AND c_Localidad=@ParCadLocalidad)
+		BEGIN
+			SELECT TOP 1 
+				@VarCadCodigoEstado=c_Estado, @VarCadCodigoMunicipio=c_Municipío, @VarCadCodigoLocalidad=c_Localidad
+			FROM sat.c_CodigoPostal 
+				WHERE c_CodigoPostal=@ParCadCodigoPostal
+				AND c_Estado IS NOT NULL
+				AND c_Estado=@ParCadCodigoEstado
+				AND c_Municipío IS NOT NULL
+				AND c_Municipío=@ParCadMunicipio
+				AND c_Localidad IS NOT NULL
+				AND c_Localidad=@ParCadLocalidad;
+
+			--Ahora, ya puedo aplicar la validación de si son iguales
+			IF (@ParCadCodigoEstado=@VarCadCodigoEstado) AND 
+				(@ParCadMunicipio=@VarCadCodigoMunicipio) AND
+				(@ParCadLocalidad=@VarCadCodigoLocalidad)
+					BEGIN
+						SET @ParBitValido=1; --Coincide
+						SELECT @ParCadMensaje = '';
+						RETURN;
+					END
+			ELSE
+					BEGIN
+						SELECT @ParBitValido=0;
+						SELECT @ParCadMensaje='El código postal ingresado no coincide con el municipio o localidad ingresadas';
+						RETURN;
+					END
+		END
+
+		--Ahora, en el caso de que se de un codigo postal con localidad, pero municipio en null
+		 IF EXISTS(SELECT 1 FROM sat.c_CodigoPostal WHERE c_CodigoPostal=@ParCadCodigoPostal
+					AND c_Estado IS NOT NULL
+					AND c_Estado=@ParCadCodigoEstado
+					AND c_Municipío IS NULL
+					AND c_Localidad IS NOT NULL
+					AND c_Localidad=@ParCadLocalidad)
+					BEGIN
+						SELECT TOP 1 
+						@VarCadCodigoEstado=c_Estado, @VarCadCodigoLocalidad=c_Localidad
+						FROM sat.c_CodigoPostal 
+							WHERE c_CodigoPostal=@ParCadCodigoPostal
+							AND c_Estado IS NOT NULL
+							AND c_Estado=@ParCadCodigoEstado
+							AND c_Municipío IS NULL
+							AND c_Localidad IS NOT NULL
+							AND c_Localidad=@ParCadLocalidad;
+
+							--Ahora, ya puedo aplicar la validación de si el estado y la localidad son iguales
+							IF (@ParCadCodigoEstado=@VarCadCodigoEstado) AND 
+								(@ParCadLocalidad=@VarCadCodigoLocalidad)
+									BEGIN
+										SET @ParBitValido=1; --Coincide
+										SELECT @ParCadMensaje = '';
+										RETURN;
+									END
+							ELSE
+									BEGIN
+										SELECT @ParBitValido=0;
+										SELECT @ParCadMensaje='El código postal ingresado no coincide con localidad ingresada';
+									END
+					END
+
+			--Ahora, en el caso de que se de un codigo postal con municipio, pero localidad en null
+			IF EXISTS(SELECT 1 FROM sat.c_CodigoPostal WHERE c_CodigoPostal=@ParCadCodigoPostal
+					AND c_Estado IS NOT NULL
+					AND c_Estado=@ParCadCodigoEstado
+					AND c_Municipío IS NOT NULL
+					AND c_Municipío=@ParCadMunicipio
+					AND c_Localidad IS NULL)
+					BEGIN
+						SELECT TOP 1 
+						@VarCadCodigoEstado=c_Estado, @VarCadCodigoMunicipio=c_Municipío
+						FROM sat.c_CodigoPostal 
+							WHERE c_CodigoPostal=@ParCadCodigoPostal
+							AND c_Estado IS NOT NULL
+							AND c_Estado=@ParCadCodigoEstado
+							AND c_Municipío IS NOT NULL
+							AND c_Municipío=@ParCadMunicipio
+							AND c_Localidad IS NULL
+
+							--Ahora, ya puedo aplicar la validación de si el estado y la localidad son iguales
+							IF (@ParCadCodigoEstado=@VarCadCodigoEstado) AND 
+								(@ParCadLocalidad=@VarCadCodigoLocalidad)
+									BEGIN
+										SET @ParBitValido=1; --Coincide
+										SELECT @ParCadMensaje = '';
+										RETURN;
+									END
+							ELSE
+									BEGIN
+										SELECT @ParBitValido=0;
+										SELECT @ParCadMensaje='El código postal ingresado no coincide con el municipio ingresado';
+										RETURN;
+									END
+					END
+END
