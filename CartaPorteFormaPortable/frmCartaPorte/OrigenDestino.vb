@@ -187,6 +187,17 @@
         End Set
     End Property
 
+    Public ReadOnly Property NombreUbicacionParaComplemento As String
+        Get
+            If _EsPersonaFisica Then
+                Return Trim(_Nombre) + Trim(_ApPaterno) + Trim(_ApMaterno)
+            ElseIf _EsPersonaMoral Then
+                Return Trim(_Nombre)
+            ElseIf _EsExtranjero Then
+                Return Trim(_Nombre) + Trim(_ApPaterno) + Trim(_ApMaterno)
+            End If
+        End Get
+    End Property
     Public ReadOnly Property DestinoDesplegado As String
         Get
             If _DatosDomicilio Is Nothing Then
@@ -214,6 +225,15 @@
         End Get
     End Property
 
+    Public ReadOnly Property FechaHoraCadena As String
+        Get
+            If String.IsNullOrWhiteSpace(_HoraSalidaLlegada) Then
+                _HoraSalidaLlegada = "00:00"
+            End If
+            Return _FechaSalidaLlegada + "T" + _HoraSalidaLlegada
+        End Get
+    End Property
+
     Public ReadOnly Property TipoMovimiento As String
         Get
             If _EsDestinoIntermedio Then
@@ -221,6 +241,24 @@
             Else
                 Return _TipoUbicacion
             End If
+        End Get
+    End Property
+
+    Public ReadOnly Property UbicacionEsOrigen As Boolean
+        Get
+            Return TipoUbicacion.Equals("Origen")
+        End Get
+    End Property
+
+    Public ReadOnly Property UbicacionEsDestinoIntermedio As Boolean
+        Get
+            Return TipoUbicacion.Equals("Destino")
+        End Get
+    End Property
+
+    Public ReadOnly Property UbicacionEsDestinoFinal As Boolean
+        Get
+            Return TipoUbicacion.Equals("Destino") And EsDestinoIntermedio
         End Get
     End Property
 End Class

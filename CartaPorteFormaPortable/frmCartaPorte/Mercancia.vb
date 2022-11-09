@@ -259,6 +259,12 @@
         End Set
     End Property
 
+    Public ReadOnly Property Dimensiones As String
+        Get
+            Return ""
+        End Get
+    End Property
+
     Public Shared Function CreaCopiaMercancia(ByRef mercancia As Mercancia)
         Dim merc As New Mercancia
 
