@@ -265,6 +265,20 @@
         End Get
     End Property
 
+    Public Sub AnadeRelacion(ByRef relMercUbi As RelacionMercanciaOrigenDestino)
+        Dim idUbi As String = relMercUbi.IdDestino
+        If _RelacionMercanciaDestino Is Nothing Then
+            _RelacionMercanciaDestino = New List(Of RelacionMercanciaOrigenDestino)
+        End If
+        'Si ya existe una relacion, solo la añadimos
+        Dim existeRel = _RelacionMercanciaDestino.Find(Function(r) r.IdDestino.Equals(idUbi))
+        If existeRel IsNot Nothing Then
+            existeRel.Cantidad = relMercUbi.Cantidad
+        Else
+            _RelacionMercanciaDestino.Add(relMercUbi)
+        End If
+    End Sub
+
     Public Shared Function CreaCopiaMercancia(ByRef mercancia As Mercancia)
         Dim merc As New Mercancia
 
@@ -294,4 +308,10 @@
 
         Return merc
     End Function
+
+    Public ReadOnly Property MovimientoMercancia As String
+        Get
+            Return _RelacionMercanciaDestino(0).IdDestino
+        End Get
+    End Property
 End Class

@@ -22,12 +22,12 @@ Partial Class frmCartaPorte
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Dim DataGridViewCellStyle121 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle122 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle123 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle124 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle125 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle126 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle4 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle5 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle6 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.TabControl1 = New System.Windows.Forms.TabControl()
         Me.tabOrigen = New System.Windows.Forms.TabPage()
         Me.tlpPrincipalOrigen = New System.Windows.Forms.TableLayoutPanel()
@@ -218,18 +218,13 @@ Partial Class frmCartaPorte
         Me.dgvListadoMovimientosPestanaMercancia = New System.Windows.Forms.DataGridView()
         Me.MovimientoMercanciaClm = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.DestinoMercanciaClm = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.MovimientosTipoMovimientoClm = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.MercanciasBtnClm = New System.Windows.Forms.DataGridViewButtonColumn()
         Me.AnadirMercanciaMovimientoClm = New System.Windows.Forms.DataGridViewButtonColumn()
         Me.IdUbicacionMovimientoPestanaMercanciaClm = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.tlpContenedorMercanciasDelMovimientoPestanaMercancias = New System.Windows.Forms.TableLayoutPanel()
         Me.Label69 = New System.Windows.Forms.Label()
         Me.dgvMercanciasPorMovimiento = New System.Windows.Forms.DataGridView()
-        Me.MercanciaClaveProdServClm = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.MovimientoDescripcionClm = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.MercanciaMovimientoPeligrosaClm = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.MovimientoComercioIntClm = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.MovimientoDetallesMercClm = New System.Windows.Forms.DataGridViewButtonColumn()
-        Me.MovimientoMercanciaEliminarClm = New System.Windows.Forms.DataGridViewButtonColumn()
         Me.tlpDetallesMercancia = New System.Windows.Forms.TableLayoutPanel()
         Me.Label70 = New System.Windows.Forms.Label()
         Me.Label71 = New System.Windows.Forms.Label()
@@ -260,8 +255,6 @@ Partial Class frmCartaPorte
         Me.numLongitud = New System.Windows.Forms.NumericUpDown()
         Me.cbOpcionDimensiones = New System.Windows.Forms.ComboBox()
         Me.Label83 = New System.Windows.Forms.Label()
-        Me.rbSiMaterialPeligroso = New System.Windows.Forms.RadioButton()
-        Me.rbNoMaterialPeligroso = New System.Windows.Forms.RadioButton()
         Me.Label84 = New System.Windows.Forms.Label()
         Me.Label85 = New System.Windows.Forms.Label()
         Me.txtClaveMaterialPeligroso = New System.Windows.Forms.TextBox()
@@ -271,10 +264,14 @@ Partial Class frmCartaPorte
         Me.Label86 = New System.Windows.Forms.Label()
         Me.Label87 = New System.Windows.Forms.Label()
         Me.txtPedimento = New System.Windows.Forms.MaskedTextBox()
-        Me.rbComercioInternacionalSi = New System.Windows.Forms.RadioButton()
-        Me.rbComercioInternacionalNo = New System.Windows.Forms.RadioButton()
         Me.Label56 = New System.Windows.Forms.Label()
         Me.txtFraccionArancelaria = New System.Windows.Forms.TextBox()
+        Me.pnlMaterialPeligroso = New System.Windows.Forms.Panel()
+        Me.rbSiMaterialPeligroso = New System.Windows.Forms.RadioButton()
+        Me.rbNoMaterialPeligroso = New System.Windows.Forms.RadioButton()
+        Me.pnlComercioInternacional = New System.Windows.Forms.Panel()
+        Me.rbComercioInternacionalSi = New System.Windows.Forms.RadioButton()
+        Me.rbComercioInternacionalNo = New System.Windows.Forms.RadioButton()
         Me.tlpSiguienteAtrasMercancias = New System.Windows.Forms.TableLayoutPanel()
         Me.btnAtrasMercancia = New System.Windows.Forms.Button()
         Me.btnGuardarMercancia = New System.Windows.Forms.Button()
@@ -429,6 +426,12 @@ Partial Class frmCartaPorte
         Me.tlpBotonesGenerarAtras = New System.Windows.Forms.TableLayoutPanel()
         Me.btnAtrasConfirmacion = New System.Windows.Forms.Button()
         Me.btnGenerarCartaPorte = New System.Windows.Forms.Button()
+        Me.MercanciaClaveProdServClm = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.MovimientoDescripcionClm = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.MercanciaMovimientoPeligrosaClm = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.MovimientoComercioIntClm = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.MovimientoDetallesMercClm = New System.Windows.Forms.DataGridViewButtonColumn()
+        Me.MovimientoMercanciaEliminarClm = New System.Windows.Forms.DataGridViewButtonColumn()
         Me.TabControl1.SuspendLayout()
         Me.tabOrigen.SuspendLayout()
         Me.tlpPrincipalOrigen.SuspendLayout()
@@ -468,6 +471,8 @@ Partial Class frmCartaPorte
         CType(Me.numAltura, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.tlpContenedorLongitud.SuspendLayout()
         CType(Me.numLongitud, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.pnlMaterialPeligroso.SuspendLayout()
+        Me.pnlComercioInternacional.SuspendLayout()
         Me.tlpSiguienteAtrasMercancias.SuspendLayout()
         Me.tabTransporte.SuspendLayout()
         Me.tlpContenedorPrincipalTransporte.SuspendLayout()
@@ -2325,24 +2330,24 @@ Partial Class frmCartaPorte
         'dgvCartaPorteDestinosIntermedios
         '
         Me.dgvCartaPorteDestinosIntermedios.AllowUserToAddRows = False
-        DataGridViewCellStyle121.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle121.BackColor = System.Drawing.SystemColors.Control
-        DataGridViewCellStyle121.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle121.ForeColor = System.Drawing.SystemColors.WindowText
-        DataGridViewCellStyle121.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle121.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle121.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.dgvCartaPorteDestinosIntermedios.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle121
+        DataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control
+        DataGridViewCellStyle1.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText
+        DataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.dgvCartaPorteDestinosIntermedios.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle1
         Me.dgvCartaPorteDestinosIntermedios.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
         Me.dgvCartaPorteDestinosIntermedios.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.DIMovimientoClm, Me.DIDestinoClm, Me.DIFechaLlegadaClm, Me.DIHoraLlegadaClm, Me.DIKmClm, Me.DIVerClm, Me.DIEliminarClm, Me.IDUbicacionClm})
-        DataGridViewCellStyle122.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle122.BackColor = System.Drawing.SystemColors.Window
-        DataGridViewCellStyle122.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle122.ForeColor = System.Drawing.SystemColors.ControlText
-        DataGridViewCellStyle122.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle122.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle122.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
-        Me.dgvCartaPorteDestinosIntermedios.DefaultCellStyle = DataGridViewCellStyle122
+        DataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window
+        DataGridViewCellStyle2.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText
+        DataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
+        Me.dgvCartaPorteDestinosIntermedios.DefaultCellStyle = DataGridViewCellStyle2
         Me.dgvCartaPorteDestinosIntermedios.Dock = System.Windows.Forms.DockStyle.Fill
         Me.dgvCartaPorteDestinosIntermedios.Location = New System.Drawing.Point(3, 26)
         Me.dgvCartaPorteDestinosIntermedios.Name = "dgvCartaPorteDestinosIntermedios"
@@ -2550,24 +2555,24 @@ Partial Class frmCartaPorte
         'dgvListadoMovimientosPestanaMercancia
         '
         Me.dgvListadoMovimientosPestanaMercancia.AllowUserToAddRows = False
-        DataGridViewCellStyle123.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle123.BackColor = System.Drawing.SystemColors.Control
-        DataGridViewCellStyle123.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle123.ForeColor = System.Drawing.SystemColors.WindowText
-        DataGridViewCellStyle123.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle123.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle123.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.dgvListadoMovimientosPestanaMercancia.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle123
+        DataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control
+        DataGridViewCellStyle3.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText
+        DataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.dgvListadoMovimientosPestanaMercancia.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle3
         Me.dgvListadoMovimientosPestanaMercancia.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        Me.dgvListadoMovimientosPestanaMercancia.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.MovimientoMercanciaClm, Me.DestinoMercanciaClm, Me.MercanciasBtnClm, Me.AnadirMercanciaMovimientoClm, Me.IdUbicacionMovimientoPestanaMercanciaClm})
-        DataGridViewCellStyle124.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle124.BackColor = System.Drawing.SystemColors.Window
-        DataGridViewCellStyle124.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle124.ForeColor = System.Drawing.SystemColors.ControlText
-        DataGridViewCellStyle124.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle124.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle124.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
-        Me.dgvListadoMovimientosPestanaMercancia.DefaultCellStyle = DataGridViewCellStyle124
+        Me.dgvListadoMovimientosPestanaMercancia.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.MovimientoMercanciaClm, Me.DestinoMercanciaClm, Me.MovimientosTipoMovimientoClm, Me.MercanciasBtnClm, Me.AnadirMercanciaMovimientoClm, Me.IdUbicacionMovimientoPestanaMercanciaClm})
+        DataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Window
+        DataGridViewCellStyle4.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.ControlText
+        DataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
+        Me.dgvListadoMovimientosPestanaMercancia.DefaultCellStyle = DataGridViewCellStyle4
         Me.dgvListadoMovimientosPestanaMercancia.Dock = System.Windows.Forms.DockStyle.Fill
         Me.dgvListadoMovimientosPestanaMercancia.Location = New System.Drawing.Point(3, 26)
         Me.dgvListadoMovimientosPestanaMercancia.Name = "dgvListadoMovimientosPestanaMercancia"
@@ -2592,6 +2597,14 @@ Partial Class frmCartaPorte
         Me.DestinoMercanciaClm.Name = "DestinoMercanciaClm"
         Me.DestinoMercanciaClm.ReadOnly = True
         Me.DestinoMercanciaClm.Width = 150
+        '
+        'MovimientosTipoMovimientoClm
+        '
+        Me.MovimientosTipoMovimientoClm.HeaderText = "TipoMovimiento"
+        Me.MovimientosTipoMovimientoClm.MinimumWidth = 8
+        Me.MovimientosTipoMovimientoClm.Name = "MovimientosTipoMovimientoClm"
+        Me.MovimientosTipoMovimientoClm.ReadOnly = True
+        Me.MovimientosTipoMovimientoClm.Width = 150
         '
         'MercanciasBtnClm
         '
@@ -2650,24 +2663,24 @@ Partial Class frmCartaPorte
         'dgvMercanciasPorMovimiento
         '
         Me.dgvMercanciasPorMovimiento.AllowUserToAddRows = False
-        DataGridViewCellStyle125.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle125.BackColor = System.Drawing.SystemColors.Control
-        DataGridViewCellStyle125.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle125.ForeColor = System.Drawing.SystemColors.WindowText
-        DataGridViewCellStyle125.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle125.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle125.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.dgvMercanciasPorMovimiento.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle125
+        DataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Control
+        DataGridViewCellStyle5.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle5.ForeColor = System.Drawing.SystemColors.WindowText
+        DataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.dgvMercanciasPorMovimiento.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle5
         Me.dgvMercanciasPorMovimiento.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
         Me.dgvMercanciasPorMovimiento.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.MercanciaClaveProdServClm, Me.MovimientoDescripcionClm, Me.MercanciaMovimientoPeligrosaClm, Me.MovimientoComercioIntClm, Me.MovimientoDetallesMercClm, Me.MovimientoMercanciaEliminarClm})
-        DataGridViewCellStyle126.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle126.BackColor = System.Drawing.SystemColors.Window
-        DataGridViewCellStyle126.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle126.ForeColor = System.Drawing.SystemColors.ControlText
-        DataGridViewCellStyle126.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle126.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle126.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
-        Me.dgvMercanciasPorMovimiento.DefaultCellStyle = DataGridViewCellStyle126
+        DataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle6.BackColor = System.Drawing.SystemColors.Window
+        DataGridViewCellStyle6.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle6.ForeColor = System.Drawing.SystemColors.ControlText
+        DataGridViewCellStyle6.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
+        Me.dgvMercanciasPorMovimiento.DefaultCellStyle = DataGridViewCellStyle6
         Me.dgvMercanciasPorMovimiento.Dock = System.Windows.Forms.DockStyle.Fill
         Me.dgvMercanciasPorMovimiento.Location = New System.Drawing.Point(3, 26)
         Me.dgvMercanciasPorMovimiento.Name = "dgvMercanciasPorMovimiento"
@@ -2676,52 +2689,6 @@ Partial Class frmCartaPorte
         Me.dgvMercanciasPorMovimiento.RowTemplate.Height = 28
         Me.dgvMercanciasPorMovimiento.Size = New System.Drawing.Size(1077, 88)
         Me.dgvMercanciasPorMovimiento.TabIndex = 1
-        '
-        'MercanciaClaveProdServClm
-        '
-        Me.MercanciaClaveProdServClm.HeaderText = "ClaveProdServ"
-        Me.MercanciaClaveProdServClm.MinimumWidth = 8
-        Me.MercanciaClaveProdServClm.Name = "MercanciaClaveProdServClm"
-        Me.MercanciaClaveProdServClm.ReadOnly = True
-        Me.MercanciaClaveProdServClm.Width = 150
-        '
-        'MovimientoDescripcionClm
-        '
-        Me.MovimientoDescripcionClm.HeaderText = "Descripcion"
-        Me.MovimientoDescripcionClm.MinimumWidth = 8
-        Me.MovimientoDescripcionClm.Name = "MovimientoDescripcionClm"
-        Me.MovimientoDescripcionClm.ReadOnly = True
-        Me.MovimientoDescripcionClm.Width = 150
-        '
-        'MercanciaMovimientoPeligrosaClm
-        '
-        Me.MercanciaMovimientoPeligrosaClm.HeaderText = "¿Peligroso?"
-        Me.MercanciaMovimientoPeligrosaClm.MinimumWidth = 8
-        Me.MercanciaMovimientoPeligrosaClm.Name = "MercanciaMovimientoPeligrosaClm"
-        Me.MercanciaMovimientoPeligrosaClm.ReadOnly = True
-        Me.MercanciaMovimientoPeligrosaClm.Width = 150
-        '
-        'MovimientoComercioIntClm
-        '
-        Me.MovimientoComercioIntClm.HeaderText = "¿Comercio internacional?"
-        Me.MovimientoComercioIntClm.MinimumWidth = 8
-        Me.MovimientoComercioIntClm.Name = "MovimientoComercioIntClm"
-        Me.MovimientoComercioIntClm.ReadOnly = True
-        Me.MovimientoComercioIntClm.Width = 150
-        '
-        'MovimientoDetallesMercClm
-        '
-        Me.MovimientoDetallesMercClm.HeaderText = "Detalles"
-        Me.MovimientoDetallesMercClm.MinimumWidth = 8
-        Me.MovimientoDetallesMercClm.Name = "MovimientoDetallesMercClm"
-        Me.MovimientoDetallesMercClm.Width = 150
-        '
-        'MovimientoMercanciaEliminarClm
-        '
-        Me.MovimientoMercanciaEliminarClm.HeaderText = "Eliminar"
-        Me.MovimientoMercanciaEliminarClm.MinimumWidth = 8
-        Me.MovimientoMercanciaEliminarClm.Name = "MovimientoMercanciaEliminarClm"
-        Me.MovimientoMercanciaEliminarClm.Width = 150
         '
         'tlpDetallesMercancia
         '
@@ -2755,8 +2722,6 @@ Partial Class frmCartaPorte
         Me.tlpDetallesMercancia.Controls.Add(Me.tlpContenedorLongitud, 4, 4)
         Me.tlpDetallesMercancia.Controls.Add(Me.cbOpcionDimensiones, 1, 4)
         Me.tlpDetallesMercancia.Controls.Add(Me.Label83, 0, 5)
-        Me.tlpDetallesMercancia.Controls.Add(Me.rbSiMaterialPeligroso, 1, 5)
-        Me.tlpDetallesMercancia.Controls.Add(Me.rbNoMaterialPeligroso, 2, 5)
         Me.tlpDetallesMercancia.Controls.Add(Me.Label84, 0, 6)
         Me.tlpDetallesMercancia.Controls.Add(Me.Label85, 0, 7)
         Me.tlpDetallesMercancia.Controls.Add(Me.txtClaveMaterialPeligroso, 1, 6)
@@ -2766,10 +2731,10 @@ Partial Class frmCartaPorte
         Me.tlpDetallesMercancia.Controls.Add(Me.Label86, 0, 8)
         Me.tlpDetallesMercancia.Controls.Add(Me.Label87, 0, 9)
         Me.tlpDetallesMercancia.Controls.Add(Me.txtPedimento, 1, 9)
-        Me.tlpDetallesMercancia.Controls.Add(Me.rbComercioInternacionalSi, 1, 8)
-        Me.tlpDetallesMercancia.Controls.Add(Me.rbComercioInternacionalNo, 2, 8)
         Me.tlpDetallesMercancia.Controls.Add(Me.Label56, 3, 9)
         Me.tlpDetallesMercancia.Controls.Add(Me.txtFraccionArancelaria, 4, 9)
+        Me.tlpDetallesMercancia.Controls.Add(Me.pnlMaterialPeligroso, 1, 5)
+        Me.tlpDetallesMercancia.Controls.Add(Me.pnlComercioInternacional, 1, 8)
         Me.tlpDetallesMercancia.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tlpDetallesMercancia.Location = New System.Drawing.Point(3, 249)
         Me.tlpDetallesMercancia.Name = "tlpDetallesMercancia"
@@ -3069,28 +3034,6 @@ Partial Class frmCartaPorte
         Me.Label83.TabIndex = 22
         Me.Label83.Text = "Material peligroso:"
         '
-        'rbSiMaterialPeligroso
-        '
-        Me.rbSiMaterialPeligroso.AutoSize = True
-        Me.rbSiMaterialPeligroso.Location = New System.Drawing.Point(197, 153)
-        Me.rbSiMaterialPeligroso.Name = "rbSiMaterialPeligroso"
-        Me.rbSiMaterialPeligroso.Size = New System.Drawing.Size(48, 24)
-        Me.rbSiMaterialPeligroso.TabIndex = 23
-        Me.rbSiMaterialPeligroso.TabStop = True
-        Me.rbSiMaterialPeligroso.Text = "Sí"
-        Me.rbSiMaterialPeligroso.UseVisualStyleBackColor = True
-        '
-        'rbNoMaterialPeligroso
-        '
-        Me.rbNoMaterialPeligroso.AutoSize = True
-        Me.rbNoMaterialPeligroso.Location = New System.Drawing.Point(391, 153)
-        Me.rbNoMaterialPeligroso.Name = "rbNoMaterialPeligroso"
-        Me.rbNoMaterialPeligroso.Size = New System.Drawing.Size(54, 24)
-        Me.rbNoMaterialPeligroso.TabIndex = 24
-        Me.rbNoMaterialPeligroso.TabStop = True
-        Me.rbNoMaterialPeligroso.Text = "No"
-        Me.rbNoMaterialPeligroso.UseVisualStyleBackColor = True
-        '
         'Label84
         '
         Me.Label84.AutoSize = True
@@ -3170,28 +3113,6 @@ Partial Class frmCartaPorte
         Me.txtPedimento.Size = New System.Drawing.Size(382, 26)
         Me.txtPedimento.TabIndex = 33
         '
-        'rbComercioInternacionalSi
-        '
-        Me.rbComercioInternacionalSi.AutoSize = True
-        Me.rbComercioInternacionalSi.Location = New System.Drawing.Point(197, 243)
-        Me.rbComercioInternacionalSi.Name = "rbComercioInternacionalSi"
-        Me.rbComercioInternacionalSi.Size = New System.Drawing.Size(48, 24)
-        Me.rbComercioInternacionalSi.TabIndex = 34
-        Me.rbComercioInternacionalSi.TabStop = True
-        Me.rbComercioInternacionalSi.Text = "Sí"
-        Me.rbComercioInternacionalSi.UseVisualStyleBackColor = True
-        '
-        'rbComercioInternacionalNo
-        '
-        Me.rbComercioInternacionalNo.AutoSize = True
-        Me.rbComercioInternacionalNo.Location = New System.Drawing.Point(391, 243)
-        Me.rbComercioInternacionalNo.Name = "rbComercioInternacionalNo"
-        Me.rbComercioInternacionalNo.Size = New System.Drawing.Size(54, 24)
-        Me.rbComercioInternacionalNo.TabIndex = 35
-        Me.rbComercioInternacionalNo.TabStop = True
-        Me.rbComercioInternacionalNo.Text = "No"
-        Me.rbComercioInternacionalNo.UseVisualStyleBackColor = True
-        '
         'Label56
         '
         Me.Label56.AutoSize = True
@@ -3210,6 +3131,72 @@ Partial Class frmCartaPorte
         Me.txtFraccionArancelaria.Name = "txtFraccionArancelaria"
         Me.txtFraccionArancelaria.Size = New System.Drawing.Size(301, 26)
         Me.txtFraccionArancelaria.TabIndex = 37
+        '
+        'pnlMaterialPeligroso
+        '
+        Me.tlpDetallesMercancia.SetColumnSpan(Me.pnlMaterialPeligroso, 2)
+        Me.pnlMaterialPeligroso.Controls.Add(Me.rbSiMaterialPeligroso)
+        Me.pnlMaterialPeligroso.Controls.Add(Me.rbNoMaterialPeligroso)
+        Me.pnlMaterialPeligroso.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.pnlMaterialPeligroso.Location = New System.Drawing.Point(197, 153)
+        Me.pnlMaterialPeligroso.Name = "pnlMaterialPeligroso"
+        Me.pnlMaterialPeligroso.Size = New System.Drawing.Size(382, 24)
+        Me.pnlMaterialPeligroso.TabIndex = 38
+        '
+        'rbSiMaterialPeligroso
+        '
+        Me.rbSiMaterialPeligroso.AutoSize = True
+        Me.rbSiMaterialPeligroso.Location = New System.Drawing.Point(0, 4)
+        Me.rbSiMaterialPeligroso.Name = "rbSiMaterialPeligroso"
+        Me.rbSiMaterialPeligroso.Size = New System.Drawing.Size(48, 24)
+        Me.rbSiMaterialPeligroso.TabIndex = 23
+        Me.rbSiMaterialPeligroso.TabStop = True
+        Me.rbSiMaterialPeligroso.Text = "Sí"
+        Me.rbSiMaterialPeligroso.UseVisualStyleBackColor = True
+        '
+        'rbNoMaterialPeligroso
+        '
+        Me.rbNoMaterialPeligroso.AutoSize = True
+        Me.rbNoMaterialPeligroso.Location = New System.Drawing.Point(190, 0)
+        Me.rbNoMaterialPeligroso.Name = "rbNoMaterialPeligroso"
+        Me.rbNoMaterialPeligroso.Size = New System.Drawing.Size(54, 24)
+        Me.rbNoMaterialPeligroso.TabIndex = 24
+        Me.rbNoMaterialPeligroso.TabStop = True
+        Me.rbNoMaterialPeligroso.Text = "No"
+        Me.rbNoMaterialPeligroso.UseVisualStyleBackColor = True
+        '
+        'pnlComercioInternacional
+        '
+        Me.tlpDetallesMercancia.SetColumnSpan(Me.pnlComercioInternacional, 2)
+        Me.pnlComercioInternacional.Controls.Add(Me.rbComercioInternacionalSi)
+        Me.pnlComercioInternacional.Controls.Add(Me.rbComercioInternacionalNo)
+        Me.pnlComercioInternacional.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.pnlComercioInternacional.Location = New System.Drawing.Point(197, 243)
+        Me.pnlComercioInternacional.Name = "pnlComercioInternacional"
+        Me.pnlComercioInternacional.Size = New System.Drawing.Size(382, 24)
+        Me.pnlComercioInternacional.TabIndex = 39
+        '
+        'rbComercioInternacionalSi
+        '
+        Me.rbComercioInternacionalSi.AutoSize = True
+        Me.rbComercioInternacionalSi.Location = New System.Drawing.Point(3, 0)
+        Me.rbComercioInternacionalSi.Name = "rbComercioInternacionalSi"
+        Me.rbComercioInternacionalSi.Size = New System.Drawing.Size(48, 24)
+        Me.rbComercioInternacionalSi.TabIndex = 34
+        Me.rbComercioInternacionalSi.TabStop = True
+        Me.rbComercioInternacionalSi.Text = "Sí"
+        Me.rbComercioInternacionalSi.UseVisualStyleBackColor = True
+        '
+        'rbComercioInternacionalNo
+        '
+        Me.rbComercioInternacionalNo.AutoSize = True
+        Me.rbComercioInternacionalNo.Location = New System.Drawing.Point(190, 0)
+        Me.rbComercioInternacionalNo.Name = "rbComercioInternacionalNo"
+        Me.rbComercioInternacionalNo.Size = New System.Drawing.Size(54, 24)
+        Me.rbComercioInternacionalNo.TabIndex = 35
+        Me.rbComercioInternacionalNo.TabStop = True
+        Me.rbComercioInternacionalNo.Text = "No"
+        Me.rbComercioInternacionalNo.UseVisualStyleBackColor = True
         '
         'tlpSiguienteAtrasMercancias
         '
@@ -4904,6 +4891,56 @@ Partial Class frmCartaPorte
         Me.btnGenerarCartaPorte.Text = "Generar carta porte"
         Me.btnGenerarCartaPorte.UseVisualStyleBackColor = True
         '
+        'MercanciaClaveProdServClm
+        '
+        Me.MercanciaClaveProdServClm.HeaderText = "ClaveProdServ"
+        Me.MercanciaClaveProdServClm.MinimumWidth = 8
+        Me.MercanciaClaveProdServClm.Name = "MercanciaClaveProdServClm"
+        Me.MercanciaClaveProdServClm.ReadOnly = True
+        Me.MercanciaClaveProdServClm.Width = 150
+        '
+        'MovimientoDescripcionClm
+        '
+        Me.MovimientoDescripcionClm.HeaderText = "Descripcion"
+        Me.MovimientoDescripcionClm.MinimumWidth = 8
+        Me.MovimientoDescripcionClm.Name = "MovimientoDescripcionClm"
+        Me.MovimientoDescripcionClm.ReadOnly = True
+        Me.MovimientoDescripcionClm.Width = 150
+        '
+        'MercanciaMovimientoPeligrosaClm
+        '
+        Me.MercanciaMovimientoPeligrosaClm.HeaderText = "¿Peligroso?"
+        Me.MercanciaMovimientoPeligrosaClm.MinimumWidth = 8
+        Me.MercanciaMovimientoPeligrosaClm.Name = "MercanciaMovimientoPeligrosaClm"
+        Me.MercanciaMovimientoPeligrosaClm.ReadOnly = True
+        Me.MercanciaMovimientoPeligrosaClm.Width = 150
+        '
+        'MovimientoComercioIntClm
+        '
+        Me.MovimientoComercioIntClm.HeaderText = "¿Comercio internacional?"
+        Me.MovimientoComercioIntClm.MinimumWidth = 8
+        Me.MovimientoComercioIntClm.Name = "MovimientoComercioIntClm"
+        Me.MovimientoComercioIntClm.ReadOnly = True
+        Me.MovimientoComercioIntClm.Width = 150
+        '
+        'MovimientoDetallesMercClm
+        '
+        Me.MovimientoDetallesMercClm.HeaderText = "Detalles"
+        Me.MovimientoDetallesMercClm.MinimumWidth = 8
+        Me.MovimientoDetallesMercClm.Name = "MovimientoDetallesMercClm"
+        Me.MovimientoDetallesMercClm.Text = "Detalles"
+        Me.MovimientoDetallesMercClm.UseColumnTextForButtonValue = True
+        Me.MovimientoDetallesMercClm.Width = 150
+        '
+        'MovimientoMercanciaEliminarClm
+        '
+        Me.MovimientoMercanciaEliminarClm.HeaderText = "Eliminar"
+        Me.MovimientoMercanciaEliminarClm.MinimumWidth = 8
+        Me.MovimientoMercanciaEliminarClm.Name = "MovimientoMercanciaEliminarClm"
+        Me.MovimientoMercanciaEliminarClm.Text = "Eliminar"
+        Me.MovimientoMercanciaEliminarClm.UseColumnTextForButtonValue = True
+        Me.MovimientoMercanciaEliminarClm.Width = 150
+        '
         'frmCartaPorte
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(9.0!, 20.0!)
@@ -4971,6 +5008,10 @@ Partial Class frmCartaPorte
         Me.tlpContenedorLongitud.ResumeLayout(False)
         Me.tlpContenedorLongitud.PerformLayout()
         CType(Me.numLongitud, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.pnlMaterialPeligroso.ResumeLayout(False)
+        Me.pnlMaterialPeligroso.PerformLayout()
+        Me.pnlComercioInternacional.ResumeLayout(False)
+        Me.pnlComercioInternacional.PerformLayout()
         Me.tlpSiguienteAtrasMercancias.ResumeLayout(False)
         Me.tabTransporte.ResumeLayout(False)
         Me.tlpContenedorPrincipalTransporte.ResumeLayout(False)
@@ -5386,17 +5427,6 @@ Partial Class frmCartaPorte
     Friend WithEvents DIVerClm As DataGridViewButtonColumn
     Friend WithEvents DIEliminarClm As DataGridViewButtonColumn
     Friend WithEvents IDUbicacionClm As DataGridViewTextBoxColumn
-    Friend WithEvents MercanciaClaveProdServClm As DataGridViewTextBoxColumn
-    Friend WithEvents MovimientoDescripcionClm As DataGridViewTextBoxColumn
-    Friend WithEvents MercanciaMovimientoPeligrosaClm As DataGridViewTextBoxColumn
-    Friend WithEvents MovimientoComercioIntClm As DataGridViewTextBoxColumn
-    Friend WithEvents MovimientoDetallesMercClm As DataGridViewButtonColumn
-    Friend WithEvents MovimientoMercanciaEliminarClm As DataGridViewButtonColumn
-    Friend WithEvents MovimientoMercanciaClm As DataGridViewTextBoxColumn
-    Friend WithEvents DestinoMercanciaClm As DataGridViewTextBoxColumn
-    Friend WithEvents MercanciasBtnClm As DataGridViewButtonColumn
-    Friend WithEvents AnadirMercanciaMovimientoClm As DataGridViewButtonColumn
-    Friend WithEvents IdUbicacionMovimientoPestanaMercanciaClm As DataGridViewTextBoxColumn
     Friend WithEvents Label56 As Label
     Friend WithEvents txtFraccionArancelaria As TextBox
     Friend WithEvents ParteTransporteAnadidoClm As DataGridViewTextBoxColumn
@@ -5420,4 +5450,18 @@ Partial Class frmCartaPorte
     Friend WithEvents AsignarCantidadParaAsignarClm As DataGridViewTextBoxColumn
     Friend WithEvents AsignarDestinoClm As DataGridViewComboBoxColumn
     Friend WithEvents AsignarDestinoAccionClm As DataGridViewButtonColumn
+    Friend WithEvents MovimientoMercanciaClm As DataGridViewTextBoxColumn
+    Friend WithEvents DestinoMercanciaClm As DataGridViewTextBoxColumn
+    Friend WithEvents MovimientosTipoMovimientoClm As DataGridViewTextBoxColumn
+    Friend WithEvents MercanciasBtnClm As DataGridViewButtonColumn
+    Friend WithEvents AnadirMercanciaMovimientoClm As DataGridViewButtonColumn
+    Friend WithEvents IdUbicacionMovimientoPestanaMercanciaClm As DataGridViewTextBoxColumn
+    Friend WithEvents pnlMaterialPeligroso As Panel
+    Friend WithEvents pnlComercioInternacional As Panel
+    Friend WithEvents MercanciaClaveProdServClm As DataGridViewTextBoxColumn
+    Friend WithEvents MovimientoDescripcionClm As DataGridViewTextBoxColumn
+    Friend WithEvents MercanciaMovimientoPeligrosaClm As DataGridViewTextBoxColumn
+    Friend WithEvents MovimientoComercioIntClm As DataGridViewTextBoxColumn
+    Friend WithEvents MovimientoDetallesMercClm As DataGridViewButtonColumn
+    Friend WithEvents MovimientoMercanciaEliminarClm As DataGridViewButtonColumn
 End Class

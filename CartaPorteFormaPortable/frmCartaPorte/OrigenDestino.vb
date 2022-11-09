@@ -237,7 +237,7 @@
     Public ReadOnly Property TipoMovimiento As String
         Get
             If _EsDestinoIntermedio Then
-                Return "INTERMEDIO"
+                Return "Intermedio"
             Else
                 Return _TipoUbicacion
             End If

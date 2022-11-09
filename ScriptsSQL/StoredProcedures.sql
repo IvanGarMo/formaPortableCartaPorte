@@ -202,7 +202,7 @@ CREATE PROCEDURE sat.SP_CCP_ClaveUnidadPeso(
 )  
 AS  
 BEGIN  
- SELECT @ParCadDescripcionClaveUnidad = Descripcion  
+ SELECT @ParCadDescripcionClaveUnidad = Nombre
   FROM sat.c_ClaveUnidad  
   WHERE c_ClaveUnidad=@ParCadClaveUnidad;  
  IF @ParCadDescripcionClaveUnidad IS NULL  
