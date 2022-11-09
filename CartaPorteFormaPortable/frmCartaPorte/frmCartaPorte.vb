@@ -723,6 +723,16 @@ Public Class frmCartaPorte
             Return
         End If
 
+        Dim cad As String = String.Empty
+        Dim estado As String = ObtenValorCombobox(refCbEstadoOrigen)
+        Dim mun As String = ObtenValorCombobox(refCbMunicipioOrigen)
+        Dim loc As String = ObtenValorCombobox(refCbLocalidadOrigen)
+        Dim txtCp As String = ObtenValorTextbox(txtCpRemitente)
+        Dim codValido As Boolean = conexionesCartaPorte.Get_ValidaCodigoPostal(txtCp, estado, mun, loc, cad)
+        If Not codValido Then
+            AlertaMensaje(cad)
+            Return
+        End If
 
         Dim regExpCP As String = ObtenParametroPorLlave("REGEXP_CODIGO_POSTAL")
         If Regex.IsMatch(Trim(txtCpRemitente.Text), regExpCP) Then
@@ -980,6 +990,17 @@ Public Class frmCartaPorte
         LimpiaDesactivaCombobox(refCbColoniaDestino)
         Dim cp As String = ObtenValorTextbox(txtCpDestino)
         If cp.Length <> 5 Then LimpiaDesactivaCombobox(refCbColoniaDestino) : Return '5 es la longitud de un código postal válido
+
+        Dim cad As String = String.Empty
+        Dim estado As String = ObtenValorCombobox(refCbEstadoDestino)
+        Dim mun As String = ObtenValorCombobox(refCbMunicipioDestino)
+        Dim loc As String = ObtenValorCombobox(refCbLocalidadDestino)
+        Dim txtCp As String = ObtenValorTextbox(txtCpDestino)
+        Dim codValido As Boolean = conexionesCartaPorte.Get_ValidaCodigoPostal(txtCp, estado, mun, loc, cad)
+        If Not codValido Then
+            AlertaMensaje(cad)
+            Return
+        End If
 
         Dim paisDestino = ObtenValorCombobox(cbPaisDestino)
         If PaisTieneColonias(paisDestino) Then 'Si tenemos un país con colonias
@@ -1851,6 +1872,18 @@ Public Class frmCartaPorte
         If cpDestinoIntermedio.Length <> 5 Then AlertaMensaje(ObtenParametroPorLlave("INGRESE_CODIGO_POSTAL")) : Return
         Dim regExpCp As String = ObtenParametroPorLlave("REGEXP_CODIGO_POSTAL")
         If Not Regex.IsMatch(cpDestinoIntermedio, regExpCp) Then AlertaMensaje(ObtenParametroPorLlave("INGRESE_CODIGO_POSTAL")) : Return
+
+        Dim cad As String = String.Empty
+        Dim estado As String = ObtenValorCombobox(refCbEstadoDestinoIntermedio)
+        Dim mun As String = ObtenValorCombobox(refCbMunicipioDestinoIntermedio)
+        Dim loc As String = ObtenValorCombobox(refCbLocalidadDestinoIntermedio)
+        Dim txtCp As String = ObtenValorTextbox(txtCpDestinoIntermedio)
+        Dim codValido As Boolean = conexionesCartaPorte.Get_ValidaCodigoPostal(txtCp, estado, mun, loc, cad)
+        If Not codValido Then
+            AlertaMensaje(cad)
+            Return
+        End If
+
         BindCombobox(refCbColoniaDestinoIntermedio, ObtenColoniasPorCodigoPostal(cpDestinoIntermedio))
     End Sub
 
@@ -2813,6 +2846,17 @@ Public Class frmCartaPorte
         End If
 
         If txtColoniaOperador IsNot Nothing Then 'No tiene caso cargar el catálogo si hay un país sin catalogo de colonias
+            Return
+        End If
+
+        Dim cad As String = String.Empty
+        Dim estado As String = ObtenValorCombobox(refCbEstadoOperador)
+        Dim mun As String = ObtenValorCombobox(refCbMunicipioOperador)
+        Dim loc As String = ObtenValorCombobox(refCbLocalidadOperador)
+        Dim txtCp As String = ObtenValorTextbox(txtCpOperador)
+        Dim codValido As Boolean = conexionesCartaPorte.Get_ValidaCodigoPostal(txtCp, estado, mun, loc, cad)
+        If Not codValido Then
+            AlertaMensaje(cad)
             Return
         End If
 
