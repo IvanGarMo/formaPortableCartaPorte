@@ -2,6 +2,168 @@
 
 Public Class ConexionesCartaPorte
     Private mockConexion As SqlConnection
+    Private tiposCartaPorte As TiposCartaPorte
+
+    Public Sub New()
+        tiposCartaPorte = New TiposCartaPorte
+    End Sub
+
+    Public Function GeneraXmlCartaPorte(ByVal tipoCfdi As String,
+                                        ByVal transporteInternacional As Boolean,
+                                        ByVal entradaSalida As String,
+                                        ByVal paisOrigenDestino As String,
+                                        ByVal viaEntradaSalida As String,
+                                        ByVal totalDistRecorrida As Decimal,
+                                        ByRef listadoUbicaciones As List(Of OrigenDestino),
+                                        ByVal pesoBrutoTotal As Decimal,
+                                        ByVal unidadPesoTotal As String,
+                                        ByVal totalMercancias As Decimal,
+                                        ByRef listaMercancias As List(Of Mercancia),
+                                        ByRef datosAutoTransporte As Autotransporte,
+                                        ByRef datosOperador As DatosTransportista
+                                        ) As String
+        Dim Cm As SqlCommand = Nothing
+        Cm = New SqlCommand("sat.SP_CCP_CreacionComplementoCartaPorte", mockConexion)
+        Cm.CommandType = CommandType.StoredProcedure
+
+        Cm.Parameters.AddWithValue("@ParCadTipoCfdi", tipoCfdi)
+        Cm.Parameters("@ParCadTipoCfdi").Direction = ParameterDirection.Input
+
+        Cm.Parameters.AddWithValue("@ParBitTransporteInternacional", transporteInternacional)
+        Cm.Parameters("@ParBitTransporteInternacional").Direction = ParameterDirection.Input
+
+        Cm.Parameters.AddWithValue("@ParCadEntradaSalidaMercancias", entradaSalida)
+        Cm.Parameters("@ParCadEntradaSalidaMercancias").Direction = ParameterDirection.Input
+
+        Cm.Parameters.AddWithValue("@ParCadPaisOrigenDestino", paisOrigenDestino)
+        Cm.Parameters("@ParCadPaisOrigenDestino").Direction = ParameterDirection.Input
+
+        Cm.Parameters.AddWithValue("@ParCadViaEntradaSalida", viaEntradaSalida)
+        Cm.Parameters("@ParCadViaEntradaSalida").Direction = ParameterDirection.Input
+
+        Cm.Parameters.AddWithValue("@ParNumTotalDistRec", totalDistRecorrida)
+        Cm.Parameters("@ParNumTotalDistRec").Direction = ParameterDirection.Input
+
+        Dim datosUbicaciones As DataTable = tiposCartaPorte.UbicacionTipo()
+        Dim datosDomiciliosUbicaciones As DataTable = tiposCartaPorte.DomicilioTipo()
+        For Each ubicacion In listadoUbicaciones
+            tiposCartaPorte.AnadeUbicacionEnTabla(datosUbicaciones, ubicacion)
+            tiposCartaPorte.AnadeDomicilioEnTabla(datosDomiciliosUbicaciones, ubicacion.DatosDomicilio,
+                                                    ubicacion.EsExtranjero, ubicacion.IDUbicacion)
+        Next
+
+        Cm.Parameters.AddWithValue("@ParTabUbicaciones", datosUbicaciones)
+        Cm.Parameters("@ParTabUbicaciones").Direction = ParameterDirection.Input
+
+        Cm.Parameters.AddWithValue("@ParTabDomicilio", datosDomiciliosUbicaciones)
+        Cm.Parameters("@ParTabDomicilio").Direction = ParameterDirection.Input
+
+        Cm.Parameters.AddWithValue("@ParNumPesoBrutoTotal", pesoBrutoTotal)
+        Cm.Parameters("@ParNumPesoBrutoTotal").Direction = ParameterDirection.Input
+
+        Cm.Parameters.AddWithValue("@ParCadUnidadPeso", unidadPesoTotal)
+        Cm.Parameters("@ParCadUnidadPeso").Direction = ParameterDirection.Input
+
+        Cm.Parameters.AddWithValue("@ParNumTotalMercancias", totalMercancias)
+        Cm.Parameters("@ParNumTotalMercancias").Direction = ParameterDirection.Input
+
+        Dim datosMercancias As DataTable = tiposCartaPorte.CantidadMercanciaTipo()
+        Dim destinosMercancias As DataTable = tiposCartaPorte.CantidadTransportaTipo()
+        For Each mercancia In listaMercancias
+            tiposCartaPorte.AnadeMercanciaEnTabla(datosMercancias, mercancia)
+            For Each rel In mercancia.RelacionMercanciaDestino
+                tiposCartaPorte.AnadeCantidadTransportaEnTabla(destinosMercancias, rel)
+            Next
+        Next
+
+        Cm.Parameters.AddWithValue("@ParTabMercancia", datosMercancias)
+        Cm.Parameters("@ParTabMercancia").Direction = ParameterDirection.Input
+
+        Cm.Parameters.AddWithValue("@ParTabMercanciaConDestinos", destinosMercancias)
+        Cm.Parameters("@ParTabMercanciaConDestinos").Direction = ParameterDirection.Input
+
+        Cm.Parameters.AddWithValue("@ParCadPermSCT", datosAutoTransporte.PermSCT)
+        Cm.Parameters("@ParCadPermSCT").Direction = ParameterDirection.Input
+
+        Cm.Parameters.AddWithValue("@ParCadNumPermisoSCT", datosAutoTransporte.NumPermisoSCT)
+        Cm.Parameters("@ParCadNumPermisoSCT").Direction = ParameterDirection.Input
+
+        Cm.Parameters.AddWithValue("@ParCadConfigVehicular", datosAutoTransporte.ConfigVehicular)
+        Cm.Parameters("@ParCadConfigVehicular").Direction = ParameterDirection.Input
+
+        Cm.Parameters.AddWithValue("@ParCadPlacaVM", datosAutoTransporte.PlacaVM)
+        Cm.Parameters("@ParCadPlacaVM").Direction = ParameterDirection.Input
+
+        Cm.Parameters.AddWithValue("@ParCadAnioModeloVM", datosAutoTransporte.AnioModeloVM)
+        Cm.Parameters("@ParCadAnioModeloVM").Direction = ParameterDirection.Input
+
+        Cm.Parameters.AddWithValue("@ParCadAseguraRespCivil", datosAutoTransporte.AseguraRespCivil)
+        Cm.Parameters("@ParCadAseguraRespCivil").Direction = ParameterDirection.Input
+
+        Cm.Parameters.AddWithValue("@ParCadPolizRespCivil", datosAutoTransporte.PolizaRespCivil)
+        Cm.Parameters("@ParCadPolizRespCivil").Direction = ParameterDirection.Input
+
+        Cm.Parameters.AddWithValue("@ParCadAseguraMedioAmbiente", datosAutoTransporte.AseguraMedAmbiente)
+        Cm.Parameters("@ParCadAseguraMedioAmbiente").Direction = ParameterDirection.Input
+
+        Cm.Parameters.AddWithValue("@ParCadPolizaMedAmbiente", datosAutoTransporte.PolizaMedAmbiente)
+        Cm.Parameters("@ParCadPolizaMedAmbiente").Direction = ParameterDirection.Input
+
+        Cm.Parameters.AddWithValue("@ParCadAseguraCarga", datosAutoTransporte.AseguraCarga)
+        Cm.Parameters("@ParCadAseguraCarga").Direction = ParameterDirection.Input
+
+        Cm.Parameters.AddWithValue("@ParCadPolizaCarga", datosAutoTransporte.PolizaCarga)
+        Cm.Parameters("@ParCadPolizaCarga").Direction = ParameterDirection.Input
+
+        Cm.Parameters.AddWithValue("@ParNumPrimaSeguro", datosAutoTransporte.PrimaSeguro)
+        Cm.Parameters("@ParNumPrimaSeguro").Direction = ParameterDirection.Input
+
+        Dim datosRemolques As DataTable = tiposCartaPorte.RemolquesTipo()
+        For Each remolque In datosAutoTransporte.Remolques
+            tiposCartaPorte.AnadeRemolqueEntabla(datosRemolques, remolque)
+        Next
+
+        Cm.Parameters.AddWithValue("@ParTabRemolques", datosRemolques)
+        Cm.Parameters("@ParTabRemolques").Direction = ParameterDirection.Input
+
+        Cm.Parameters.AddWithValue("@ParCadTipoFigura", datosOperador.TipoFigura)
+        Cm.Parameters("@ParCadTipoFigura").Direction = ParameterDirection.Input
+
+        Cm.Parameters.AddWithValue("@ParCadRfcFiguraTransporte", datosOperador.RFCFigura)
+        Cm.Parameters("@ParCadRfcFiguraTransporte").Direction = ParameterDirection.Input
+
+        Cm.Parameters.AddWithValue("@ParCadNumLicencia", datosOperador.NumLicencia)
+        Cm.Parameters("@ParCadNumLicencia").Direction = ParameterDirection.Input
+
+        Cm.Parameters.AddWithValue("@ParCadNombreFiguraTransporte", datosOperador.NombreCompleto)
+        Cm.Parameters("@ParCadNombreFiguraTransporte").Direction = ParameterDirection.Input
+
+        Cm.Parameters.AddWithValue("@ParBitEsTransportistaExtranjero", datosOperador.EsTransportistaExtranjero)
+        Cm.Parameters("@ParBitEsTransportistaExtranjero").Direction = ParameterDirection.Input
+
+        Cm.Parameters.AddWithValue("@ParCadNumRegIdTribTransportista", datosOperador.NumRegIdTribFigura)
+        Cm.Parameters("@ParCadNumRegIdTribTransportista").Direction = ParameterDirection.Input
+
+        Cm.Parameters.AddWithValue("@ParCadResidenciaFiscalFigura", datosOperador.ResidenciaFiscalFigura)
+        Cm.Parameters("@ParCadResidenciaFiscalFigura").Direction = ParameterDirection.Input
+
+        Dim datosPartesTransporte As DataTable = tiposCartaPorte.RemolquesTipo()
+
+        Cm.Parameters.AddWithValue("@ParTabPartesTransporte", datosPartesTransporte)
+        Cm.Parameters("@ParTabPartesTransporte").Direction = ParameterDirection.Input
+
+        Dim domicilio As DataTable = tiposCartaPorte.DomicilioTipo()
+        tiposCartaPorte.AnadeDomicilioEnTabla(domicilio, datosOperador.Domicilio, datosOperador.EsTransportistaExtranjero)
+
+        Cm.Parameters.AddWithValue("@ParTabDomicilioOperador", domicilio)
+        Cm.Parameters("@ParTabDomicilioOperador").Direction = ParameterDirection.Input
+
+        Cm.Parameters.Add("@ParCadResultado", SqlDbType.VarChar, 65535)
+        Cm.Parameters("@ParCadResultado").Direction = ParameterDirection.ReturnValue
+
+        Cm.ExecuteScalar()
+        Return Cm.Parameters("@ParCadResultado").Value
+    End Function
 
     Public Function Get_ObtenParametros() As DataTable
         Dim Cm As SqlCommand = Nothing

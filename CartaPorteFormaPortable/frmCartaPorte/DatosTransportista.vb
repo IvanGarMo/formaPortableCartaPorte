@@ -130,6 +130,12 @@
             _EsTransportistaNacional = value
         End Set
     End Property
+
+    Public ReadOnly Property NombreCompleto As String
+        Get
+            Return _NombreTransportista + _ApellidoPaternoTransportista + _ApellidoMaternoTransportista
+        End Get
+    End Property
 End Class
 
 Public Class ItemTransporte
