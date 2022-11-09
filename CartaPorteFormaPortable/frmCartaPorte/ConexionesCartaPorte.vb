@@ -286,6 +286,39 @@ Public Class ConexionesCartaPorte
         Return dataSet.Tables(0)
     End Function
 
+    Public Function Get_ValidaCodigoPostal(ByVal codigoPostal As String,
+                                           ByVal estado As String,
+                                           ByVal municipio As String,
+                                           ByVal localidad As String,
+                                           ByRef mensaje As String) As Boolean
+        Dim Cm As SqlCommand = Nothing
+        Cm = New SqlCommand("sat.SP_CCP_ValidaCodigoPostal", obtenConexion())
+        Cm.CommandType = CommandType.StoredProcedure
+
+        Cm.Parameters.AddWithValue("@ParCadCodigoPostal", codigoPostal)
+        Cm.Parameters("@ParCadCodigoPostal").Direction = ParameterDirection.Input
+
+        Cm.Parameters.AddWithValue("@ParCadCodigoEstado", estado)
+        Cm.Parameters("@ParCadCodigoEstado").Direction = ParameterDirection.Input
+
+        Cm.Parameters.AddWithValue("@ParCadMunicipio", municipio)
+        Cm.Parameters("@ParCadMunicipio").Direction = ParameterDirection.Input
+
+        Cm.Parameters.AddWithValue("@ParCadLocalidad", localidad)
+        Cm.Parameters("@ParCadLocalidad").Direction = ParameterDirection.Input
+
+        Cm.Parameters.Add("@ParBitValido", SqlDbType.Bit, 1)
+        Cm.Parameters("@ParBitValido").Direction = ParameterDirection.Output
+
+        Cm.Parameters.Add("@ParCadMensaje", SqlDbType.VarChar, 1000)
+        Cm.Parameters("@ParCadMensaje").Direction = ParameterDirection.Output
+
+        Cm.ExecuteNonQuery()
+
+        mensaje = Cm.Parameters("@ParCadMensaje").Value
+        Return CType(Cm.Parameters("@ParBitValido").Value, Boolean)
+    End Function
+
     Public Function Get_ObtenDescripcionPorClaveProdServ(ByRef claveProdServ As String) As String
         Dim Cm As SqlCommand = Nothing
         Cm = New SqlCommand("sat.SP_CCP_CargaDescripcionProducto", obtenConexion())
