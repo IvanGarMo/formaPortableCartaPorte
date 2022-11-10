@@ -304,6 +304,7 @@ Public Class frmCartaPorte
         TogglePersonaFisicaMoralExtranjeroOrigen()
         nupKmRecorridos.Minimum = 0
         nupKmRecorridos.Maximum = Int16.MaxValue
+        CargaDatosOrigen()
     End Sub
 
     Private Sub LimpiarDatosOrigen()
@@ -535,6 +536,8 @@ Public Class frmCartaPorte
             datosOrigenParaCartaPorte.ResidenciaFiscal = cbResidenciaFiscalRemitente.SelectedValue
         End If
 
+        datosOrigenParaCartaPorte.RFCRemitenteDestinatario = rfcRemitente
+        datosOrigenParaCartaPorte.NumRegIdTrib = numRegIdTribRemitente
         datosOrigenParaCartaPorte.FechaSalidaLlegada = dtFechaSalidaRemitente.Value
         datosOrigenParaCartaPorte.HoraSalidaLlegada = horaSalida
         datosOrigenParaCartaPorte.DistanciaRecorrida = 0
@@ -738,6 +741,15 @@ Public Class frmCartaPorte
             rbExtranjeroOrigen.Checked = datosOrigenParaCartaPorte.EsExtranjero
             txtRfcRemitente.Text = datosOrigenParaCartaPorte.RFCRemitenteDestinatario
             txtNumRegidTribRemitente.Text = datosOrigenParaCartaPorte.NumRegIdTrib
+
+            If REMITENTE_ES_PERSONA_FISICA Or REMITENTE_ES_EXTRANJERO Then
+                txtNombreRemitente.Text = datosOrigenParaCartaPorte.Nombre
+                txtApPaternoRemitente.Text = datosOrigenParaCartaPorte.ApPaterno
+                txtApMaternoRemitente.Text = datosOrigenParaCartaPorte.ApMaterno
+            ElseIf REMITENTE_ES_PERSONA_MORAL Then
+                txtNombreRemitente.Text = datosOrigenParaCartaPorte.NombrePersonaMoral
+            End If
+
             If REMITENTE_ES_EXTRANJERO Then
                 cbResidenciaFiscalRemitente.SelectedValue = datosOrigenParaCartaPorte.ResidenciaFiscal
             End If
@@ -823,13 +835,10 @@ Public Class frmCartaPorte
 
     Private Sub PreparaPestanaDestino()
         BindCombobox(cbPaisDestino, ObtenListadoPaises())
-        refCbColoniaDestino = cbColoniaDestino
-        refCbMunicipioDestino = cbMunicipioDestino
-        refCbLocalidadDestino = cbLocalidadDestino
-        refCbEstadoDestino = cbEstadoDestino
         LimpiarDatosDestino()
         LimpiarDatosOrigen()
         rbPersonaFisicaDestino.Checked = True
+        CargaDatosDestino()
     End Sub
 
     Private Sub LimpiarDatosDestino()
@@ -1211,7 +1220,7 @@ Public Class frmCartaPorte
 
     Private Sub CargaDatosDestino()
         If datosDestinoParaCartaPorte IsNot Nothing Then
-            txtTipoUbicacionDestino.Text = "DESTINO"
+            txtTipoUbicacionDestino.Text = "Destino"
             txtIdUbicacionDestino.Text = datosDestinoParaCartaPorte.IDUbicacion
             rbEsExtranjeroDestino.Checked = datosDestinoParaCartaPorte.EsExtranjero
             rbPersonaFisicaDestino.Checked = datosDestinoParaCartaPorte.EsPersonaFisica
@@ -2464,6 +2473,7 @@ Public Class frmCartaPorte
         BloqueaDatosTransporte()
         numCantidadRemolquesTransporte.Minimum = 0
         numCantidadRemolquesTransporte.Maximum = 2
+        CargaDatosTransporte()
     End Sub
 
     Private Sub cbSeleccionarVehiculo_SelectedValueChanged(sender As Object, e As EventArgs) Handles cbSeleccionarVehiculo.SelectedValueChanged
@@ -2496,6 +2506,7 @@ Public Class frmCartaPorte
             'Cargo la información de los remolques
             Dim noRemolques As Int16 = datosAutoTransporte.NoRemolques
             numCantidadRemolquesTransporte.Value = noRemolques
+            numCantidadRemolquesTransporte_ValueChanged(Nothing, Nothing)
             Dim refRemolque As Remolque
             If noRemolques >= 1 Then
                 refRemolque = datosAutoTransporte.Remolques(0)
@@ -2797,10 +2808,6 @@ Public Class frmCartaPorte
     End Sub
 
     Private Sub PreparaDatosOperador()
-        refCbEstadoOperador = cbEstadoOperador
-        refCbMunicipioOperador = cbMunicipioOperador
-        refCbLocalidadOperador = cbLocalidadOperador
-        refCbColoniaOperador = cbColoniaOperador
         BindCombobox(cbOpcionesOperador, conexionesCartaPorte.Get_CatalogoOperadores())
     End Sub
 
