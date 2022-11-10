@@ -78,33 +78,22 @@ Public Class frmCartaPorte
     End Sub
 
     Private Sub TabControl1_SelectedIndexChanged(sender As Object, e As EventArgs) Handles TabControl1.SelectedIndexChanged
-        Dim nuevoIndice = TabControl1.SelectedIndex
-        Dim indiceTabOrigen = TabControl1.TabPages("tabOrigen").TabIndex
-        Dim indiceTabDestino = TabControl1.TabPages("tabDestino").TabIndex
-        Dim indiceTabDestinosIntermedios = TabControl1.TabPages("tabDestinosIntermedios").TabIndex
-        Dim indiceTabMercancias = TabControl1.TabPages("tabMercancias").TabIndex
-        Dim indiceTabTransporte = TabControl1.TabPages("tabTransporte").TabIndex
-        Dim indiceTabOperador = TabControl1.TabPages("tabOperador").TabIndex
-        Dim indiceTabConfirmacion = TabControl1.TabPages("tabConfirmacion").TabIndex
-
-        Select Case nuevoIndice
-            Case indiceTabOrigen
-                PreparaPestanaOrigen()
-            Case indiceTabDestino
-                PreparaPestanaDestino()
-            Case indiceTabDestinosIntermedios
-                PreparaPestanaDestinoIntermedio()
-            Case indiceTabMercancias
-                PreparaPestanaMercancias()
-            Case indiceTabTransporte
-                PreparaPestanaTransporte()
-            Case indiceTabOperador
-                PreparaDatosOperador()
-            Case indiceTabConfirmacion
-                PreparaPestanaConfirmacion()
-        End Select
-
-
+        Dim selectedTab = TabControl1.SelectedTab
+        If selectedTab.Equals(TabControl1.TabPages("tabOrigen")) Then
+            PreparaPestanaOrigen()
+        ElseIf selectedTab.Equals(TabControl1.TabPages("tabDestino")) Then
+            PreparaPestanaDestino()
+        ElseIf selectedTab.Equals(TabControl1.TabPages("tabDestinosIntermedios")) Then
+            PreparaPestanaDestinoIntermedio()
+        ElseIf selectedTab.Equals(TabControl1.TabPages("tabMercancias")) Then
+            PreparaPestanaMercancias()
+        ElseIf selectedTab.Equals(TabControl1.TabPages("tabTransporte")) Then
+            PreparaPestanaTransporte()
+        ElseIf selectedTab.Equals(TabControl1.TabPages("tabOperador")) Then
+            PreparaDatosOperador()
+        ElseIf selectedTab.Equals(TabControl1.TabPages("tabConfirmacion")) Then
+            PreparaPestanaConfirmacion()
+        End If
     End Sub
     Private Sub CargaParametros()
         parametrosFormaCartaPorte = conexionesCartaPorte.Get_ObtenParametros()
@@ -578,7 +567,7 @@ Public Class frmCartaPorte
         ValidarDatosOrigen()
         If INFORMACION_VALIDA_DATOS_ORIGEN Then
             ESTOY_CAMBIANDO_MEDIANTE_INDICE = True
-            TabControl1.SelectedIndex = TabControl1.SelectedIndex + 1
+            TabControl1.SelectedTab = TabControl1.TabPages("tabDestino")
             ESTOY_CAMBIANDO_MEDIANTE_INDICE = False
         End If
     End Sub
@@ -1039,14 +1028,14 @@ Public Class frmCartaPorte
         ValidarDatosDestino()
         If INFORMACION_VALIDA_DESTINO Then
             ESTOY_CAMBIANDO_MEDIANTE_INDICE = True
-            TabControl1.SelectedIndex = TabControl1.SelectedIndex + 1
+            TabControl1.SelectedTab = TabControl1.TabPages("tabDestinosIntermedios")
             ESTOY_CAMBIANDO_MEDIANTE_INDICE = False
         End If
     End Sub
 
     Private Sub btnAtrasDestino_Click(sender As Object, e As EventArgs) Handles btnAtrasDestino.Click
         ESTOY_CAMBIANDO_MEDIANTE_INDICE = True
-        TabControl1.SelectedIndex = TabControl1.SelectedIndex - 1
+        TabControl1.SelectedTab = TabControl1.TabPages("tabOrigen")
         ESTOY_CAMBIANDO_MEDIANTE_INDICE = False
     End Sub
 
@@ -1747,7 +1736,7 @@ Public Class frmCartaPorte
 
     Private Sub btnAtrasDestinosIntermedios_Click(sender As Object, e As EventArgs) Handles btnAtrasDestinosIntermedios.Click
         ESTOY_CAMBIANDO_MEDIANTE_INDICE = True
-        TabControl1.SelectedIndex = TabControl1.SelectedIndex - 1
+        TabControl1.SelectedTab = TabControl1.TabPages("tabDestino")
         ESTOY_CAMBIANDO_MEDIANTE_INDICE = False
     End Sub
     Private Sub btnSiguienteDestinosIntermedios_Click(sender As Object, e As EventArgs) Handles btnSiguienteDestinosIntermedios.Click
@@ -1765,7 +1754,7 @@ Public Class frmCartaPorte
         btnGuardarDestinosIntermedios_Click(Nothing, Nothing)
         If datosDestinoIntermedioEnModificacion Is Nothing Then
             ESTOY_CAMBIANDO_MEDIANTE_INDICE = True
-            TabControl1.SelectedIndex = TabControl1.SelectedIndex + 1
+            TabControl1.SelectedTab = TabControl1.TabPages("tabMercancias")
             ESTOY_CAMBIANDO_MEDIANTE_INDICE = False
         End If
     End Sub
@@ -2417,7 +2406,7 @@ Public Class frmCartaPorte
             ValidarInformacionMercancia()
             If INFORMACION_VALIDA_MERCANCIA Then
                 ESTOY_CAMBIANDO_MEDIANTE_INDICE = True
-                TabControl1.SelectedIndex = TabControl1.SelectedIndex + 1
+                TabControl1.SelectedTab = TabControl1.TabPages("tabTransporte")
                 ESTOY_CAMBIANDO_MEDIANTE_INDICE = False
             End If
         End If
@@ -2429,7 +2418,7 @@ Public Class frmCartaPorte
 
     Private Sub btnAtrasMercancia_Click(sender As Object, e As EventArgs) Handles btnAtrasMercancia.Click
         ESTOY_CAMBIANDO_MEDIANTE_INDICE = True
-        TabControl1.SelectedIndex = TabControl1.SelectedIndex - 1
+        TabControl1.SelectedTab = TabControl1.TabPages("tabDestinosIntermedios")
         ESTOY_CAMBIANDO_MEDIANTE_INDICE = False
     End Sub
 
@@ -2771,15 +2760,14 @@ Public Class frmCartaPorte
         ValidaDatosTransporte()
         If INFORMACION_VALIDA_TRANSPORTE Then
             ESTOY_CAMBIANDO_MEDIANTE_INDICE = True
-            AlertaMensaje("Hurra!")
-            'TabControl1.SelectedIndex = TabControl1.SelectedIndex + 1
+            TabControl1.SelectedTab = TabControl1.TabPages("tabOperador")
             ESTOY_CAMBIANDO_MEDIANTE_INDICE = False
         End If
     End Sub
 
     Private Sub btnAtrasTransporte_Click(sender As Object, e As EventArgs) Handles btnAtrasTransporte.Click
         ESTOY_CAMBIANDO_MEDIANTE_INDICE = True
-        TabControl1.SelectedIndex = TabControl1.SelectedIndex - 1
+        TabControl1.SelectedTab = TabControl1.TabPages("tabMercancias")
         ESTOY_CAMBIANDO_MEDIANTE_INDICE = False
     End Sub
 
@@ -2813,21 +2801,50 @@ Public Class frmCartaPorte
         refCbMunicipioOperador = cbMunicipioOperador
         refCbLocalidadOperador = cbLocalidadOperador
         refCbColoniaOperador = cbColoniaOperador
-        BindCombobox(cbPaisOperador, ObtenListadoPaises())
-        ValidaPropiedadAjena()
-        BindCombobox(cbTipoFiguraOperador, conexionesCartaPorte.Get_ObtenFigurasDeTransporte(PARTE_DEL_REMOLQUE_ES_AJENA))
+        BindCombobox(cbOpcionesOperador, conexionesCartaPorte.Get_CatalogoOperadores())
+    End Sub
+
+    Private Sub BloqueaDatosOperador()
+        INFORMACION_VALIDA_OPERADOR = False
+        rbOperadorMexicano.Checked = True
+        rbOperadorMexicano.Enabled = False
+        rbOperadorExtranjero.Enabled = False
+        LimpiaDesactivaTextbox(txtRfcOperador)
+        LimpiaDesactivaTextbox(txtNumRegIdTribFiscOperador)
+        LimpiaDesactivaTextbox(txtNombreOperador)
+        LimpiaDesactivaTextbox(txtApPaternoOperador)
+        LimpiaDesactivaTextbox(txtApMaternoOperador)
+        LimpiaDesactivaCombobox(cbTipoFiguraOperador)
+        LimpiaDesactivaCombobox(cbParteTransporteOperador)
+        RemueveDeGrid(txtEstadoOperador, tlpDireccionOperador)
+        RemueveDeGrid(txtMunicipioOperador, tlpDireccionOperador)
+        RemueveDeGrid(txtLocalidadOperador, tlpDireccionOperador)
+        RemueveDeGrid(txtColoniaOperador, tlpDireccionOperador)
+        LimpiaDesactivaCombobox(refCbEstadoOperador)
+        LimpiaDesactivaCombobox(refCbMunicipioOperador)
+        LimpiaDesactivaCombobox(refCbLocalidadOperador)
+        LimpiaDesactivaCombobox(refCbColoniaOperador)
+        LimpiaDesactivaTextbox(txtCpOperador)
+        LimpiaDesactivaTextbox(txtNoIntOperador)
+        LimpiaDesactivaTextbox(txtNoExtOperador)
+        LimpiaDesactivaTextbox(txtCalleOperador)
+        LimpiaDesactivaTextbox(txtReferenciaOperador)
     End Sub
 
     Private Sub LimpiaInformacionOperador()
-        LimpiaDesactivaCombobox(cbOpcionesOperador)
         rbOperadorMexicano.Checked = True
+        rbOperadorMexicano.Enabled = True
+        rbOperadorExtranjero.Enabled = True
         txtRfcOperador.Text = String.Empty
-        txtRfcOperador.Enabled = False
-        txtNumregIdTribDestinoIntermedio.Text = String.Empty
-        txtNumregIdTribDestinoIntermedio.Enabled = False
+        txtRfcOperador.Enabled = True
+        txtNumRegIdTribFiscOperador.Text = String.Empty
+        txtNumRegIdTribFiscOperador.Enabled = True
         txtNombreOperador.Text = String.Empty
+        txtNombreOperador.Enabled = True
         txtApPaternoOperador.Text = String.Empty
+        txtApPaternoOperador.Enabled = True
         txtApMaternoOperador.Text = String.Empty
+        txtApMaternoOperador.Enabled = True
         LimpiaDesactivaCombobox(cbTipoFiguraOperador)
         LimpiaDesactivaCombobox(cbParteTransporteOperador)
         RemueveDeGrid(txtEstadoOperador, tlpDireccionOperador)
@@ -2838,15 +2855,24 @@ Public Class frmCartaPorte
         txtLocalidadOperador = Nothing
         txtMunicipioOperador = Nothing
         txtColoniaOperador = Nothing
-        LimpiaDesactivaCombobox(cbEstadoOperador)
-        LimpiaDesactivaCombobox(cbMunicipioOperador)
-        LimpiaDesactivaCombobox(cbLocalidadOperador)
-        LimpiaDesactivaCombobox(cbColoniaOperador)
+        LimpiaDesactivaCombobox(refCbEstadoOperador)
+        LimpiaDesactivaCombobox(refCbMunicipioOperador)
+        LimpiaDesactivaCombobox(refCbLocalidadOperador)
+        LimpiaDesactivaCombobox(refCbColoniaOperador)
         txtCpOperador.Text = String.Empty
+        txtCpOperador.Enabled = True
         txtNoIntOperador.Text = String.Empty
+        txtNoIntOperador.Enabled = True
         txtNoExtOperador.Text = String.Empty
+        txtNoExtOperador.Enabled = True
         txtCalleOperador.Text = String.Empty
+        txtCalleOperador.Enabled = True
         txtReferenciaOperador.Text = String.Empty
+        txtReferenciaOperador.Enabled = True
+
+        BindCombobox(cbPaisOperador, ObtenListadoPaises())
+        ValidaPropiedadAjena()
+        BindCombobox(cbTipoFiguraOperador, conexionesCartaPorte.Get_ObtenFigurasDeTransporte(PARTE_DEL_REMOLQUE_ES_AJENA))
     End Sub
 
     Private Sub CargaInformacionOperador()
@@ -3063,7 +3089,7 @@ Public Class frmCartaPorte
     End Sub
 
     Private Sub txtCpOperador_TextChanged(sender As Object, e As EventArgs) Handles txtCpOperador.TextChanged
-        LimpiaDesactivaCombobox(cbColoniaOperador)
+        LimpiaDesactivaCombobox(refCbColoniaOperador)
         If Trim(txtCpOperador.Text).Length <> 5 Then '5 es la longitud de un CP válido
             Return
         End If
@@ -3209,15 +3235,28 @@ Public Class frmCartaPorte
         ValidaInformacionOperador()
         If INFORMACION_VALIDA_OPERADOR Then
             ESTOY_CAMBIANDO_MEDIANTE_INDICE = True
-            TabControl1.SelectedIndex = TabControl1.SelectedIndex + 1
+            AlertaMensaje("Hurra")
+            'TabControl1.SelectedTab = TabControl1.TabPages("tabConfirmacion")
             ESTOY_CAMBIANDO_MEDIANTE_INDICE = False
         End If
     End Sub
 
     Private Sub btnAtrasOperador_Click(sender As Object, e As EventArgs) Handles btnAtrasOperador.Click
         ESTOY_CAMBIANDO_MEDIANTE_INDICE = True
-        TabControl1.SelectedIndex = TabControl1.SelectedIndex - 1
+        TabControl1.SelectedTab = TabControl1.TabPages("tabTransporte")
         ESTOY_CAMBIANDO_MEDIANTE_INDICE = False
+    End Sub
+
+    Private Sub cbOpcionesOperador_SelectedValueChanged(sender As Object, e As EventArgs) Handles cbOpcionesOperador.SelectedValueChanged
+        Dim claveOperador = ObtenValorCombobox(cbOpcionesOperador)
+        If claveOperador = "-01" Then
+            BloqueaDatosOperador()
+            Return
+        End If
+        LimpiaInformacionOperador()
+        If claveOperador <> "00" Then
+            CargaInformacionOperador()
+        End If
     End Sub
 
     '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -3328,7 +3367,7 @@ Public Class frmCartaPorte
 
     Private Sub btnAtrasConfirmacion_Click(sender As Object, e As EventArgs) Handles btnAtrasConfirmacion.Click
         ESTOY_CAMBIANDO_MEDIANTE_INDICE = True
-        TabControl1.SelectedIndex = TabControl1.SelectedIndex - 1
+        TabControl1.SelectedTab = TabControl1.TabPages("tabOperador")
         ESTOY_CAMBIANDO_MEDIANTE_INDICE = False
     End Sub
 End Class
