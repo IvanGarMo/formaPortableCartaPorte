@@ -408,6 +408,17 @@ Public Class ConexionesCartaPorte
         Return dataSet.Tables(0)
     End Function
 
+    Public Function Get_ListadoVehiculos() As DataTable
+        Dim Cm As SqlCommand = Nothing
+        Cm = New SqlCommand("sat.SP_CCP_ObtenVehiculos", obtenConexion())
+        Cm.CommandType = CommandType.StoredProcedure
+
+        Dim sqlAdapter As New SqlDataAdapter(Cm)
+        Dim dataSet As New DataSet
+        sqlAdapter.Fill(dataSet)
+        Return dataSet.Tables(0)
+    End Function
+
     Public Function Get_OpcionesTipoPermiso() As DataTable
         Dim Cm As SqlCommand = Nothing
         Cm = New SqlCommand("sat.SP_CCP_ObtenTiposPermiso", obtenConexion())

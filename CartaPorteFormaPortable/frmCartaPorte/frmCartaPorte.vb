@@ -1980,7 +1980,7 @@ Public Class frmCartaPorte
             listadoMercancias.Remove(ObtenMercancia(idMovimiento, claveProdServ))
             BindGridDetalleMercanciasPorMovimiento(ObtenMercanciasPorMovimiento(idMovimiento))
         End If
-        btnLimpiarMercancia_Click(Nothing, Nothing)
+        BloqueaPanelInformacionMercancias()
     End Sub
 
     Private Sub PreparaPestanaMercancias()
@@ -1991,35 +1991,82 @@ Public Class frmCartaPorte
         BindGridMovimientosMercancias()
 
         'Limpio el grid de detalle de mercancías
+        BloqueaPanelInformacionMercancias()
         dgvMercanciasPorMovimiento.DataSource = Nothing
-        LimpiaPanelInformacionMercancias()
         If dgvMercanciasPorMovimiento.Rows IsNot Nothing Then
             dgvMercanciasPorMovimiento.Rows.Clear()
         End If
 
-
-
         PESTANA_MERCANCIAS_ID_MOVIMIENTO_EN_MODIFICACION = String.Empty
     End Sub
 
+    Private Sub BloqueaPanelInformacionMercancias()
+        LimpiaDesactivaCombobox(cbOpcionDimensiones)
+        LimpiaDesactivaTextbox(txtClaveProdServMercancia)
+        LimpiaDesactivaTextbox(txtDescripcionProducto)
+        LimpiaDesactivaTextbox(txtCantidadMercancia)
+        LimpiaDesactivaTextbox(txtUnidadClaveMercancia)
+        LimpiaDesactivaTextbox(txtUnidadMercancia)
+        LimpiaDesactivaTextbox(txtPeso)
+        LimpiaDesactivaTextbox(txtValor)
+        numAnchura.Enabled = False
+        numAltura.Enabled = False
+        numLongitud.Enabled = False
+
+        rbNoMaterialPeligroso.Checked = True
+        rbSiMaterialPeligroso.Enabled = False
+        rbNoMaterialPeligroso.Enabled = False
+
+        rbComercioInternacionalNo.Checked = True
+        rbComercioInternacionalSi.Enabled = False
+        rbComercioInternacionalNo.Enabled = False
+    End Sub
+
     Private Sub LimpiaPanelInformacionMercancias()
+        dgvMercanciasPorMovimiento.DataSource = Nothing
+        If dgvMercanciasPorMovimiento.Rows IsNot Nothing Then
+            dgvMercanciasPorMovimiento.Rows.Clear()
+        End If
+
         BindCombobox(cbOpcionDimensiones, conexionesCartaPorte.Get_ObtenPosiblesDimensiones())
         txtClaveProdServMercancia.Text = String.Empty
         txtClaveProdServMercancia.Enabled = True
         txtDescripcionProducto.Text = String.Empty
+        txtDescripcionProducto.Enabled = True
         txtCantidadMercancia.Text = String.Empty
+        txtCantidadMercancia.Enabled = True
         txtUnidadClaveMercancia.Text = String.Empty
+        txtUnidadClaveMercancia.Enabled = True
         txtUnidadMercancia.Text = String.Empty
+        txtUnidadMercancia.Enabled = True
         txtPeso.Text = String.Empty
+        txtPeso.Enabled = True
         txtValor.Text = String.Empty
+        txtValor.Enabled = True
+
         numAnchura.Value = 0
+        numAnchura.Enabled = True
         numAnchura.Minimum = 0
+        numAnchura.Maximum = Int16.MaxValue
+
+        numAltura.Enabled = True
         numAltura.Value = 0
         numAltura.Minimum = 0
+        numAnchura.Maximum = Int16.MaxValue
+
+        numLongitud.Enabled = True
         numLongitud.Value = 0
         numLongitud.Minimum = 0
+        numLongitud.Maximum = Int16.MaxValue
+
         rbNoMaterialPeligroso.Checked = True
+        rbSiMaterialPeligroso.Enabled = True
+        rbNoMaterialPeligroso.Enabled = True
+
         rbComercioInternacionalNo.Checked = True
+        rbComercioInternacionalSi.Enabled = True
+        rbComercioInternacionalNo.Enabled = True
+        Label69.Text = "No se está viendo ningún movimiento"
     End Sub
 
     Private Sub BindGridMovimientosMercancias()
@@ -2050,16 +2097,6 @@ Public Class frmCartaPorte
             dgvMercanciasPorMovimiento.Rows.Clear()
         End If
 
-        If mercanciasMovimiento Is Nothing Then
-            AlertaMensaje("El movimiento seleccionado no tiene mercancías")
-            Return
-        End If
-
-        If mercanciasMovimiento.Count = 0 Then
-            AlertaMensaje("El movimiento seleccionado no tiene mercancías")
-            Return
-        End If
-
         dgvMercanciasPorMovimiento.DataSource = Nothing
         dgvMercanciasPorMovimiento.AutoGenerateColumns = False
         dgvMercanciasPorMovimiento.Columns("MercanciaClaveProdServClm").DataPropertyName = NameOf(Mercancia.ClaveProdServ)
@@ -2079,10 +2116,21 @@ Public Class frmCartaPorte
         Dim idUbicacion As String = dgvListadoMovimientosPestanaMercancia.Rows(e.RowIndex).Cells(columnaIdUbicacion).Value
         If e.ColumnIndex = columnaVerDetalle Or e.ColumnIndex = columnaAnadirMercancia Then
             PESTANA_MERCANCIAS_ID_MOVIMIENTO_EN_MODIFICACION = idUbicacion
-            LimpiaPanelInformacionMercancias()
-            BindGridDetalleMercanciasPorMovimiento(ObtenMercanciasPorMovimiento(PESTANA_MERCANCIAS_ID_MOVIMIENTO_EN_MODIFICACION))
-            Label69.Text = "Mercancías del movimiento " + PESTANA_MERCANCIAS_ID_MOVIMIENTO_EN_MODIFICACION
+            If e.ColumnIndex = columnaAnadirMercancia Then
+                LimpiaPanelInformacionMercancias()
+            Else
+                BloqueaPanelInformacionMercancias()
+            End If
             ESTA_CREANDO_MERCANCIA = (e.ColumnIndex = columnaAnadirMercancia)
+            ESTA_MODIFICANDO_MERCANCIA = False
+
+            Dim listMerc = ObtenMercanciasPorMovimiento(PESTANA_MERCANCIAS_ID_MOVIMIENTO_EN_MODIFICACION)
+            BindGridDetalleMercanciasPorMovimiento(listMerc)
+            If listMerc.Count = 0 Then
+                Label69.Text = "Movimiento " + PESTANA_MERCANCIAS_ID_MOVIMIENTO_EN_MODIFICACION + "(No hay mercancías capturadas)"
+            Else
+                Label69.Text = "Mercancías del movimiento " + PESTANA_MERCANCIAS_ID_MOVIMIENTO_EN_MODIFICACION
+            End If
         End If
     End Sub
 
@@ -2340,7 +2388,7 @@ Public Class frmCartaPorte
             ESTA_CREANDO_MERCANCIA = False
             ESTA_MODIFICANDO_MERCANCIA = False
         End If
-        LimpiaPanelInformacionMercancias()
+        BloqueaPanelInformacionMercancias()
         INFORMACION_VALIDA_MERCANCIA = True
     End Sub
 
@@ -2349,16 +2397,26 @@ Public Class frmCartaPorte
     End Sub
 
     Private Sub btnSiguienteMercancia_Click(sender As Object, e As EventArgs) Handles btnSiguienteMercancia.Click
+        If listadoMercancias.Count = 0 Then
+            AlertaMensaje(ObtenParametroPorLlave("NO_HAY_MERCANCIAS"))
+            Return
+        End If
+
         If ESTA_CREANDO_MERCANCIA Or ESTA_MODIFICANDO_MERCANCIA Then
             Dim resp = MsgBox(ObtenParametroPorLlave("MERCANCIA_EN_MODIFICACION"), vbQuestion + vbYesNo, "Alerta")
             If resp = MsgBoxResult.No Then Return
+
+            ValidarInformacionMercancia()
+            If INFORMACION_VALIDA_MERCANCIA Then
+                ESTOY_CAMBIANDO_MEDIANTE_INDICE = True
+                TabControl1.SelectedIndex = TabControl1.SelectedIndex + 1
+                ESTOY_CAMBIANDO_MEDIANTE_INDICE = False
+            End If
         End If
-        ValidarInformacionMercancia()
-        If INFORMACION_VALIDA_MERCANCIA Then
-            ESTOY_CAMBIANDO_MEDIANTE_INDICE = True
-            TabControl1.SelectedIndex = TabControl1.SelectedIndex + 1
-            ESTOY_CAMBIANDO_MEDIANTE_INDICE = False
-        End If
+
+        ESTOY_CAMBIANDO_MEDIANTE_INDICE = True
+        TabControl1.SelectedIndex = TabControl1.SelectedIndex + 1
+        ESTOY_CAMBIANDO_MEDIANTE_INDICE = False
     End Sub
 
     Private Sub btnAtrasMercancia_Click(sender As Object, e As EventArgs) Handles btnAtrasMercancia.Click
@@ -2384,6 +2442,10 @@ Public Class frmCartaPorte
     End Sub
 
     Private Sub btnLimpiarMercancia_Click(sender As Object, e As EventArgs) Handles btnLimpiarMercancia.Click
+        If Not ESTA_MODIFICANDO_MERCANCIA And Not ESTA_CREANDO_MERCANCIA Then
+            Return
+        End If
+
         LimpiaPanelInformacionMercancias()
         ESTA_MODIFICANDO_MERCANCIA = False
         ESTA_CREANDO_MERCANCIA = False
@@ -2398,8 +2460,23 @@ Public Class frmCartaPorte
 
     Private Sub PreparaPestanaTransporte()
         ValidaExisteMercanciaQueCuenteComoPeligroso()
+        BindCombobox(cbSeleccionarVehiculo, conexionesCartaPorte.Get_ListadoVehiculos())
         BindCombobox(cbOpcionesConfigVehicular, conexionesCartaPorte.Get_OpcionesConfiguracionVehicular())
         BindCombobox(cbTipoPermisoSCT, conexionesCartaPorte.Get_OpcionesTipoPermiso())
+        BloqueaDatosTransporte()
+    End Sub
+
+    Private Sub cbSeleccionarVehiculo_SelectedValueChanged(sender As Object, e As EventArgs) Handles cbSeleccionarVehiculo.SelectedValueChanged
+        Dim cveVehiculo As String = ObtenValorCombobox(cbSeleccionarVehiculo)
+        If cveVehiculo = "-01" Then
+            BloqueaDatosTransporte()
+            Return
+        ElseIf cveVehiculo = "00" Then
+            LimpiarPanelDatosTransporte()
+            Return
+        Else
+            CargaDatosTransporte()
+        End If
     End Sub
 
     Private Sub CargaDatosTransporte()
@@ -2442,10 +2519,38 @@ Public Class frmCartaPorte
         EXISTE_MERCANCIA_MATERIAL_PELIGROSO = listadoMercancias.FirstOrDefault(Function(m) m.MaterialPeligroso) IsNot Nothing
     End Sub
 
+    Private Sub BloqueaDatosTransporte()
+        PARTE_DEL_REMOLQUE_ES_AJENA = False
+        INFORMACION_VALIDA_TRANSPORTE = False
+        LimpiaDesactivaCombobox(cbTipoPermisoSCT)
+        LimpiaDesactivaTextbox(txtNumPermisoSCT)
+        LimpiaDesactivaCombobox(cbOpcionesConfigVehicular)
+        LimpiaDesactivaTextbox(txtConfigVehicular)
+        LimpiaDesactivaTextbox(txtPlacaTransporte)
+        LimpiaDesactivaTextbox(txtAnioModeloTransporte)
+        LimpiaDesactivaTextbox(txtAseguradoraTransporte)
+        LimpiaDesactivaTextbox(txtAseguradoraCargaTransporte)
+        LimpiaDesactivaTextbox(txtPolizaCargaTransporte)
+        LimpiaDesactivaTextbox(txtPrimaSeguroTransporte)
+        LimpiaDesactivaTextbox(txtPrimaSeguroTransporte)
+        numCantidadRemolquesTransporte.Value = 0
+        numCantidadRemolquesTransporte.Enabled = False
+
+        LimpiaDesactivaTextbox(txtAseguradoraDanosMedioAmbiente)
+        LimpiaDesactivaTextbox(txtPolizaSegurosDanosMedioAmbiente)
+
+        If EXISTE_MERCANCIA_MATERIAL_PELIGROSO Then
+            txtAseguradoraDanosMedioAmbiente.Enabled = True
+            txtPolizaSegurosDanosMedioAmbiente.Enabled = True
+        Else
+            txtAseguradoraDanosMedioAmbiente.Enabled = False
+            txtPolizaSegurosDanosMedioAmbiente.Enabled = False
+        End If
+    End Sub
+
     Private Sub LimpiarPanelDatosTransporte()
         PARTE_DEL_REMOLQUE_ES_AJENA = False
         INFORMACION_VALIDA_TRANSPORTE = False
-        cbSeleccionarVehiculo.SelectedValue = "-01"
         LimpiaDesactivaCombobox(cbTipoPermisoSCT)
         txtNumPermisoSCT.Text = String.Empty
         LimpiaDesactivaCombobox(cbOpcionesConfigVehicular)
@@ -2628,6 +2733,10 @@ Public Class frmCartaPorte
         End Sub
 
     Private Sub cbTipoPermisoSCT_SelectedValueChanged(sender As Object, e As EventArgs) Handles cbTipoPermisoSCT.SelectedValueChanged
+        If ObtenValorCombobox(cbTipoPermisoSCT) = "-01" Then
+            LimpiaDesactivaTextbox(txtNumPermisoSCT)
+            Return
+        End If
         txtNumPermisoSCT.Enabled = True
         If cbTipoPermisoSCT.SelectedValue = "TPXX00" Then
             'txtNumPermisoSCT.Text = String.Empty
@@ -2635,8 +2744,13 @@ Public Class frmCartaPorte
     End Sub
 
     Private Sub cbOpcionesConfigVehicular_SelectedValueChanged(sender As Object, e As EventArgs) Handles cbOpcionesConfigVehicular.SelectedValueChanged
+        Dim configVehicular As String = ObtenValorCombobox(cbOpcionesConfigVehicular)
+        If configVehicular = "-01" Then
+            LimpiaDesactivaTextbox(txtConfigVehicular)
+            Return
+        End If
         txtConfigVehicular.Enabled = False
-        txtConfigVehicular.Text = conexionesCartaPorte.Get_ObtenDescripcionConfiguracionAutoTransporte(cbOpcionesConfigVehicular.SelectedValue)
+        txtConfigVehicular.Text = conexionesCartaPorte.Get_ObtenDescripcionConfiguracionAutoTransporte(configVehicular)
     End Sub
 
     Private Sub btnSiguienteTransporte_Click(sender As Object, e As EventArgs) Handles btnSiguienteTransporte.Click
