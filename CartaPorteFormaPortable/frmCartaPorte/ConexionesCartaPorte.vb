@@ -29,7 +29,7 @@ Public Class ConexionesCartaPorte
                                         ByRef datosOperador As DatosTransportista
                                         ) As String
         Dim Cm As SqlCommand = Nothing
-        Cm = New SqlCommand("sat.SP_CCP_CreacionComplementoCartaPorte", obtenConexion())
+        Cm = New SqlCommand("sat.FN_CCP_CreacionComplementoCartaPorte", obtenConexion())
         Cm.CommandType = CommandType.StoredProcedure
 
         Cm.Parameters.AddWithValue("@ParCadTipoCfdi", tipoCfdi)
@@ -164,7 +164,7 @@ Public Class ConexionesCartaPorte
         Cm.Parameters.AddWithValue("@ParTabDomicilioOperador", domicilio)
         Cm.Parameters("@ParTabDomicilioOperador").Direction = ParameterDirection.Input
 
-        Cm.Parameters.Add("@ParCadResultado", SqlDbType.VarChar, 65535)
+        Cm.Parameters.Add("@ParCadResultado", SqlDbType.Text, Int32.MaxValue)
         Cm.Parameters("@ParCadResultado").Direction = ParameterDirection.ReturnValue
 
         Cm.ExecuteScalar()

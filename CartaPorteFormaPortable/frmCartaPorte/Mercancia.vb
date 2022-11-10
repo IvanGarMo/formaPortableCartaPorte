@@ -279,14 +279,24 @@
         End If
     End Sub
 
-    Public Shared Function CreaCopiaMercancia(ByRef mercancia As Mercancia)
+    Public Sub RemueveDeRelacion(ByVal idMovimiento As String)
+        Dim rel As RelacionMercanciaOrigenDestino = _RelacionMercanciaDestino.FirstOrDefault(Function(r) r.IdDestino.Equals(idMovimiento))
+        _RelacionMercanciaDestino.Remove(rel)
+    End Sub
+
+    Public Shared Function CreaCopiaMercancia(ByRef mercancia As Mercancia, ByVal incluyeRelacion As Boolean)
         Dim merc As New Mercancia
 
         merc.ClaveProdServ = mercancia.ClaveProdServ
         merc.Descripcion = mercancia.Descripcion
         merc.Cantidad = mercancia.Cantidad
         merc.CantidadSinAsignar = mercancia.CantidadSinAsignar
-        merc.RelacionMercanciaDestino = mercancia.RelacionMercanciaDestino
+
+        If incluyeRelacion Then
+            merc.RelacionMercanciaDestino = mercancia.RelacionMercanciaDestino
+        Else
+            merc.RelacionMercanciaDestino = New List(Of RelacionMercanciaOrigenDestino)
+        End If
         merc.ClaveUnidad = mercancia.ClaveUnidad
         merc.Unidad = mercancia.Unidad
         merc.Longitud = mercancia.Longitud
@@ -307,6 +317,13 @@
         merc.Pedimento = mercancia.Pedimento
 
         Return merc
+    End Function
+
+    Public Function SumatoriaTotalRelacion() As Int32
+        Dim total As Int32 = 0
+        If _RelacionMercanciaDestino Is Nothing Then Return 0
+        Me._RelacionMercanciaDestino.ForEach(Function(m) total = total + m.Cantidad)
+        Return total
     End Function
 
     Public ReadOnly Property MovimientoMercancia As String

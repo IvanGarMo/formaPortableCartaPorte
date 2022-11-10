@@ -136,6 +136,9 @@
 
     Public Property Remolques As List(Of Remolque)
         Get
+            If _Remolques Is Nothing Then
+                _Remolques = New List(Of Remolque)
+            End If
             Return _Remolques
         End Get
         Set(value As List(Of Remolque))

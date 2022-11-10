@@ -2809,6 +2809,7 @@ Public Class frmCartaPorte
 
     Private Sub PreparaDatosOperador()
         BindCombobox(cbOpcionesOperador, conexionesCartaPorte.Get_CatalogoOperadores())
+        BloqueaDatosOperador()
     End Sub
 
     Private Sub BloqueaDatosOperador()
@@ -2953,12 +2954,12 @@ Public Class frmCartaPorte
         ElseIf rbOperadorMexicano.Checked Then
             txtRfcOperador.Text = String.Empty
             txtRfcOperador.Enabled = True
-            txtNumRegIdTribFiscOperador.Text = String.Empty
-            txtNumRegIdTribFiscOperador.Enabled = False
+            LimpiaDesactivaTextbox(txtNumRegIdTribFiscOperador)
             BindCombobox(cbPaisOperador, ObtenListadoPaises("MEX"))
             cbPaisOperador.SelectedValue = "MEX"
             cbPaisOperador.Enabled = True
         End If
+        cbPaisOperador_SelectedValueChanged(Nothing, Nothing)
     End Sub
 
     Private Sub BindGridPartesTransporteOperador()
@@ -3242,8 +3243,7 @@ Public Class frmCartaPorte
         ValidaInformacionOperador()
         If INFORMACION_VALIDA_OPERADOR Then
             ESTOY_CAMBIANDO_MEDIANTE_INDICE = True
-            AlertaMensaje("Hurra")
-            'TabControl1.SelectedTab = TabControl1.TabPages("tabConfirmacion")
+            TabControl1.SelectedTab = TabControl1.TabPages("tabConfirmacion")
             ESTOY_CAMBIANDO_MEDIANTE_INDICE = False
         End If
     End Sub
@@ -3270,112 +3270,252 @@ Public Class frmCartaPorte
     '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
     ''''''' CONFIRMACIÓN
     '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-    Private sumatoriaFinalMercancias As List(Of Mercancia)
-    Private listaMercanciasSinDueno As List(Of Mercancia)
-    Private listadoFinalRelaciones As List(Of RelacionMercanciaOrigenDestino)
-
+    Private pestConfirmacionListaFinalMercancias As List(Of Mercancia)
+    Private pestConfirmacionListaMercanciaSinDestino As List(Of Mercancia)
+    Private pestConfirmacioListaDestinos As List(Of OrigenDestino)
     Private Sub PreparaPestanaConfirmacion()
+        'Primero, tenemos que realizar una copia, para asegurarnos 
+        'de no sobreescribir nada por accidente
+        pestConfirmacionListaFinalMercancias = New List(Of Mercancia)
+        For Each merc In listadoMercancias
+            pestConfirmacionListaFinalMercancias.Add(Mercancia.CreaCopiaMercancia(merc, True))
+        Next
+        pestConfirmacionListaMercanciaSinDestino = New List(Of Mercancia)
 
+        'Preparamos nuestra lista de destinos
+        pestConfirmacioListaDestinos = New List(Of OrigenDestino)
+        pestConfirmacioListaDestinos = datosDestinosIntermediosParaCartaPorte.OrderBy(Of DateTime)(Function(dor) dor.FechaHora).ToList
+        pestConfirmacioListaDestinos.Insert(0, datosDestinoParaCartaPorte)
+
+        'Ahora, hacemos bind grid de movimientos
+        BindGridMovimiento()
+
+        'Ahora, hacemos bind de mercancias con movimientos
+        BindGridMercanciasConDestino()
     End Sub
 
-    'Private Sub RelacionaMercanciasConMovimientos()
-    '    listadoFinalRelaciones = New List(Of RelacionMercanciaOrigenDestino)
+    Private Function EncuentraMercancia(ByRef listadoMercancia As List(Of Mercancia),
+                                   ByVal claveProdServ As String,
+                                   ByVal claveUnidad As String,
+                                   Optional ByVal idMovimiento As String = "") As Mercancia
+        If idMovimiento <> "" Then
+            Return listadoMercancia.FirstOrDefault(Function(x) x.MovimientoMercancia.Equals(idMovimiento) And x.ClaveProdServ.Equals(x.ClaveProdServ) And x.ClaveUnidad.Equals(claveUnidad))
+        Else
+            Return listadoMercancia.FirstOrDefault(Function(x) x.ClaveProdServ.Equals(x.ClaveProdServ) And x.ClaveUnidad.Equals(claveUnidad))
+        End If
+    End Function
 
-    '    Dim movLocal As List(Of OrigenDestino) = New List(Of OrigenDestino)
-    '    movLocal.AddRange(datosDestinosIntermediosParaCartaPorte)
-    '    movLocal.Add(datosDestinoParaCartaPorte)
 
-    '    sumatoriaFinalMercancias = New List(Of Mercancia)
-    '    listaMercanciasSinDueno = New List(Of Mercancia)
-    '    For Each key As String In dictMercancias.Keys
-    '        Dim listaTempMercancias As List(Of Mercancia) = dictMercancias(key)
-    '        For Each producto In listaTempMercancias
-    '            Dim claveProdServ As String = producto.ClaveProdServ
-    '            Dim existeMerc As Mercancia = sumatoriaFinalMercancias.FirstOrDefault(Function(m) m.ClaveProdServ = claveProdServ)
-    '            'Si ya existe algún producto con esa claveprodserv, 
-    '            'solo creo otro objeto relación
-    '            If existeMerc IsNot Nothing Then
-    '                existeMerc.Cantidad = existeMerc.Cantidad + producto.Cantidad
-    '                existeMerc.CantidadSinAsignar = existeMerc.CantidadSinAsignar - producto.Cantidad
-    '                Dim objRel As New RelacionMercanciaOrigenDestino
-    '                objRel.IdDestino = key
-    '                objRel.DescripcionDestino = movLocal.FirstOrDefault(Function(x) x.IDUbicacion.Equals(key)).DestinoDesplegado
-    '                objRel.ClaveProdServ = producto.ClaveProdServ
-    '                objRel.DescripcionProductoServicio = producto.Descripcion
-    '                objRel.Cantidad = producto.Cantidad
-    '            Else 'Si no, si lo registro
-    '                Dim mercParaRegistrar As Mercancia = Mercancia.CreaCopiaMercancia(producto)
-    '                Dim objRel As New RelacionMercanciaOrigenDestino
-    '                objRel.IdDestino = key
-    '                objRel.DescripcionDestino = movLocal.FirstOrDefault(Function(x) x.IDUbicacion.Equals(key)).DestinoDesplegado
-    '                objRel.ClaveProdServ = mercParaRegistrar.ClaveProdServ
-    '                objRel.DescripcionProductoServicio = mercParaRegistrar.Descripcion
-    '                objRel.Cantidad = mercParaRegistrar.Cantidad
-    '                mercParaRegistrar.CantidadSinAsignar = 0
-    '                sumatoriaFinalMercancias.Add(mercParaRegistrar)
-    '            End If
-    '        Next
-    '    Next
+    Private Sub RemueveMercanciaDeRelacion(ByRef listadoMercancias As List(Of Mercancia),
+                                           ByVal idMovimiento As String,
+                                           ByVal claveProdServ As String,
+                                           ByVal claveUnidad As String,
+                                           ByVal cantidadARemover As Int32)
+        Dim merc As Mercancia = EncuentraMercancia(listadoMercancias, idMovimiento, claveProdServ, claveUnidad)
+        If cantidadARemover = merc.Cantidad Then
+            listadoMercancias.Remove(merc)
+            merc.CantidadSinAsignar = merc.Cantidad
+            merc.RelacionMercanciaDestino = Nothing
+            pestConfirmacionListaMercanciaSinDestino.Add(merc)
+        Else
+            Dim nuevaMerc As Mercancia = Mercancia.CreaCopiaMercancia(merc, False)
+            pestConfirmacionListaMercanciaSinDestino.Add(nuevaMerc)
+            merc.Cantidad = merc.Cantidad - cantidadARemover
+            merc.CantidadSinAsignar = merc.Cantidad - merc.SumatoriaTotalRelacion()
+            merc.RemueveDeRelacion(idMovimiento)
+        End If
+    End Sub
 
-    '    'Bind de las mercancías con los movimientos
-    '    If dgvRelacionMercanciaUbicaciones.Rows IsNot Nothing Then
-    '        dgvRelacionMercanciaUbicaciones.Rows.Clear()
-    '    End If
-    '    dgvRelacionMercanciaUbicaciones.DataSource = Nothing
-    '    dgvRelacionMercanciaUbicaciones.AutoGenerateColumns = False
-    '    dgvRelacionMercanciaUbicaciones.Columns("RelMercUbiIdUbiClm").DataPropertyName = NameOf(RelacionMercanciaOrigenDestino.IdDestino)
-    '    dgvRelacionMercanciaUbicaciones.Columns("RelMercUbiDescUbiClm").DataPropertyName = NameOf(RelacionMercanciaOrigenDestino.DescripcionDestino)
-    '    dgvRelacionMercanciaUbicaciones.Columns("RelMercUbiClaveProdServClm").DataPropertyName = NameOf(RelacionMercanciaOrigenDestino.ClaveProdServ)
-    '    dgvRelacionMercanciaUbicaciones.Columns("RelMercUbiDescMercClm").DataPropertyName = NameOf(RelacionMercanciaOrigenDestino.DescripcionProductoServicio)
-    '    dgvRelacionMercanciaUbicaciones.Columns("RelMercUbiCantidadClm").DataPropertyName = NameOf(RelacionMercanciaOrigenDestino.Cantidad)
-    '    dgvRelacionMercanciaUbicaciones.DataSource = listadoFinalRelaciones
-    'End Sub
+    Private Sub AnadeMercanciaARelacion(ByRef listadoMercancias As List(Of Mercancia),
+                                        ByVal idMovimiento As String,
+                                        ByVal claveProdServ As String,
+                                        ByVal claveUnidad As String,
+                                        ByVal cantidadAnadir As Int32)
+        Dim merc As Mercancia = EncuentraMercancia(pestConfirmacionListaMercanciaSinDestino, claveProdServ, claveUnidad)
+        Dim nuevaMercancia As Mercancia = Mercancia.CreaCopiaMercancia(merc, False)
+
+        If merc.CantidadSinAsignar = cantidadAnadir Then
+            nuevaMercancia.CantidadSinAsignar = 0
+            nuevaMercancia.Cantidad = cantidadAnadir
+
+            Dim relMercDest As New RelacionMercanciaOrigenDestino
+            relMercDest.IdDestino = idMovimiento
+            relMercDest.ClaveProdServ = claveProdServ
+            relMercDest.DescripcionProductoServicio = merc.Descripcion
+            relMercDest.Cantidad = cantidadAnadir
+            nuevaMercancia.AnadeRelacion(relMercDest)
+
+            listadoMercancias.Add(nuevaMercancia)
+        Else
+            merc.CantidadSinAsignar = merc.CantidadSinAsignar - cantidadAnadir
+            nuevaMercancia.CantidadSinAsignar = 0
+            nuevaMercancia.Cantidad = cantidadAnadir
+
+            Dim relMercDest As New RelacionMercanciaOrigenDestino
+            relMercDest.IdDestino = idMovimiento
+            relMercDest.ClaveProdServ = claveProdServ
+            relMercDest.DescripcionProductoServicio = merc.Descripcion
+            relMercDest.Cantidad = cantidadAnadir
+            nuevaMercancia.AnadeRelacion(relMercDest)
+
+            listadoMercancias.Add(nuevaMercancia)
+        End If
+    End Sub
 
     Private Sub BindGridMovimiento()
-        Dim movLocal As List(Of OrigenDestino) = New List(Of OrigenDestino)
-        movLocal.AddRange(datosDestinosIntermediosParaCartaPorte)
-        movLocal.Add(datosDestinoParaCartaPorte)
-
+        dgvConfirmacionUbicaciones.DataSource = Nothing
         If dgvConfirmacionUbicaciones.Rows IsNot Nothing Then
             dgvConfirmacionUbicaciones.Rows.Clear()
         End If
-        dgvConfirmacionUbicaciones.DataSource = Nothing
+
         dgvConfirmacionUbicaciones.AutoGenerateColumns = False
         dgvConfirmacionUbicaciones.Columns("IdUbicacionClmMercMov").DataPropertyName = NameOf(OrigenDestino.IDUbicacion)
         dgvConfirmacionUbicaciones.Columns("DestinoUbiClm").DataPropertyName = NameOf(OrigenDestino.DestinoDesplegado)
         dgvConfirmacionUbicaciones.Columns("TipoDestinoPestUbiClm").DataPropertyName = NameOf(OrigenDestino.TipoMovimiento)
-        dgvConfirmacionUbicaciones.DataSource = movLocal
+        dgvConfirmacionUbicaciones.DataSource = pestConfirmacioListaDestinos
     End Sub
 
-    Private Sub ObtenMercanciaSinDuenos()
-        Dim movLocal As List(Of OrigenDestino) = New List(Of OrigenDestino)
-        movLocal.AddRange(datosDestinosIntermediosParaCartaPorte)
-        movLocal.Add(datosDestinoParaCartaPorte)
+    Private Sub BindGridMercanciasConDestino()
+        dgvRelacionMercanciaUbicaciones.DataSource = Nothing
+        If dgvRelacionMercanciaUbicaciones.Rows IsNot Nothing Then
+            dgvRelacionMercanciaUbicaciones.Rows.Clear()
+        End If
 
-        listaMercanciasSinDueno = sumatoriaFinalMercancias.FindAll(Function(m) m.CantidadSinAsignar > 0)
+        dgvRelacionMercanciaUbicaciones.AutoGenerateColumns = False
+        dgvRelacionMercanciaUbicaciones.Columns("RelMercUbiIdUbiClm").DataPropertyName = NameOf(Mercancia.MovimientoMercancia)
+        dgvRelacionMercanciaUbicaciones.Columns("RelMercUbiClaveProdServClm").DataPropertyName = NameOf(Mercancia.ClaveProdServ)
+        dgvRelacionMercanciaUbicaciones.Columns("RelMercUbiDescMercClm").DataPropertyName = NameOf(Mercancia.Descripcion)
+        dgvRelacionMercanciaUbicaciones.Columns("RelMercUbiClaveUnidadClm").DataPropertyName = NameOf(Mercancia.ClaveUnidad)
+        dgvRelacionMercanciaUbicaciones.Columns("RelMercUbiDescUnidadClm").DataPropertyName = NameOf(Mercancia.Unidad)
+        dgvRelacionMercanciaUbicaciones.Columns("RelMercUbiCantidadClm").DataPropertyName = NameOf(Mercancia.Cantidad)
+
+        dgvRelacionMercanciaUbicaciones.DataSource = pestConfirmacionListaFinalMercancias
+    End Sub
+
+    Private Sub BindGridMercanciasSinDestino()
+        dgvMercanciasSinUbicaciones.DataSource = Nothing
         If dgvMercanciasSinUbicaciones.Rows IsNot Nothing Then
             dgvMercanciasSinUbicaciones.Rows.Clear()
         End If
-        dgvMercanciasSinUbicaciones.DataSource = Nothing
+
+        If pestConfirmacionListaMercanciaSinDestino Is Nothing Then
+            Return
+        End If
+        If pestConfirmacionListaMercanciaSinDestino.Count = 0 Then
+            Return
+        End If
 
         dgvMercanciasSinUbicaciones.Columns("AsignarClaveProdServClm").DataPropertyName = NameOf(Mercancia.ClaveProdServ)
-        dgvMercanciasSinUbicaciones.Columns("AsignarClaveProdServClm").ReadOnly = True
         dgvMercanciasSinUbicaciones.Columns("AsignarDescripcionMercClm").DataPropertyName = NameOf(Mercancia.Descripcion)
-        dgvMercanciasSinUbicaciones.Columns("AsignarDescripcionMercClm").ReadOnly = True
+        dgvMercanciasSinUbicaciones.Columns("AsignarClaveUnidadClm").DataPropertyName = NameOf(Mercancia.ClaveUnidad)
+        dgvMercanciasSinUbicaciones.Columns("AsignarDescUnidadClm").DataPropertyName = NameOf(Mercancia.Unidad)
         dgvMercanciasSinUbicaciones.Columns("AsignarCantidadRestanteClm").DataPropertyName = NameOf(Mercancia.CantidadSinAsignar)
-        dgvMercanciasSinUbicaciones.Columns("AsignarCantidadRestanteClm").ReadOnly = True
+        dgvMercanciasSinUbicaciones.Columns("AsignarCantidadParaAsignarClm").ReadOnly = False
+        dgvMercanciasSinUbicaciones.Columns("AsignarCantidadParaAsignarClm").ValueType = GetType(Int32)
 
-        'Dim columna As DataGridViewTextBoxColumn
-        'columna.ReadOnly = False
-        'columna.ValueType
-
-
-
+        Dim columnaCombo As DataGridViewComboBoxColumn = CType(dgvMercanciasSinUbicaciones.Columns("AsignarDestinoClm"), DataGridViewComboBoxColumn)
+        columnaCombo.ValueMember = NameOf(OrigenDestino.IDUbicacion)
+        columnaCombo.DisplayMember = NameOf(OrigenDestino.DestinoDesplegado)
+        columnaCombo.DataSource = pestConfirmacioListaDestinos
     End Sub
 
     Private Sub btnAtrasConfirmacion_Click(sender As Object, e As EventArgs) Handles btnAtrasConfirmacion.Click
         ESTOY_CAMBIANDO_MEDIANTE_INDICE = True
         TabControl1.SelectedTab = TabControl1.TabPages("tabOperador")
         ESTOY_CAMBIANDO_MEDIANTE_INDICE = False
+    End Sub
+
+    Private Sub dgvMercanciasSinUbicaciones_CellContentClick(sender As Object, e As DataGridViewCellEventArgs) Handles dgvMercanciasSinUbicaciones.CellContentClick
+        Dim indiceAsignar As Int32 = dgvMercanciasSinUbicaciones.Columns.IndexOf(dgvMercanciasSinUbicaciones.Columns("AsignarDestinoAccionClm"))
+        If e.ColumnIndex <> indiceAsignar Then
+            Return
+        End If
+
+        Dim cantidadMaxima As Int32 = CInt(dgvMercanciasSinUbicaciones.Rows(e.RowIndex).Cells("AsignarCantidadRestanteClm").Value)
+        Dim cantidadParaAsignar As Int32 = CInt(dgvMercanciasSinUbicaciones.Rows(e.RowIndex).Cells("AsignarCantidadParaAsignarClm").Value)
+
+        If cantidadParaAsignar > cantidadMaxima Or cantidadParaAsignar <= 0 Then
+            AlertaMensaje(ObtenParametroPorLlave("CANTIDAD_ASIG_NO"))
+            Return
+        End If
+
+        Dim destino As String = CType(dgvMercanciasSinUbicaciones.Rows(e.RowIndex).Cells("AsignarDestinoClm"), DataGridViewComboBoxCell).Value.ToString
+        Dim claveProdServ As String = dgvMercanciasSinUbicaciones.Rows(e.RowIndex).Cells("AsignarClaveProdServClm").Value
+        Dim claveUnidad As String = dgvMercanciasSinUbicaciones.Rows(e.RowIndex).Cells("AsignarClaveUnidadClm").Value
+        AnadeMercanciaARelacion(pestConfirmacionListaMercanciaSinDestino, destino, claveProdServ, claveUnidad, cantidadParaAsignar)
+
+        BindGridMercanciasConDestino()
+        BindGridMercanciasSinDestino()
+    End Sub
+
+    Private Sub dgvRelacionMercanciaUbicaciones_CellContentClick(sender As Object, e As DataGridViewCellEventArgs) Handles dgvRelacionMercanciaUbicaciones.CellContentClick
+        Dim indiceBotonRemover As Int32 = dgvRelacionMercanciaUbicaciones.Columns.IndexOf(dgvRelacionMercanciaUbicaciones.Columns("RelMercUbiBtnEliminarClm"))
+        If e.ColumnIndex <> indiceBotonRemover Then
+            Return
+        End If
+
+        Dim idMovimiento As String = dgvRelacionMercanciaUbicaciones.Rows(e.RowIndex).Cells("RelMercUbiIdUbiClm").Value
+        Dim claveProdServ As String = dgvRelacionMercanciaUbicaciones.Rows(e.RowIndex).Cells("RelMercUbiClaveProdServClm").Value
+        Dim claveUnidad As String = dgvRelacionMercanciaUbicaciones.Rows(e.RowIndex).Cells("RelMercUbiClaveUnidadClm").Value
+        Dim cantidadParaEliminar As Int32 = CInt(dgvRelacionMercanciaUbicaciones.Rows(e.RowIndex).Cells("RelMercUbiCantidadClm").Value)
+        RemueveMercanciaDeRelacion(pestConfirmacionListaFinalMercancias, idMovimiento, claveProdServ, claveUnidad, cantidadParaEliminar)
+
+        BindGridMercanciasConDestino()
+        BindGridMercanciasSinDestino()
+    End Sub
+
+    Private Sub btnGenerarCartaPorte_Click(sender As Object, e As EventArgs) Handles btnGenerarCartaPorte.Click
+        Dim pesoBrutoTotal As String = ObtenValorTextbox(txtPesoBrutoTotalMercancias)
+        Dim unidadPeso As String = ObtenValorTextbox(txtUnidadPesoTotalMercancias)
+        Dim numTotal As String = ObtenValorTextbox(txtNumTotalMercancias)
+
+        Dim regExpDec As String = ObtenParametroPorLlave("REGEXP_NUMERO_DECIMAL")
+        If Not Regex.IsMatch(pesoBrutoTotal, regExpDec) Then AlertaMensaje(ObtenParametroPorLlave("INGRESE_PESOBRUTO_TOT")) : Return
+        If Not Regex.IsMatch(numTotal, regExpDec) Then AlertaMensaje(ObtenParametroPorLlave("INGRESE_NUM_TOT")) : Return
+        If EsCadenaVacia(unidadPeso) Then AlertaMensaje(ObtenParametroPorLlave("INGRESE_UNIDAD_TOT")) : Return
+
+        'Preparamos la lista final de mercancías
+        'Aquí vamos a juntar todas mientras tengan la misma claveprodserv y unidad peso
+        Dim listaFinalMercancias As New List(Of Mercancia)
+        For Each mercParaMover As Mercancia In pestConfirmacionListaFinalMercancias
+
+            'Si existe una mercancia así en la lista sin añadir, la sumamos
+            Dim mercSinDestino As Mercancia = EncuentraMercancia(pestConfirmacionListaMercanciaSinDestino, mercParaMover.ClaveProdServ, mercParaMover.ClaveUnidad)
+            If mercSinDestino IsNot Nothing Then
+                mercParaMover.Cantidad = mercParaMover.Cantidad + mercSinDestino.Cantidad
+            End If
+
+            'Ahora, veo si ya tengo alguna con las mismas características en mi lista final
+            Dim mercFinal As Mercancia = EncuentraMercancia(listaFinalMercancias, mercParaMover.ClaveProdServ, mercParaMover.ClaveUnidad)
+            If mercFinal Is Nothing Then
+                'Si no, añado una copia
+                listaFinalMercancias.Add(Mercancia.CreaCopiaMercancia(mercParaMover, True))
+            Else
+                'Si si existe, solo sumamos la cantidad y añadimos la relacion
+                mercFinal.Cantidad = mercFinal.Cantidad + mercParaMover.Cantidad
+                For Each relUbiMerc As RelacionMercanciaOrigenDestino In mercParaMover.RelacionMercanciaDestino
+                    'tengo que verificar que no exista ya ese destino
+                    Dim rel As RelacionMercanciaOrigenDestino = mercFinal.RelacionMercanciaDestino.FirstOrDefault(Function(g) g.IdDestino.Equals(relUbiMerc.IdDestino))
+                    If rel Is Nothing Then
+                        mercFinal.AnadeRelacion(relUbiMerc)
+                    Else
+                        rel.Cantidad = rel.Cantidad + relUbiMerc.Cantidad
+                    End If
+                Next
+            End If
+        Next
+
+        'Ahora sí, a generar el XML
+        pestConfirmacioListaDestinos.Insert(0, datosOrigenParaCartaPorte)
+        Dim xml As String = conexionesCartaPorte.GeneraXmlCartaPorte(
+                "T", False, "", "", "", datosDestinoParaCartaPorte.DistanciaRecorrida,
+                pestConfirmacioListaDestinos,
+                Decimal.Parse(pesoBrutoTotal),
+                unidadPeso,
+                Decimal.Parse(numTotal),
+                listaFinalMercancias,
+                datosAutoTransporte,
+                datosAutoTransporte.Transportista)
+        Dim xml2 As String = xml
     End Sub
 End Class
