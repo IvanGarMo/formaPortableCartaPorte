@@ -2464,6 +2464,8 @@ Public Class frmCartaPorte
         BindCombobox(cbOpcionesConfigVehicular, conexionesCartaPorte.Get_OpcionesConfiguracionVehicular())
         BindCombobox(cbTipoPermisoSCT, conexionesCartaPorte.Get_OpcionesTipoPermiso())
         BloqueaDatosTransporte()
+        numCantidadRemolquesTransporte.Minimum = 0
+        numCantidadRemolquesTransporte.Maximum = 2
     End Sub
 
     Private Sub cbSeleccionarVehiculo_SelectedValueChanged(sender As Object, e As EventArgs) Handles cbSeleccionarVehiculo.SelectedValueChanged
@@ -2471,10 +2473,10 @@ Public Class frmCartaPorte
         If cveVehiculo = "-01" Then
             BloqueaDatosTransporte()
             Return
-        ElseIf cveVehiculo = "00" Then
-            LimpiarPanelDatosTransporte()
-            Return
-        Else
+        End If
+
+        LimpiarPanelDatosTransporte()
+        If cveVehiculo <> "00" Then
             CargaDatosTransporte()
         End If
     End Sub
@@ -2535,45 +2537,44 @@ Public Class frmCartaPorte
         LimpiaDesactivaTextbox(txtPrimaSeguroTransporte)
         numCantidadRemolquesTransporte.Value = 0
         numCantidadRemolquesTransporte.Enabled = False
-
+        numCantidadRemolquesTransporte_ValueChanged(Nothing, Nothing)
         LimpiaDesactivaTextbox(txtAseguradoraDanosMedioAmbiente)
         LimpiaDesactivaTextbox(txtPolizaSegurosDanosMedioAmbiente)
-
-        If EXISTE_MERCANCIA_MATERIAL_PELIGROSO Then
-            txtAseguradoraDanosMedioAmbiente.Enabled = True
-            txtPolizaSegurosDanosMedioAmbiente.Enabled = True
-        Else
-            txtAseguradoraDanosMedioAmbiente.Enabled = False
-            txtPolizaSegurosDanosMedioAmbiente.Enabled = False
-        End If
     End Sub
 
     Private Sub LimpiarPanelDatosTransporte()
         PARTE_DEL_REMOLQUE_ES_AJENA = False
         INFORMACION_VALIDA_TRANSPORTE = False
         LimpiaDesactivaCombobox(cbTipoPermisoSCT)
+        BindCombobox(cbTipoPermisoSCT, conexionesCartaPorte.Get_OpcionesTipoPermiso())
         txtNumPermisoSCT.Text = String.Empty
+        txtNumPermisoSCT.Enabled = True
         LimpiaDesactivaCombobox(cbOpcionesConfigVehicular)
+        BindCombobox(cbOpcionesConfigVehicular, conexionesCartaPorte.Get_OpcionesConfiguracionVehicular())
         txtConfigVehicular.Text = String.Empty
+        txtConfigVehicular.Enabled = True
         txtPlacaTransporte.Text = String.Empty
+        txtPlacaTransporte.Enabled = True
         txtAnioModeloTransporte.Text = String.Empty
+        txtAnioModeloTransporte.Enabled = True
         txtAseguradoraTransporte.Text = String.Empty
+        txtAseguradoraTransporte.Enabled = True
         txtAseguradoraCargaTransporte.Text = String.Empty
+        txtAseguradoraCargaTransporte.Enabled = True
         txtPolizaCargaTransporte.Text = String.Empty
+        txtPolizaCargaTransporte.Enabled = True
         txtPrimaSeguroTransporte.Text = String.Empty
         txtPrimaSeguroTransporte.Enabled = True
         numCantidadRemolquesTransporte.Value = 0
+        numCantidadRemolquesTransporte_ValueChanged(Nothing, Nothing)
+        numCantidadRemolquesTransporte.Enabled = True
 
-        txtAseguradoraDanosMedioAmbiente.Text = String.Empty
-        txtPolizaSegurosDanosMedioAmbiente.Text = String.Empty
-
+        ValidaExisteMercanciaQueCuenteComoPeligroso()
         If EXISTE_MERCANCIA_MATERIAL_PELIGROSO Then
             txtAseguradoraDanosMedioAmbiente.Enabled = True
             txtPolizaSegurosDanosMedioAmbiente.Enabled = True
-        Else
-            txtAseguradoraDanosMedioAmbiente.Enabled = False
-            txtPolizaSegurosDanosMedioAmbiente.Enabled = False
         End If
+
     End Sub
 
     Private Sub TogglePartesTransporte()
@@ -2588,6 +2589,7 @@ Public Class frmCartaPorte
             LimpiaDesactivaTextbox(txtPlacasRemolque2)
         ElseIf numCantidadRemolquesTransporte.Value >= 1 Then
             BindCombobox(cbPropiedadRemolque1, conexionesCartaPorte.Get_OpcionesPropiedadTransporte())
+            BindCombobox(cbTipoRemolque1, conexionesCartaPorte.Get_ObtenPosiblesTiposRemolque())
             LimpiaDesactivaTextbox(txtTipoRemolque1)
             txtPlacasRemolque1.Enabled = True
             LimpiaDesactivaCombobox(cbPropiedadRemolque2)
@@ -2597,6 +2599,7 @@ Public Class frmCartaPorte
         End If
         If numCantidadRemolquesTransporte.Value = 2 Then
             BindCombobox(cbPropiedadRemolque2, conexionesCartaPorte.Get_OpcionesPropiedadTransporte())
+            BindCombobox(cbTipoRemolque2, conexionesCartaPorte.Get_ObtenPosiblesTiposRemolque())
             txtPlacasRemolque1.Enabled = True
             txtPlacasRemolque2.Enabled = True
             LimpiaDesactivaTextbox(txtTipoRemolque2)
@@ -2610,7 +2613,8 @@ Public Class frmCartaPorte
     Private Sub CargaTipoRemolque(ByVal numeroRemolque As Int32)
         Dim text As TextBox = IIf(numeroRemolque = 1, txtTipoRemolque1, txtTipoRemolque2)
         Dim combo As ComboBox = IIf(numeroRemolque = 1, cbTipoRemolque1, cbTipoRemolque2)
-        text.Text = conexionesCartaPorte.Get_ObtenDescripcionPorTipoSubRemolque(combo.SelectedValue)
+        If ObtenValorCombobox(combo) = "-01" Then Return
+        text.Text = conexionesCartaPorte.Get_ObtenDescripcionPorTipoSubRemolque(ObtenValorCombobox(combo))
         text.Enabled = False
     End Sub
 
@@ -2641,6 +2645,7 @@ Public Class frmCartaPorte
     End Sub
 
     Private Sub ValidaDatosTransporte()
+        INFORMACION_VALIDA_TRANSPORTE = False
         datosAutoTransporte = New Autotransporte
         Dim claveInternaVehiculo As String = String.Empty
         Dim tipoPermisoSct As String = String.Empty
@@ -2661,7 +2666,7 @@ Public Class frmCartaPorte
         If ObtenValorCombobox(cbTipoPermisoSCT) = "-01" Then AlertaMensaje(ObtenParametroPorLlave("ES_NECESARIO_TIPO_PERMISO")) : Return
         If ObtenValorCombobox(cbOpcionesConfigVehicular) = "-01" Then AlertaMensaje(ObtenParametroPorLlave("ES_NECESARIO_CONFIG_VEHICULAR")) : Return
         claveInternaVehiculo = ObtenValorCombobox(cbSeleccionarVehiculo)
-        tipoPermisoSct = ObtenValorCombobox(cbTipoPermisoSCT.SelectedValue)
+        tipoPermisoSct = ObtenValorCombobox(cbTipoPermisoSCT)
         numPermisoSct = ObtenValorTextbox(txtNumPermisoSCT)
         configVehicular = ObtenValorCombobox(cbOpcionesConfigVehicular)
         placa = ObtenValorTextbox(txtPlacaTransporte).Replace("-", "").Replace(" ", "")
@@ -2730,7 +2735,7 @@ Public Class frmCartaPorte
         datosAutoTransporte.AseguraMedAmbiente = aseguradoraMedioAmbiente
         datosAutoTransporte.PolizaMedAmbiente = polizaMedioAmbiente
         INFORMACION_VALIDA_TRANSPORTE = True
-        End Sub
+    End Sub
 
     Private Sub cbTipoPermisoSCT_SelectedValueChanged(sender As Object, e As EventArgs) Handles cbTipoPermisoSCT.SelectedValueChanged
         If ObtenValorCombobox(cbTipoPermisoSCT) = "-01" Then
@@ -2757,7 +2762,8 @@ Public Class frmCartaPorte
         ValidaDatosTransporte()
         If INFORMACION_VALIDA_TRANSPORTE Then
             ESTOY_CAMBIANDO_MEDIANTE_INDICE = True
-            TabControl1.SelectedIndex = TabControl1.SelectedIndex + 1
+            AlertaMensaje("Hurra!")
+            'TabControl1.SelectedIndex = TabControl1.SelectedIndex + 1
             ESTOY_CAMBIANDO_MEDIANTE_INDICE = False
         End If
     End Sub
