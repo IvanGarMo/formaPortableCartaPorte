@@ -3255,6 +3255,7 @@ Public Class frmCartaPorte
     End Sub
 
     Private Sub cbOpcionesOperador_SelectedValueChanged(sender As Object, e As EventArgs) Handles cbOpcionesOperador.SelectedValueChanged
+        ToggleDatosOperador()
         Dim claveOperador = ObtenValorCombobox(cbOpcionesOperador)
         If claveOperador = "-01" Then
             BloqueaDatosOperador()
