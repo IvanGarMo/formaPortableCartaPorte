@@ -1969,15 +1969,17 @@ Public Class frmCartaPorte
     End Function
 
     Public Function ObtenMercancia(ByVal idMovimiento As String,
-                                   ByVal claveProdServ As String) As Mercancia
-        Return listadoMercancias.FirstOrDefault(Function(m) m.MovimientoMercancia.Equals(idMovimiento) And m.ClaveProdServ.Equals(claveProdServ))
+                                   ByVal claveProdServ As String,
+                                   ByVal claveUnidad As String) As Mercancia
+        Return listadoMercancias.FirstOrDefault(Function(m) m.MovimientoMercancia.Equals(idMovimiento) And m.ClaveProdServ.Equals(claveProdServ) And m.ClaveUnidad.Equals(claveUnidad))
     End Function
 
     Private Sub EliminaMercanciaDeMovimiento(ByVal idMovimiento As String,
-                                             ByVal claveProdServ As String)
+                                             ByVal claveProdServ As String,
+                                             ByVal claveUnidad As String)
         Dim resp = MsgBox(ObtenParametroPorLlave("ELIMINAR_MERCANCIA"), vbQuestion + vbYesNo, "Alerta")
         If resp = MsgBoxResult.Yes Then
-            listadoMercancias.Remove(ObtenMercancia(idMovimiento, claveProdServ))
+            listadoMercancias.Remove(ObtenMercancia(idMovimiento, claveProdServ, claveUnidad))
             BindGridDetalleMercanciasPorMovimiento(ObtenMercanciasPorMovimiento(idMovimiento))
         End If
         BloqueaPanelInformacionMercancias()
@@ -2103,6 +2105,8 @@ Public Class frmCartaPorte
         dgvMercanciasPorMovimiento.Columns("MovimientoDescripcionClm").DataPropertyName = NameOf(Mercancia.Descripcion)
         dgvMercanciasPorMovimiento.Columns("MercanciaMovimientoPeligrosaClm").DataPropertyName = NameOf(Mercancia.EsMaterialPeligrosoCad)
         dgvMercanciasPorMovimiento.Columns("MovimientoComercioIntClm").DataPropertyName = NameOf(Mercancia.EsComercioInternacionalCad)
+        dgvMercanciasPorMovimiento.Columns("ClaveUnidadClm").DataPropertyName = NameOf(Mercancia.ClaveUnidad)
+        dgvMercanciasPorMovimiento.Columns("DescripcionUnidadClm").DataPropertyName = NameOf(Mercancia.Unidad)
         dgvMercanciasPorMovimiento.DataSource = mercanciasMovimiento
     End Sub
 
@@ -2135,7 +2139,6 @@ Public Class frmCartaPorte
     End Sub
 
     Private Sub ToggleComercioInternacional()
-        Dim merc = ObtenMercancia(PESTANA_MERCANCIAS_ID_MOVIMIENTO_EN_MODIFICACION, txtClaveProdServMercancia.Text)
         If rbComercioInternacionalSi.Checked Then
             txtFraccionArancelaria.Enabled = True
             txtPedimento.Enabled = True
@@ -2143,6 +2146,7 @@ Public Class frmCartaPorte
                 txtPedimento.Text = String.Empty
                 txtFraccionArancelaria.Text = String.Empty
             Else
+                Dim merc = ObtenMercancia(PESTANA_MERCANCIAS_ID_MOVIMIENTO_EN_MODIFICACION, txtClaveProdServMercancia.Text, ObtenValorTextbox(txtUnidadClaveMercancia))
                 txtPedimento.Text = merc.Pedimento
                 txtFraccionArancelaria.Text = merc.FraccionArancelaria
             End If
@@ -2154,7 +2158,7 @@ Public Class frmCartaPorte
     End Sub
 
     Private Sub ToggleMaterialPeligroso()
-        Dim merc = ObtenMercancia(PESTANA_MERCANCIAS_ID_MOVIMIENTO_EN_MODIFICACION, txtClaveProdServMercancia.Text)
+        Dim merc = ObtenMercancia(PESTANA_MERCANCIAS_ID_MOVIMIENTO_EN_MODIFICACION, txtClaveProdServMercancia.Text, ObtenValorTextbox(txtUnidadClaveMercancia))
         If rbNoMaterialPeligroso.Checked Then
             LimpiaDesactivaTextbox(txtClaveMaterialPeligroso)
             LimpiaDesactivaTextbox(txtDescripcionMaterialPeligroso)
@@ -2343,7 +2347,7 @@ Public Class frmCartaPorte
         Dim mercanciaEnModificacion As Mercancia
 
         If ESTA_MODIFICANDO_MERCANCIA Then
-            mercanciaEnModificacion = ObtenMercancia(PESTANA_MERCANCIAS_ID_MOVIMIENTO_EN_MODIFICACION, txtClaveProdServMercancia.Text)
+            mercanciaEnModificacion = ObtenMercancia(PESTANA_MERCANCIAS_ID_MOVIMIENTO_EN_MODIFICACION, txtClaveProdServMercancia.Text, ObtenValorTextbox(txtUnidadClaveMercancia))
         Else
             mercanciaEnModificacion = New Mercancia
         End If
@@ -2378,8 +2382,12 @@ Public Class frmCartaPorte
         relUbiMerc.Cantidad = cantidadMercancia
         mercanciaEnModificacion.AnadeRelacion(relUbiMerc)
 
-
         If ESTA_CREANDO_MERCANCIA Then
+            If ObtenMercancia(PESTANA_MERCANCIAS_ID_MOVIMIENTO_EN_MODIFICACION, claveProdServ, claveUnidad) IsNot Nothing Then
+                AlertaMensaje(ObtenParametroPorLlave("MERC_DUPLI"))
+                Return
+            End If
+
             listadoMercancias.Add(mercanciaEnModificacion)
             ESTA_CREANDO_MERCANCIA = False
             ESTA_MODIFICANDO_MERCANCIA = False
@@ -2430,14 +2438,15 @@ Public Class frmCartaPorte
         Dim claveProdServ As String = dgvMercanciasPorMovimiento.Rows(e.RowIndex).Cells("MercanciaClaveProdServClm").Value
         Dim indiceDetalles As Int32 = dgvMercanciasPorMovimiento.Columns().IndexOf(dgvMercanciasPorMovimiento.Columns("MovimientoDetallesMercClm"))
         Dim indiceEliminar As Int32 = dgvMercanciasPorMovimiento.Columns().IndexOf(dgvMercanciasPorMovimiento.Columns("MovimientoMercanciaEliminarClm"))
+        Dim claveUnidad As String = dgvMercanciasPorMovimiento.Columns().IndexOf(dgvMercanciasPorMovimiento.Columns("ClaveUnidadClm"))
         If e.ColumnIndex = indiceDetalles Then
-            Dim mercancia As Mercancia = ObtenMercancia(PESTANA_MERCANCIAS_ID_MOVIMIENTO_EN_MODIFICACION, claveProdServ)
+            Dim mercancia As Mercancia = ObtenMercancia(PESTANA_MERCANCIAS_ID_MOVIMIENTO_EN_MODIFICACION, claveProdServ, claveUnidad)
             LimpiaPanelInformacionMercancias()
             CargaDetallesMercancia(mercancia)
             ESTA_CREANDO_MERCANCIA = False
             ESTA_MODIFICANDO_MERCANCIA = True
         ElseIf e.ColumnIndex = indiceEliminar Then
-            EliminaMercanciaDeMovimiento(PESTANA_MERCANCIAS_ID_MOVIMIENTO_EN_MODIFICACION, claveProdServ)
+            EliminaMercanciaDeMovimiento(PESTANA_MERCANCIAS_ID_MOVIMIENTO_EN_MODIFICACION, claveProdServ, ObtenValorTextbox(txtUnidadClaveMercancia))
         End If
     End Sub
 
