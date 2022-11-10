@@ -171,6 +171,88 @@ Public Class ConexionesCartaPorte
         Return Cm.Parameters("@ParCadResultado").Value
     End Function
 
+    Public Function RegistraDatosCreacionCartaPorte(ByVal idEmpresa As String,
+                                                    ByVal tipoMovimiento As String,
+                                                    ByVal idMovimiento As String,
+                                                    ByVal tipoCfdi As String,
+                                                    ByVal transpInter As Boolean,
+                                                    ByVal entradaSalida As String,
+                                                    ByVal viaEntradaSalida As String,
+                                                    ByVal totalDistanciaRecorrida As String,
+                                                    ByRef datosOrigen As String,
+                                                    ByRef destinosIntermedios As String,
+                                                    ByRef destinoFinal As String,
+                                                    ByRef datosMercancia As String,
+                                                    ByRef datosTransporte As String,
+                                                    ByRef datosOperador As String,
+                                                    ByRef pesoBrutoTotal As String,
+                                                    ByRef unidadPesoTotal As String,
+                                                    ByVal numTotal As String) As Boolean
+        Dim Cm As SqlCommand = Nothing
+        Cm = New SqlCommand("sat.SP_CPP_RegistraMovimientoCartaPorte", obtenConexion())
+        Cm.CommandType = CommandType.StoredProcedure
+
+        Cm.Parameters.AddWithValue("@ParCadIdEmpresa", idEmpresa)
+        Cm.Parameters("@ParCadIdEmpresa").Direction = ParameterDirection.Input
+
+        Cm.Parameters.AddWithValue("@ParCadTipoMovimiento", tipoMovimiento)
+        Cm.Parameters("@ParCadTipoMovimiento").Direction = ParameterDirection.Input
+
+        Cm.Parameters.AddWithValue("@ParCadIdMovimiento", idMovimiento)
+        Cm.Parameters("@ParCadIdMovimiento").Direction = ParameterDirection.Input
+
+        Cm.Parameters.AddWithValue("@ParCadTipoCfdi", tipoCfdi)
+        Cm.Parameters("@ParCadTipoCfdi").Direction = ParameterDirection.Input
+
+        Cm.Parameters.AddWithValue("@ParBitTranspInter", transpInter)
+        Cm.Parameters("@ParBitTranspInter").Direction = ParameterDirection.Input
+
+        Cm.Parameters.AddWithValue("@ParCadEntradaSalida", entradaSalida)
+        Cm.Parameters("@ParCadEntradaSalida").Direction = ParameterDirection.Input
+
+        Cm.Parameters.AddWithValue("@ParCadViaEntradaSalida", viaEntradaSalida)
+        Cm.Parameters("@ParCadViaEntradaSalida").Direction = ParameterDirection.Input
+
+        Cm.Parameters.AddWithValue("@ParCadTotalDistRecorrida", totalDistanciaRecorrida)
+        Cm.Parameters("@ParCadTotalDistRecorrida").Direction = ParameterDirection.Input
+
+        Cm.Parameters.AddWithValue("@ParCadDatosOrigen", datosOrigen)
+        Cm.Parameters("@ParCadDatosOrigen").Direction = ParameterDirection.Input
+
+        Cm.Parameters.AddWithValue("@ParCadDestinosIntermedios", destinosIntermedios)
+        Cm.Parameters("@ParCadDestinosIntermedios").Direction = ParameterDirection.Input
+
+        Cm.Parameters.AddWithValue("@ParCadDatosDestinoFinal", destinoFinal)
+        Cm.Parameters("@ParCadDatosDestinoFinal").Direction = ParameterDirection.Input
+
+        Cm.Parameters.AddWithValue("@ParCadDatosMercancia", datosMercancia)
+        Cm.Parameters("@ParCadDatosMercancia").Direction = ParameterDirection.Input
+
+        Cm.Parameters.AddWithValue("@ParCadDatosTransporte", datosTransporte)
+        Cm.Parameters("@ParCadDatosTransporte").Direction = ParameterDirection.Input
+
+        Cm.Parameters.AddWithValue("@ParCadDatosOperador", datosOperador)
+        Cm.Parameters("@ParCadDatosOperador").Direction = ParameterDirection.Input
+
+        Cm.Parameters.AddWithValue("@ParCadDatosRelacionMercancia", "")
+        Cm.Parameters("@ParCadDatosRelacionMercancia").Direction = ParameterDirection.Input
+
+        Cm.Parameters.AddWithValue("@ParCadPesoBrutoTotal", pesoBrutoTotal)
+        Cm.Parameters("@ParCadPesoBrutoTotal").Direction = ParameterDirection.Input
+
+        Cm.Parameters.AddWithValue("@ParCadUnidadPesoTotal", unidadPesoTotal)
+        Cm.Parameters("@ParCadUnidadPesoTotal").Direction = ParameterDirection.Input
+
+        Cm.Parameters.AddWithValue("@ParCadNumTotal", numTotal)
+        Cm.Parameters("@ParCadNumTotal").Direction = ParameterDirection.Input
+
+        Cm.Parameters.Add("@ParBitError", SqlDbType.Bit, 1)
+        Cm.Parameters("@ParBitError").Direction = ParameterDirection.Output
+
+        Cm.ExecuteNonQuery()
+
+        Return CType(Cm.Parameters("@ParBitError").Value, Boolean)
+    End Function
     Public Function Get_ObtenParametros() As DataTable
         Dim Cm As SqlCommand = Nothing
         Cm = New SqlCommand("sat.SP_CCP_ObtenParametros", obtenConexion())
