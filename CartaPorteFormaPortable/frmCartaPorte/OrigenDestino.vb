@@ -1,4 +1,6 @@
-﻿Public Class OrigenDestino
+﻿Imports System.Text.RegularExpressions
+
+Public Class OrigenDestino
     Private _Movimiento As String
     Private _TipoUbicacion As String
     Private _IDUbicacion As String
@@ -190,11 +192,11 @@
     Public ReadOnly Property NombreUbicacionParaComplemento As String
         Get
             If _EsPersonaFisica Then
-                Return Trim(_Nombre) + Trim(_ApPaterno) + Trim(_ApMaterno)
+                Return Regex.Replace(_Nombre + " " + _ApPaterno + " " + _ApMaterno, " {2,}", " ")
             ElseIf _EsPersonaMoral Then
-                Return Trim(_Nombre)
+                Return Regex.Replace(_NombrePersonaMoral, " {2,}", " ")
             ElseIf _EsExtranjero Then
-                Return Trim(_Nombre) + Trim(_ApPaterno) + Trim(_ApMaterno)
+                Return Regex.Replace(_Nombre + " " + _ApPaterno + " " + _ApMaterno, " {2,}", " ")
             End If
         End Get
     End Property
@@ -230,7 +232,7 @@
             If String.IsNullOrWhiteSpace(_HoraSalidaLlegada) Then
                 _HoraSalidaLlegada = "00:00"
             End If
-            Return _FechaSalidaLlegada + "T" + _HoraSalidaLlegada
+            Return _FechaSalidaLlegada.ToString("yyyy-MM-dd") + "T" + _HoraSalidaLlegada
         End Get
     End Property
 

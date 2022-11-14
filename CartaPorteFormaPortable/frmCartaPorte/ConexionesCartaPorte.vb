@@ -14,6 +14,33 @@ Public Class ConexionesCartaPorte
         Return con
     End Function
 
+    Public Function GeneraXmlTraslado(ByVal rfc As String,
+                                      ByRef listaMercancias As List(Of Mercancia))
+        Dim Cm As SqlCommand = Nothing
+        Cm = New SqlCommand("sat.FN_CCP_CreacionCFDITraslado_Tipos", obtenConexion())
+        Cm.CommandType = CommandType.StoredProcedure
+
+        Cm.Parameters.AddWithValue("@ParCadRfc", rfc)
+        Cm.Parameters("@ParCadRfc").Direction = ParameterDirection.Input
+
+        Cm.Parameters.AddWithValue("@ParBitCartaPorte", True)
+        Cm.Parameters("@ParBitCartaPorte").Direction = ParameterDirection.Input
+
+        Dim datosMercancias As DataTable = tiposCartaPorte.CantidadMercanciaTipo()
+        For Each mercancia In listaMercancias
+            tiposCartaPorte.AnadeMercanciaEnTabla(datosMercancias, mercancia)
+        Next
+
+        Cm.Parameters.AddWithValue("@ParTabMercancia", datosMercancias)
+        Cm.Parameters("@ParTabMercancia").Direction = ParameterDirection.Input
+
+        Cm.Parameters.Add("@ParCadResultado", SqlDbType.Text, Int32.MaxValue)
+        Cm.Parameters("@ParCadResultado").Direction = ParameterDirection.ReturnValue
+
+        Cm.ExecuteScalar()
+        Return Cm.Parameters("@ParCadResultado").Value
+    End Function
+
     Public Function GeneraXmlCartaPorte(ByVal tipoCfdi As String,
                                         ByVal transporteInternacional As Boolean,
                                         ByVal entradaSalida As String,
@@ -401,7 +428,10 @@ Public Class ConexionesCartaPorte
         Return CType(Cm.Parameters("@ParBitValido").Value, Boolean)
     End Function
 
-    Public Function Get_ObtenDescripcionPorClaveProdServ(ByRef claveProdServ As String) As String
+    Public Sub Get_ObtenDescripcionPorClaveProdServ(ByRef claveProdServ As String,
+                                                    ByRef descripcionProd As String,
+                                                    ByRef requiereNodoPeligroso As Boolean,
+                                                    ByRef satMarcadaPeligrosa As Boolean)
         Dim Cm As SqlCommand = Nothing
         Cm = New SqlCommand("sat.SP_CCP_CargaDescripcionProducto", obtenConexion())
         Cm.CommandType = CommandType.StoredProcedure
@@ -411,9 +441,19 @@ Public Class ConexionesCartaPorte
 
         Cm.Parameters.Add("@ParCadDescripcionProdServ", SqlDbType.VarChar, 1000)
         Cm.Parameters("@ParCadDescripcionProdServ").Direction = ParameterDirection.Output
+
+        Cm.Parameters.Add("@ParCadRequiereNodoMercanciaPeligrosa", SqlDbType.Bit, 1)
+        Cm.Parameters("@ParCadRequiereNodoMercanciaPeligrosa").Direction = ParameterDirection.Output
+
+        Cm.Parameters.Add("@ParCadSatConsideraPeligrosa", SqlDbType.Bit, 1)
+        Cm.Parameters("@ParCadSatConsideraPeligrosa").Direction = ParameterDirection.Output
+
         Cm.ExecuteNonQuery()
-        Return Cm.Parameters("@ParCadDescripcionProdServ").Value
-    End Function
+
+        descripcionProd = Cm.Parameters("@ParCadDescripcionProdServ").Value
+        requiereNodoPeligroso = CType(Cm.Parameters("@ParCadRequiereNodoMercanciaPeligrosa").Value, Boolean)
+        satMarcadaPeligrosa = CType(Cm.Parameters("@ParCadSatConsideraPeligrosa").Value, Boolean)
+    End Sub
 
     Public Function Get_ClaveUnidadPeso(ByRef clave As String) As String
         Dim Cm As SqlCommand = Nothing

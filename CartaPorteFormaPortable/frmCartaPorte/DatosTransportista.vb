@@ -1,4 +1,6 @@
-﻿Public Class DatosTransportista
+﻿Imports System.Text.RegularExpressions
+
+Public Class DatosTransportista
     Private _CveInternaOperador As String
     Private _TipoFigura As String
     Private _RFCFigura As String
@@ -133,7 +135,7 @@
 
     Public ReadOnly Property NombreCompleto As String
         Get
-            Return _NombreTransportista + _ApellidoPaternoTransportista + _ApellidoMaternoTransportista
+            Return Regex.Replace(Trim(_NombreTransportista) + " " + Trim(_ApellidoPaternoTransportista) + " " + Trim(_ApellidoMaternoTransportista), " {2,}", " ")
         End Get
     End Property
 End Class

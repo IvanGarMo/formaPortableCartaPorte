@@ -214,7 +214,7 @@ Public Class frmCartaPorte
 
     Private Function ObtenValorTextbox(ByRef text As TextBox) As String
         If text Is Nothing Then Return String.Empty
-        Return UCase(Trim(text.Text))
+        Return UCase(Regex.Replace(Trim(text.Text), " {2,}", " "))
     End Function
 
     Private Sub RemueveDeGrid(ByRef control As Control, ByRef panel As TableLayoutPanel)
@@ -2176,10 +2176,45 @@ Public Class frmCartaPorte
         End If
     End Sub
 
+    Private Sub AplicaValidacionesSatMaterialPeligroso(ByRef requiereNodo As Boolean,
+                                                       ByRef marcadaComoPeligrosa As Boolean,
+                                                       Optional ByRef mercancia As Mercancia = Nothing)
+        If Not requiereNodo And Not marcadaComoPeligrosa Then
+            rbSiMaterialPeligroso.Checked = False
+            rbNoMaterialPeligroso.Checked = True
+            rbSiMaterialPeligroso.Enabled = False
+            rbNoMaterialPeligroso.Enabled = False
+        ElseIf requiereNodo And Not marcadaComoPeligrosa Then
+            rbSiMaterialPeligroso.Enabled = True
+            rbNoMaterialPeligroso.Enabled = True
+            If mercancia Is Nothing Then
+                rbSiMaterialPeligroso.Checked = False
+                rbNoMaterialPeligroso.Checked = True
+            Else
+                rbSiMaterialPeligroso.Checked = mercancia.MaterialPeligroso
+                rbNoMaterialPeligroso.Checked = Not mercancia.MaterialPeligroso
+            End If
+        ElseIf requiereNodo And marcadaComoPeligrosa Then
+            rbSiMaterialPeligroso.Enabled = True
+            rbNoMaterialPeligroso.Enabled = False
+            rbSiMaterialPeligroso.Checked = True
+        End If
+    End Sub
+
     Private Sub CargaDetallesMercancia(ByRef mercancia As Mercancia)
         txtClaveProdServMercancia.Text = mercancia.ClaveProdServ
         txtClaveProdServMercancia.Enabled = False
-        txtDescripcionProducto.Text = conexionesCartaPorte.Get_ObtenDescripcionPorClaveProdServ(mercancia.ClaveProdServ)
+
+        Dim descripcionProducto As String = String.Empty
+        Dim requiereNodoMercPeligroso As Boolean = False
+        Dim satMarcaPeligroso As Boolean = False
+        conexionesCartaPorte.Get_ObtenDescripcionPorClaveProdServ(mercancia.ClaveProdServ, descripcionProducto, requiereNodoMercPeligroso, satMarcaPeligroso)
+
+        txtDescripcionProducto.Text = descripcionProducto
+        AplicaValidacionesSatMaterialPeligroso(requiereNodoMercPeligroso,
+                                                satMarcaPeligroso,
+                                                mercancia)
+
         txtCantidadMercancia.Text = mercancia.Cantidad.ToString
         txtUnidadClaveMercancia.Text = mercancia.ClaveUnidad
         txtUnidadMercancia.Text = conexionesCartaPorte.Get_ClaveUnidadPeso(mercancia.ClaveUnidad)
@@ -2240,10 +2275,18 @@ Public Class frmCartaPorte
         txtDescripcionProducto.Enabled = False
         Dim longitudClaveProdServ As Int32 = CInt(ObtenParametroPorLlave("LONGITUD_CLAVE_PROD_SERV"))
         Dim regExpClaveProdServ As String = ObtenParametroPorLlave("REGEXP_CLAVE_PROD_SERV")
-        Dim claveProdServ As String = Trim(txtClaveProdServMercancia.Text)
+        Dim claveProdServ As String = ObtenValorTextbox(txtClaveProdServMercancia)
         If claveProdServ.Length <> longitudClaveProdServ Then Return
         If Not Regex.IsMatch(claveProdServ, regExpClaveProdServ) Then Return
-        txtDescripcionProducto.Text = conexionesCartaPorte.Get_ObtenDescripcionPorClaveProdServ(claveProdServ)
+
+        Dim descripcionProducto As String = String.Empty
+        Dim requiereNodoMercPeligroso As Boolean = False
+        Dim satMarcaPeligroso As Boolean = False
+        conexionesCartaPorte.Get_ObtenDescripcionPorClaveProdServ(claveProdServ, descripcionProducto, requiereNodoMercPeligroso, satMarcaPeligroso)
+
+        txtDescripcionProducto.Text = descripcionProducto
+        AplicaValidacionesSatMaterialPeligroso(requiereNodoMercPeligroso,
+                                                satMarcaPeligroso)
     End Sub
 
     Private Sub txtUnidadClaveMercancia_TextChanged(sender As Object, e As EventArgs) Handles txtUnidadClaveMercancia.TextChanged
@@ -2351,7 +2394,14 @@ Public Class frmCartaPorte
         End If
 
         mercanciaEnModificacion.ClaveProdServ = claveProdServ
-        mercanciaEnModificacion.Descripcion = conexionesCartaPorte.Get_ObtenDescripcionPorClaveProdServ(claveProdServ)
+
+        Dim requiereNodoMercPeligroso As Boolean = False
+        Dim satMarcaPeligroso As Boolean = False
+        conexionesCartaPorte.Get_ObtenDescripcionPorClaveProdServ(claveProdServ, descripcionProducto, requiereNodoMercPeligroso, satMarcaPeligroso)
+        mercanciaEnModificacion.Descripcion = descripcionProducto
+        mercanciaEnModificacion.RequiereNodoMaterialPeligroso = requiereNodoMercPeligroso
+        mercanciaEnModificacion.SatConsideraPeligrosa = satMarcaPeligroso
+
         mercanciaEnModificacion.Cantidad = CInt(cantidadMercancia)
         mercanciaEnModificacion.ClaveUnidad = claveUnidad
         mercanciaEnModificacion.Unidad = descripcionUnidad
@@ -3091,9 +3141,9 @@ Public Class frmCartaPorte
     End Sub
 
     Private Sub cbEstadoOperador_SelectedValueChanged(sender As Object, e As EventArgs) Handles cbEstadoOperador.SelectedValueChanged
-        If ObtenValorCombobox(cbEstadoOperador) = "-01" Then Return
-        BindCombobox(cbMunicipioOperador, ObtenMunicipiosPorEstado(cbEstadoOperador.SelectedValue))
-        BindCombobox(cbLocalidadOperador, ObtenLocalidadesPorEstado(cbEstadoOperador.SelectedValue))
+        If ObtenValorCombobox(refCbEstadoOperador) = "-01" Then Return
+        BindCombobox(refCbMunicipioOperador, ObtenMunicipiosPorEstado(ObtenValorCombobox(refCbEstadoOperador)))
+        BindCombobox(refCbLocalidadOperador, ObtenLocalidadesPorEstado(ObtenValorCombobox(refCbEstadoOperador)))
     End Sub
 
     Private Sub txtCpOperador_TextChanged(sender As Object, e As EventArgs) Handles txtCpOperador.TextChanged
@@ -3119,7 +3169,7 @@ Public Class frmCartaPorte
 
         Dim regExpCP As String = ObtenParametroPorLlave("REGEXP_CODIGO_POSTAL")
         If Regex.IsMatch(Trim(txtCpOperador.Text), regExpCP) Then
-            BindCombobox(cbColoniaOperador, ObtenColoniasPorCodigoPostal(Trim(txtCpOperador.Text)))
+            BindCombobox(refCbColoniaOperador, ObtenColoniasPorCodigoPostal(ObtenValorTextbox(txtCpOperador)))
         End If
     End Sub
 
@@ -3507,7 +3557,7 @@ Public Class frmCartaPorte
 
         'Ahora sí, a generar el XML
         pestConfirmacioListaDestinos.Insert(0, datosOrigenParaCartaPorte)
-        Dim xml As String = conexionesCartaPorte.GeneraXmlCartaPorte(
+        Dim xmlCartaPorte As String = conexionesCartaPorte.GeneraXmlCartaPorte(
                 "T", False, "", "", "", datosDestinoParaCartaPorte.DistanciaRecorrida,
                 pestConfirmacioListaDestinos,
                 Decimal.Parse(pesoBrutoTotal),
@@ -3516,6 +3566,10 @@ Public Class frmCartaPorte
                 listaFinalMercancias,
                 datosAutoTransporte,
                 datosAutoTransporte.Transportista)
-        Dim xml2 As String = xml
+
+        'Ahora es necesario generar el XML de traslado
+        Dim xmlTraslado As String = conexionesCartaPorte.GeneraXmlTraslado(datosOrigenParaCartaPorte.RFCRemitenteDestinatario, listaFinalMercancias)
+        Dim xmlFinal As String = String.Format(xmlTraslado, xmlCartaPorte)
+        Dim aaaaa = xmlFinal
     End Sub
 End Class

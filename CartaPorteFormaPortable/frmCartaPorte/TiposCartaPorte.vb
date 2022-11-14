@@ -51,6 +51,7 @@
         table.Columns.Add("ClaveUnidad", GetType(String))
         table.Columns.Add("Unidad", GetType(String))
         table.Columns.Add("Dimensiones", GetType(String))
+        table.Columns.Add("RequiereNodoMaterialPeligroso", GetType(Boolean))
         table.Columns.Add("MaterialPeligroso", GetType(Boolean))
         table.Columns.Add("CveMaterialPeligroso", GetType(String))
         table.Columns.Add("Embalaje", GetType(String))
@@ -127,6 +128,7 @@
         row("ClaveUnidad") = mercancia.ClaveUnidad
         row("Unidad") = mercancia.Unidad
         row("Dimensiones") = mercancia.Dimensiones
+        row("RequiereNodoMaterialPeligroso") = mercancia.RequiereNodoMaterialPeligroso
         row("MaterialPeligroso") = mercancia.MaterialPeligroso
         row("CveMaterialPeligroso") = mercancia.ClaveMaterialPeligroso
         row("Embalaje") = mercancia.Embalaje

@@ -15,6 +15,10 @@
     Private _Anchura As Int32
     Private _EsCentimetros As Boolean
     Private _EsPulgadas As Boolean
+
+    'Esto es para mantener un buen registro en el SAT
+    Private _RequiereNodoMaterialPeligroso As Boolean
+    Private _SatConsideraPeligrosa As Boolean
     Private _MaterialPeligroso As Boolean
 
     'Esto solo aplica si es material peligroso
@@ -330,5 +334,23 @@
         Get
             Return _RelacionMercanciaDestino(0).IdDestino
         End Get
+    End Property
+
+    Public Property RequiereNodoMaterialPeligroso As Boolean
+        Get
+            Return _RequiereNodoMaterialPeligroso
+        End Get
+        Set(value As Boolean)
+            _RequiereNodoMaterialPeligroso = value
+        End Set
+    End Property
+
+    Public Property SatConsideraPeligrosa As Boolean
+        Get
+            Return _SatConsideraPeligrosa
+        End Get
+        Set(value As Boolean)
+            _SatConsideraPeligrosa = value
+        End Set
     End Property
 End Class
