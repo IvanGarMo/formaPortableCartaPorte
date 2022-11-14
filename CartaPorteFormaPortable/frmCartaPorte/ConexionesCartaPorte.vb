@@ -14,14 +14,42 @@ Public Class ConexionesCartaPorte
         Return con
     End Function
 
-    Public Function GeneraXmlTraslado(ByVal rfc As String,
+    Public Function GeneraXmlTraslado(ByVal rfcEmisor As String,
+                                      ByRef nombreEmisor As String,
+                                      ByRef domicilioFiscalEmisor As String,
+                                      ByRef regimenFiscalEmisor As String,
+                                      ByRef rfcReceptor As String,
+                                      ByRef nombreReceptor As String,
+                                      ByRef domicilioFiscalReceptor As String,
+                                      ByRef regimenFiscalReceptor As String,
                                       ByRef listaMercancias As List(Of Mercancia))
         Dim Cm As SqlCommand = Nothing
         Cm = New SqlCommand("sat.FN_CCP_CreacionCFDITraslado_Tipos", obtenConexion())
         Cm.CommandType = CommandType.StoredProcedure
 
-        Cm.Parameters.AddWithValue("@ParCadRfc", rfc)
-        Cm.Parameters("@ParCadRfc").Direction = ParameterDirection.Input
+        Cm.Parameters.AddWithValue("@ParCadRfcEmisor", rfcEmisor)
+        Cm.Parameters("@ParCadRfcEmisor").Direction = ParameterDirection.Input
+
+        Cm.Parameters.AddWithValue("@ParCadNombreEmisor", nombreEmisor)
+        Cm.Parameters("@ParCadNombreEmisor").Direction = ParameterDirection.Input
+
+        Cm.Parameters.AddWithValue("@ParCadDomicilioFiscalEmisor", domicilioFiscalEmisor)
+        Cm.Parameters("@ParCadDomicilioFiscalEmisor").Direction = ParameterDirection.Input
+
+        Cm.Parameters.AddWithValue("@ParCadRegimenFiscalEmisor", regimenFiscalEmisor)
+        Cm.Parameters("@ParCadRegimenFiscalEmisor").Direction = ParameterDirection.Input
+
+        Cm.Parameters.AddWithValue("@ParCadRfcReceptor", rfcReceptor)
+        Cm.Parameters("@ParCadRfcReceptor").Direction = ParameterDirection.Input
+
+        Cm.Parameters.AddWithValue("@ParCadNombreReceptor", nombreReceptor)
+        Cm.Parameters("@ParCadNombreReceptor").Direction = ParameterDirection.Input
+
+        Cm.Parameters.AddWithValue("@ParCadDomicilioFiscalReceptor", domicilioFiscalReceptor)
+        Cm.Parameters("@ParCadDomicilioFiscalReceptor").Direction = ParameterDirection.Input
+
+        Cm.Parameters.AddWithValue("@ParCadRegimenFiscalReceptor", regimenFiscalReceptor)
+        Cm.Parameters("@ParCadRegimenFiscalReceptor").Direction = ParameterDirection.Input
 
         Cm.Parameters.AddWithValue("@ParBitCartaPorte", True)
         Cm.Parameters("@ParBitCartaPorte").Direction = ParameterDirection.Input
@@ -438,17 +466,17 @@ Public Class ConexionesCartaPorte
         Cm.Parameters.Add("@ParCadDescripcionProdServ", SqlDbType.VarChar, 1000)
         Cm.Parameters("@ParCadDescripcionProdServ").Direction = ParameterDirection.Output
 
-        Cm.Parameters.Add("@ParCadRequiereNodoMercanciaPeligrosa", SqlDbType.Bit, 1)
-        Cm.Parameters("@ParCadRequiereNodoMercanciaPeligrosa").Direction = ParameterDirection.Output
+        Cm.Parameters.Add("@ParBitRequiereNodoMercanciaPeligrosa", SqlDbType.Bit, 1)
+        Cm.Parameters("@ParBitRequiereNodoMercanciaPeligrosa").Direction = ParameterDirection.Output
 
-        Cm.Parameters.Add("@ParCadSatConsideraPeligrosa", SqlDbType.Bit, 1)
-        Cm.Parameters("@ParCadSatConsideraPeligrosa").Direction = ParameterDirection.Output
+        Cm.Parameters.Add("@ParBitSatConsideraPeligrosa", SqlDbType.Bit, 1)
+        Cm.Parameters("@ParBitSatConsideraPeligrosa").Direction = ParameterDirection.Output
 
         Cm.ExecuteNonQuery()
 
         descripcionProd = Cm.Parameters("@ParCadDescripcionProdServ").Value
-        requiereNodoPeligroso = CType(Cm.Parameters("@ParCadRequiereNodoMercanciaPeligrosa").Value, Boolean)
-        satMarcadaPeligrosa = CType(Cm.Parameters("@ParCadSatConsideraPeligrosa").Value, Boolean)
+        requiereNodoPeligroso = CType(Cm.Parameters("@ParBitRequiereNodoMercanciaPeligrosa").Value, Boolean)
+        satMarcadaPeligrosa = CType(Cm.Parameters("@ParBitSatConsideraPeligrosa").Value, Boolean)
     End Sub
 
     Public Function Get_ClaveUnidadPeso(ByRef clave As String) As String

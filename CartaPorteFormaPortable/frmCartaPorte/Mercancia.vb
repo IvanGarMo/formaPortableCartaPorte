@@ -310,6 +310,8 @@
         merc.EsPulgadas = mercancia.EsPulgadas
         merc.MaterialPeligroso = mercancia.MaterialPeligroso
         merc.ClaveMaterialPeligroso = mercancia.ClaveMaterialPeligroso
+        merc.RequiereNodoMaterialPeligroso = mercancia.RequiereNodoMaterialPeligroso
+        merc.SatConsideraPeligrosa = mercancia.SatConsideraPeligrosa
         merc.DescripcionMaterialPeligroso = mercancia.DescripcionMaterialPeligroso
         merc.Embalaje = mercancia.Embalaje
         merc.DescripcionEmbalaje = mercancia.DescripcionEmbalaje

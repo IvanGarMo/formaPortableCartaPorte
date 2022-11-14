@@ -9,7 +9,7 @@
         table.Columns.Add("NumRegIdTrib", GetType(String))
         table.Columns.Add("ResidenciaFiscal", GetType(String))
         table.Columns.Add("FechaHoraSalidaLlegada", GetType(String))
-        table.Columns.Add("DistanciaRecorrida", GetType(String))
+        table.Columns.Add("DistanciaRecorrida", GetType(Integer))
         table.Columns.Add("EsOrigen", GetType(Boolean))
         table.Columns.Add("EsDestinoIntermedio", GetType(Boolean))
         table.Columns.Add("EsDestinoFinal", GetType(Boolean))

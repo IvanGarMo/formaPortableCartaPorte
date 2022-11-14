@@ -409,7 +409,6 @@ Public Class frmCartaPorte
         If Not Regex.IsMatch(idUbicacion, regExpIdOrigen) Then AlertaMensaje(ObtenParametroPorLlave("INGRESE_ID_ORIGEN")) : Return
 
         'Primero, aplico las validaciones que dependen de un escenario
-
         If REMITENTE_ES_PERSONA_FISICA Then 'Validaciones exclusivas de la persona física
             Dim longitudRfcPersonaFisica As Int32 = CInt(ObtenParametroPorLlave("LONGITUD_RFC_PERSONA_FISICA"))
             Dim regExpRfc = ObtenParametroPorLlave("REGEXP_RFC_PERSONA_FISICA")
@@ -1060,6 +1059,9 @@ Public Class frmCartaPorte
         Dim residenciaFiscalDestino As String = String.Empty
         Dim numRegIdFiscalDestino As String = String.Empty
 
+        Dim regExpIdUbiDestino = ObtenParametroPorLlave("REGEXP_ID_DESTINO")
+        If Not Regex.IsMatch(idUbicacion, regExpIdUbiDestino) Then AlertaMensaje(ObtenParametroPorLlave("INGRESE_ID_DESTINO")) : Return
+
         If ES_PERSONA_FISICA_DESTINO Then 'Validaciones de persona física
             rfcDestino = ObtenValorTextbox(txtRfcDestino)
             Dim longitudRfcPersonaFisica As Int32 = CInt(ObtenParametroPorLlave("LONGITUD_RFC_PERSONA_FISICA"))
@@ -1439,6 +1441,10 @@ Public Class frmCartaPorte
 
         Dim tipoUbicacionDestInter As String = "DESTINO"
         Dim idUbicacionDestInter As String = ObtenValorTextbox(txtIdUbicacionDestinoIntermedio)
+
+
+        Dim regExpIdUbiDestino = ObtenParametroPorLlave("REGEXP_ID_DESTINO")
+        If Not Regex.IsMatch(idUbicacionDestInter, regExpIdUbiDestino) Then AlertaMensaje(ObtenParametroPorLlave("INGRESE_ID_DESTINO")) : Return
 
         'Si esta creando uno desde 0, tengo que verificar que la información no esté duplicada
         If ESTA_CREANDO_DESTINO_INTERMEDIO Then
@@ -3228,7 +3234,7 @@ Public Class frmCartaPorte
             estadoOperador = ObtenValorCombobox(refCbEstadoOperador)
             localidadOperador = ObtenValorCombobox(refCbLocalidadOperador)
             municipioOperador = ObtenValorCombobox(refCbMunicipioOperador)
-            coloniaOperador = ObtenValorCombobox(refCbLocalidadOperador)
+            coloniaOperador = ObtenValorCombobox(refCbColoniaOperador)
             If paisOperador = "-01" Then AlertaMensaje(ObtenParametroPorLlave("INGRESE_PAIS")) : Return
             If estadoOperador = "-01" Then AlertaMensaje(ObtenParametroPorLlave("INGRESE_ESTADO")) : Return
             If municipioOperador = "-01" Then AlertaMensaje(ObtenParametroPorLlave("INGRESE_MUNICIPIO")) : Return
@@ -3565,7 +3571,17 @@ Public Class frmCartaPorte
                 datosAutoTransporte.Transportista)
 
         'Ahora es necesario generar el XML de traslado
-        Dim xmlTraslado As String = conexionesCartaPorte.GeneraXmlTraslado(datosOrigenParaCartaPorte.RFCRemitenteDestinatario, listaFinalMercancias)
+        Dim xmlTraslado As String = conexionesCartaPorte.GeneraXmlTraslado(
+            datosOrigenParaCartaPorte.RFCRemitenteDestinatario,
+            datosOrigenParaCartaPorte.NombreUbicacionParaComplemento,
+            datosOrigenParaCartaPorte.DatosDomicilio.CodigoPostal,
+            "601",
+            datosDestinoParaCartaPorte.RFCRemitenteDestinatario,
+            datosDestinoParaCartaPorte.NombreUbicacionParaComplemento,
+            datosDestinoParaCartaPorte.DatosDomicilio.CodigoPostal,
+            "601",
+            listaFinalMercancias
+        )
         Dim xmlFinal As String = String.Format(xmlTraslado, xmlCartaPorte)
         Dim aaaaa = xmlFinal
     End Sub
