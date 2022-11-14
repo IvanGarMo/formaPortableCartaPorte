@@ -50,7 +50,6 @@ Public Class ConexionesCartaPorte
                                         ByRef listadoUbicaciones As List(Of OrigenDestino),
                                         ByVal pesoBrutoTotal As Decimal,
                                         ByVal unidadPesoTotal As String,
-                                        ByVal totalMercancias As Decimal,
                                         ByRef listaMercancias As List(Of Mercancia),
                                         ByRef datosAutoTransporte As Autotransporte,
                                         ByRef datosOperador As DatosTransportista
@@ -96,9 +95,6 @@ Public Class ConexionesCartaPorte
 
         Cm.Parameters.AddWithValue("@ParCadUnidadPeso", unidadPesoTotal)
         Cm.Parameters("@ParCadUnidadPeso").Direction = ParameterDirection.Input
-
-        Cm.Parameters.AddWithValue("@ParNumTotalMercancias", totalMercancias)
-        Cm.Parameters("@ParNumTotalMercancias").Direction = ParameterDirection.Input
 
         Dim datosMercancias As DataTable = tiposCartaPorte.CantidadMercanciaTipo()
         Dim destinosMercancias As DataTable = tiposCartaPorte.CantidadTransportaTipo()

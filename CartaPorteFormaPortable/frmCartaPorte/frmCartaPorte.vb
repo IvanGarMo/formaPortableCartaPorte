@@ -3517,11 +3517,9 @@ Public Class frmCartaPorte
     Private Sub btnGenerarCartaPorte_Click(sender As Object, e As EventArgs) Handles btnGenerarCartaPorte.Click
         Dim pesoBrutoTotal As String = ObtenValorTextbox(txtPesoBrutoTotalMercancias)
         Dim unidadPeso As String = ObtenValorTextbox(txtUnidadPesoTotalMercancias)
-        Dim numTotal As String = ObtenValorTextbox(txtNumTotalMercancias)
 
         Dim regExpDec As String = ObtenParametroPorLlave("REGEXP_NUMERO_DECIMAL")
         If Not Regex.IsMatch(pesoBrutoTotal, regExpDec) Then AlertaMensaje(ObtenParametroPorLlave("INGRESE_PESOBRUTO_TOT")) : Return
-        If Not Regex.IsMatch(numTotal, regExpDec) Then AlertaMensaje(ObtenParametroPorLlave("INGRESE_NUM_TOT")) : Return
         If EsCadenaVacia(unidadPeso) Then AlertaMensaje(ObtenParametroPorLlave("INGRESE_UNIDAD_TOT")) : Return
 
         'Preparamos la lista final de mercancías
@@ -3562,7 +3560,6 @@ Public Class frmCartaPorte
                 pestConfirmacioListaDestinos,
                 Decimal.Parse(pesoBrutoTotal),
                 unidadPeso,
-                Decimal.Parse(numTotal),
                 listaFinalMercancias,
                 datosAutoTransporte,
                 datosAutoTransporte.Transportista)
