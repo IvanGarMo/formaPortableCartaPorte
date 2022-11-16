@@ -275,24 +275,39 @@ Public Class frmCartaPorte
         Return SeEncuentraValor(pais, listaPaisesConColonias, separador)
     End Function
 
-    Private Sub ValidaCodigoPostal(ByRef comboLocalidad As ComboBox,
-                                   ByRef comboMunicipio As ComboBox,
-                                   ByRef textCodigoPostal As TextBox)
-        If (comboMunicipio Is Nothing) Or (comboLocalidad Is Nothing) Then
-            textCodigoPostal.Enabled = True
+    Private Sub ValidaOrdenMunicipioLocalidadCodigo(ByRef refCbPais As ComboBox,
+                                                    ByRef refCbEstado As ComboBox,
+                                                    ByRef refCbLocalidad As ComboBox,
+                                                    ByRef refCbMunicipio As ComboBox,
+                                                    ByRef refTxtCp As TextBox,
+                                                    ByRef refCbColonia As ComboBox)
+        'En los paises que no existe la colonia, es texto abierto el CP
+        Dim valorPais As String = ObtenValorCombobox(refCbPais)
+        If Not PaisTieneColonias(valorPais) Then
+            refTxtCp.Enabled = True
             Return
         End If
 
-        If (comboMunicipio.Items.Count <= 0) Or (comboLocalidad.Items.Count <= 0) Then
-            textCodigoPostal.Enabled = True
+        'Si no existen municipios ni localidades, no tiene caso continuar
+        'tambien es texto abierto el CP
+        If Not PaisTieneMunicipioLocalidad(valorPais) Then
+            refTxtCp.Enabled = True
             Return
         End If
 
-        If (ObtenValorCombobox(comboMunicipio) = "-01") Or (ObtenValorCombobox(comboLocalidad) = "-01") Then
-            LimpiaDesactivaTextbox(textCodigoPostal)
+        'Ahora sí, si tiene municipio y localidad,
+        'aplico validacion de que no sea posible ingresar CP 
+        'hasta que no seleccione ambos
+        Dim valorMunicipio As String = ObtenValorCombobox(refCbMunicipio)
+        Dim valorLocalidad As String = ObtenValorCombobox(refCbLocalidad)
+
+        If valorMunicipio = "-01" Or valorLocalidad = "-01" Then
+            LimpiaDesactivaTextbox(refTxtCp)
+            LimpiaDesactivaCombobox(refCbColonia)
             Return
         End If
-        textCodigoPostal.Enabled = True
+
+        refTxtCp.Enabled = True
     End Sub
 
     '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -585,11 +600,21 @@ Public Class frmCartaPorte
     End Sub
 
     Private Sub cbMunicipioRemitente_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cbMunicipioRemitente.SelectedIndexChanged
-        ValidaCodigoPostal(refCbLocalidadOrigen, refCbMunicipioOrigen, txtCpRemitente)
+        ValidaOrdenMunicipioLocalidadCodigo(cbPaisRemitente,
+                                            refCbEstadoOrigen,
+                                            refCbLocalidadOrigen,
+                                            refCbMunicipioOrigen,
+                                            txtCpRemitente,
+                                            refCbColoniaOrigen)
     End Sub
 
     Private Sub cbLocalidadRemitente_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cbLocalidadRemitente.SelectedIndexChanged
-        ValidaCodigoPostal(refCbLocalidadOrigen, refCbMunicipioOrigen, txtCpRemitente)
+        ValidaOrdenMunicipioLocalidadCodigo(cbPaisRemitente,
+                                            refCbEstadoOrigen,
+                                            refCbLocalidadOrigen,
+                                            refCbMunicipioOrigen,
+                                            txtCpRemitente,
+                                            refCbColoniaOrigen)
     End Sub
 
     Private Sub btnSiguienteOrigen_Click(sender As Object, e As EventArgs) Handles btnSiguienteOrigen.Click
@@ -702,11 +727,18 @@ Public Class frmCartaPorte
     End Sub
 
     Private Sub cbEstadoRemitente_SelectedValueChanged(sender As Object, e As EventArgs) Handles cbEstadoRemitente.SelectedValueChanged
+        ValidaOrdenMunicipioLocalidadCodigo(cbPaisRemitente,
+                                            refCbEstadoOrigen,
+                                            refCbLocalidadOrigen,
+                                            refCbMunicipioOrigen,
+                                            txtCpRemitente,
+                                            refCbColoniaOrigen)
+
         If ObtenValorCombobox(refCbEstadoOrigen) = "-01" Then 'No interesa proceder si seleccionó la opc por defecto
             Return
         End If
 
-        Dim paisSeleccionado = cbPaisRemitente.SelectedValue
+        Dim paisSeleccionado = ObtenValorCombobox(cbPaisRemitente)
         If PaisTieneMunicipioLocalidad(paisSeleccionado) Then
             RemueveDeGrid(txtMunicipioOrigen, tlpDetalleDomicilioOrigen)
             RemueveDeGrid(txtLocalidadOrigen, tlpDetalleDomicilioOrigen)
@@ -731,7 +763,6 @@ Public Class frmCartaPorte
     End Sub
 
     Private Sub txtCpRemitente_TextChanged(sender As Object, e As EventArgs) Handles txtCpRemitente.TextChanged
-        LimpiaDesactivaCombobox(refCbColoniaOrigen)
         If Trim(txtCpRemitente.Text).Length <> 5 Then '5 es la longitud de un CP válido
             Return
         End If
@@ -852,11 +883,21 @@ Public Class frmCartaPorte
     End Sub
 
     Private Sub cbMunicipioDestino_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cbMunicipioDestino.SelectedIndexChanged
-        ValidaCodigoPostal(refCbLocalidadDestino, refCbMunicipioDestino, txtCpDestino)
+        ValidaOrdenMunicipioLocalidadCodigo(cbPaisDestino,
+                                            refCbEstadoDestino,
+                                            refCbLocalidadDestino,
+                                            refCbMunicipioDestino,
+                                            txtCpDestino,
+                                            refCbColoniaDestino)
     End Sub
 
     Private Sub cbLocalidadDestino_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cbLocalidadDestino.SelectedIndexChanged
-        ValidaCodigoPostal(refCbLocalidadDestino, refCbMunicipioDestino, txtCpDestino)
+        ValidaOrdenMunicipioLocalidadCodigo(cbPaisDestino,
+                                            refCbEstadoDestino,
+                                            refCbLocalidadDestino,
+                                            refCbMunicipioDestino,
+                                            txtCpDestino,
+                                            refCbColoniaDestino)
     End Sub
 
     Private Sub PreparaPestanaDestino()
@@ -1032,6 +1073,12 @@ Public Class frmCartaPorte
 
         BindCombobox(refCbMunicipioDestino, ObtenMunicipiosPorEstado(ObtenValorCombobox(refCbEstadoDestino)))
         BindCombobox(refCbLocalidadDestino, ObtenLocalidadesPorEstado(ObtenValorCombobox(refCbEstadoDestino)))
+        ValidaOrdenMunicipioLocalidadCodigo(cbPaisDestino,
+                                            refCbEstadoDestino,
+                                            refCbLocalidadDestino,
+                                            refCbMunicipioDestino,
+                                            txtCpDestino,
+                                            refCbColoniaDestino)
     End Sub
 
     Private Sub txtCpDestino_TextChanged(sender As Object, e As EventArgs) Handles txtCpDestino.TextChanged
@@ -1302,11 +1349,21 @@ Public Class frmCartaPorte
     '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
     Private Sub cbMunicipioDestinoIntermedio_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cbMunicipioDestinoIntermedio.SelectedIndexChanged
-        ValidaCodigoPostal(refCbLocalidadDestinoIntermedio, refCbMunicipioDestinoIntermedio, txtCpDestinoIntermedio)
+        ValidaOrdenMunicipioLocalidadCodigo(cbPaisDestinoIntermedio,
+                                            refCbEstadoDestinoIntermedio,
+                                            refCbLocalidadDestinoIntermedio,
+                                            refCbMunicipioDestinoIntermedio,
+                                            txtCpDestinoIntermedio,
+                                            refCbColoniaDestinoIntermedio)
     End Sub
 
     Private Sub cbLocalidadDestinoIntermedio_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cbLocalidadDestinoIntermedio.SelectedIndexChanged
-        ValidaCodigoPostal(refCbLocalidadDestinoIntermedio, refCbMunicipioDestinoIntermedio, txtCpDestinoIntermedio)
+        ValidaOrdenMunicipioLocalidadCodigo(cbPaisDestinoIntermedio,
+                                            refCbEstadoDestinoIntermedio,
+                                            refCbLocalidadDestinoIntermedio,
+                                            refCbMunicipioDestinoIntermedio,
+                                            txtCpDestinoIntermedio,
+                                            refCbColoniaDestinoIntermedio)
     End Sub
 
     Private Sub BindGridDestinosIntermedios()
@@ -1756,6 +1813,13 @@ Public Class frmCartaPorte
     End Sub
 
     Private Sub cbEstadoDestinoIntermedio_SelectedValueChanged(sender As Object, e As EventArgs) Handles cbEstadoDestinoIntermedio.SelectedValueChanged
+        ValidaOrdenMunicipioLocalidadCodigo(cbPaisDestinoIntermedio,
+                                            refCbEstadoDestinoIntermedio,
+                                            refCbLocalidadDestinoIntermedio,
+                                            refCbMunicipioDestinoIntermedio,
+                                            txtCpDestinoIntermedio,
+                                            refCbColoniaDestinoIntermedio)
+
         If ObtenValorCombobox(refCbEstadoDestinoIntermedio) = "-01" Then Return
 
         Dim paisSeleccionado As String = ObtenValorCombobox(cbPaisDestinoIntermedio)
@@ -2892,11 +2956,21 @@ Public Class frmCartaPorte
     Private listaParteTransporte As List(Of ItemTransporte)
 
     Private Sub cbMunicipioOperador_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cbMunicipioOperador.SelectedIndexChanged
-        ValidaCodigoPostal(refCbLocalidadOperador, refCbMunicipioOperador, txtCpOperador)
+        ValidaOrdenMunicipioLocalidadCodigo(cbPaisOperador,
+                                            refCbEstadoOperador,
+                                            refCbLocalidadOperador,
+                                            refCbMunicipioOperador,
+                                            txtCpOperador,
+                                            refCbColoniaOperador)
     End Sub
 
     Private Sub cbLocalidadOperador_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cbLocalidadOperador.SelectedIndexChanged
-        ValidaCodigoPostal(refCbLocalidadOperador, refCbMunicipioOperador, txtCpOperador)
+        ValidaOrdenMunicipioLocalidadCodigo(cbPaisOperador,
+                                            refCbEstadoOperador,
+                                            refCbLocalidadOperador,
+                                            refCbMunicipioOperador,
+                                            txtCpOperador,
+                                            refCbColoniaOperador)
     End Sub
 
     Private Sub PreparaDatosOperador()
@@ -3183,6 +3257,13 @@ Public Class frmCartaPorte
     End Sub
 
     Private Sub cbEstadoOperador_SelectedValueChanged(sender As Object, e As EventArgs) Handles cbEstadoOperador.SelectedValueChanged
+        ValidaOrdenMunicipioLocalidadCodigo(cbPaisOperador,
+                                            refCbEstadoOperador,
+                                            refCbLocalidadOperador,
+                                            refCbMunicipioOperador,
+                                            txtCpOperador,
+                                            refCbColoniaOperador)
+
         If ObtenValorCombobox(refCbEstadoOperador) = "-01" Then Return
         BindCombobox(refCbMunicipioOperador, ObtenMunicipiosPorEstado(ObtenValorCombobox(refCbEstadoOperador)))
         BindCombobox(refCbLocalidadOperador, ObtenLocalidadesPorEstado(ObtenValorCombobox(refCbEstadoOperador)))
