@@ -102,6 +102,12 @@
     <Compile Include="frmCartaPorte\ConexionesCartaPorte.vb" />
     <Compile Include="frmCartaPorte\DatosTransportista.vb" />
     <Compile Include="frmCartaPorte\Domicilio.vb" />
+    <Compile Include="frmCartaPorte\frmBusqueda.Designer.vb">
+      <DependentUpon>frmBusqueda.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmCartaPorte\frmBusqueda.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="frmCartaPorte\frmCartaPorte.Designer.vb">
       <DependentUpon>frmCartaPorte.vb</DependentUpon>
     </Compile>
@@ -132,6 +138,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmCartaPorte\frmBusqueda.resx">
+      <DependentUpon>frmBusqueda.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmCartaPorte\frmCartaPorte.resx">
       <DependentUpon>frmCartaPorte.vb</DependentUpon>

@@ -222,6 +222,19 @@ Public Class ConexionesCartaPorte
         Return Cm.Parameters("@ParCadResultado").Value
     End Function
 
+    Public Function Get_InformacionEscenarioCartaPorte(ByVal idEmpresa As String) As DataTable
+        Dim Cm As SqlCommand = Nothing
+        Cm = New SqlCommand("sat.SP_CCP_CreaParametrosEscenarios", obtenConexion())
+        Cm.CommandType = CommandType.StoredProcedure
+
+        Cm.Parameters.AddWithValue("@ParCadIdEmpresa", idEmpresa)
+        Cm.Parameters("@ParCadIdEmpresa").Direction = ParameterDirection.Input
+
+        Dim sqlAdapter As New SqlDataAdapter(Cm)
+        Dim dataSet As New DataSet
+        sqlAdapter.Fill(dataSet)
+        Return dataSet.Tables(0)
+    End Function
     Public Function RegistraDatosCreacionCartaPorte(ByVal idEmpresa As String,
                                                     ByVal tipoMovimiento As String,
                                                     ByVal idMovimiento As String,
@@ -308,6 +321,70 @@ Public Class ConexionesCartaPorte
         Dim Cm As SqlCommand = Nothing
         Cm = New SqlCommand("sat.SP_CCP_ObtenParametros", obtenConexion())
         Cm.CommandType = CommandType.StoredProcedure
+
+        Dim sqlAdapter As New SqlDataAdapter(Cm)
+        Dim dataSet As New DataSet
+        sqlAdapter.Fill(dataSet)
+        Return dataSet.Tables(0)
+    End Function
+
+    Public Function Get_ObtenCatalogoVehiculos(ByVal idEmpresa As String) As DataTable
+        Dim Cm As SqlCommand = Nothing
+        Cm = New SqlCommand("sat.SP_CCP_CargaOpcionesVehiculos", obtenConexion())
+        Cm.CommandType = CommandType.StoredProcedure
+
+        Cm.Parameters.AddWithValue("@ParCadIdEmpresa", idEmpresa)
+        Cm.Parameters("@ParCadIdEmpresa").Direction = ParameterDirection.Input
+
+        Dim sqlAdapter As New SqlDataAdapter(Cm)
+        Dim dataSet As New DataSet
+        sqlAdapter.Fill(dataSet)
+        Return dataSet.Tables(0)
+    End Function
+
+    Public Function Get_ObtenDetalleVehiculo(ByRef idEmpresa As String,
+                                             ByRef idVehiculo As String) As DataTable
+        Dim Cm As SqlCommand = Nothing
+        Cm = New SqlCommand("sat.SP_CPP_CargaDatosVehiculos", obtenConexion())
+        Cm.CommandType = CommandType.StoredProcedure
+
+        Cm.Parameters.AddWithValue("@ParCadIdEmpresa", idEmpresa)
+        Cm.Parameters("@ParCadIdEmpresa").Direction = ParameterDirection.Input
+
+        Cm.Parameters.AddWithValue("@ParCadIdVehiculo", idVehiculo)
+        Cm.Parameters("@ParCadIdVehiculo").Direction = ParameterDirection.Input
+
+        Dim sqlAdapter As New SqlDataAdapter(Cm)
+        Dim dataSet As New DataSet
+        sqlAdapter.Fill(dataSet)
+        Return dataSet.Tables(0)
+    End Function
+
+    Public Function Get_ObtenCatalogoChoferes(ByVal idEmpresa As String) As DataTable
+        Dim Cm As SqlCommand = Nothing
+        Cm = New SqlCommand("sat.SP_CCP_ObtenListaEmpleados", obtenConexion())
+        Cm.CommandType = CommandType.StoredProcedure
+
+        Cm.Parameters.AddWithValue("@ParCadIdEmpresa", idEmpresa)
+        Cm.Parameters("@ParCadIdEmpresa").Direction = ParameterDirection.Input
+
+        Dim sqlAdapter As New SqlDataAdapter(Cm)
+        Dim dataSet As New DataSet
+        sqlAdapter.Fill(dataSet)
+        Return dataSet.Tables(0)
+    End Function
+
+    Public Function Get_ObtenDetalleChofer(ByRef idEmpresa As String,
+                                           ByRef idChofer As String) As DataTable
+        Dim Cm As SqlCommand = Nothing
+        Cm = New SqlCommand("sat.SP_CCP_CargaDetalleChofer", obtenConexion())
+        Cm.CommandType = CommandType.StoredProcedure
+
+        Cm.Parameters.AddWithValue("@ParCadIdEmpresa", idEmpresa)
+        Cm.Parameters("@ParCadIdEmpresa").Direction = ParameterDirection.Input
+
+        Cm.Parameters.AddWithValue("@ParCadIdChofer", idChofer)
+        Cm.Parameters("@ParCadIdChofer").Direction = ParameterDirection.Input
 
         Dim sqlAdapter As New SqlDataAdapter(Cm)
         Dim dataSet As New DataSet
@@ -507,6 +584,36 @@ Public Class ConexionesCartaPorte
         Return Cm.Parameters("@ParCadDescripcionMoneda").Value
     End Function
 
+    Public Function Get_ObtenDescripcionMaterialPeligroso(ByVal claveMatPeligroso As String) As String
+        Dim Cm As SqlCommand = Nothing
+        Cm = New SqlCommand("sat.SP_CCP_ObtenDescripcionMaterialPeligroso", obtenConexion())
+        Cm.CommandType = CommandType.StoredProcedure
+
+        Cm.Parameters.AddWithValue("@ParCadClaveMaterialPeligroso", claveMatPeligroso)
+        Cm.Parameters("@ParCadClaveMaterialPeligroso").Direction = ParameterDirection.Input
+
+        Cm.Parameters.Add("@ParCadDescripcionMaterialPeligroso", SqlDbType.VarChar, 200)
+        Cm.Parameters("@ParCadDescripcionMaterialPeligroso").Direction = ParameterDirection.Output
+
+        Cm.ExecuteNonQuery()
+        Return Cm.Parameters("@ParCadDescripcionMaterialPeligroso").Value
+    End Function
+
+    Public Function Get_ObtenDescripcionEmbalaje(ByVal claveEmbalaje As String) As String
+        Dim Cm As SqlCommand = Nothing
+        Cm = New SqlCommand("sat.SP_CCP_ObtenDescripcionEmbalaje", obtenConexion())
+        Cm.CommandType = CommandType.StoredProcedure
+
+        Cm.Parameters.AddWithValue("@ParCadClaveEmbalaje", claveEmbalaje)
+        Cm.Parameters("@ParCadClaveEmbalaje").Direction = ParameterDirection.Input
+
+        Cm.Parameters.Add("@ParCadDescripcionEmbalaje", SqlDbType.VarChar, 200)
+        Cm.Parameters("@ParCadDescripcionEmbalaje").Direction = ParameterDirection.Output
+
+        Cm.ExecuteNonQuery()
+        Return Cm.Parameters("@ParCadDescripcionEmbalaje").Value
+    End Function
+
     Public Function Get_ObtenPosiblesDimensiones() As DataTable
         Dim Cm As SqlCommand = Nothing
         Cm = New SqlCommand("sat.SP_CCP_ObtenOpcionesDimensiones", obtenConexion())
@@ -601,6 +708,20 @@ Public Class ConexionesCartaPorte
         Return Cm.Parameters("@ParCadDescripcion").Value
     End Function
 
+    Public Function Get_ObtenDescripcionTipoPermiso(ByRef claveTipoPermiso As String) As String
+        Dim Cm As SqlCommand = Nothing
+        Cm = New SqlCommand("sat.SP_CPP_ObtenDetallesTipoPermiso", obtenConexion())
+        Cm.CommandType = CommandType.StoredProcedure
+
+        Cm.Parameters.AddWithValue("@ParCadClave", claveTipoPermiso)
+        Cm.Parameters("@ParCadClave").Direction = ParameterDirection.Input
+
+        Cm.Parameters.Add("@ParCadDescripcion", SqlDbType.VarChar, 2000)
+        Cm.Parameters("@ParCadDescripcion").Direction = ParameterDirection.Output
+        Cm.ExecuteNonQuery()
+        Return Cm.Parameters("@ParCadDescripcion").Value
+    End Function
+
     Public Function Get_ObtenFigurasDeTransporte(ByVal propiedadAjena As Boolean) As DataTable
         Dim Cm As SqlCommand = Nothing
         Cm = New SqlCommand("sat.SP_CCP_ObtenTiposFiguraTransporte", obtenConexion())
@@ -619,6 +740,104 @@ Public Class ConexionesCartaPorte
         Dim Cm As SqlCommand = Nothing
         Cm = New SqlCommand("sat.SP_CCP_ObtenOperador", obtenConexion())
         Cm.CommandType = CommandType.StoredProcedure
+
+        Dim sqlAdapter As New SqlDataAdapter(Cm)
+        Dim dataSet As New DataSet
+        sqlAdapter.Fill(dataSet)
+        Return dataSet.Tables(0)
+    End Function
+
+    Public Function Get_DetalleClaveProdServ(ByRef claveProdServ As String) As DataTable
+        Dim Cm As SqlCommand = Nothing
+        Cm = New SqlCommand("sat.SP_CCP_BuscaDetalleClaveProdServ", obtenConexion())
+        Cm.CommandType = CommandType.StoredProcedure
+
+        Cm.Parameters.AddWithValue("@ParCadDescripcion", claveProdServ)
+        Cm.Parameters("@ParCadDescripcion").Direction = ParameterDirection.Input
+
+        Dim sqlAdapter As New SqlDataAdapter(Cm)
+        Dim dataSet As New DataSet
+        sqlAdapter.Fill(dataSet)
+        Return dataSet.Tables(0)
+    End Function
+
+    Public Function Get_DetalleClaveUnidad(ByRef claveUnidad As String) As DataTable
+        Dim Cm As SqlCommand = Nothing
+        Cm = New SqlCommand("sat.SP_CCP_BuscaDetalleClaveUnidad", obtenConexion())
+        Cm.CommandType = CommandType.StoredProcedure
+
+        Cm.Parameters.AddWithValue("@ParCadDescripcion", claveUnidad)
+        Cm.Parameters("@ParCadDescripcion").Direction = ParameterDirection.Input
+
+        Dim sqlAdapter As New SqlDataAdapter(Cm)
+        Dim dataSet As New DataSet
+        sqlAdapter.Fill(dataSet)
+        Return dataSet.Tables(0)
+    End Function
+
+    Public Function Get_DetalleMoneda(ByRef moneda As String) As DataTable
+        Dim Cm As SqlCommand = Nothing
+        Cm = New SqlCommand("sat.SP_CCP_BuscaDetalleMoneda", obtenConexion())
+        Cm.CommandType = CommandType.StoredProcedure
+
+        Cm.Parameters.AddWithValue("@ParCadDescripcion", moneda)
+        Cm.Parameters("@ParCadDescripcion").Direction = ParameterDirection.Input
+
+        Dim sqlAdapter As New SqlDataAdapter(Cm)
+        Dim dataSet As New DataSet
+        sqlAdapter.Fill(dataSet)
+        Return dataSet.Tables(0)
+    End Function
+
+    Public Function Get_DetalleMaterialPeligroso(ByRef claveMatPeligroso As String) As DataTable
+        Dim Cm As SqlCommand = Nothing
+        Cm = New SqlCommand("sat.SP_CCP_BuscaDetalleMoneda", obtenConexion())
+        Cm.CommandType = CommandType.StoredProcedure
+
+        Cm.Parameters.AddWithValue("@ParCadDescripcion", claveMatPeligroso)
+        Cm.Parameters("@ParCadDescripcion").Direction = ParameterDirection.Input
+
+        Dim sqlAdapter As New SqlDataAdapter(Cm)
+        Dim dataSet As New DataSet
+        sqlAdapter.Fill(dataSet)
+        Return dataSet.Tables(0)
+    End Function
+
+    Public Function Get_DetalleEmbalaje(ByRef claveEmbalaje As String) As DataTable
+        Dim Cm As SqlCommand = Nothing
+        Cm = New SqlCommand("sat.SP_CCP_BuscaDetalleMaterialEmbalaje", obtenConexion())
+        Cm.CommandType = CommandType.StoredProcedure
+
+        Cm.Parameters.AddWithValue("@ParCadDescripcion", claveEmbalaje)
+        Cm.Parameters("@ParCadDescripcion").Direction = ParameterDirection.Input
+
+        Dim sqlAdapter As New SqlDataAdapter(Cm)
+        Dim dataSet As New DataSet
+        sqlAdapter.Fill(dataSet)
+        Return dataSet.Tables(0)
+    End Function
+
+    Public Function Get_DetalleConfigVehicular(ByRef configVehicular As String) As DataTable
+        Dim Cm As SqlCommand = Nothing
+        Cm = New SqlCommand("sat.SP_CCP_BuscaDetalleConfigVehicular", obtenConexion())
+        Cm.CommandType = CommandType.StoredProcedure
+
+        Cm.Parameters.AddWithValue("@ParCadDescripcion", configVehicular)
+        Cm.Parameters("@ParCadDescripcion").Direction = ParameterDirection.Input
+
+        Dim sqlAdapter As New SqlDataAdapter(Cm)
+        Dim dataSet As New DataSet
+        sqlAdapter.Fill(dataSet)
+        Return dataSet.Tables(0)
+    End Function
+
+    Public Function Get_DetalleTipoPermiso(ByRef claveTipoPermiso As String) As DataTable
+        Dim Cm As SqlCommand = Nothing
+        Cm = New SqlCommand("sat.SP_CCP_BuscaDetalleTipoPermiso", obtenConexion())
+        Cm.CommandType = CommandType.StoredProcedure
+
+        Cm.Parameters.AddWithValue("@ParCadDescripcion", claveTipoPermiso)
+        Cm.Parameters("@ParCadDescripcion").Direction = ParameterDirection.Input
 
         Dim sqlAdapter As New SqlDataAdapter(Cm)
         Dim dataSet As New DataSet

@@ -14,6 +14,15 @@ Public Class frmCartaPorte
 
     'Este para evitar que el usuario se mueva en la pestaña
     Private ESTOY_CAMBIANDO_MEDIANTE_INDICE = False
+
+    'Esto es para los escenarios
+    Private numeroEscenario As Int32 = 0
+    Private idEmpresa As String = String.Empty
+    Private descripcionEscenario As DataTable = Nothing
+
+    'Esto es para atrapar el evento de búsqueda de forma
+    Private esperandoBusqueda As TextBox = Nothing
+
     '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
     '''''''MÉTODOS COMUNES
     '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -21,7 +30,13 @@ Public Class frmCartaPorte
 
         ' This call is required by the designer.
         InitializeComponent()
-        ' Add any initialization after the InitializeComponent() call.
+    End Sub
+
+    Public Sub New(ByVal idEmpresa As String, ByVal idEscenario As Int32)
+        ' This call is required by the designer.
+        InitializeComponent()
+        Me.numeroEscenario = idEscenario
+        Me.idEmpresa = idEmpresa
     End Sub
 
     'Pongo las referencias aquí para evitar cualquier problema
@@ -96,6 +111,7 @@ Public Class frmCartaPorte
         End If
     End Sub
     Private Sub CargaParametros()
+        descripcionEscenario = conexionesCartaPorte.Get_InformacionEscenarioCartaPorte(Me.idEmpresa)
         parametrosFormaCartaPorte = conexionesCartaPorte.Get_ObtenParametros()
     End Sub
 
@@ -110,6 +126,10 @@ Public Class frmCartaPorte
 
     Private Sub AlertaMensaje(ByVal mensaje As String)
         MsgBox(mensaje, MsgBoxStyle.Exclamation, "Error")
+    End Sub
+
+    Private Sub AtrapaEvento(ByVal text As String)
+        esperandoBusqueda.Text = text
     End Sub
 
     Private Function EsCadenaVacia(ByVal mensaje As String) As Boolean
@@ -294,6 +314,9 @@ Public Class frmCartaPorte
     Private refCbColoniaOrigen As ComboBox = Nothing
 
     Private Sub PreparaPestanaOrigen()
+        'Ver si se puede importar la información o no
+
+
         txtTipoUbicacion.Text = "Origen"
         txtTipoUbicacion.Enabled = False
         INFORMACION_VALIDA_DATOS_ORIGEN = False
@@ -357,6 +380,7 @@ Public Class frmCartaPorte
             txtApPaternoRemitente.Enabled = False
             txtApMaternoRemitente.Enabled = False
             txtRfcRemitente.Enabled = True
+            txtRfcRemitente.Text = String.Empty
             LimpiaDesactivaTextbox(txtNumRegidTribRemitente)
             LimpiaDesactivaTextbox(txtPaisResidenciaFiscalRemitente)
             LimpiaDesactivaCombobox(cbResidenciaFiscalRemitente)
@@ -371,6 +395,7 @@ Public Class frmCartaPorte
             txtNombreRemitente.Enabled = True
             txtApPaternoRemitente.Enabled = True
             txtApMaternoRemitente.Enabled = True
+            txtRfcRemitente.Text = String.Empty
             txtRfcRemitente.Enabled = True
             LimpiaDesactivaTextbox(txtNumRegidTribRemitente)
             LimpiaDesactivaTextbox(txtPaisResidenciaFiscalRemitente)
@@ -390,6 +415,8 @@ Public Class frmCartaPorte
             txtApPaternoRemitente.Enabled = True
             txtApMaternoRemitente.Enabled = True
             BindCombobox(cbResidenciaFiscalRemitente, ObtenListadoPaises())
+            cbResidenciaFiscalRemitente.SelectedValue = "-01"
+            BindCombobox(cbPaisRemitente, ObtenListadoPaises())
             cbPaisRemitente.SelectedValue = "-01"
             cbPaisRemitente.Enabled = True
         End If
@@ -2038,13 +2065,13 @@ Public Class frmCartaPorte
         txtClaveProdServMercancia.Text = String.Empty
         txtClaveProdServMercancia.Enabled = True
         txtDescripcionProducto.Text = String.Empty
-        txtDescripcionProducto.Enabled = True
+        txtDescripcionProducto.Enabled = False
         txtCantidadMercancia.Text = String.Empty
         txtCantidadMercancia.Enabled = True
         txtUnidadClaveMercancia.Text = String.Empty
         txtUnidadClaveMercancia.Enabled = True
         txtUnidadMercancia.Text = String.Empty
-        txtUnidadMercancia.Enabled = True
+        txtUnidadMercancia.Enabled = False
         txtPeso.Text = String.Empty
         txtPeso.Enabled = True
         txtValor.Text = String.Empty
@@ -2304,11 +2331,17 @@ Public Class frmCartaPorte
     End Sub
 
     Private Sub txtClaveMaterialPeligroso_TextChanged(sender As Object, e As EventArgs) Handles txtClaveMaterialPeligroso.TextChanged
-
+        LimpiaDesactivaTextbox(txtDescripcionMaterialPeligroso)
+        Dim claveMatPeligroso As String = ObtenValorTextbox(txtClaveMaterialPeligroso)
+        Dim matPeligroso As String = conexionesCartaPorte.Get_ObtenDescripcionMaterialPeligroso(claveMatPeligroso)
+        txtDescripcionMaterialPeligroso.Text = matPeligroso
     End Sub
 
     Private Sub txtEmbalaje_TextChanged(sender As Object, e As EventArgs) Handles txtEmbalaje.TextChanged
-
+        LimpiaDesactivaTextbox(txtDescripcionEmbalaje)
+        Dim claveEmbalaje As String = ObtenValorTextbox(txtEmbalaje)
+        Dim descEmbalaje As String = conexionesCartaPorte.Get_ObtenDescripcionEmbalaje(claveEmbalaje)
+        txtDescripcionEmbalaje.Text = descEmbalaje
     End Sub
 
     Private Sub ValidarInformacionMercancia()
@@ -2327,7 +2360,9 @@ Public Class frmCartaPorte
         Dim medidaDimension As String = String.Empty
         Dim materialPeligroso As Boolean = False
         Dim claveMaterialPeligroso As String = String.Empty
+        Dim descripcionMaterialPeligroso As String = String.Empty
         Dim embalaje As String = String.Empty
+        Dim descripcionEmbalaje As String = String.Empty
         Dim comercioInternacional As Boolean = False
         Dim pedimento As String = String.Empty
         Dim fraccionArancelaria As String = String.Empty
@@ -2376,8 +2411,10 @@ Public Class frmCartaPorte
             materialPeligroso = True
             claveMaterialPeligroso = ObtenValorTextbox(txtClaveMaterialPeligroso)
             embalaje = ObtenValorTextbox(txtEmbalaje)
-            If EsCadenaVacia(claveMaterialPeligroso) Then AlertaMensaje(ObtenParametroPorLlave("INGRESE_CLAVE_MATERIAL_PELIGROSO")) : Return
-            If EsCadenaVacia(embalaje) Then AlertaMensaje(ObtenParametroPorLlave("INGRESE_CLAVE_EMBALAJE")) : Return
+            descripcionMaterialPeligroso = ObtenValorTextbox(txtDescripcionMaterialPeligroso)
+            descripcionEmbalaje = ObtenValorTextbox(txtDescripcionEmbalaje)
+            If EsCadenaVacia(descripcionMaterialPeligroso) Then AlertaMensaje(ObtenParametroPorLlave("INGRESE_CLAVE_MATERIAL_PELIGROSO")) : Return
+            If EsCadenaVacia(descripcionEmbalaje) Then AlertaMensaje(ObtenParametroPorLlave("INGRESE_CLAVE_EMBALAJE")) : Return
         Else
             materialPeligroso = False
         End If
@@ -2420,6 +2457,7 @@ Public Class frmCartaPorte
         mercanciaEnModificacion.MaterialPeligroso = rbSiMaterialPeligroso.Checked
         mercanciaEnModificacion.ClaveMaterialPeligroso = claveMaterialPeligroso
         mercanciaEnModificacion.Embalaje = embalaje
+        mercanciaEnModificacion.DescripcionEmbalaje = descripcionEmbalaje
 
         mercanciaEnModificacion.PesoEnKg = Double.Parse(peso)
         mercanciaEnModificacion.ValorMercancia = Double.Parse(valor)
@@ -2524,8 +2562,6 @@ Public Class frmCartaPorte
     Private Sub PreparaPestanaTransporte()
         ValidaExisteMercanciaQueCuenteComoPeligroso()
         BindCombobox(cbSeleccionarVehiculo, conexionesCartaPorte.Get_ListadoVehiculos())
-        BindCombobox(cbOpcionesConfigVehicular, conexionesCartaPorte.Get_OpcionesConfiguracionVehicular())
-        BindCombobox(cbTipoPermisoSCT, conexionesCartaPorte.Get_OpcionesTipoPermiso())
         BloqueaDatosTransporte()
         numCantidadRemolquesTransporte.Minimum = 0
         numCantidadRemolquesTransporte.Maximum = 2
@@ -2548,9 +2584,9 @@ Public Class frmCartaPorte
     Private Sub CargaDatosTransporte()
         If datosAutoTransporte IsNot Nothing Then
             cbSeleccionarVehiculo.SelectedValue = datosAutoTransporte.CveInternaVehiculo
-            cbTipoPermisoSCT.SelectedValue = datosAutoTransporte.PermSCT
+            txtTipoPermisoSCT.Text = datosAutoTransporte.PermSCT
             txtNumPermisoSCT.Text = datosAutoTransporte.NumPermisoSCT
-            cbOpcionesConfigVehicular.SelectedValue = datosAutoTransporte.ConfigVehicular
+            txtConVeh.Text = datosAutoTransporte.ConfigVehicular
             txtPlacaTransporte.Text = datosAutoTransporte.PlacaVM
             txtAnioModeloTransporte.Text = datosAutoTransporte.AnioModeloVM
             txtAseguradoraTransporte.Text = datosAutoTransporte.AseguraRespCivil
@@ -2589,10 +2625,10 @@ Public Class frmCartaPorte
     Private Sub BloqueaDatosTransporte()
         PARTE_DEL_REMOLQUE_ES_AJENA = False
         INFORMACION_VALIDA_TRANSPORTE = False
-        LimpiaDesactivaCombobox(cbTipoPermisoSCT)
+        LimpiaDesactivaTextbox(txtTipoPermisoSCT)
         LimpiaDesactivaTextbox(txtNumPermisoSCT)
-        LimpiaDesactivaCombobox(cbOpcionesConfigVehicular)
-        LimpiaDesactivaTextbox(txtConfigVehicular)
+        LimpiaDesactivaTextbox(txtConVeh)
+        LimpiaDesactivaTextbox(txtDescripConfigVehicular)
         LimpiaDesactivaTextbox(txtPlacaTransporte)
         LimpiaDesactivaTextbox(txtAnioModeloTransporte)
         LimpiaDesactivaTextbox(txtAseguradoraTransporte)
@@ -2610,14 +2646,14 @@ Public Class frmCartaPorte
     Private Sub LimpiarPanelDatosTransporte()
         PARTE_DEL_REMOLQUE_ES_AJENA = False
         INFORMACION_VALIDA_TRANSPORTE = False
-        LimpiaDesactivaCombobox(cbTipoPermisoSCT)
-        BindCombobox(cbTipoPermisoSCT, conexionesCartaPorte.Get_OpcionesTipoPermiso())
+        LimpiaDesactivaTextbox(txtTipoPermisoSCT)
+        txtTipoPermisoSCT.Enabled = True
         txtNumPermisoSCT.Text = String.Empty
         txtNumPermisoSCT.Enabled = True
-        LimpiaDesactivaCombobox(cbOpcionesConfigVehicular)
-        BindCombobox(cbOpcionesConfigVehicular, conexionesCartaPorte.Get_OpcionesConfiguracionVehicular())
-        txtConfigVehicular.Text = String.Empty
-        txtConfigVehicular.Enabled = True
+        LimpiaDesactivaTextbox(txtConVeh)
+        txtConVeh.Enabled = True
+        txtDescripConfigVehicular.Text = String.Empty
+        txtDescripConfigVehicular.Enabled = True
         txtPlacaTransporte.Text = String.Empty
         txtPlacaTransporte.Enabled = True
         txtAnioModeloTransporte.Text = String.Empty
@@ -2728,12 +2764,12 @@ Public Class frmCartaPorte
         Dim polizaMedioAmbiente As String = String.Empty
 
         If ObtenValorCombobox(cbSeleccionarVehiculo) = "-01" Then AlertaMensaje(ObtenParametroPorLlave("ES_NECESARIO_VEHICULO")) : Return
-        If ObtenValorCombobox(cbTipoPermisoSCT) = "-01" Then AlertaMensaje(ObtenParametroPorLlave("ES_NECESARIO_TIPO_PERMISO")) : Return
-        If ObtenValorCombobox(cbOpcionesConfigVehicular) = "-01" Then AlertaMensaje(ObtenParametroPorLlave("ES_NECESARIO_CONFIG_VEHICULAR")) : Return
+        If EsCadenaVacia(ObtenValorTextbox(txtDescripcionTipoPermisoSCT)) = "-01" Then AlertaMensaje(ObtenParametroPorLlave("ES_NECESARIO_TIPO_PERMISO")) : Return
+        If EsCadenaVacia(ObtenValorTextbox(txtDescripConfigVehicular)) = "-01" Then AlertaMensaje(ObtenParametroPorLlave("ES_NECESARIO_CONFIG_VEHICULAR")) : Return
         claveInternaVehiculo = ObtenValorCombobox(cbSeleccionarVehiculo)
-        tipoPermisoSct = ObtenValorCombobox(cbTipoPermisoSCT)
+        tipoPermisoSct = ObtenValorTextbox(txtTipoPermisoSCT)
         numPermisoSct = ObtenValorTextbox(txtNumPermisoSCT)
-        configVehicular = ObtenValorCombobox(cbOpcionesConfigVehicular)
+        configVehicular = ObtenValorTextbox(txtConVeh)
         placa = ObtenValorTextbox(txtPlacaTransporte).Replace("-", "").Replace(" ", "")
         If EsCadenaVacia(placa) Then AlertaMensaje(ObtenParametroPorLlave("INGRESE_PLACA")) : Return
 
@@ -2802,25 +2838,25 @@ Public Class frmCartaPorte
         INFORMACION_VALIDA_TRANSPORTE = True
     End Sub
 
-    Private Sub cbTipoPermisoSCT_SelectedValueChanged(sender As Object, e As EventArgs) Handles cbTipoPermisoSCT.SelectedValueChanged
-        If ObtenValorCombobox(cbTipoPermisoSCT) = "-01" Then
-            LimpiaDesactivaTextbox(txtNumPermisoSCT)
-            Return
-        End If
-        txtNumPermisoSCT.Enabled = True
-        If cbTipoPermisoSCT.SelectedValue = "TPXX00" Then
-            'txtNumPermisoSCT.Text = String.Empty
-        End If
+    Private Sub cbTipoPermisoSCT_SelectedValueChanged(sender As Object, e As EventArgs)
+        'If ObtenValorCombobox(cbTipoPermisoSCT) = "-01" Then
+        '    LimpiaDesactivaTextbox(txtNumPermisoSCT)
+        '    Return
+        'End If
+        'txtNumPermisoSCT.Enabled = True
+        'If cbTipoPermisoSCT.SelectedValue = "TPXX00" Then
+        '    'txtNumPermisoSCT.Text = String.Empty
+        'End If
     End Sub
 
-    Private Sub cbOpcionesConfigVehicular_SelectedValueChanged(sender As Object, e As EventArgs) Handles cbOpcionesConfigVehicular.SelectedValueChanged
-        Dim configVehicular As String = ObtenValorCombobox(cbOpcionesConfigVehicular)
-        If configVehicular = "-01" Then
-            LimpiaDesactivaTextbox(txtConfigVehicular)
-            Return
-        End If
-        txtConfigVehicular.Enabled = False
-        txtConfigVehicular.Text = conexionesCartaPorte.Get_ObtenDescripcionConfiguracionAutoTransporte(configVehicular)
+    Private Sub cbOpcionesConfigVehicular_SelectedValueChanged(sender As Object, e As EventArgs)
+        'Dim configVehicular As String = ObtenValorCombobox(cbOpcionesConfigVehicular)
+        'If configVehicular = "-01" Then
+        '    LimpiaDesactivaTextbox(txtDescripConfigVehicular)
+        '    Return
+        'End If
+        'txtDescripConfigVehicular.Enabled = False
+        'txtDescripConfigVehicular.Text = conexionesCartaPorte.Get_ObtenDescripcionConfiguracionAutoTransporte(configVehicular)
     End Sub
 
     Private Sub btnSiguienteTransporte_Click(sender As Object, e As EventArgs) Handles btnSiguienteTransporte.Click
@@ -3311,15 +3347,19 @@ Public Class frmCartaPorte
     End Sub
 
     Private Sub cbOpcionesOperador_SelectedValueChanged(sender As Object, e As EventArgs) Handles cbOpcionesOperador.SelectedValueChanged
-        ToggleDatosOperador()
         Dim claveOperador = ObtenValorCombobox(cbOpcionesOperador)
         If claveOperador = "-01" Then
             BloqueaDatosOperador()
             Return
         End If
         LimpiaInformacionOperador()
+        If claveOperador = "00" Then
+            rbOperadorMexicano.Checked = True
+            ToggleDatosOperador()
+        End If
         If claveOperador <> "00" Then
             CargaInformacionOperador()
+            ToggleDatosOperador()
         End If
     End Sub
 
@@ -3584,5 +3624,68 @@ Public Class frmCartaPorte
         )
         Dim xmlFinal As String = String.Format(xmlTraslado, xmlCartaPorte)
         Dim aaaaa = xmlFinal
+    End Sub
+
+    Private Sub txtClaveProdServMercancia_DoubleClick(sender As Object, e As EventArgs) Handles txtClaveProdServMercancia.DoubleClick
+        Dim formaBusqueda As New frmBusqueda(AddressOf conexionesCartaPorte.Get_DetalleClaveProdServ)
+        esperandoBusqueda = txtClaveProdServMercancia
+        AddHandler formaBusqueda.ElementoSeleccionado, AddressOf AtrapaEvento
+        formaBusqueda.ShowDialog()
+    End Sub
+
+    Private Sub txtUnidadClaveMercancia_DoubleClick(sender As Object, e As EventArgs) Handles txtUnidadClaveMercancia.DoubleClick
+        Dim formaBusqueda As New frmBusqueda(AddressOf conexionesCartaPorte.Get_DetalleClaveUnidad)
+        esperandoBusqueda = txtUnidadClaveMercancia
+        AddHandler formaBusqueda.ElementoSeleccionado, AddressOf AtrapaEvento
+        formaBusqueda.ShowDialog()
+    End Sub
+
+    Private Sub txtMoneda_DoubleClick(sender As Object, e As EventArgs) Handles txtMoneda.DoubleClick
+        Dim formaBusqueda As New frmBusqueda(AddressOf conexionesCartaPorte.Get_DetalleMoneda)
+        esperandoBusqueda = txtMoneda
+        AddHandler formaBusqueda.ElementoSeleccionado, AddressOf AtrapaEvento
+        formaBusqueda.ShowDialog()
+    End Sub
+
+    Private Sub txtClaveMaterialPeligroso_DoubleClick(sender As Object, e As EventArgs) Handles txtClaveMaterialPeligroso.DoubleClick
+        Dim formaBusqueda As New frmBusqueda(AddressOf conexionesCartaPorte.Get_DetalleMaterialPeligroso)
+        esperandoBusqueda = txtClaveMaterialPeligroso
+        AddHandler formaBusqueda.ElementoSeleccionado, AddressOf AtrapaEvento
+        formaBusqueda.ShowDialog()
+    End Sub
+
+    Private Sub txtEmbalaje_DoubleClick(sender As Object, e As EventArgs) Handles txtEmbalaje.DoubleClick
+        Dim formaBusqueda As New frmBusqueda(AddressOf conexionesCartaPorte.Get_DetalleEmbalaje)
+        esperandoBusqueda = txtEmbalaje
+        AddHandler formaBusqueda.ElementoSeleccionado, AddressOf AtrapaEvento
+        formaBusqueda.ShowDialog()
+    End Sub
+
+    Private Sub txtTipoPermisoSCT_DoubleClick(sender As Object, e As EventArgs) Handles txtTipoPermisoSCT.DoubleClick
+        Dim formaBusqueda As New frmBusqueda(AddressOf conexionesCartaPorte.Get_DetalleTipoPermiso)
+        esperandoBusqueda = txtTipoPermisoSCT
+        AddHandler formaBusqueda.ElementoSeleccionado, AddressOf AtrapaEvento
+        formaBusqueda.ShowDialog()
+    End Sub
+
+    Private Sub txtConVeh_DoubleClick(sender As Object, e As EventArgs) Handles txtConVeh.DoubleClick
+        Dim formaBusqueda As New frmBusqueda(AddressOf conexionesCartaPorte.Get_DetalleConfigVehicular)
+        esperandoBusqueda = txtConVeh
+        AddHandler formaBusqueda.ElementoSeleccionado, AddressOf AtrapaEvento
+        formaBusqueda.ShowDialog()
+    End Sub
+
+    Private Sub txtTipoPermisoSCT_TextChanged(sender As Object, e As EventArgs) Handles txtTipoPermisoSCT.TextChanged
+        LimpiaDesactivaTextbox(txtDescripcionTipoPermisoSCT)
+        Dim claveTipoPermiso = ObtenValorTextbox(txtTipoPermisoSCT)
+        If EsCadenaVacia(claveTipoPermiso) Then Return
+        txtDescripcionTipoPermisoSCT.Text = conexionesCartaPorte.Get_ObtenDescripcionTipoPermiso(claveTipoPermiso)
+    End Sub
+
+    Private Sub txtConVeh_TextChanged(sender As Object, e As EventArgs) Handles txtConVeh.TextChanged
+        LimpiaDesactivaTextbox(txtDescripConfigVehicular)
+        Dim conVehicular = ObtenValorTextbox(txtConVeh)
+        If EsCadenaVacia(conVehicular) Then Return
+        txtDescripConfigVehicular.Text = conexionesCartaPorte.Get_ObtenDescripcionConfiguracionAutoTransporte(conVehicular)
     End Sub
 End Class
