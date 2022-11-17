@@ -28,13 +28,13 @@ Partial Class frmBusqueda
         Me.dgvClaveClm = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.dgvDescripcionClm = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.tlpDetallesSeleccion = New System.Windows.Forms.TableLayoutPanel()
-        Me.tlpBuscarPorDescripcion = New System.Windows.Forms.TableLayoutPanel()
-        Me.txtDescripcionBuscar = New System.Windows.Forms.TextBox()
-        Me.btnBuscar = New System.Windows.Forms.Button()
         Me.lblTitulo = New System.Windows.Forms.Label()
         Me.lblDescripcion = New System.Windows.Forms.Label()
         Me.lblClaveUnidad = New System.Windows.Forms.Label()
         Me.Button1 = New System.Windows.Forms.Button()
+        Me.tlpBuscarPorDescripcion = New System.Windows.Forms.TableLayoutPanel()
+        Me.txtDescripcionBuscar = New System.Windows.Forms.TextBox()
+        Me.btnBuscar = New System.Windows.Forms.Button()
         Me.tlpMain.SuspendLayout()
         Me.TableLayoutPanel2.SuspendLayout()
         CType(Me.dgvDescripcionProductos, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -69,7 +69,7 @@ Partial Class frmBusqueda
         Me.TableLayoutPanel2.Name = "TableLayoutPanel2"
         Me.TableLayoutPanel2.RowCount = 1
         Me.TableLayoutPanel2.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
-        Me.TableLayoutPanel2.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.TableLayoutPanel2.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 354.0!))
         Me.TableLayoutPanel2.Size = New System.Drawing.Size(794, 354)
         Me.TableLayoutPanel2.TabIndex = 0
         '
@@ -123,44 +123,6 @@ Partial Class frmBusqueda
         Me.tlpDetallesSeleccion.Size = New System.Drawing.Size(233, 348)
         Me.tlpDetallesSeleccion.TabIndex = 1
         '
-        'tlpBuscarPorDescripcion
-        '
-        Me.tlpBuscarPorDescripcion.ColumnCount = 2
-        Me.tlpBuscarPorDescripcion.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 70.0!))
-        Me.tlpBuscarPorDescripcion.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 30.0!))
-        Me.tlpBuscarPorDescripcion.Controls.Add(Me.txtDescripcionBuscar, 0, 1)
-        Me.tlpBuscarPorDescripcion.Controls.Add(Me.btnBuscar, 1, 1)
-        Me.tlpBuscarPorDescripcion.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.tlpBuscarPorDescripcion.Location = New System.Drawing.Point(3, 363)
-        Me.tlpBuscarPorDescripcion.Name = "tlpBuscarPorDescripcion"
-        Me.tlpBuscarPorDescripcion.RowCount = 3
-        Me.tlpBuscarPorDescripcion.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20.0!))
-        Me.tlpBuscarPorDescripcion.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 60.0!))
-        Me.tlpBuscarPorDescripcion.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20.0!))
-        Me.tlpBuscarPorDescripcion.Size = New System.Drawing.Size(794, 84)
-        Me.tlpBuscarPorDescripcion.TabIndex = 1
-        '
-        'txtDescripcionBuscar
-        '
-        Me.txtDescripcionBuscar.BackColor = System.Drawing.SystemColors.Info
-        Me.txtDescripcionBuscar.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.txtDescripcionBuscar.Location = New System.Drawing.Point(3, 19)
-        Me.txtDescripcionBuscar.Name = "txtDescripcionBuscar"
-        Me.txtDescripcionBuscar.Size = New System.Drawing.Size(549, 26)
-        Me.txtDescripcionBuscar.TabIndex = 0
-        '
-        'btnBuscar
-        '
-        Me.btnBuscar.BackColor = System.Drawing.SystemColors.ButtonHighlight
-        Me.btnBuscar.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.btnBuscar.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.btnBuscar.Location = New System.Drawing.Point(558, 19)
-        Me.btnBuscar.Name = "btnBuscar"
-        Me.btnBuscar.Size = New System.Drawing.Size(233, 44)
-        Me.btnBuscar.TabIndex = 1
-        Me.btnBuscar.Text = "Buscar"
-        Me.btnBuscar.UseVisualStyleBackColor = False
-        '
         'lblTitulo
         '
         Me.lblTitulo.AutoSize = True
@@ -211,6 +173,44 @@ Partial Class frmBusqueda
         Me.Button1.TabIndex = 3
         Me.Button1.Text = "Seleccionar"
         Me.Button1.UseVisualStyleBackColor = False
+        '
+        'tlpBuscarPorDescripcion
+        '
+        Me.tlpBuscarPorDescripcion.ColumnCount = 2
+        Me.tlpBuscarPorDescripcion.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 70.0!))
+        Me.tlpBuscarPorDescripcion.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 30.0!))
+        Me.tlpBuscarPorDescripcion.Controls.Add(Me.txtDescripcionBuscar, 0, 1)
+        Me.tlpBuscarPorDescripcion.Controls.Add(Me.btnBuscar, 1, 1)
+        Me.tlpBuscarPorDescripcion.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.tlpBuscarPorDescripcion.Location = New System.Drawing.Point(3, 363)
+        Me.tlpBuscarPorDescripcion.Name = "tlpBuscarPorDescripcion"
+        Me.tlpBuscarPorDescripcion.RowCount = 3
+        Me.tlpBuscarPorDescripcion.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20.0!))
+        Me.tlpBuscarPorDescripcion.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 60.0!))
+        Me.tlpBuscarPorDescripcion.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20.0!))
+        Me.tlpBuscarPorDescripcion.Size = New System.Drawing.Size(794, 84)
+        Me.tlpBuscarPorDescripcion.TabIndex = 1
+        '
+        'txtDescripcionBuscar
+        '
+        Me.txtDescripcionBuscar.BackColor = System.Drawing.SystemColors.Info
+        Me.txtDescripcionBuscar.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.txtDescripcionBuscar.Location = New System.Drawing.Point(3, 19)
+        Me.txtDescripcionBuscar.Name = "txtDescripcionBuscar"
+        Me.txtDescripcionBuscar.Size = New System.Drawing.Size(549, 26)
+        Me.txtDescripcionBuscar.TabIndex = 0
+        '
+        'btnBuscar
+        '
+        Me.btnBuscar.BackColor = System.Drawing.SystemColors.ButtonHighlight
+        Me.btnBuscar.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.btnBuscar.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btnBuscar.Location = New System.Drawing.Point(558, 19)
+        Me.btnBuscar.Name = "btnBuscar"
+        Me.btnBuscar.Size = New System.Drawing.Size(233, 44)
+        Me.btnBuscar.TabIndex = 1
+        Me.btnBuscar.Text = "Buscar"
+        Me.btnBuscar.UseVisualStyleBackColor = False
         '
         'frmBusqueda
         '

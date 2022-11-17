@@ -23,6 +23,11 @@ Public Class frmCartaPorte
     'Esto es para atrapar el evento de búsqueda de forma
     Private esperandoBusqueda As TextBox = Nothing
 
+    'Esto es para los colores obligatorio y de fondo
+    Private colorCampoObligatorio As String = String.Empty
+    Private colorCampoOpcional As String = String.Empty
+    Private colorUsuarioCausoProblemas As String = String.Empty
+
     '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
     '''''''MÉTODOS COMUNES
     '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -85,6 +90,23 @@ Public Class frmCartaPorte
         conexionesCartaPorte = New ConexionesCartaPorte()
         CargaParametros()
         PreparaPestanaOrigen()
+
+        dtFechaSalidaRemitente.BackColor = Color.FromName(colorCampoObligatorio)
+    End Sub
+
+    Private Sub MarcaCampoComoObligatorio(ByRef control As Control)
+        If control Is Nothing Then Return
+        control.BackColor = Color.FromName(colorCampoObligatorio)
+        If control.GetType() Is GetType(ComboBox) Then
+            Dim combo As ComboBox = CType(control, ComboBox)
+            combo.FlatStyle = FlatStyle.Flat
+            combo.DropDownStyle = ComboBoxStyle.DropDownList
+        End If
+    End Sub
+
+    Private Sub MarcaCampoComoOpcional(ByRef control As Control)
+        If control Is Nothing Then Return
+        control.BackColor = Color.FromName(colorCampoOpcional)
     End Sub
 
     Private Sub TabControl1_Selecting(sender As Object, e As TabControlCancelEventArgs) Handles TabControl1.Selecting
@@ -113,6 +135,9 @@ Public Class frmCartaPorte
     Private Sub CargaParametros()
         descripcionEscenario = conexionesCartaPorte.Get_InformacionEscenarioCartaPorte(Me.idEmpresa)
         parametrosFormaCartaPorte = conexionesCartaPorte.Get_ObtenParametros()
+        colorCampoObligatorio = ObtenParametroPorLlave("COLOR_OBLIG")
+        colorCampoOpcional = ObtenParametroPorLlave("COLOR_OPC")
+        colorUsuarioCausoProblemas = ObtenParametroPorLlave("COLOR_USU_PROB")
     End Sub
 
     Private Function ObtenParametroPorLlave(ByRef llave As String) As String
@@ -242,6 +267,40 @@ Public Class frmCartaPorte
             panel.Controls.Remove(control)
         End If
         control = Nothing
+    End Sub
+
+    Private Sub CargaColoniasPorCodigoPostal(ByRef refCbEstado As ComboBox,
+                                             ByRef refCbMunicipio As ComboBox,
+                                             ByRef refCbLocalidad As ComboBox,
+                                             ByRef refCbColonia As ComboBox,
+                                             ByRef refTxtCp As TextBox)
+        'Si esta en nulo, quiere decir que no tiene catálogo de colonias
+        If refCbColonia Is Nothing Then
+            Return
+        End If
+
+        'Tengo que ver si son 5 números
+        Dim cpRegExp As String = ObtenParametroPorLlave("REGEXP_CODIGO_POSTAL")
+        Dim cp As String = ObtenValorTextbox(refTxtCp)
+        If Not Regex.IsMatch(cp, cpRegExp) Then
+            AlertaMensaje(ObtenParametroPorLlave("INGRESE_CODIGO_POSTAL"))
+            Return
+        End If
+
+        'Ahora tengo que ver si la colonia es válida
+        Dim mensaje As String = String.Empty
+        Dim valida As Boolean = conexionesCartaPorte.Get_ValidaCodigoPostal(cp,
+                                                    ObtenValorCombobox(refCbEstado),
+                                                    ObtenValorCombobox(refCbMunicipio),
+                                                    ObtenValorCombobox(refCbLocalidad),
+                                                    mensaje)
+        If Not valida Then
+            AlertaMensaje(mensaje)
+            Return
+        End If
+
+        'Si ya llemos hasta aquí, podemos hacer el binding sin problemas
+        BindCombobox(refCbColonia, ObtenColoniasPorCodigoPostal(cp))
     End Sub
 
     Private Sub SustituyeEnGrid(ByRef controlAReemplazar As Control,
@@ -396,6 +455,13 @@ Public Class frmCartaPorte
             txtApMaternoRemitente.Enabled = False
             txtRfcRemitente.Enabled = True
             txtRfcRemitente.Text = String.Empty
+
+            MarcaCampoComoOpcional(txtApPaternoRemitente)
+            MarcaCampoComoOpcional(txtApMaternoRemitente)
+            MarcaCampoComoOpcional(cbResidenciaFiscalRemitente)
+            MarcaCampoComoOpcional(txtPaisResidenciaFiscalRemitente)
+            MarcaCampoComoOpcional(txtNumRegidTribRemitente)
+
             LimpiaDesactivaTextbox(txtNumRegidTribRemitente)
             LimpiaDesactivaTextbox(txtPaisResidenciaFiscalRemitente)
             LimpiaDesactivaCombobox(cbResidenciaFiscalRemitente)
@@ -412,6 +478,13 @@ Public Class frmCartaPorte
             txtApMaternoRemitente.Enabled = True
             txtRfcRemitente.Text = String.Empty
             txtRfcRemitente.Enabled = True
+
+            MarcaCampoComoObligatorio(txtApPaternoRemitente)
+            MarcaCampoComoObligatorio(txtApMaternoRemitente)
+            MarcaCampoComoOpcional(cbResidenciaFiscalRemitente)
+            MarcaCampoComoOpcional(txtPaisResidenciaFiscalRemitente)
+            MarcaCampoComoOpcional(txtNumRegidTribRemitente)
+
             LimpiaDesactivaTextbox(txtNumRegidTribRemitente)
             LimpiaDesactivaTextbox(txtPaisResidenciaFiscalRemitente)
             LimpiaDesactivaCombobox(cbResidenciaFiscalRemitente)
@@ -423,6 +496,13 @@ Public Class frmCartaPorte
             REMITENTE_ES_PERSONA_MORAL = False
             REMITENTE_ES_PERSONA_FISICA = False
             REMITENTE_ES_EXTRANJERO = True
+
+            MarcaCampoComoObligatorio(txtApPaternoRemitente)
+            MarcaCampoComoObligatorio(txtApMaternoRemitente)
+            MarcaCampoComoObligatorio(cbResidenciaFiscalRemitente)
+            MarcaCampoComoObligatorio(txtPaisResidenciaFiscalRemitente)
+            MarcaCampoComoObligatorio(txtNumRegidTribRemitente)
+
             LimpiaDesactivaTextbox(txtRfcRemitente)
             txtRfcRemitente.Text = ObtenParametroPorLlave("RFC_GENERICO_EXTRANJERO")
             txtNumRegIdTribFiscOperador.Enabled = True
@@ -668,6 +748,7 @@ Public Class frmCartaPorte
             Else
                 BindCombobox(refCbEstadoOrigen, ObtenEstadosPorPais(paisSeleccionado))
             End If
+            MarcaCampoComoObligatorio(refCbEstadoOrigen)
         Else
             If txtEstadoOrigen Is Nothing Then
                 txtEstadoOrigen = New TextBox
@@ -676,6 +757,7 @@ Public Class frmCartaPorte
             Else
                 LimpiaDesactivaCombobox(refCbEstadoOrigen)
             End If
+            MarcaCampoComoObligatorio(txtEstadoOrigen)
         End If
 
         'Tratamiento de colonias
@@ -686,6 +768,7 @@ Public Class frmCartaPorte
                 SustituyeEnGrid(txtColoniaOrigen, refCbColoniaOrigen, tlpDetalleDomicilioOrigen)
                 txtCpRemitente_TextChanged(Nothing, Nothing)
             End If
+            MarcaCampoComoObligatorio(refCbColoniaOrigen)
         Else
             If txtColoniaOrigen Is Nothing Then
                 txtColoniaOrigen = New TextBox
@@ -693,6 +776,7 @@ Public Class frmCartaPorte
                 SustituyeEnGrid(refCbColoniaOrigen, txtColoniaOrigen, tlpDetalleDomicilioOrigen)
                 LimpiaDesactivaCombobox(refCbColoniaOrigen)
             End If
+            MarcaCampoComoObligatorio(txtColoniaOrigen)
         End If
 
         'Tratamiento de municipios y localidades
@@ -709,6 +793,8 @@ Public Class frmCartaPorte
                 SustituyeEnGrid(txtLocalidadOrigen, refCbLocalidadOrigen, tlpDetalleDomicilioOrigen)
                 AddHandler refCbLocalidadOrigen.SelectedIndexChanged, AddressOf cbLocalidadRemitente_SelectedIndexChanged
             End If
+            MarcaCampoComoObligatorio(refCbMunicipioOrigen)
+            MarcaCampoComoObligatorio(refCbLocalidadOrigen)
             cbEstadoRemitente_SelectedValueChanged(Nothing, Nothing)
         Else
             If txtMunicipioOrigen Is Nothing Then
@@ -721,6 +807,8 @@ Public Class frmCartaPorte
                 txtLocalidadOrigen.Text = String.Empty
                 SustituyeEnGrid(refCbLocalidadOrigen, txtLocalidadOrigen, tlpDetalleDomicilioOrigen)
             End If
+            MarcaCampoComoOpcional(txtMunicipioOrigen)
+            MarcaCampoComoOpcional(txtLocalidadOrigen)
             LimpiaDesactivaCombobox(refCbMunicipioOrigen)
             LimpiaDesactivaCombobox(refCbLocalidadOrigen)
         End If
@@ -859,6 +947,30 @@ Public Class frmCartaPorte
     Private ES_EXTRANJERO_DESTINO As Boolean = False
     Private INFORMACION_VALIDA_DESTINO As Boolean = False
 
+    Private Sub fechaHoraLlegada_GotFocus(sender As Object, e As EventArgs)
+        If datosDestinosIntermediosParaCartaPorte Is Nothing Then
+            Return
+        End If
+        If datosDestinosIntermediosParaCartaPorte.Count = 0 Then
+            Return
+        End If
+        Dim rsult = MsgBox(ObtenParametroPorLlave("EXISTEN_FECHAS"), vbQuestion + vbYesNo, "Alerta")
+        If rsult = MsgBoxResult.No Then Return
+        ReiniciaFechaHoraLlegada()
+    End Sub
+
+    Private Sub nupKmRecorridos_GotFocus(sender As Object, e As EventArgs)
+        If datosDestinosIntermediosParaCartaPorte Is Nothing Then
+            Return
+        End If
+        If datosDestinosIntermediosParaCartaPorte.Count = 0 Then
+            Return
+        End If
+        Dim rsult = MsgBox(ObtenParametroPorLlave("EXISTEN_KM"), vbQuestion + vbYesNo, "Alerta")
+        If rsult = MsgBoxResult.No Then Return
+        ReiniciaKmDestinosIntermedios()
+    End Sub
+
     Private Sub nupKmRecorridos_ValueChanged(sender As Object, e As EventArgs) Handles nupKmRecorridos.ValueChanged
         If datosDestinosIntermediosParaCartaPorte Is Nothing Then
             Return
@@ -949,6 +1061,13 @@ Public Class frmCartaPorte
             txtNombreDestino.Enabled = True
             txtApPaternoDestino.Enabled = True
             txtApMaternoDestino.Enabled = True
+
+            MarcaCampoComoObligatorio(txtApMaternoDestino)
+            MarcaCampoComoObligatorio(txtApPaternoDestino)
+            MarcaCampoComoOpcional(txtNumIdRegFiscalDestino)
+            MarcaCampoComoOpcional(cbResidenciaFiscalDestino)
+            MarcaCampoComoOpcional(txtResidenciaFiscalDestino)
+
         ElseIf rbPersonaMoralDestino.Checked Then
             ES_PERSONA_FISICA_DESTINO = False
             ES_PERSONA_MORAL_DESTINO = True
@@ -958,6 +1077,13 @@ Public Class frmCartaPorte
             cbPaisDestino.Enabled = True
             txtRfcDestino.Enabled = True
             txtNombreDestino.Enabled = True
+
+            MarcaCampoComoOpcional(txtApMaternoDestino)
+            MarcaCampoComoOpcional(txtApPaternoDestino)
+            MarcaCampoComoOpcional(txtNumIdRegFiscalDestino)
+            MarcaCampoComoOpcional(cbResidenciaFiscalDestino)
+            MarcaCampoComoOpcional(txtResidenciaFiscalDestino)
+
         ElseIf rbEsExtranjeroDestino.Checked Then
             ES_PERSONA_FISICA_DESTINO = False
             ES_PERSONA_MORAL_DESTINO = False
@@ -971,6 +1097,12 @@ Public Class frmCartaPorte
             txtApPaternoDestino.Enabled = True
             txtApMaternoDestino.Enabled = True
             txtNumIdRegFiscalDestino.Enabled = True
+
+            MarcaCampoComoObligatorio(txtApMaternoDestino)
+            MarcaCampoComoObligatorio(txtApPaternoDestino)
+            MarcaCampoComoObligatorio(txtNumIdRegFiscalDestino)
+            MarcaCampoComoObligatorio(cbResidenciaFiscalDestino)
+            MarcaCampoComoObligatorio(txtResidenciaFiscalDestino)
         End If
     End Sub
 
@@ -1007,6 +1139,7 @@ Public Class frmCartaPorte
                 SustituyeEnGrid(txtEstadoDestino, refCbEstadoDestino, tlpDatosDestino)
                 AddHandler refCbEstadoDestino.SelectedValueChanged, AddressOf cbEstadoDestino_SelectedValueChanged
             End If
+            MarcaCampoComoObligatorio(refCbEstadoDestino)
             BindCombobox(refCbEstadoDestino, ObtenEstadosPorPais(paisDestino))
         Else
             If txtEstadoDestino Is Nothing Then
@@ -1015,6 +1148,7 @@ Public Class frmCartaPorte
                 LimpiaDesactivaCombobox(refCbEstadoDestino)
                 SustituyeEnGrid(refCbEstadoDestino, txtEstadoDestino, tlpDatosDestino)
             End If
+            MarcaCampoComoObligatorio(txtEstadoDestino)
         End If
 
         'Después, validación de municipios y localidades
@@ -1031,6 +1165,8 @@ Public Class frmCartaPorte
                 SustituyeEnGrid(txtLocalidadDestino, refCbLocalidadDestino, tlpDatosDestino)
                 AddHandler refCbLocalidadDestino.SelectedIndexChanged, AddressOf cbLocalidadDestino_SelectedIndexChanged
             End If
+            MarcaCampoComoObligatorio(refCbMunicipioDestino)
+            MarcaCampoComoObligatorio(refCbLocalidadDestino)
             cbEstadoDestino_SelectedValueChanged(Nothing, Nothing)
         Else
             If txtMunicipioDestino Is Nothing Then
@@ -1043,6 +1179,8 @@ Public Class frmCartaPorte
                 txtLocalidadDestino.Text = String.Empty
                 SustituyeEnGrid(refCbLocalidadDestino, txtLocalidadDestino, tlpDatosDestino)
             End If
+            MarcaCampoComoOpcional(txtMunicipioDestino)
+            MarcaCampoComoOpcional(txtLocalidadDestino)
         End If
 
         'Ahora, toca la misma validación, pero en colonias
@@ -1053,17 +1191,30 @@ Public Class frmCartaPorte
                 SustituyeEnGrid(txtColoniaDestino, refCbColoniaDestino, tlpDatosDestino)
                 txtCpDestino_TextChanged(Nothing, Nothing)
             End If
+            MarcaCampoComoObligatorio(refCbColoniaDestino)
         Else
             If txtColoniaDestino Is Nothing Then
                 txtColoniaDestino = New TextBox
                 txtColoniaDestino.Text = String.Empty
                 SustituyeEnGrid(txtColoniaDestino, refCbColoniaDestino, tlpDatosDestino)
             End If
+            MarcaCampoComoObligatorio(txtColoniaDestino)
         End If
     End Sub
 
     Private Sub cbEstadoDestino_SelectedValueChanged(sender As Object, e As EventArgs) Handles cbEstadoDestino.SelectedValueChanged
-        If ObtenValorCombobox(refCbEstadoDestino) = "-01" Then Return
+        ValidaOrdenMunicipioLocalidadCodigo(cbPaisDestino,
+                                            refCbEstadoDestino,
+                                            refCbLocalidadDestino,
+                                            refCbMunicipioDestino,
+                                            txtCpDestino,
+                                            refCbColoniaDestino)
+
+        If ObtenValorCombobox(refCbEstadoDestino) = "-01" Then
+            LimpiaDesactivaCombobox(refCbMunicipioDestino)
+            LimpiaDesactivaCombobox(refCbLocalidadDestino)
+            Return
+        End If
 
         Dim paisDestino = cbPaisDestino.SelectedValue
         'Si no tenemos los municipios y localidad, ni caso tiene seguir
@@ -1073,12 +1224,6 @@ Public Class frmCartaPorte
 
         BindCombobox(refCbMunicipioDestino, ObtenMunicipiosPorEstado(ObtenValorCombobox(refCbEstadoDestino)))
         BindCombobox(refCbLocalidadDestino, ObtenLocalidadesPorEstado(ObtenValorCombobox(refCbEstadoDestino)))
-        ValidaOrdenMunicipioLocalidadCodigo(cbPaisDestino,
-                                            refCbEstadoDestino,
-                                            refCbLocalidadDestino,
-                                            refCbMunicipioDestino,
-                                            txtCpDestino,
-                                            refCbColoniaDestino)
     End Sub
 
     Private Sub txtCpDestino_TextChanged(sender As Object, e As EventArgs) Handles txtCpDestino.TextChanged
@@ -1347,6 +1492,36 @@ Public Class frmCartaPorte
     '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
     '''''''DATOS DE DESTINOS INTERMEDIOS
     '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+    Private txtEstadoDestinoIntermedio As TextBox = Nothing
+    Private txtMunicipioDestinoIntermedio As TextBox = Nothing
+    Private txtLocalidadDestinoIntermedio As TextBox = Nothing
+    Private txtColoniaDestinoIntermedio As TextBox = Nothing
+    Private refCbEstadoDestinoIntermedio As ComboBox = Nothing
+    Private refCbMunicipioDestinoIntermedio As ComboBox = Nothing
+    Private refCbLocalidadDestinoIntermedio As ComboBox = Nothing
+    Private refCbColoniaDestinoIntermedio As ComboBox = Nothing
+
+    Private ES_PERSONA_MORAL_DESTINO_INTERMEDIO As Boolean = False
+    Private ES_PERSONA_FISICA_DESTINO_INTERMEDIO As Boolean = False
+    Private ES_EXTRANJERO_DESTINO_INTERMEDIO As Boolean = False
+    Private INFORMACION_VALIDA_DESTINO_INTERMEDIO As Boolean = False
+    Private ESTA_CREANDO_DESTINO_INTERMEDIO As Boolean = False
+    Private ESTA_ACTUALIZANDO_DESTINO_INTERMEDIO As Boolean = False
+
+    Private Sub ReiniciaKmDestinosIntermedios()
+        datosDestinosIntermediosParaCartaPorte.ForEach(Sub(x)
+                                                           x.UsuarioCausoProblemasConKm = True
+                                                           x.DistanciaRecorrida = 0
+                                                       End Sub)
+    End Sub
+
+    Private Sub ReiniciaFechaHoraLlegada()
+        datosDestinosIntermediosParaCartaPorte.ForEach(Sub(x)
+                                                           x.UsuarioCausoProblemasConFecha = True
+                                                           x.FechaSalidaLlegada = Nothing
+                                                           x.HoraSalidaLlegada = String.Empty
+                                                       End Sub)
+    End Sub
 
     Private Sub cbMunicipioDestinoIntermedio_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cbMunicipioDestinoIntermedio.SelectedIndexChanged
         ValidaOrdenMunicipioLocalidadCodigo(cbPaisDestinoIntermedio,
@@ -1379,98 +1554,95 @@ Public Class frmCartaPorte
         dgvCartaPorteDestinosIntermedios.Columns("DIHoraLlegadaClm").DataPropertyName = NameOf(OrigenDestino.HoraSalidaLlegada)
         dgvCartaPorteDestinosIntermedios.Columns("DIKmClm").DataPropertyName = NameOf(OrigenDestino.DistanciaRecorrida)
         dgvCartaPorteDestinosIntermedios.Columns("IDUbicacionClm").DataPropertyName = NameOf(OrigenDestino.IDUbicacion)
+        dgvCartaPorteDestinosIntermedios.Columns("DIUsuarioProblemasFechaClm").DataPropertyName = NameOf(OrigenDestino.UsuarioCausoProblemasConFecha)
+        dgvCartaPorteDestinosIntermedios.Columns("DIUsuarioCausoProblemasConKm").DataPropertyName = NameOf(OrigenDestino.UsuarioCausoProblemasConKm)
         dgvCartaPorteDestinosIntermedios.DataSource = datosDestinosIntermediosParaCartaPorte
     End Sub
 
-    Private txtEstadoDestinoIntermedio As TextBox = Nothing
-    Private txtMunicipioDestinoIntermedio As TextBox = Nothing
-    Private txtLocalidadDestinoIntermedio As TextBox = Nothing
-    Private txtColoniaDestinoIntermedio As TextBox = Nothing
-    Private refCbEstadoDestinoIntermedio As ComboBox = Nothing
-    Private refCbMunicipioDestinoIntermedio As ComboBox = Nothing
-    Private refCbLocalidadDestinoIntermedio As ComboBox = Nothing
-    Private refCbColoniaDestinoIntermedio As ComboBox = Nothing
+    Private Sub dgvCartaPorteDestinosIntermedios_CellFormatting(sender As Object, e As DataGridViewCellFormattingEventArgs) Handles dgvCartaPorteDestinosIntermedios.CellFormatting
+        Dim columnaIdMovimiento = 0
+        If e.ColumnIndex <> columnaIdMovimiento Then Return
 
-    Private ES_PERSONA_MORAL_DESTINO_INTERMEDIO As Boolean = False
-    Private ES_PERSONA_FISICA_DESTINO_INTERMEDIO As Boolean = False
-    Private ES_EXTRANJERO_DESTINO_INTERMEDIO As Boolean = False
-    Private INFORMACION_VALIDA_DESTINO_INTERMEDIO As Boolean = False
-    Private ESTA_CREANDO_DESTINO_INTERMEDIO As Boolean = False
-    Private ESTA_ACTUALIZANDO_DESTINO_INTERMEDIO As Boolean = False
+        Dim idMovimiento As String = dgvCartaPorteDestinosIntermedios.Rows(e.RowIndex).Cells(columnaIdMovimiento).Value
+        Dim objOrigenDestino As OrigenDestino = datosDestinosIntermediosParaCartaPorte.FirstOrDefault(Function(x) x.IDUbicacion.Equals(idMovimiento))
 
-    Private Sub PreparaPestanaDestinoIntermedio()
-        If datosDestinosIntermediosParaCartaPorte Is Nothing Then
-            datosDestinosIntermediosParaCartaPorte = New List(Of OrigenDestino)
+        Dim huboProblemas = False Or objOrigenDestino.UsuarioCausoProblemasConFecha Or objOrigenDestino.UsuarioCausoProblemasConKm
+        If huboProblemas Then
+            dgvCartaPorteDestinosIntermedios.Rows(e.RowIndex).DefaultCellStyle.BackColor = Color.FromName(colorUsuarioCausoProblemas)
+        Else
+            dgvCartaPorteDestinosIntermedios.Rows(e.RowIndex).DefaultCellStyle.BackColor = Color.White
         End If
-        BindCombobox(cbPaisDestinoIntermedio, ObtenListadoPaises())
-        BindGridDestinosIntermedios()
-        rbEsPersonaFisicaDestinoIntermedio.Checked = True
-        rbEsPersonaFisicaDestinoIntermedio.Enabled = False
-        rbEsExtranjeroDestinoIntermedio.Enabled = False
-        rbEsPersonaMoralDestinoIntermedio.Enabled = False
-        btnLimpiarDestinosIntermedios_Click(Nothing, Nothing)
     End Sub
 
-    Private Sub ActivaModificacionDestinoIntermedio()
+    Private Sub PreparaPestanaDestinoIntermedio()
+        BloqueaDestinoIntermedio()
+        BindGridDestinosIntermedios()
+    End Sub
+
+    Private Sub BloqueaDestinoIntermedio()
+        LimpiaDesactivaTextbox(txtTipoUbicacionDestinoIntermedio)
+        txtTipoUbicacionDestinoIntermedio.Text = "Destino"
+        LimpiaDesactivaTextbox(txtIdUbicacionDestinoIntermedio)
+        rbEsPersonaFisicaDestinoIntermedio.Checked = True
+        rbEsPersonaFisicaDestinoIntermedio.Enabled = False
+        rbEsPersonaMoralDestinoIntermedio.Enabled = False
+        rbEsExtranjeroDestinoIntermedio.Enabled = False
+        LimpiaDesactivaTextbox(txtRfcDestinoIntermedio)
+        LimpiaDesactivaTextbox(txtNombreDestinoIntermedio)
+        LimpiaDesactivaTextbox(txtApPaternoDestinoIntermedio)
+        LimpiaDesactivaTextbox(txtApMaternoDestinoIntermedio)
+        LimpiaDesactivaCombobox(cbPaisResidenciaFiscalDestinoIntermedio)
+        LimpiaDesactivaTextbox(txtPaisResidenciaFiscalDestinoIntermedio)
+        dtFechaLlegadaDestinoIntermedio.Enabled = False
+        LimpiaDesactivaTextbox(txtHoraLlegadaDestinoIntermedio)
+        nupKmDestinoIntermedio.Enabled = False
+        LimpiaDesactivaCombobox(cbPaisDestinoIntermedio)
+        LimpiaDesactivaCombobox(cbEstadoDestinoIntermedio)
+        LimpiaDesactivaCombobox(cbMunicipioDestinoIntermedio)
+        LimpiaDesactivaCombobox(cbLocalidadDestinoIntermedio)
+        LimpiaDesactivaTextbox(txtCpDestinoIntermedio)
+        LimpiaDesactivaTextbox(txtNoIntDestinoIntermedio)
+        LimpiaDesactivaTextbox(txtNoExtDestinoIntermedio)
+        LimpiaDesactivaTextbox(txtCalleDestinoIntermedio)
+        LimpiaDesactivaTextbox(txtReferenciaDestinoIntermedio)
+        lblFechaHoraMaximaDestInter.Text = String.Empty
+    End Sub
+
+    Private Sub ObtenMaximosMinimosFecha(ByRef fechaMinima As DateTime,
+                                         ByRef fechaMaxima As DateTime)
+        fechaMinima = datosOrigenParaCartaPorte.FechaHora
+        fechaMaxima = datosDestinoParaCartaPorte.FechaHora
+    End Sub
+
+    Private Sub PreparaEntradaPestanaDestinoIntermedio()
         txtIdUbicacionDestinoIntermedio.Enabled = True
         rbEsPersonaFisicaDestinoIntermedio.Enabled = True
         rbEsPersonaMoralDestinoIntermedio.Enabled = True
         rbEsExtranjeroDestinoIntermedio.Enabled = True
-        dtFechaLlegadaDestinoIntermedio.Enabled = True
-        txtHoraLlegadaDestinoIntermedio.Enabled = True
-        nupKmDestinoIntermedio.Maximum = ObtenKilometrosDisponibles()
+        rbEsPersonaFisicaDestinoIntermedio.Checked = True
+        TogglePersonaMoralFisicaExtranjeroDestinoIntermedio()
+
         nupKmDestinoIntermedio.Minimum = 0
-        nupKmDestinoIntermedio.Enabled = True
-        cbPaisDestinoIntermedio.Enabled = True
+        nupKmDestinoIntermedio.Maximum = ObtenKilometrosDisponibles()
+
+        Dim fechaSalidaOrigen As DateTime
+        Dim fechaLlegadaMax As DateTime
+        ObtenMaximosMinimosFecha(fechaSalidaOrigen, fechaLlegadaMax)
+        dtFechaLlegadaDestinoIntermedio.MinDate = fechaSalidaOrigen.Date
+        dtFechaLlegadaDestinoIntermedio.MaxDate = fechaLlegadaMax.Date
+        lblFechaHoraMaximaDestInter.Text = String.Format(ObtenParametroPorLlave("AVISO_FECHAS"), fechaSalidaOrigen.ToString("dd-MM-yyyy HH:mm"), fechaLlegadaMax.ToString("dd-MM-yyyy HH:mm"))
+        lblFechaHoraMaximaDestInter.ForeColor = Color.Red
+
+        txtHoraLlegadaDestinoIntermedio.Enabled = True
         txtNoExtDestinoIntermedio.Enabled = True
         txtNoIntDestinoIntermedio.Enabled = True
         txtCalleDestinoIntermedio.Enabled = True
         txtReferenciaDestinoIntermedio.Enabled = True
     End Sub
 
-    Private Sub LimpiaDatosResidenciaFiscalDestinoIntermedio()
-        txtTipoUbicacionDestinoIntermedio.Text = "Destino"
-        txtTipoUbicacionDestinoIntermedio.Enabled = False
-        nupKmDestinoIntermedio.Value = 0
-        nupKmDestinoIntermedio.Enabled = False
-        LimpiaDesactivaCombobox(cbPaisResidenciaFiscalDestinoIntermedio)
-        txtHoraLlegadaDestinoIntermedio.Text = "00:00"
-        nupKmDestinoIntermedio.Minimum = 0
-        nupKmDestinoIntermedio.Maximum = ObtenKilometrosDisponibles()
-        LimpiaDesactivaTextbox(txtIdUbicacionDestinoIntermedio)
-        LimpiaDesactivaTextbox(txtRfcDestinoIntermedio)
-        LimpiaDesactivaTextbox(txtNombreDestinoIntermedio)
-        LimpiaDesactivaTextbox(txtApPaternoDestinoIntermedio)
-        LimpiaDesactivaTextbox(txtApMaternoDestinoIntermedio)
-        LimpiaDesactivaTextbox(txtPaisResidenciaFiscalDestinoIntermedio)
-        LimpiaDesactivaTextbox(txtNumregIdTribDestinoIntermedio)
-        nupKmDestinoIntermedio.Enabled = True
-    End Sub
-
-    Private Sub LimpiaDetallesDestinoIntermedio()
-        RemueveDeGrid(txtEstadoDestinoIntermedio, tlpDetallesDestinoIntermedio)
-        RemueveDeGrid(txtMunicipioDestinoIntermedio, tlpDetallesDestinoIntermedio)
-        RemueveDeGrid(txtLocalidadDestinoIntermedio, tlpDetallesDestinoIntermedio)
-        RemueveDeGrid(txtColoniaDestinoIntermedio, tlpDetallesDestinoIntermedio)
-        LimpiaDesactivaCombobox(cbPaisDestinoIntermedio)
-        LimpiaDesactivaCombobox(refCbEstadoDestinoIntermedio)
-        LimpiaDesactivaCombobox(refCbMunicipioDestinoIntermedio)
-        LimpiaDesactivaCombobox(refCbLocalidadDestinoIntermedio)
-        txtCpDestinoIntermedio.Text = String.Empty
-        LimpiaDesactivaTextbox(txtNoExtDestinoIntermedio)
-        LimpiaDesactivaTextbox(txtNoIntDestinoIntermedio)
-        LimpiaDesactivaTextbox(txtCalleDestinoIntermedio)
-        LimpiaDesactivaTextbox(txtReferenciaDestinoIntermedio)
-        BindCombobox(cbPaisDestinoIntermedio, ObtenListadoPaises())
-    End Sub
-
     Private Sub TogglePersonaMoralFisicaExtranjeroDestinoIntermedio()
-        LimpiaDatosResidenciaFiscalDestinoIntermedio()
-        rbEsPersonaFisicaDestinoIntermedio.Enabled = True
-        rbEsPersonaMoralDestinoIntermedio.Enabled = True
-        rbEsExtranjeroDestinoIntermedio.Enabled = True
-
         If rbEsPersonaFisicaDestinoIntermedio.Checked Then
+            LimpiaDesactivaTextbox(txtNumregIdTribDestinoIntermedio)
             ES_PERSONA_MORAL_DESTINO_INTERMEDIO = False
             ES_PERSONA_FISICA_DESTINO_INTERMEDIO = True
             ES_EXTRANJERO_DESTINO_INTERMEDIO = False
@@ -1483,7 +1655,16 @@ Public Class frmCartaPorte
             cbPaisDestinoIntermedio.SelectedValue = "MEX"
             cbPaisDestinoIntermedio.Enabled = True
 
+            MarcaCampoComoObligatorio(txtApPaternoDestinoIntermedio)
+            MarcaCampoComoObligatorio(txtApMaternoDestinoIntermedio)
+            MarcaCampoComoOpcional(txtNumregIdTribDestinoIntermedio)
+            MarcaCampoComoOpcional(cbPaisResidenciaFiscalDestinoIntermedio)
+            MarcaCampoComoOpcional(txtPaisResidenciaFiscalDestinoIntermedio)
+
         ElseIf rbEsPersonaMoralDestinoIntermedio.Checked Then
+            LimpiaDesactivaTextbox(txtNumregIdTribDestinoIntermedio)
+            LimpiaDesactivaTextbox(txtApPaternoDestinoIntermedio)
+            LimpiaDesactivaTextbox(txtApMaternoDestinoIntermedio)
             ES_PERSONA_MORAL_DESTINO_INTERMEDIO = True
             ES_PERSONA_FISICA_DESTINO_INTERMEDIO = False
             ES_EXTRANJERO_DESTINO_INTERMEDIO = False
@@ -1493,19 +1674,32 @@ Public Class frmCartaPorte
             cbPaisDestinoIntermedio.SelectedValue = "MEX"
             cbPaisDestinoIntermedio.Enabled = True
 
+            MarcaCampoComoOpcional(txtApPaternoDestinoIntermedio)
+            MarcaCampoComoOpcional(txtApMaternoDestinoIntermedio)
+            MarcaCampoComoOpcional(txtNumregIdTribDestinoIntermedio)
+            MarcaCampoComoOpcional(cbPaisResidenciaFiscalDestinoIntermedio)
+            MarcaCampoComoOpcional(txtPaisResidenciaFiscalDestinoIntermedio)
+
         ElseIf rbEsExtranjeroDestinoIntermedio.Checked Then
             ES_PERSONA_MORAL_DESTINO_INTERMEDIO = False
             ES_PERSONA_FISICA_DESTINO_INTERMEDIO = False
             ES_EXTRANJERO_DESTINO_INTERMEDIO = True
 
+            LimpiaDesactivaTextbox(txtRfcDestinoIntermedio)
             txtRfcDestinoIntermedio.Text = ObtenParametroPorLlave("RFC_GENERICO_EXTRANJERO")
-            txtRfcDestinoIntermedio.Enabled = False
+
             txtNumregIdTribDestinoIntermedio.Enabled = True
             txtNombreDestinoIntermedio.Enabled = True
             txtApPaternoDestinoIntermedio.Enabled = True
             txtApMaternoDestinoIntermedio.Enabled = True
             cbPaisDestinoIntermedio.SelectedValue = "-01"
             cbPaisDestinoIntermedio.Enabled = True
+
+            MarcaCampoComoObligatorio(txtApPaternoDestinoIntermedio)
+            MarcaCampoComoObligatorio(txtApMaternoDestinoIntermedio)
+            MarcaCampoComoObligatorio(txtNumregIdTribDestinoIntermedio)
+            MarcaCampoComoObligatorio(cbPaisResidenciaFiscalDestinoIntermedio)
+            MarcaCampoComoObligatorio(txtPaisResidenciaFiscalDestinoIntermedio)
         End If
     End Sub
 
@@ -1523,7 +1717,7 @@ Public Class frmCartaPorte
             datosDestinoIntermedioEnModificacion = New OrigenDestino
         End If
 
-        Dim tipoUbicacionDestInter As String = "DESTINO"
+        Dim tipoUbicacionDestInter As String = "Destino"
         Dim idUbicacionDestInter As String = ObtenValorTextbox(txtIdUbicacionDestinoIntermedio)
 
 
@@ -1646,6 +1840,24 @@ Public Class frmCartaPorte
             If coloniaDestino = "-01" Then AlertaMensaje(ObtenParametroPorLlave("INGRESE_COLONIA")) : Return
         End If
 
+        Dim regExpHora = ObtenParametroPorLlave("REGEXP_HORA")
+        Dim horaLlegadaDestInter = ObtenValorTextbox(txtHoraLlegadaDestinoIntermedio)
+        If Not Regex.IsMatch(horaLlegadaDestInter, regExpHora) Then AlertaMensaje(ObtenParametroPorLlave("HORA_MALFORMADA")) : Return
+
+        Dim fechaLlegadaDestInter As New DateTime
+        fechaLlegadaDestInter = dtFechaLlegadaDestinoIntermedio.Value
+        fechaLlegadaDestInter.AddHours(horaLlegadaDestInter.Split(":")(0))
+        fechaLlegadaDestInter.AddMinutes(horaLlegadaDestInter.Split(":")(1))
+
+        Dim fechaHoraMinima As DateTime
+        Dim fechaHoraMaxima As DateTime
+        ObtenMaximosMinimosFecha(fechaHoraMinima, fechaHoraMaxima)
+        'Verifico que las fechas estén dentro del rango correcto
+        If (fechaLlegadaDestInter <= fechaHoraMinima) And (fechaLlegadaDestInter >= fechaHoraMaxima) Then
+            AlertaMensaje(ObtenParametroPorLlave("FECHA_ERRONEA"))
+            Return
+        End If
+
         CPDestino = ObtenValorTextbox(txtCpDestinoIntermedio)
         Dim regExpCp = ObtenParametroPorLlave("REGEXP_CODIGO_POSTAL")
         If CPDestino.Length <> 5 Then AlertaMensaje(ObtenParametroPorLlave("INGRESE_CODIGO_POSTAL")) : Return
@@ -1680,6 +1892,8 @@ Public Class frmCartaPorte
         datosDestinoIntermedioEnModificacion.HoraSalidaLlegada = txtHoraLlegadaDestinoIntermedio.Text
         datosDestinoIntermedioEnModificacion.DistanciaRecorrida = kmRecorridos
         datosDestinoIntermedioEnModificacion.EsDestinoIntermedio = True
+        datosDestinoIntermedioEnModificacion.UsuarioCausoProblemasConKm = False
+        datosDestinoIntermedioEnModificacion.UsuarioCausoProblemasConFecha = False
 
         Dim domicilio As New Domicilio
         domicilio.Calle = calleDestino
@@ -1723,7 +1937,7 @@ Public Class frmCartaPorte
         End If
         'KmTotales-KmconsumidosDeTotal = Disponibles
         'Regreso si los disponibles son mayores o iguales al actual
-        Return (kmTotales - kmConsumidosDeTotal)
+        Return (kmTotales - kmConsumidosDeTotal - 1)
     End Function
 
     Private Sub rbEsPersonaFisicaDestinoIntermedio_CheckedChanged(sender As Object, e As EventArgs) Handles rbEsPersonaFisicaDestinoIntermedio.CheckedChanged
@@ -1830,14 +2044,12 @@ Public Class frmCartaPorte
     End Sub
 
     Private Sub btnReiniciarDestinosIntermedios_Click(sender As Object, e As EventArgs) Handles btnReiniciarDestinosIntermedios.Click
-        LimpiaDatosResidenciaFiscalDestinoIntermedio()
-        LimpiaDetallesDestinoIntermedio()
-        ActivaModificacionDestinoIntermedio()
+        BloqueaDestinoIntermedio()
+        PreparaEntradaPestanaDestinoIntermedio()
         datosDestinoIntermedioEnModificacion = Nothing
         ESTA_ACTUALIZANDO_DESTINO_INTERMEDIO = False
         ESTA_CREANDO_DESTINO_INTERMEDIO = True
         rbEsPersonaFisicaDestinoIntermedio.Checked = True
-        TogglePersonaMoralFisicaExtranjeroDestinoIntermedio()
     End Sub
 
     Private Sub btnAtrasDestinosIntermedios_Click(sender As Object, e As EventArgs) Handles btnAtrasDestinosIntermedios.Click
@@ -1846,19 +2058,34 @@ Public Class frmCartaPorte
         ESTOY_CAMBIANDO_MEDIANTE_INDICE = False
     End Sub
     Private Sub btnSiguienteDestinosIntermedios_Click(sender As Object, e As EventArgs) Handles btnSiguienteDestinosIntermedios.Click
+        'Primero tengo que ver si no hay problemas con las
+        'fechas o los kilómetros de los destinos intermedios
+        For Each destInter As OrigenDestino In datosDestinosIntermediosParaCartaPorte
+            If destInter.UsuarioCausoProblemasConFecha Then
+                AlertaMensaje(ObtenParametroPorLlave("FECHAS_PEND"))
+                Return
+            End If
+            If destInter.UsuarioCausoProblemasConKm Then
+                AlertaMensaje(ObtenParametroPorLlave("KM_PEND"))
+                Return
+            End If
+        Next
+
+        If (Not ESTA_ACTUALIZANDO_DESTINO_INTERMEDIO) And (Not ESTA_CREANDO_DESTINO_INTERMEDIO) Then
+            ESTOY_CAMBIANDO_MEDIANTE_INDICE = True
+            TabControl1.SelectedTab = TabControl1.TabPages("tabMercancias")
+            ESTOY_CAMBIANDO_MEDIANTE_INDICE = False
+        End If
+
         If ESTA_ACTUALIZANDO_DESTINO_INTERMEDIO Then
             Dim rsult = MsgBox(ObtenParametroPorLlave("DEST_INTER_MODIFICACION"), vbQuestion + vbYesNo, "Alerta")
             If rsult = MsgBoxResult.No Then Return
-            ESTA_ACTUALIZANDO_DESTINO_INTERMEDIO = False
-            ESTA_CREANDO_DESTINO_INTERMEDIO = False
         ElseIf ESTA_CREANDO_DESTINO_INTERMEDIO Then
             Dim rsult = MsgBox(ObtenParametroPorLlave("DEST_INTER_CREACION"), vbQuestion + vbYesNo, "Alerta")
             If rsult = MsgBoxResult.No Then Return
-            ESTA_ACTUALIZANDO_DESTINO_INTERMEDIO = False
-            ESTA_CREANDO_DESTINO_INTERMEDIO = False
         End If
         btnGuardarDestinosIntermedios_Click(Nothing, Nothing)
-        If datosDestinoIntermedioEnModificacion Is Nothing Then
+        If INFORMACION_VALIDA_DESTINO_INTERMEDIO Then
             ESTOY_CAMBIANDO_MEDIANTE_INDICE = True
             TabControl1.SelectedTab = TabControl1.TabPages("tabMercancias")
             ESTOY_CAMBIANDO_MEDIANTE_INDICE = False
@@ -1896,7 +2123,8 @@ Public Class frmCartaPorte
         ESTA_CREANDO_DESTINO_INTERMEDIO = False
         Dim objDestino As OrigenDestino = datosDestinosIntermediosParaCartaPorte.FirstOrDefault(Function(x) x.IDUbicacion.Equals(idUbicacion))
         If objDestino IsNot Nothing Then
-            txtTipoUbicacionDestinoIntermedio.Text = "DESTINO"
+            txtTipoUbicacionDestinoIntermedio.Text = "Destino"
+            txtIdUbicacionDestinoIntermedio.Enabled = False
             txtIdUbicacionDestinoIntermedio.Text = objDestino.IDUbicacion
             rbEsPersonaFisicaDestinoIntermedio.Checked = objDestino.EsPersonaFisica
             rbEsPersonaMoralDestinoIntermedio.Checked = objDestino.EsPersonaMoral
@@ -1926,9 +2154,28 @@ Public Class frmCartaPorte
                 cbPaisResidenciaFiscalDestinoIntermedio.SelectedValue = objDestino.ResidenciaFiscal
             End If
 
-            dtFechaLlegadaDestinoIntermedio.Value = objDestino.FechaSalidaLlegada
-            txtHoraLlegadaDestinoIntermedio.Text = objDestino.HoraSalidaLlegada
-            nupKmDestinoIntermedio.Value = objDestino.DistanciaRecorrida
+            Dim fechaSalidaOrigen As DateTime
+            Dim fechaLlegadaMax As DateTime
+            ObtenMaximosMinimosFecha(fechaSalidaOrigen, fechaLlegadaMax)
+            dtFechaLlegadaDestinoIntermedio.MinDate = fechaSalidaOrigen.Date
+            dtFechaLlegadaDestinoIntermedio.MaxDate = fechaLlegadaMax.Date
+            lblFechaHoraMaximaDestInter.Text = String.Format(ObtenParametroPorLlave("AVISO_FECHAS"), fechaSalidaOrigen.ToString("dd-MM-yyyy HH:mm"), fechaLlegadaMax.ToString("dd-MM-yyyy HH:mm"))
+            lblFechaHoraMaximaDestInter.ForeColor = Color.Red
+
+            If objDestino.UsuarioCausoProblemasConFecha Then
+                dtFechaLlegadaDestinoIntermedio.Value = dtFechaLlegadaDestinoIntermedio.MinDate
+                txtHoraLlegadaDestinoIntermedio.Text = String.Empty
+            Else
+                dtFechaLlegadaDestinoIntermedio.Value = objDestino.FechaSalidaLlegada
+                txtHoraLlegadaDestinoIntermedio.Text = objDestino.HoraSalidaLlegada
+            End If
+
+            If objDestino.UsuarioCausoProblemasConKm Then
+                nupKmDestinoIntermedio.Value = 0
+            Else
+                nupKmDestinoIntermedio.Value = objDestino.DistanciaRecorrida
+            End If
+
 
             'Ahora a cargar los detalles del domicilio
             'Si no es extranjero, no hay ninguna bronca
@@ -2030,15 +2277,9 @@ Public Class frmCartaPorte
     End Sub
 
     Private Sub btnLimpiarDestinosIntermedios_Click(sender As Object, e As EventArgs) Handles btnLimpiarDestinosIntermedios.Click
-        rbEsPersonaFisicaDestinoIntermedio.Checked = True
-        rbEsPersonaFisicaDestinoIntermedio.Enabled = False
-        rbEsPersonaMoralDestinoIntermedio.Enabled = False
-        rbEsExtranjeroDestinoIntermedio.Enabled = False
-        LimpiaDatosResidenciaFiscalDestinoIntermedio()
-        LimpiaDetallesDestinoIntermedio()
+        BloqueaDestinoIntermedio()
         ESTA_CREANDO_DESTINO_INTERMEDIO = False
         ESTA_ACTUALIZANDO_DESTINO_INTERMEDIO = False
-        INFORMACION_VALIDA_DESTINO_INTERMEDIO = True
     End Sub
 
     Private Sub nupKmDestinoIntermedio_ValueChanged(sender As Object, e As EventArgs) Handles nupKmDestinoIntermedio.ValueChanged
@@ -2235,6 +2476,8 @@ Public Class frmCartaPorte
 
     Private Sub ToggleComercioInternacional()
         If rbComercioInternacionalSi.Checked Then
+            MarcaCampoComoObligatorio(txtFraccionArancelaria)
+            MarcaCampoComoObligatorio(txtPedimento)
             txtFraccionArancelaria.Enabled = True
             txtPedimento.Enabled = True
             If ESTA_CREANDO_MERCANCIA Then
@@ -2246,6 +2489,8 @@ Public Class frmCartaPorte
                 txtFraccionArancelaria.Text = merc.FraccionArancelaria
             End If
         ElseIf rbComercioInternacionalNo.Checked Then
+            MarcaCampoComoOpcional(txtPedimento)
+            MarcaCampoComoOpcional(txtFraccionArancelaria)
             txtPedimento.Text = String.Empty
             txtPedimento.Enabled = False
             LimpiaDesactivaTextbox(txtFraccionArancelaria)
@@ -2259,11 +2504,22 @@ Public Class frmCartaPorte
             LimpiaDesactivaTextbox(txtDescripcionMaterialPeligroso)
             LimpiaDesactivaTextbox(txtEmbalaje)
             LimpiaDesactivaTextbox(txtDescripcionEmbalaje)
+
+            MarcaCampoComoOpcional(txtClaveMaterialPeligroso)
+            MarcaCampoComoOpcional(txtDescripcionMaterialPeligroso)
+            MarcaCampoComoOpcional(txtEmbalaje)
+            MarcaCampoComoOpcional(txtDescripcionEmbalaje)
         ElseIf rbSiMaterialPeligroso.Checked Then
             txtDescripcionMaterialPeligroso.Enabled = True
             txtClaveMaterialPeligroso.Enabled = True
             txtEmbalaje.Enabled = True
             txtDescripcionEmbalaje.Enabled = True
+
+            MarcaCampoComoObligatorio(txtClaveMaterialPeligroso)
+            MarcaCampoComoObligatorio(txtDescripcionMaterialPeligroso)
+            MarcaCampoComoObligatorio(txtEmbalaje)
+            MarcaCampoComoObligatorio(txtDescripcionEmbalaje)
+
             If ESTA_MODIFICANDO_MERCANCIA Then
                 txtDescripcionMaterialPeligroso.Text = merc.DescripcionMaterialPeligroso
                 txtClaveMaterialPeligroso.Text = merc.ClaveMaterialPeligroso
@@ -2684,6 +2940,13 @@ Public Class frmCartaPorte
 
     Private Sub ValidaExisteMercanciaQueCuenteComoPeligroso()
         EXISTE_MERCANCIA_MATERIAL_PELIGROSO = listadoMercancias.FirstOrDefault(Function(m) m.MaterialPeligroso) IsNot Nothing
+        If EXISTE_MERCANCIA_MATERIAL_PELIGROSO Then
+            MarcaCampoComoObligatorio(txtAseguradoraDanosMedioAmbiente)
+            MarcaCampoComoObligatorio(txtPolizaSegurosDanosMedioAmbiente)
+        Else
+            MarcaCampoComoOpcional(txtAseguradoraDanosMedioAmbiente)
+            MarcaCampoComoOpcional(txtPolizaSegurosDanosMedioAmbiente)
+        End If
     End Sub
 
     Private Sub BloqueaDatosTransporte()
@@ -2743,6 +3006,15 @@ Public Class frmCartaPorte
     End Sub
 
     Private Sub TogglePartesTransporte()
+        MarcaCampoComoOpcional(cbPropiedadRemolque1)
+        MarcaCampoComoOpcional(cbPropiedadRemolque2)
+        MarcaCampoComoOpcional(cbTipoRemolque1)
+        MarcaCampoComoOpcional(cbTipoRemolque2)
+        MarcaCampoComoOpcional(txtTipoRemolque1)
+        MarcaCampoComoOpcional(txtTipoRemolque2)
+        MarcaCampoComoOpcional(txtPlacasRemolque1)
+        MarcaCampoComoOpcional(txtPlacasRemolque2)
+
         If numCantidadRemolquesTransporte.Value = 0 Then
             LimpiaDesactivaCombobox(cbPropiedadRemolque1)
             LimpiaDesactivaCombobox(cbPropiedadRemolque2)
@@ -2761,6 +3033,11 @@ Public Class frmCartaPorte
             LimpiaDesactivaCombobox(cbTipoRemolque2)
             LimpiaDesactivaTextbox(txtTipoRemolque2)
             LimpiaDesactivaTextbox(txtPlacasRemolque2)
+
+            MarcaCampoComoObligatorio(cbPropiedadRemolque1)
+            MarcaCampoComoObligatorio(cbTipoRemolque1)
+            MarcaCampoComoObligatorio(txtTipoRemolque1)
+            MarcaCampoComoObligatorio(txtPlacasRemolque1)
         End If
         If numCantidadRemolquesTransporte.Value = 2 Then
             BindCombobox(cbPropiedadRemolque2, conexionesCartaPorte.Get_OpcionesPropiedadTransporte())
@@ -2768,6 +3045,11 @@ Public Class frmCartaPorte
             txtPlacasRemolque1.Enabled = True
             txtPlacasRemolque2.Enabled = True
             LimpiaDesactivaTextbox(txtTipoRemolque2)
+
+            MarcaCampoComoObligatorio(cbPropiedadRemolque2)
+            MarcaCampoComoObligatorio(cbTipoRemolque2)
+            MarcaCampoComoObligatorio(txtTipoRemolque2)
+            MarcaCampoComoObligatorio(txtPlacasRemolque2)
         End If
     End Sub
 
@@ -3117,11 +3399,13 @@ Public Class frmCartaPorte
             txtRfcOperador.Enabled = False
             cbPaisOperador.Enabled = True
             cbPaisOperador.SelectedValue = "-01"
+            MarcaCampoComoObligatorio(txtNumRegIdTribFiscOperador)
         ElseIf rbOperadorMexicano.Checked Then
             txtRfcOperador.Text = String.Empty
             txtRfcOperador.Enabled = True
             LimpiaDesactivaTextbox(txtNumRegIdTribFiscOperador)
             BindCombobox(cbPaisOperador, ObtenListadoPaises("MEX"))
+            MarcaCampoComoOpcional(txtNumRegIdTribFiscOperador)
             cbPaisOperador.SelectedValue = "MEX"
             cbPaisOperador.Enabled = True
         End If
@@ -3201,6 +3485,7 @@ Public Class frmCartaPorte
                 LimpiaDesactivaCombobox(refCbEstadoOperador)
                 SustituyeEnGrid(txtEstadoOperador, refCbEstadoOperador, tlpDireccionOperador)
             End If
+            MarcaCampoComoObligatorio(refCbEstadoOperador)
             BindCombobox(refCbEstadoOperador, ObtenEstadosPorPais(paisSeleccionado))
             AddHandler refCbEstadoOperador.SelectedValueChanged, AddressOf cbEstadoOperador_SelectedValueChanged
         Else
@@ -3209,6 +3494,7 @@ Public Class frmCartaPorte
                 txtEstadoOperador.Text = String.Empty
                 SustituyeEnGrid(refCbEstadoOperador, txtEstadoOperador, tlpDireccionOperador)
             End If
+            MarcaCampoComoObligatorio(txtEstadoOperador)
         End If
 
         'Luego validación de países con municipios y localidades
@@ -3225,6 +3511,8 @@ Public Class frmCartaPorte
                 SustituyeEnGrid(txtLocalidadOperador, refCbLocalidadOperador, tlpDireccionOperador)
                 AddHandler refCbLocalidadOperador.SelectedIndexChanged, AddressOf cbLocalidadOperador_SelectedIndexChanged
             End If
+            MarcaCampoComoObligatorio(refCbMunicipioOperador)
+            MarcaCampoComoObligatorio(refCbLocalidadOperador)
             cbEstadoOperador_SelectedValueChanged(Nothing, Nothing)
         Else
             If txtMunicipioOperador Is Nothing Then
@@ -3237,6 +3525,8 @@ Public Class frmCartaPorte
                 txtLocalidadOperador.Text = String.Empty
                 SustituyeEnGrid(refCbLocalidadOperador, txtLocalidadOperador, tlpDireccionOperador)
             End If
+            MarcaCampoComoOpcional(txtMunicipioOperador)
+            MarcaCampoComoOpcional(txtLocalidadOperador)
         End If
 
         'Luego validación de paises con colonias
@@ -3247,12 +3537,14 @@ Public Class frmCartaPorte
                 SustituyeEnGrid(txtColoniaOperador, refCbColoniaOperador, tlpDireccionOperador)
             End If
             txtCpOperador_TextChanged(Nothing, Nothing)
+            MarcaCampoComoObligatorio(refCbColoniaOperador)
         Else
             If txtColoniaOperador Is Nothing Then
                 txtColoniaOperador = New TextBox
                 txtColoniaOperador.Text = String.Empty
                 SustituyeEnGrid(refCbColoniaOperador, txtColoniaOperador, tlpDireccionOperador)
             End If
+            MarcaCampoComoObligatorio(txtColoniaOperador)
         End If
     End Sub
 

@@ -27,6 +27,11 @@ Public Class OrigenDestino
     'pero me sirve para calculos
     Private _EsDestinoIntermedio As Boolean
 
+    'Este campo me sirve para saber si el usuario ha modificado 
+    'la fecha y hora finales luego de iniciar
+    Private _UsuarioCausoProblemasConFecha As Boolean = False
+    Private _UsuarioCausoProblemasConKm As Boolean = False
+
     Public Property TipoUbicacion As String
         Get
             Return _TipoUbicacion
@@ -262,5 +267,23 @@ Public Class OrigenDestino
         Get
             Return TipoUbicacion.Equals("Destino") And EsDestinoIntermedio
         End Get
+    End Property
+
+    Public Property UsuarioCausoProblemasConFecha As Boolean
+        Get
+            Return _UsuarioCausoProblemasConFecha
+        End Get
+        Set(value As Boolean)
+            _UsuarioCausoProblemasConKm = value
+        End Set
+    End Property
+
+    Public Property UsuarioCausoProblemasConKm As Boolean
+        Get
+            Return _UsuarioCausoProblemasConKm
+        End Get
+        Set(value As Boolean)
+            _UsuarioCausoProblemasConKm = value
+        End Set
     End Property
 End Class
