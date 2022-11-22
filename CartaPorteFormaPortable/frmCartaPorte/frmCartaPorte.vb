@@ -94,6 +94,15 @@ Public Class frmCartaPorte
         dtFechaSalidaRemitente.BackColor = Color.FromName(colorCampoObligatorio)
     End Sub
 
+    'Este método recibe un objeto Date y una cadena de horas, y entrega
+    'a cambio un datetime correcto
+    Private Function ObtenDateTime(ByRef fecha As DateTime, ByRef hora As String) As DateTime
+        Dim horas As Int32 = CInt(hora.Split(":")(0))
+        Dim minutos As Int32 = CInt(hora.Split(":")(1))
+        Dim fechaCorrecta As DateTime = New DateTime(fecha.Year, fecha.Month, fecha.Day, horas, minutos, 0)
+        Return fechaCorrecta
+    End Function
+
     'Este realiza la validación de cuando el SAT cuenta con catalogos de 
     'estados, municipios, localidades y códigos postales
     'y hace las sustituciones correspondientes
@@ -177,8 +186,8 @@ Public Class frmCartaPorte
                 refTxtLocalidad = New TextBox
                 SustituyeEnGrid(refCbLocalidad, refTxtLocalidad, refPanel)
             End If
-            MarcaCampoComoOpcional(refCbMunicipio, refPanel)
-            MarcaCampoComoOpcional(refCbLocalidad, refPanel)
+            MarcaCampoComoOpcional(refTxtMunicipio, refPanel)
+            MarcaCampoComoOpcional(refTxtLocalidad, refPanel)
         End If
 
         'Luego validación de colonias
@@ -218,6 +227,7 @@ Public Class frmCartaPorte
         Dim valorMunicipio As String = ObtenValorCombobox(refCbMunicipio)
         Dim valorLocalidad As String = ObtenValorCombobox(refCbLocalidad)
         If valorEstado = "-01" Or valorMunicipio = "-01" Or valorLocalidad = "-01" Then
+            LimpiaDesactivaTextbox(refTxtCp)
             LimpiaDesactivaCombobox(refCbColonia)
             Return
         End If
@@ -225,6 +235,7 @@ Public Class frmCartaPorte
         Dim valorCp As String = ObtenValorTextbox(refTxtCp)
         Dim regExpCp As String = ObtenParametroPorLlave("REGEXP_CODIGO_POSTAL")
         If Not Regex.IsMatch(valorCp, regExpCp) Then
+            LimpiaDesactivaCombobox(refCbColonia)
             'AlertaMensaje(ObtenParametroPorLlave("INGRESE_CODIGO_POSTAL"))
             Return
         End If
@@ -232,7 +243,11 @@ Public Class frmCartaPorte
         Dim mensaje As String = String.Empty
         Dim cpValido As Boolean = conexionesCartaPorte.Get_ValidaCodigoPostal(valorCp, valorEstado, valorMunicipio, valorLocalidad, mensaje)
 
-        If Not cpValido Then AlertaMensaje(mensaje) : Return
+        If Not cpValido Then
+            AlertaMensaje(mensaje)
+            LimpiaDesactivaCombobox(refCbColonia)
+            Return
+        End If
         BindCombobox(refCbColonia, ObtenColoniasPorCodigoPostal(valorCp))
     End Sub
 
@@ -503,17 +518,34 @@ Public Class frmCartaPorte
                                                     ByRef refCbColonia As ComboBox)
         'En los paises que no existe la colonia, es texto abierto el CP
         Dim valorPais As String = ObtenValorCombobox(refCbPais)
-        If Not PaisTieneColonias(valorPais) Then
+        If refCbColonia Is Nothing Then
             refTxtCp.Enabled = True
             Return
         End If
 
         'Si no existen municipios ni localidades, no tiene caso continuar
         'tambien es texto abierto el CP
-        If Not PaisTieneMunicipioLocalidad(valorPais) Then
+        If refCbMunicipio Is Nothing Or refCbLocalidad Is Nothing Then
             refTxtCp.Enabled = True
             Return
         End If
+
+        'Si ya tiene cargadas las colonias, es necesario volver a aplicar la 
+        'validacion de código postal, porque podría haber cambiado
+        'municipio o localidad, y así el código ya no sería válido
+        If refCbColonia.Enabled Then
+            RealizaCargaValidacionCodigoCargaColonias(refCbEstado, refCbMunicipio, refCbLocalidad, refCbColonia, refTxtCp)
+            Return
+        End If
+
+        'Si tiene valores para todo, también es necesario aplicar la validación,
+        'para que recargue las colonias
+        If ObtenValorCombobox(refCbEstado) <> "-01" And ObtenValorCombobox(refCbMunicipio) <> "-01" And ObtenValorCombobox(refCbLocalidad) <> "-01" Then
+            refTxtCp.Enabled = True
+            RealizaCargaValidacionCodigoCargaColonias(refCbEstado, refCbMunicipio, refCbLocalidad, refCbColonia, refTxtCp)
+            Return
+        End If
+
 
         'Ahora sí, si tiene municipio y localidad,
         'aplico validacion de que no sea posible ingresar CP 
@@ -610,8 +642,6 @@ Public Class frmCartaPorte
             REMITENTE_ES_PERSONA_FISICA = False
             REMITENTE_ES_EXTRANJERO = False
             txtNombreRemitente.Enabled = True
-            txtApPaternoRemitente.Enabled = False
-            txtApMaternoRemitente.Enabled = False
             txtRfcRemitente.Enabled = True
             txtRfcRemitente.Text = String.Empty
 
@@ -621,6 +651,8 @@ Public Class frmCartaPorte
             MarcaCampoComoOpcional(txtPaisResidenciaFiscalRemitente, tlpContenedorDatosFiscalesOrigen)
             MarcaCampoComoOpcional(txtNumRegidTribRemitente, tlpContenedorDatosFiscalesOrigen)
 
+            LimpiaDesactivaTextbox(txtApMaternoRemitente)
+            LimpiaDesactivaTextbox(txtApPaternoRemitente)
             LimpiaDesactivaTextbox(txtNumRegidTribRemitente)
             LimpiaDesactivaTextbox(txtPaisResidenciaFiscalRemitente)
             LimpiaDesactivaCombobox(cbResidenciaFiscalRemitente)
@@ -662,6 +694,8 @@ Public Class frmCartaPorte
             MarcaCampoComoObligatorio(txtPaisResidenciaFiscalRemitente, tlpContenedorDatosFiscalesOrigen)
             MarcaCampoComoObligatorio(txtNumRegidTribRemitente, tlpContenedorDatosFiscalesOrigen)
 
+            LimpiaDesactivaTextbox(txtNumRegidTribRemitente)
+            txtNumRegidTribRemitente.Enabled = True
             LimpiaDesactivaTextbox(txtRfcRemitente)
             txtRfcRemitente.Text = ObtenParametroPorLlave("RFC_GENERICO_EXTRANJERO")
             txtNumRegIdTribFiscOperador.Enabled = True
@@ -730,113 +764,113 @@ Public Class frmCartaPorte
             If EsCadenaVacia(nombreRemitente) Then AlertaMensaje(ObtenParametroPorLlave("INGRESE_NOMBRE")) : Return
 
         ElseIf REMITENTE_ES_EXTRANJERO Then
-            If EsCadenaVacia(nombreRemitente) Then AlertaMensaje(ObtenParametroPorLlave("NUM_REG_IDTRIB_NO_VALIDO")) : Return
+            If Not Regex.IsMatch(numRegIdTribRemitente, ObtenParametroPorLlave("REGEXP_NUMREGID")) Then AlertaMensaje(ObtenParametroPorLlave("NUM_REG_IDTRIB_NO_VALIDO")) : Return
             If EsCadenaVacia(nombreRemitente) Then AlertaMensaje(ObtenParametroPorLlave("INGRESE_NOMBRE")) : Return
             If EsCadenaVacia(apPaternoRemitente) And EsCadenaVacia(apMaternoRemitente) Then AlertaMensaje(ObtenParametroPorLlave("INGRESE_AL_MENOS_UN_APELLIDO")) : Return
             Dim paisResidenciaFiscalRemitente As String = ObtenValorCombobox(cbResidenciaFiscalDestino)
-            If paisResidenciaFiscalRemitente = "-01" Then AlertaMensaje(ObtenParametroPorLlave("NUM_REG_IDTRIB_NO_VALIDO")) : Return
-        End If
+            If paisResidenciaFiscalRemitente = "-01" Then AlertaMensaje(ObtenParametroPorLlave("INGRESE_RESIDENCIA_FISCAL")) : Return
+            End If
 
-        Dim fechaSalida As Date = dtFechaSalidaRemitente.Value
+            Dim fechaSalida As Date = dtFechaSalidaRemitente.Value
 
-        Dim longitudHora As Int32 = CInt(ObtenParametroPorLlave("LONGITUD_HORA"))
-        Dim regExpHora As String = ObtenParametroPorLlave("REGEXP_HORA")
-        Dim horaSalida As String = txtHoraSalidaRemitente.Text
-        If horaSalida.Length <> longitudHora Then AlertaMensaje(ObtenParametroPorLlave("HORA_MALFORMADA")) : Return
-        If Not Regex.IsMatch(horaSalida, regExpHora) Then AlertaMensaje(ObtenParametroPorLlave("HORA_MALFORMADA")) : Return
+            Dim longitudHora As Int32 = CInt(ObtenParametroPorLlave("LONGITUD_HORA"))
+            Dim regExpHora As String = ObtenParametroPorLlave("REGEXP_HORA")
+            Dim horaSalida As String = txtHoraSalidaRemitente.Text
+            If horaSalida.Length <> longitudHora Then AlertaMensaje(ObtenParametroPorLlave("HORA_MALFORMADA")) : Return
+            If Not Regex.IsMatch(horaSalida, regExpHora) Then AlertaMensaje(ObtenParametroPorLlave("HORA_MALFORMADA")) : Return
 
-        Dim paisSeleccionado As String = ObtenValorCombobox(cbPaisRemitente)
-        Dim estadoRemitente As String = String.Empty
-        Dim municipioRemitente As String = String.Empty
-        Dim localidadRemitente As String = String.Empty
+            Dim paisSeleccionado As String = ObtenValorCombobox(cbPaisRemitente)
+            Dim estadoRemitente As String = String.Empty
+            Dim municipioRemitente As String = String.Empty
+            Dim localidadRemitente As String = String.Empty
 
-        'Valido que el país tenga estados
-        If PaisTieneEstados(paisSeleccionado) Then
-            If ObtenValorCombobox(refCbEstadoOrigen) = "-01" Then AlertaMensaje(ObtenParametroPorLlave("INGRESE_ESTADO")) : Return
-            estadoRemitente = ObtenValorCombobox(refCbEstadoOrigen)
-        Else
-            estadoRemitente = ObtenValorTextbox(txtEstadoOrigen)
-        End If
+            'Valido que el país tenga estados
+            If PaisTieneEstados(paisSeleccionado) Then
+                If ObtenValorCombobox(refCbEstadoOrigen) = "-01" Then AlertaMensaje(ObtenParametroPorLlave("INGRESE_ESTADO")) : Return
+                estadoRemitente = ObtenValorCombobox(refCbEstadoOrigen)
+            Else
+                estadoRemitente = ObtenValorTextbox(txtEstadoOrigen)
+            End If
 
-        'Ahora, valido que el país tenga municipios y localidades
-        If PaisTieneMunicipioLocalidad(paisSeleccionado) Then
-            If ObtenValorCombobox(refCbMunicipioOrigen) = "-01" Then ObtenParametroPorLlave("INGRESE_MUNICIPIO") : Return
-            If ObtenValorCombobox(refCbLocalidadOrigen) = "-01" Then ObtenParametroPorLlave("INGRESE_LOCALIDAD") : Return
-            municipioRemitente = ObtenValorCombobox(refCbMunicipioOrigen)
-            localidadRemitente = ObtenValorCombobox(refCbLocalidadOrigen)
-        Else
-            municipioRemitente = ObtenValorTextbox(txtMunicipioOrigen)
-            localidadRemitente = ObtenValorTextbox(txtLocalidadOrigen)
-        End If
+            'Ahora, valido que el país tenga municipios y localidades
+            If PaisTieneMunicipioLocalidad(paisSeleccionado) Then
+                If ObtenValorCombobox(refCbMunicipioOrigen) = "-01" Then ObtenParametroPorLlave("INGRESE_MUNICIPIO") : Return
+                If ObtenValorCombobox(refCbLocalidadOrigen) = "-01" Then ObtenParametroPorLlave("INGRESE_LOCALIDAD") : Return
+                municipioRemitente = ObtenValorCombobox(refCbMunicipioOrigen)
+                localidadRemitente = ObtenValorCombobox(refCbLocalidadOrigen)
+            Else
+                municipioRemitente = ObtenValorTextbox(txtMunicipioOrigen)
+                localidadRemitente = ObtenValorTextbox(txtLocalidadOrigen)
+            End If
 
-        'Ahora, valido que el país tenga colonias
-        Dim coloniaOrigen As String = String.Empty
-        If PaisTieneColonias(paisSeleccionado) Then
-            coloniaOrigen = ObtenValorCombobox(refCbColoniaOrigen)
-            If coloniaOrigen.Equals("-01") Then AlertaMensaje(ObtenParametroPorLlave("INGRESE_COLONIA")) : Return
-        Else
-            coloniaOrigen = ObtenValorTextbox(txtColoniaOrigen)
-            If EsCadenaVacia(coloniaOrigen) Then AlertaMensaje(ObtenParametroPorLlave("INGRESE_COLONIA")) : Return
-        End If
+            'Ahora, valido que el país tenga colonias
+            Dim coloniaOrigen As String = String.Empty
+            If PaisTieneColonias(paisSeleccionado) Then
+                coloniaOrigen = ObtenValorCombobox(refCbColoniaOrigen)
+                If coloniaOrigen.Equals("-01") Then AlertaMensaje(ObtenParametroPorLlave("INGRESE_COLONIA")) : Return
+            Else
+                coloniaOrigen = ObtenValorTextbox(txtColoniaOrigen)
+                If EsCadenaVacia(coloniaOrigen) Then AlertaMensaje(ObtenParametroPorLlave("INGRESE_COLONIA")) : Return
+            End If
 
-        Dim cpRemitente As String = Trim(txtCpRemitente.Text)
-        Dim regExpCp As String = ObtenParametroPorLlave("REGEXP_CODIGO_POSTAL")
-        If cpRemitente.Length <> 5 Then AlertaMensaje(ObtenParametroPorLlave("INGRESE_CODIGO_POSTAL")) : Return
-        If Not Regex.IsMatch(cpRemitente, regExpCp) Then AlertaMensaje(ObtenParametroPorLlave("INGRESE_CODIGO_POSTAL")) : Return
+            Dim cpRemitente As String = Trim(txtCpRemitente.Text)
+            Dim regExpCp As String = ObtenParametroPorLlave("REGEXP_CODIGO_POSTAL")
+            If cpRemitente.Length <> 5 Then AlertaMensaje(ObtenParametroPorLlave("INGRESE_CODIGO_POSTAL")) : Return
+            If Not Regex.IsMatch(cpRemitente, regExpCp) Then AlertaMensaje(ObtenParametroPorLlave("INGRESE_CODIGO_POSTAL")) : Return
 
-        Dim noExt As String = txtNoExtRemitente.Text
-        If EsCadenaVacia(noExt) Then AlertaMensaje(ObtenParametroPorLlave("INGRESE_NO_EXT")) : Return
+            Dim noExt As String = txtNoExtRemitente.Text
+            If EsCadenaVacia(noExt) Then AlertaMensaje(ObtenParametroPorLlave("INGRESE_NO_EXT")) : Return
 
-        Dim noInt As String = txtNoIntRemitente.Text
-        Dim calle As String = ObtenValorTextbox(txtCalleRemitente)
-        If EsCadenaVacia(calle) Then AlertaMensaje(ObtenParametroPorLlave("INGRESE_CALLE")) : Return
+            Dim noInt As String = txtNoIntRemitente.Text
+            Dim calle As String = ObtenValorTextbox(txtCalleRemitente)
+            If EsCadenaVacia(calle) Then AlertaMensaje(ObtenParametroPorLlave("INGRESE_CALLE")) : Return
 
-        Dim referencia As String = ObtenValorTextbox(txtReferenciaRemitente)
+            Dim referencia As String = ObtenValorTextbox(txtReferenciaRemitente)
 
-        datosOrigenParaCartaPorte = Nothing
-        datosOrigenParaCartaPorte = New OrigenDestino
-        datosOrigenParaCartaPorte.TipoUbicacion = txtTipoUbicacion.Text
-        datosOrigenParaCartaPorte.IDUbicacion = idUbicacion
-        datosOrigenParaCartaPorte.EsDestinoIntermedio = False
-        datosOrigenParaCartaPorte.EsPersonaFisica = REMITENTE_ES_PERSONA_FISICA
-        datosOrigenParaCartaPorte.EsPersonaMoral = REMITENTE_ES_PERSONA_MORAL
-        datosOrigenParaCartaPorte.EsExtranjero = REMITENTE_ES_EXTRANJERO
+            datosOrigenParaCartaPorte = Nothing
+            datosOrigenParaCartaPorte = New OrigenDestino
+            datosOrigenParaCartaPorte.TipoUbicacion = txtTipoUbicacion.Text
+            datosOrigenParaCartaPorte.IDUbicacion = idUbicacion
+            datosOrigenParaCartaPorte.EsDestinoIntermedio = False
+            datosOrigenParaCartaPorte.EsPersonaFisica = REMITENTE_ES_PERSONA_FISICA
+            datosOrigenParaCartaPorte.EsPersonaMoral = REMITENTE_ES_PERSONA_MORAL
+            datosOrigenParaCartaPorte.EsExtranjero = REMITENTE_ES_EXTRANJERO
 
-        If REMITENTE_ES_PERSONA_FISICA Then
-            datosOrigenParaCartaPorte.Nombre = nombreRemitente
-            datosOrigenParaCartaPorte.ApPaterno = apPaternoRemitente
-            datosOrigenParaCartaPorte.ApMaterno = apMaternoRemitente
-        ElseIf REMITENTE_ES_PERSONA_MORAL Then
-            datosOrigenParaCartaPorte.NombrePersonaMoral = nombreRemitente
-        ElseIf REMITENTE_ES_EXTRANJERO Then
-            datosOrigenParaCartaPorte.Nombre = nombreRemitente
-            datosOrigenParaCartaPorte.ApPaterno = apPaternoRemitente
-            datosOrigenParaCartaPorte.ApMaterno = apMaternoRemitente
+            If REMITENTE_ES_PERSONA_FISICA Then
+                datosOrigenParaCartaPorte.Nombre = nombreRemitente
+                datosOrigenParaCartaPorte.ApPaterno = apPaternoRemitente
+                datosOrigenParaCartaPorte.ApMaterno = apMaternoRemitente
+            ElseIf REMITENTE_ES_PERSONA_MORAL Then
+                datosOrigenParaCartaPorte.NombrePersonaMoral = nombreRemitente
+            ElseIf REMITENTE_ES_EXTRANJERO Then
+                datosOrigenParaCartaPorte.Nombre = nombreRemitente
+                datosOrigenParaCartaPorte.ApPaterno = apPaternoRemitente
+                datosOrigenParaCartaPorte.ApMaterno = apMaternoRemitente
+                datosOrigenParaCartaPorte.NumRegIdTrib = numRegIdTribRemitente
+                datosOrigenParaCartaPorte.ResidenciaFiscal = cbResidenciaFiscalRemitente.SelectedValue
+            End If
+
+            datosOrigenParaCartaPorte.RFCRemitenteDestinatario = rfcRemitente
             datosOrigenParaCartaPorte.NumRegIdTrib = numRegIdTribRemitente
-            datosOrigenParaCartaPorte.ResidenciaFiscal = cbResidenciaFiscalRemitente.SelectedValue
-        End If
+            datosOrigenParaCartaPorte.FechaSalidaLlegada = dtFechaSalidaRemitente.Value
+            datosOrigenParaCartaPorte.HoraSalidaLlegada = horaSalida
+            datosOrigenParaCartaPorte.DistanciaRecorrida = 0
 
-        datosOrigenParaCartaPorte.RFCRemitenteDestinatario = rfcRemitente
-        datosOrigenParaCartaPorte.NumRegIdTrib = numRegIdTribRemitente
-        datosOrigenParaCartaPorte.FechaSalidaLlegada = dtFechaSalidaRemitente.Value
-        datosOrigenParaCartaPorte.HoraSalidaLlegada = horaSalida
-        datosOrigenParaCartaPorte.DistanciaRecorrida = 0
+            Dim domicilio As New Domicilio
+            domicilio.Calle = txtCalleRemitente.Text
+            domicilio.NumeroExterior = txtNoExtRemitente.Text
+            domicilio.NumeroInterior = txtNoIntRemitente.Text
+            domicilio.Colonia = coloniaOrigen
+            domicilio.Municipio = municipioRemitente
+            domicilio.Localidad = localidadRemitente
+            domicilio.Estado = estadoRemitente
+            domicilio.Pais = paisSeleccionado
+            domicilio.Referencia = referencia
+            domicilio.CodigoPostal = cpRemitente
 
-        Dim domicilio As New Domicilio
-        domicilio.Calle = txtCalleRemitente.Text
-        domicilio.NumeroExterior = txtNoExtRemitente.Text
-        domicilio.NumeroInterior = txtNoIntRemitente.Text
-        domicilio.Colonia = coloniaOrigen
-        domicilio.Municipio = municipioRemitente
-        domicilio.Localidad = localidadRemitente
-        domicilio.Estado = estadoRemitente
-        domicilio.Pais = paisSeleccionado
-        domicilio.Referencia = referencia
-        domicilio.CodigoPostal = cpRemitente
-
-        datosOrigenParaCartaPorte.DatosDomicilio = domicilio
-        INFORMACION_VALIDA_DATOS_ORIGEN = True
-    End Sub
+            datosOrigenParaCartaPorte.DatosDomicilio = domicilio
+            INFORMACION_VALIDA_DATOS_ORIGEN = True
+            End Sub
 
     Private Sub cbMunicipioRemitente_SelectedValueChanged(sender As Object, e As EventArgs) Handles cbMunicipioRemitente.SelectedValueChanged
         ValidaOrdenMunicipioLocalidadCodigo(cbPaisRemitente,
@@ -907,6 +941,8 @@ Public Class frmCartaPorte
                                             refCbColoniaOrigen)
 
         If ObtenValorCombobox(refCbEstadoOrigen) = "-01" Then 'No interesa proceder si seleccionó la opc por defecto
+            LimpiaDesactivaCombobox(refCbMunicipioOrigen)
+            LimpiaDesactivaCombobox(refCbLocalidadOrigen)
             Return
         End If
 
@@ -925,8 +961,11 @@ Public Class frmCartaPorte
         txtPaisResidenciaFiscalRemitente.Enabled = False
         If ObtenValorCombobox(cbResidenciaFiscalRemitente) = "-01" Then Return
         If REMITENTE_ES_EXTRANJERO Then
-            Dim cvePais As String = cbResidenciaFiscalRemitente.SelectedValue
+            Dim cvePais As String = ObtenValorCombobox(cbResidenciaFiscalRemitente)
             txtPaisResidenciaFiscalRemitente.Text = ObtenDescripcionPais(cvePais)
+            If cbPaisRemitente.Items Is Nothing Then Return
+            If cbPaisRemitente.Items.Count = 0 Then Return
+            cbPaisRemitente.SelectedValue = cvePais
         End If
     End Sub
 
@@ -1073,6 +1112,7 @@ Public Class frmCartaPorte
     End Sub
 
     Private Sub PreparaPestanaDestino()
+        dtFechaSalidaDestino.MinDate = dtFechaSalidaRemitente.Value
         BindCombobox(cbPaisDestino, ObtenListadoPaises())
         LimpiarDatosDestino()
         LimpiarDatosOrigen()
@@ -1305,15 +1345,16 @@ Public Class frmCartaPorte
         End If
 
         Dim fechaLlegadaDestino As Date
-        Dim horaLlegada As String = String.Empty
+        Dim horaLlegada As String = ObtenValorTextbox(txtHoraSalidaDestino)
         fechaLlegadaDestino = dtFechaSalidaDestino.Value
 
-        If fechaLlegadaDestino < datosOrigenParaCartaPorte.FechaSalidaLlegada Then AlertaMensaje(ObtenParametroPorLlave("FECHA_LLEGADA_FINAL_INCORRECTA")) : Return
-        horaLlegada = ObtenValorTextbox(txtHoraSalidaDestino)
         If horaLlegada.Length <> 5 Then AlertaMensaje(ObtenParametroPorLlave("HORA_MALFORMADA")) : Return
 
         Dim regExpHoras = ObtenParametroPorLlave("REGEXP_HORA")
         If Not Regex.IsMatch(horaLlegada, regExpHoras) Then AlertaMensaje(ObtenParametroPorLlave("HORA_MALFORMADA")) : Return
+
+        Dim fechaHoraParaComparacion As DateTime = ObtenDateTime(fechaLlegadaDestino, horaLlegada)
+        If fechaHoraParaComparacion < datosOrigenParaCartaPorte.FechaHora Then AlertaMensaje(ObtenParametroPorLlave("FECHA_LLEGADA_FINAL_INCORRECTA")) : Return
 
         Dim paisDestino As String = String.Empty
         Dim estadoDestino As String = String.Empty

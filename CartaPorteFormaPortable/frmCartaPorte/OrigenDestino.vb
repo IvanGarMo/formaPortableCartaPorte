@@ -145,7 +145,7 @@ Public Class OrigenDestino
             Return _FechaSalidaLlegada
         End Get
         Set(value As Date)
-            _FechaSalidaLlegada = value
+            _FechaSalidaLlegada = New DateTime(value.Year, value.Month, value.Day, 0, 0, 0)
         End Set
     End Property
 
@@ -221,14 +221,16 @@ Public Class OrigenDestino
 
     Public ReadOnly Property FechaHora As DateTime
         Get
+            Dim hora As Int32
+            Dim minutos As Int32
             If String.IsNullOrWhiteSpace(_HoraSalidaLlegada) Then
-                _HoraSalidaLlegada = "00:00"
+                hora = 0
+                minutos = 0
+            Else
+                hora = CInt(_HoraSalidaLlegada.Split(":")(0))
+                minutos = CInt(_HoraSalidaLlegada.Split(":")(1))
             End If
-            Dim fechaHoraDateTime As New DateTime
-            fechaHoraDateTime = _FechaSalidaLlegada
-            fechaHoraDateTime.AddHours(_HoraSalidaLlegada.Split(":")(0))
-            fechaHoraDateTime.AddMinutes(_HoraSalidaLlegada.Split(":")(1))
-            Return FechaHora
+            Return New DateTime(_FechaSalidaLlegada.Year, _FechaSalidaLlegada.Month, _FechaSalidaLlegada.Day, hora, minutos, 0)
         End Get
     End Property
 
