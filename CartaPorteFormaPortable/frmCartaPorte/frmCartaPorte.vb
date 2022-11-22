@@ -94,19 +94,180 @@ Public Class frmCartaPorte
         dtFechaSalidaRemitente.BackColor = Color.FromName(colorCampoObligatorio)
     End Sub
 
-    Private Sub MarcaCampoComoObligatorio(ByRef control As Control)
-        If control Is Nothing Then Return
-        control.BackColor = Color.FromName(colorCampoObligatorio)
-        If control.GetType() Is GetType(ComboBox) Then
-            Dim combo As ComboBox = CType(control, ComboBox)
-            combo.FlatStyle = FlatStyle.Flat
-            combo.DropDownStyle = ComboBoxStyle.DropDownList
+    'Este realiza la validación de cuando el SAT cuenta con catalogos de 
+    'estados, municipios, localidades y códigos postales
+    'y hace las sustituciones correspondientes
+    Private Sub RealizaOperacionesSustitucionPaisesEstadoColonia(ByRef refCbPais As ComboBox,
+                                                                 ByRef refCbEstado As ComboBox,
+                                                                 ByRef refCbEstadoEH As EventHandler,
+                                                                 ByRef refCbMunicipio As ComboBox,
+                                                                 ByRef refCbMunicipioEH As EventHandler,
+                                                                 ByRef refCbLocalidad As ComboBox,
+                                                                 ByRef refCbLocalidadEH As EventHandler,
+                                                                 ByRef refCbColonia As ComboBox,
+                                                                 ByRef refTxtCp As TextBox,
+                                                                 ByRef refTxtEstado As TextBox,
+                                                                 ByRef refTxtMunicipio As TextBox,
+                                                                 ByRef refTxtLocalidad As TextBox,
+                                                                 ByRef refTxtColonia As TextBox,
+                                                                 ByRef refPanel As TableLayoutPanel)
+        Dim paisSeleccionado As String = ObtenValorCombobox(refCbPais)
+        'Si esta la opción por defecto, no me interesa proceder, solo bloquear y regresar
+        If paisSeleccionado = "-01" Then
+            LimpiaDesactivaCombobox(refCbEstado)
+            LimpiaDesactivaCombobox(refCbMunicipio)
+            LimpiaDesactivaCombobox(refCbLocalidad)
+            LimpiaDesactivaCombobox(refCbColonia)
+            LimpiaDesactivaTextbox(refTxtCp)
+            LimpiaDesactivaTextbox(refTxtEstado)
+            LimpiaDesactivaTextbox(refTxtMunicipio)
+            LimpiaDesactivaTextbox(refTxtLocalidad)
+            LimpiaDesactivaTextbox(refTxtColonia)
+            Return
+        End If
+
+        'Primero validación de estados
+        If PaisTieneEstados(paisSeleccionado) Then
+            If refCbEstado Is Nothing Then
+                refCbEstado = New ComboBox
+                AddHandler refCbEstado.SelectedValueChanged, refCbEstadoEH
+                SustituyeEnGrid(refTxtEstado, refCbEstado, refPanel)
+            End If
+            BindCombobox(refCbEstado, ObtenEstadosPorPais(paisSeleccionado))
+            MarcaCampoComoObligatorio(refCbEstado, refPanel)
+        Else
+            If refTxtEstado Is Nothing Then
+                refTxtEstado = New TextBox
+                SustituyeEnGrid(refCbEstado, refTxtEstado, refPanel)
+            End If
+            refTxtEstado.Text = String.Empty
+            refTxtEstado.Enabled = True
+            MarcaCampoComoOpcional(refTxtEstado, refPanel)
+        End If
+
+        'Luego validación de municipio/localidad
+        If PaisTieneMunicipioLocalidad(paisSeleccionado) Then
+            Dim valorSeleccionadoEstado As String = ObtenValorCombobox(refCbEstado)
+            If refCbMunicipio Is Nothing Then
+                refCbMunicipio = New ComboBox
+                LimpiaDesactivaCombobox(refCbMunicipio)
+                SustituyeEnGrid(refTxtMunicipio, refCbMunicipio, refPanel)
+                AddHandler refCbMunicipio.SelectedValueChanged, refCbMunicipioEH
+                If valorSeleccionadoEstado <> "-01" Then
+                    BindCombobox(refCbMunicipio, ObtenMunicipiosPorEstado(valorSeleccionadoEstado))
+                End If
+            End If
+            If refCbLocalidad Is Nothing Then
+                refCbLocalidad = New ComboBox
+                LimpiaDesactivaCombobox(refCbLocalidad)
+                SustituyeEnGrid(refTxtLocalidad, refCbLocalidad, refPanel)
+                AddHandler refCbLocalidad.SelectedValueChanged, refCbLocalidadEH
+                If valorSeleccionadoEstado <> "-01" Then
+                    BindCombobox(refCbLocalidad, ObtenLocalidadesPorEstado(valorSeleccionadoEstado))
+                End If
+            End If
+            MarcaCampoComoObligatorio(refCbMunicipio, refPanel)
+            MarcaCampoComoObligatorio(refCbLocalidad, refPanel)
+        Else
+            If refTxtMunicipio Is Nothing Then
+                refTxtMunicipio = New TextBox
+                SustituyeEnGrid(refCbMunicipio, refTxtMunicipio, refPanel)
+            End If
+            If refTxtLocalidad Is Nothing Then
+                refTxtLocalidad = New TextBox
+                SustituyeEnGrid(refCbLocalidad, refTxtLocalidad, refPanel)
+            End If
+            MarcaCampoComoOpcional(refCbMunicipio, refPanel)
+            MarcaCampoComoOpcional(refCbLocalidad, refPanel)
+        End If
+
+        'Luego validación de colonias
+        If PaisTieneColonias(paisSeleccionado) Then
+            If refCbColonia Is Nothing Then
+                refCbColonia = New ComboBox
+                SustituyeEnGrid(refTxtColonia, refCbColonia, refPanel)
+                Dim valorIngresadoCp As String = ObtenValorTextbox(refTxtCp)
+                Dim regExpCp As String = ObtenParametroPorLlave("REGEXP_CODIGO_POSTAL")
+                If Regex.IsMatch(valorIngresadoCp, regExpCp) Then
+                    BindCombobox(refCbColonia, ObtenColoniasPorCodigoPostal(valorIngresadoCp))
+                End If
+            End If
+            MarcaCampoComoObligatorio(refCbColonia, refPanel)
+        Else
+            If refTxtColonia Is Nothing Then
+                refTxtColonia = New TextBox
+                SustituyeEnGrid(refCbColonia, refTxtColonia, refPanel)
+            End If
+            refTxtColonia.Text = String.Empty
+            refTxtColonia.Enabled = True
+            MarcaCampoComoOpcional(refTxtColonia, refPanel)
         End If
     End Sub
 
-    Private Sub MarcaCampoComoOpcional(ByRef control As Control)
+    'Método que realiza validación de código postal y de carga de estos
+    Private Sub RealizaCargaValidacionCodigoCargaColonias(ByRef refCbEstado As ComboBox,
+                                                          ByRef refCbMunicipio As ComboBox,
+                                                          ByRef refCbLocalidad As ComboBox,
+                                                          ByRef refCbColonia As ComboBox,
+                                                          ByRef refTxtCp As TextBox)
+        If refCbMunicipio Is Nothing Or refCbLocalidad Is Nothing Or refCbColonia Is Nothing Then
+            Return
+        End If
+
+        Dim valorEstado As String = ObtenValorCombobox(refCbEstado)
+        Dim valorMunicipio As String = ObtenValorCombobox(refCbMunicipio)
+        Dim valorLocalidad As String = ObtenValorCombobox(refCbLocalidad)
+        If valorEstado = "-01" Or valorMunicipio = "-01" Or valorLocalidad = "-01" Then
+            LimpiaDesactivaCombobox(refCbColonia)
+            Return
+        End If
+
+        Dim valorCp As String = ObtenValorTextbox(refTxtCp)
+        Dim regExpCp As String = ObtenParametroPorLlave("REGEXP_CODIGO_POSTAL")
+        If Not Regex.IsMatch(valorCp, regExpCp) Then
+            'AlertaMensaje(ObtenParametroPorLlave("INGRESE_CODIGO_POSTAL"))
+            Return
+        End If
+
+        Dim mensaje As String = String.Empty
+        Dim cpValido As Boolean = conexionesCartaPorte.Get_ValidaCodigoPostal(valorCp, valorEstado, valorMunicipio, valorLocalidad, mensaje)
+
+        If Not cpValido Then AlertaMensaje(mensaje) : Return
+        BindCombobox(refCbColonia, ObtenColoniasPorCodigoPostal(valorCp))
+    End Sub
+
+    Private Sub MarcaCampoComoObligatorio(ByRef control As Control,
+                                          ByRef panel As TableLayoutPanel)
         If control Is Nothing Then Return
-        control.BackColor = Color.FromName(colorCampoOpcional)
+        Dim col As Int32 = panel.GetColumn(control)
+        Dim row As Int32 = panel.GetRow(control)
+        If col = 0 Then Return
+
+        Dim label As Control = panel.GetControlFromPosition(col - 1, row)
+        If label Is Nothing Then Return
+        If label.GetType() IsNot GetType(Label) Then Return
+
+        Dim labelCtrl As Label = CType(label, Label)
+        If labelCtrl.Text.Contains("*") Then Return
+        labelCtrl.Text = labelCtrl.Text + " *"
+        labelCtrl.ForeColor = Color.IndianRed
+    End Sub
+
+    Private Sub MarcaCampoComoOpcional(ByRef control As Control,
+                                       ByRef panel As TableLayoutPanel)
+        If control Is Nothing Then Return
+        Dim col As Int32 = panel.GetColumn(control)
+        Dim row As Int32 = panel.GetRow(control)
+        If col = 0 Then Return
+
+        Dim label As Control = panel.GetControlFromPosition(col - 1, row)
+        If label Is Nothing Then Return
+        If label.GetType() IsNot GetType(Label) Then Return
+
+        Dim labelCtrl As Label = CType(label, Label)
+        If Not labelCtrl.Text.Contains("*") Then Return
+        labelCtrl.Text = Trim(labelCtrl.Text.Replace("*", ""))
+        labelCtrl.ForeColor = Color.Black
     End Sub
 
     Private Sub TabControl1_Selecting(sender As Object, e As TabControlCancelEventArgs) Handles TabControl1.Selecting
@@ -389,8 +550,6 @@ Public Class frmCartaPorte
 
     Private Sub PreparaPestanaOrigen()
         'Ver si se puede importar la información o no
-
-
         txtTipoUbicacion.Text = "Origen"
         txtTipoUbicacion.Enabled = False
         INFORMACION_VALIDA_DATOS_ORIGEN = False
@@ -456,11 +615,11 @@ Public Class frmCartaPorte
             txtRfcRemitente.Enabled = True
             txtRfcRemitente.Text = String.Empty
 
-            MarcaCampoComoOpcional(txtApPaternoRemitente)
-            MarcaCampoComoOpcional(txtApMaternoRemitente)
-            MarcaCampoComoOpcional(cbResidenciaFiscalRemitente)
-            MarcaCampoComoOpcional(txtPaisResidenciaFiscalRemitente)
-            MarcaCampoComoOpcional(txtNumRegidTribRemitente)
+            MarcaCampoComoOpcional(txtApPaternoRemitente, tlpContenedorDatosFiscalesOrigen)
+            MarcaCampoComoOpcional(txtApMaternoRemitente, tlpContenedorDatosFiscalesOrigen)
+            MarcaCampoComoOpcional(cbResidenciaFiscalRemitente, tlpContenedorDatosFiscalesOrigen)
+            MarcaCampoComoOpcional(txtPaisResidenciaFiscalRemitente, tlpContenedorDatosFiscalesOrigen)
+            MarcaCampoComoOpcional(txtNumRegidTribRemitente, tlpContenedorDatosFiscalesOrigen)
 
             LimpiaDesactivaTextbox(txtNumRegidTribRemitente)
             LimpiaDesactivaTextbox(txtPaisResidenciaFiscalRemitente)
@@ -479,11 +638,11 @@ Public Class frmCartaPorte
             txtRfcRemitente.Text = String.Empty
             txtRfcRemitente.Enabled = True
 
-            MarcaCampoComoObligatorio(txtApPaternoRemitente)
-            MarcaCampoComoObligatorio(txtApMaternoRemitente)
-            MarcaCampoComoOpcional(cbResidenciaFiscalRemitente)
-            MarcaCampoComoOpcional(txtPaisResidenciaFiscalRemitente)
-            MarcaCampoComoOpcional(txtNumRegidTribRemitente)
+            MarcaCampoComoObligatorio(txtApPaternoRemitente, tlpContenedorDatosFiscalesOrigen)
+            MarcaCampoComoObligatorio(txtApMaternoRemitente, tlpContenedorDatosFiscalesOrigen)
+            MarcaCampoComoOpcional(cbResidenciaFiscalRemitente, tlpContenedorDatosFiscalesOrigen)
+            MarcaCampoComoOpcional(txtPaisResidenciaFiscalRemitente, tlpContenedorDatosFiscalesOrigen)
+            MarcaCampoComoOpcional(txtNumRegidTribRemitente, tlpContenedorDatosFiscalesOrigen)
 
             LimpiaDesactivaTextbox(txtNumRegidTribRemitente)
             LimpiaDesactivaTextbox(txtPaisResidenciaFiscalRemitente)
@@ -497,11 +656,11 @@ Public Class frmCartaPorte
             REMITENTE_ES_PERSONA_FISICA = False
             REMITENTE_ES_EXTRANJERO = True
 
-            MarcaCampoComoObligatorio(txtApPaternoRemitente)
-            MarcaCampoComoObligatorio(txtApMaternoRemitente)
-            MarcaCampoComoObligatorio(cbResidenciaFiscalRemitente)
-            MarcaCampoComoObligatorio(txtPaisResidenciaFiscalRemitente)
-            MarcaCampoComoObligatorio(txtNumRegidTribRemitente)
+            MarcaCampoComoObligatorio(txtApPaternoRemitente, tlpContenedorDatosFiscalesOrigen)
+            MarcaCampoComoObligatorio(txtApMaternoRemitente, tlpContenedorDatosFiscalesOrigen)
+            MarcaCampoComoObligatorio(cbResidenciaFiscalRemitente, tlpContenedorDatosFiscalesOrigen)
+            MarcaCampoComoObligatorio(txtPaisResidenciaFiscalRemitente, tlpContenedorDatosFiscalesOrigen)
+            MarcaCampoComoObligatorio(txtNumRegidTribRemitente, tlpContenedorDatosFiscalesOrigen)
 
             LimpiaDesactivaTextbox(txtRfcRemitente)
             txtRfcRemitente.Text = ObtenParametroPorLlave("RFC_GENERICO_EXTRANJERO")
@@ -679,7 +838,7 @@ Public Class frmCartaPorte
         INFORMACION_VALIDA_DATOS_ORIGEN = True
     End Sub
 
-    Private Sub cbMunicipioRemitente_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cbMunicipioRemitente.SelectedIndexChanged
+    Private Sub cbMunicipioRemitente_SelectedValueChanged(sender As Object, e As EventArgs) Handles cbMunicipioRemitente.SelectedValueChanged
         ValidaOrdenMunicipioLocalidadCodigo(cbPaisRemitente,
                                             refCbEstadoOrigen,
                                             refCbLocalidadOrigen,
@@ -688,7 +847,7 @@ Public Class frmCartaPorte
                                             refCbColoniaOrigen)
     End Sub
 
-    Private Sub cbLocalidadRemitente_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cbLocalidadRemitente.SelectedIndexChanged
+    Private Sub cbLocalidadRemitente_SelectedValueChanged(sender As Object, e As EventArgs) Handles cbLocalidadRemitente.SelectedValueChanged
         ValidaOrdenMunicipioLocalidadCodigo(cbPaisRemitente,
                                             refCbEstadoOrigen,
                                             refCbLocalidadOrigen,
@@ -723,95 +882,20 @@ Public Class frmCartaPorte
     End Sub
 
     Private Sub dtPaisRemitente_SelectedValueChanged(sender As Object, e As EventArgs) Handles cbPaisRemitente.SelectedValueChanged
-        'No interesa proceder si se seleccionó la opc por defecto
-        If ObtenValorCombobox(cbPaisRemitente) = "-01" Then
-            Return
-        End If
-
-        LimpiaDesactivaCombobox(refCbEstadoOrigen)
-        LimpiaDesactivaTextbox(txtEstadoOrigen)
-        LimpiaDesactivaCombobox(refCbMunicipioOrigen)
-        LimpiaDesactivaTextbox(txtMunicipioOrigen)
-        LimpiaDesactivaCombobox(refCbLocalidadOrigen)
-        LimpiaDesactivaTextbox(txtLocalidadOrigen)
-        LimpiaDesactivaCombobox(refCbColoniaOrigen)
-        LimpiaDesactivaTextbox(txtColoniaOrigen)
-
-        Dim paisSeleccionado As String = cbPaisRemitente.SelectedValue
-
-        'Tratamiento de estados
-        If PaisTieneEstados(paisSeleccionado) Then
-            If refCbEstadoOrigen Is Nothing Then 'Tengo que verificar si existen
-                refCbEstadoOrigen = New ComboBox
-                AddHandler refCbEstadoOrigen.SelectedValueChanged, AddressOf cbEstadoRemitente_SelectedValueChanged
-                SustituyeEnGrid(txtEstadoOrigen, refCbEstadoOrigen, tlpDetalleDomicilioOrigen)
-            Else
-                BindCombobox(refCbEstadoOrigen, ObtenEstadosPorPais(paisSeleccionado))
-            End If
-            MarcaCampoComoObligatorio(refCbEstadoOrigen)
-        Else
-            If txtEstadoOrigen Is Nothing Then
-                txtEstadoOrigen = New TextBox
-                txtEstadoOrigen.Text = String.Empty
-                SustituyeEnGrid(refCbEstadoOrigen, txtEstadoOrigen, tlpDetalleDomicilioOrigen)
-            Else
-                LimpiaDesactivaCombobox(refCbEstadoOrigen)
-            End If
-            MarcaCampoComoObligatorio(txtEstadoOrigen)
-        End If
-
-        'Tratamiento de colonias
-        If PaisTieneColonias(paisSeleccionado) Then
-            If refCbColoniaOrigen Is Nothing Then
-                refCbColoniaOrigen = New ComboBox
-                LimpiaDesactivaCombobox(refCbColoniaOrigen)
-                SustituyeEnGrid(txtColoniaOrigen, refCbColoniaOrigen, tlpDetalleDomicilioOrigen)
-                txtCpRemitente_TextChanged(Nothing, Nothing)
-            End If
-            MarcaCampoComoObligatorio(refCbColoniaOrigen)
-        Else
-            If txtColoniaOrigen Is Nothing Then
-                txtColoniaOrigen = New TextBox
-                txtColoniaOrigen.Text = String.Empty
-                SustituyeEnGrid(refCbColoniaOrigen, txtColoniaOrigen, tlpDetalleDomicilioOrigen)
-                LimpiaDesactivaCombobox(refCbColoniaOrigen)
-            End If
-            MarcaCampoComoObligatorio(txtColoniaOrigen)
-        End If
-
-        'Tratamiento de municipios y localidades
-        If PaisTieneMunicipioLocalidad(paisSeleccionado) Then
-            If refCbMunicipioOrigen Is Nothing Then
-                refCbMunicipioOrigen = New ComboBox
-                LimpiaDesactivaCombobox(refCbMunicipioOrigen)
-                SustituyeEnGrid(txtMunicipioOrigen, refCbMunicipioOrigen, tlpDetalleDomicilioOrigen)
-                AddHandler refCbMunicipioOrigen.SelectedIndexChanged, AddressOf cbMunicipioRemitente_SelectedIndexChanged
-            End If
-            If refCbLocalidadOrigen Is Nothing Then
-                refCbLocalidadOrigen = New ComboBox
-                LimpiaDesactivaCombobox(refCbLocalidadOrigen)
-                SustituyeEnGrid(txtLocalidadOrigen, refCbLocalidadOrigen, tlpDetalleDomicilioOrigen)
-                AddHandler refCbLocalidadOrigen.SelectedIndexChanged, AddressOf cbLocalidadRemitente_SelectedIndexChanged
-            End If
-            MarcaCampoComoObligatorio(refCbMunicipioOrigen)
-            MarcaCampoComoObligatorio(refCbLocalidadOrigen)
-            cbEstadoRemitente_SelectedValueChanged(Nothing, Nothing)
-        Else
-            If txtMunicipioOrigen Is Nothing Then
-                txtMunicipioOrigen = New TextBox
-                txtMunicipioOrigen.Text = String.Empty
-                SustituyeEnGrid(refCbMunicipioOrigen, txtMunicipioOrigen, tlpDetalleDomicilioOrigen)
-            End If
-            If txtLocalidadOrigen Is Nothing Then
-                txtLocalidadOrigen = New TextBox
-                txtLocalidadOrigen.Text = String.Empty
-                SustituyeEnGrid(refCbLocalidadOrigen, txtLocalidadOrigen, tlpDetalleDomicilioOrigen)
-            End If
-            MarcaCampoComoOpcional(txtMunicipioOrigen)
-            MarcaCampoComoOpcional(txtLocalidadOrigen)
-            LimpiaDesactivaCombobox(refCbMunicipioOrigen)
-            LimpiaDesactivaCombobox(refCbLocalidadOrigen)
-        End If
+        RealizaOperacionesSustitucionPaisesEstadoColonia(cbPaisRemitente,
+                                                        refCbEstadoOrigen,
+                                                        AddressOf cbEstadoRemitente_SelectedValueChanged,
+                                                        refCbMunicipioOrigen,
+                                                        AddressOf cbMunicipioRemitente_SelectedValueChanged,
+                                                        refCbLocalidadOrigen,
+                                                        AddressOf cbLocalidadRemitente_SelectedValueChanged,
+                                                        refCbColoniaOrigen,
+                                                        txtCpRemitente,
+                                                        txtEstadoOrigen,
+                                                        txtMunicipioOrigen,
+                                                        txtLocalidadOrigen,
+                                                        txtColoniaOrigen,
+                                                        tlpDetalleDomicilioOrigen)
     End Sub
 
     Private Sub cbEstadoRemitente_SelectedValueChanged(sender As Object, e As EventArgs) Handles cbEstadoRemitente.SelectedValueChanged
@@ -851,30 +935,7 @@ Public Class frmCartaPorte
     End Sub
 
     Private Sub txtCpRemitente_TextChanged(sender As Object, e As EventArgs) Handles txtCpRemitente.TextChanged
-        If Trim(txtCpRemitente.Text).Length <> 5 Then '5 es la longitud de un CP válido
-            Return
-        End If
-
-        If txtColoniaOrigen IsNot Nothing Then 'No tiene caso cargar el catálogo si hay un país sin catalogo de colonias
-            Return
-        End If
-
-        Dim cad As String = String.Empty
-        Dim estado As String = ObtenValorCombobox(refCbEstadoOrigen)
-        Dim mun As String = ObtenValorCombobox(refCbMunicipioOrigen)
-        Dim loc As String = ObtenValorCombobox(refCbLocalidadOrigen)
-        Dim txtCp As String = ObtenValorTextbox(txtCpRemitente)
-        Dim codValido As Boolean = conexionesCartaPorte.Get_ValidaCodigoPostal(txtCp, estado, mun, loc, cad)
-        If Not codValido Then
-            AlertaMensaje(cad)
-            Return
-        End If
-
-        Dim regExpCP As String = ObtenParametroPorLlave("REGEXP_CODIGO_POSTAL")
-        If Regex.IsMatch(Trim(txtCpRemitente.Text), regExpCP) Then
-            Dim coloniasPorCodigoPostal = ObtenColoniasPorCodigoPostal(txtCpRemitente.Text)
-            BindCombobox(refCbColoniaOrigen, coloniasPorCodigoPostal)
-        End If
+        RealizaCargaValidacionCodigoCargaColonias(refCbEstadoOrigen, refCbMunicipioOrigen, refCbLocalidadOrigen, refCbColoniaOrigen, txtCpRemitente)
     End Sub
 
     Private Sub CargaDatosOrigen()
@@ -993,8 +1054,7 @@ Public Class frmCartaPorte
             Next
         End If
     End Sub
-
-    Private Sub cbMunicipioDestino_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cbMunicipioDestino.SelectedIndexChanged
+    Private Sub cbMunicipioDestino_SelectedValueChanged(sender As Object, e As EventArgs) Handles cbMunicipioDestino.SelectedValueChanged
         ValidaOrdenMunicipioLocalidadCodigo(cbPaisDestino,
                                             refCbEstadoDestino,
                                             refCbLocalidadDestino,
@@ -1003,13 +1063,13 @@ Public Class frmCartaPorte
                                             refCbColoniaDestino)
     End Sub
 
-    Private Sub cbLocalidadDestino_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cbLocalidadDestino.SelectedIndexChanged
+    Private Sub cbLocalidadDestino_SelectedValueChanged(sender As Object, e As EventArgs) Handles cbLocalidadDestino.SelectedValueChanged
         ValidaOrdenMunicipioLocalidadCodigo(cbPaisDestino,
-                                            refCbEstadoDestino,
-                                            refCbLocalidadDestino,
-                                            refCbMunicipioDestino,
-                                            txtCpDestino,
-                                            refCbColoniaDestino)
+                                           refCbEstadoDestino,
+                                           refCbLocalidadDestino,
+                                           refCbMunicipioDestino,
+                                           txtCpDestino,
+                                           refCbColoniaDestino)
     End Sub
 
     Private Sub PreparaPestanaDestino()
@@ -1062,11 +1122,11 @@ Public Class frmCartaPorte
             txtApPaternoDestino.Enabled = True
             txtApMaternoDestino.Enabled = True
 
-            MarcaCampoComoObligatorio(txtApMaternoDestino)
-            MarcaCampoComoObligatorio(txtApPaternoDestino)
-            MarcaCampoComoOpcional(txtNumIdRegFiscalDestino)
-            MarcaCampoComoOpcional(cbResidenciaFiscalDestino)
-            MarcaCampoComoOpcional(txtResidenciaFiscalDestino)
+            MarcaCampoComoObligatorio(txtApMaternoDestino, tlpDatosDestino)
+            MarcaCampoComoObligatorio(txtApPaternoDestino, tlpDatosDestino)
+            MarcaCampoComoOpcional(txtNumIdRegFiscalDestino, tlpDatosDestino)
+            MarcaCampoComoOpcional(cbResidenciaFiscalDestino, tlpDatosDestino)
+            MarcaCampoComoOpcional(txtResidenciaFiscalDestino, tlpDatosDestino)
 
         ElseIf rbPersonaMoralDestino.Checked Then
             ES_PERSONA_FISICA_DESTINO = False
@@ -1078,11 +1138,11 @@ Public Class frmCartaPorte
             txtRfcDestino.Enabled = True
             txtNombreDestino.Enabled = True
 
-            MarcaCampoComoOpcional(txtApMaternoDestino)
-            MarcaCampoComoOpcional(txtApPaternoDestino)
-            MarcaCampoComoOpcional(txtNumIdRegFiscalDestino)
-            MarcaCampoComoOpcional(cbResidenciaFiscalDestino)
-            MarcaCampoComoOpcional(txtResidenciaFiscalDestino)
+            MarcaCampoComoOpcional(txtApMaternoDestino, tlpDatosDestino)
+            MarcaCampoComoOpcional(txtApPaternoDestino, tlpDatosDestino)
+            MarcaCampoComoOpcional(txtNumIdRegFiscalDestino, tlpDatosDestino)
+            MarcaCampoComoOpcional(cbResidenciaFiscalDestino, tlpDatosDestino)
+            MarcaCampoComoOpcional(txtResidenciaFiscalDestino, tlpDatosDestino)
 
         ElseIf rbEsExtranjeroDestino.Checked Then
             ES_PERSONA_FISICA_DESTINO = False
@@ -1098,11 +1158,11 @@ Public Class frmCartaPorte
             txtApMaternoDestino.Enabled = True
             txtNumIdRegFiscalDestino.Enabled = True
 
-            MarcaCampoComoObligatorio(txtApMaternoDestino)
-            MarcaCampoComoObligatorio(txtApPaternoDestino)
-            MarcaCampoComoObligatorio(txtNumIdRegFiscalDestino)
-            MarcaCampoComoObligatorio(cbResidenciaFiscalDestino)
-            MarcaCampoComoObligatorio(txtResidenciaFiscalDestino)
+            MarcaCampoComoObligatorio(txtApMaternoDestino, tlpDatosDestino)
+            MarcaCampoComoObligatorio(txtApPaternoDestino, tlpDatosDestino)
+            MarcaCampoComoObligatorio(txtNumIdRegFiscalDestino, tlpDatosDestino)
+            MarcaCampoComoObligatorio(cbResidenciaFiscalDestino, tlpDatosDestino)
+            MarcaCampoComoObligatorio(txtResidenciaFiscalDestino, tlpDatosDestino)
         End If
     End Sub
 
@@ -1128,78 +1188,20 @@ Public Class frmCartaPorte
 
 
     Private Sub cbPaisDestino_SelectedValueChanged(sender As Object, e As EventArgs) Handles cbPaisDestino.SelectedValueChanged
-        Dim paisDestino = ObtenValorCombobox(cbPaisDestino)
-        If paisDestino = "-01" Then Return
-
-        'Primero, validación de estados
-        If PaisTieneEstados(paisDestino) Then
-            If refCbEstadoDestino Is Nothing Then
-                refCbEstadoDestino = New ComboBox
-                LimpiaDesactivaCombobox(refCbEstadoDestino)
-                SustituyeEnGrid(txtEstadoDestino, refCbEstadoDestino, tlpDatosDestino)
-                AddHandler refCbEstadoDestino.SelectedValueChanged, AddressOf cbEstadoDestino_SelectedValueChanged
-            End If
-            MarcaCampoComoObligatorio(refCbEstadoDestino)
-            BindCombobox(refCbEstadoDestino, ObtenEstadosPorPais(paisDestino))
-        Else
-            If txtEstadoDestino Is Nothing Then
-                txtEstadoDestino = New TextBox
-                txtEstadoDestino.Text = String.Empty
-                LimpiaDesactivaCombobox(refCbEstadoDestino)
-                SustituyeEnGrid(refCbEstadoDestino, txtEstadoDestino, tlpDatosDestino)
-            End If
-            MarcaCampoComoObligatorio(txtEstadoDestino)
-        End If
-
-        'Después, validación de municipios y localidades
-        If PaisTieneMunicipioLocalidad(paisDestino) Then
-            If refCbMunicipioDestino Is Nothing Then
-                refCbMunicipioDestino = New ComboBox
-                LimpiaDesactivaCombobox(refCbMunicipioDestino)
-                SustituyeEnGrid(txtMunicipioDestino, refCbMunicipioDestino, tlpDatosDestino)
-                AddHandler refCbMunicipioDestino.SelectedIndexChanged, AddressOf cbMunicipioDestino_SelectedIndexChanged
-            End If
-            If refCbLocalidadDestino Is Nothing Then
-                refCbLocalidadDestino = New ComboBox
-                LimpiaDesactivaCombobox(refCbLocalidadDestino)
-                SustituyeEnGrid(txtLocalidadDestino, refCbLocalidadDestino, tlpDatosDestino)
-                AddHandler refCbLocalidadDestino.SelectedIndexChanged, AddressOf cbLocalidadDestino_SelectedIndexChanged
-            End If
-            MarcaCampoComoObligatorio(refCbMunicipioDestino)
-            MarcaCampoComoObligatorio(refCbLocalidadDestino)
-            cbEstadoDestino_SelectedValueChanged(Nothing, Nothing)
-        Else
-            If txtMunicipioDestino Is Nothing Then
-                txtMunicipioDestino = New TextBox
-                txtMunicipioDestino.Text = String.Empty
-                SustituyeEnGrid(refCbMunicipioDestino, txtMunicipioDestino, tlpDatosDestino)
-            End If
-            If txtLocalidadDestino Is Nothing Then
-                txtLocalidadDestino = New TextBox
-                txtLocalidadDestino.Text = String.Empty
-                SustituyeEnGrid(refCbLocalidadDestino, txtLocalidadDestino, tlpDatosDestino)
-            End If
-            MarcaCampoComoOpcional(txtMunicipioDestino)
-            MarcaCampoComoOpcional(txtLocalidadDestino)
-        End If
-
-        'Ahora, toca la misma validación, pero en colonias
-        If PaisTieneColonias(paisDestino) Then
-            If refCbColoniaDestino Is Nothing Then
-                refCbColoniaDestino = New ComboBox
-                LimpiaDesactivaCombobox(refCbColoniaDestino)
-                SustituyeEnGrid(txtColoniaDestino, refCbColoniaDestino, tlpDatosDestino)
-                txtCpDestino_TextChanged(Nothing, Nothing)
-            End If
-            MarcaCampoComoObligatorio(refCbColoniaDestino)
-        Else
-            If txtColoniaDestino Is Nothing Then
-                txtColoniaDestino = New TextBox
-                txtColoniaDestino.Text = String.Empty
-                SustituyeEnGrid(txtColoniaDestino, refCbColoniaDestino, tlpDatosDestino)
-            End If
-            MarcaCampoComoObligatorio(txtColoniaDestino)
-        End If
+        RealizaOperacionesSustitucionPaisesEstadoColonia(cbPaisDestino,
+                                                        refCbEstadoDestino,
+                                                        AddressOf cbEstadoDestino_SelectedValueChanged,
+                                                        refCbMunicipioDestino,
+                                                        AddressOf cbMunicipioDestino_SelectedValueChanged,
+                                                        refCbLocalidadDestino,
+                                                        AddressOf cbLocalidadDestino_SelectedValueChanged,
+                                                        refCbColoniaDestino,
+                                                        txtCpDestino,
+                                                        txtEstadoDestino,
+                                                        txtMunicipioDestino,
+                                                        txtLocalidadDestino,
+                                                        txtColoniaDestino,
+                                                        tlpDetallesDestino)
     End Sub
 
     Private Sub cbEstadoDestino_SelectedValueChanged(sender As Object, e As EventArgs) Handles cbEstadoDestino.SelectedValueChanged
@@ -1227,28 +1229,7 @@ Public Class frmCartaPorte
     End Sub
 
     Private Sub txtCpDestino_TextChanged(sender As Object, e As EventArgs) Handles txtCpDestino.TextChanged
-        LimpiaDesactivaCombobox(refCbColoniaDestino)
-        Dim cp As String = ObtenValorTextbox(txtCpDestino)
-        If cp.Length <> 5 Then LimpiaDesactivaCombobox(refCbColoniaDestino) : Return '5 es la longitud de un código postal válido
-
-        Dim cad As String = String.Empty
-        Dim estado As String = ObtenValorCombobox(refCbEstadoDestino)
-        Dim mun As String = ObtenValorCombobox(refCbMunicipioDestino)
-        Dim loc As String = ObtenValorCombobox(refCbLocalidadDestino)
-        Dim txtCp As String = ObtenValorTextbox(txtCpDestino)
-        Dim codValido As Boolean = conexionesCartaPorte.Get_ValidaCodigoPostal(txtCp, estado, mun, loc, cad)
-        If Not codValido Then
-            AlertaMensaje(cad)
-            Return
-        End If
-
-        Dim paisDestino = ObtenValorCombobox(cbPaisDestino)
-        If PaisTieneColonias(paisDestino) Then 'Si tenemos un país con colonias
-            If Regex.IsMatch(cp, ObtenParametroPorLlave("REGEXP_CODIGO_POSTAL")) Then 'Y es un CP válido
-                BindCombobox(refCbColoniaDestino, ObtenColoniasPorCodigoPostal(cp))
-                Return
-            End If
-        End If
+        RealizaCargaValidacionCodigoCargaColonias(refCbEstadoDestino, refCbMunicipioDestino, refCbLocalidadDestino, refCbColoniaDestino, txtCpDestino)
     End Sub
 
     Private Sub btnSiguienteDestino_Click(sender As Object, e As EventArgs) Handles btnSiguienteDestino.Click
@@ -1523,22 +1504,22 @@ Public Class frmCartaPorte
                                                        End Sub)
     End Sub
 
-    Private Sub cbMunicipioDestinoIntermedio_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cbMunicipioDestinoIntermedio.SelectedIndexChanged
+    Private Sub cbMunicipioDestinoIntermedio_SelectedValueChanged(sender As Object, e As EventArgs) Handles cbMunicipioDestinoIntermedio.SelectedValueChanged
         ValidaOrdenMunicipioLocalidadCodigo(cbPaisDestinoIntermedio,
-                                            refCbEstadoDestinoIntermedio,
-                                            refCbLocalidadDestinoIntermedio,
-                                            refCbMunicipioDestinoIntermedio,
-                                            txtCpDestinoIntermedio,
-                                            refCbColoniaDestinoIntermedio)
+                                           refCbEstadoDestinoIntermedio,
+                                           refCbLocalidadDestinoIntermedio,
+                                           refCbMunicipioDestinoIntermedio,
+                                           txtCpDestinoIntermedio,
+                                           refCbColoniaDestinoIntermedio)
     End Sub
 
-    Private Sub cbLocalidadDestinoIntermedio_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cbLocalidadDestinoIntermedio.SelectedIndexChanged
+    Private Sub cbLocalidadDestinoIntermedio_SelectedValueChanged(sender As Object, e As EventArgs) Handles cbLocalidadDestinoIntermedio.SelectedValueChanged
         ValidaOrdenMunicipioLocalidadCodigo(cbPaisDestinoIntermedio,
-                                            refCbEstadoDestinoIntermedio,
-                                            refCbLocalidadDestinoIntermedio,
-                                            refCbMunicipioDestinoIntermedio,
-                                            txtCpDestinoIntermedio,
-                                            refCbColoniaDestinoIntermedio)
+                                           refCbEstadoDestinoIntermedio,
+                                           refCbLocalidadDestinoIntermedio,
+                                           refCbMunicipioDestinoIntermedio,
+                                           txtCpDestinoIntermedio,
+                                           refCbColoniaDestinoIntermedio)
     End Sub
 
     Private Sub BindGridDestinosIntermedios()
@@ -1655,11 +1636,11 @@ Public Class frmCartaPorte
             cbPaisDestinoIntermedio.SelectedValue = "MEX"
             cbPaisDestinoIntermedio.Enabled = True
 
-            MarcaCampoComoObligatorio(txtApPaternoDestinoIntermedio)
-            MarcaCampoComoObligatorio(txtApMaternoDestinoIntermedio)
-            MarcaCampoComoOpcional(txtNumregIdTribDestinoIntermedio)
-            MarcaCampoComoOpcional(cbPaisResidenciaFiscalDestinoIntermedio)
-            MarcaCampoComoOpcional(txtPaisResidenciaFiscalDestinoIntermedio)
+            MarcaCampoComoObligatorio(txtApPaternoDestinoIntermedio, tlpDatosFiscalesDestinoIntermedio)
+            MarcaCampoComoObligatorio(txtApMaternoDestinoIntermedio, tlpDatosFiscalesDestinoIntermedio)
+            MarcaCampoComoOpcional(txtNumregIdTribDestinoIntermedio, tlpDatosFiscalesDestinoIntermedio)
+            MarcaCampoComoOpcional(cbPaisResidenciaFiscalDestinoIntermedio, tlpDatosFiscalesDestinoIntermedio)
+            MarcaCampoComoOpcional(txtPaisResidenciaFiscalDestinoIntermedio, tlpDatosFiscalesDestinoIntermedio)
 
         ElseIf rbEsPersonaMoralDestinoIntermedio.Checked Then
             LimpiaDesactivaTextbox(txtNumregIdTribDestinoIntermedio)
@@ -1674,11 +1655,11 @@ Public Class frmCartaPorte
             cbPaisDestinoIntermedio.SelectedValue = "MEX"
             cbPaisDestinoIntermedio.Enabled = True
 
-            MarcaCampoComoOpcional(txtApPaternoDestinoIntermedio)
-            MarcaCampoComoOpcional(txtApMaternoDestinoIntermedio)
-            MarcaCampoComoOpcional(txtNumregIdTribDestinoIntermedio)
-            MarcaCampoComoOpcional(cbPaisResidenciaFiscalDestinoIntermedio)
-            MarcaCampoComoOpcional(txtPaisResidenciaFiscalDestinoIntermedio)
+            MarcaCampoComoOpcional(txtApPaternoDestinoIntermedio, tlpDatosFiscalesDestinoIntermedio)
+            MarcaCampoComoOpcional(txtApMaternoDestinoIntermedio, tlpDatosFiscalesDestinoIntermedio)
+            MarcaCampoComoOpcional(txtNumregIdTribDestinoIntermedio, tlpDatosFiscalesDestinoIntermedio)
+            MarcaCampoComoOpcional(cbPaisResidenciaFiscalDestinoIntermedio, tlpDatosFiscalesDestinoIntermedio)
+            MarcaCampoComoOpcional(txtPaisResidenciaFiscalDestinoIntermedio, tlpDatosFiscalesDestinoIntermedio)
 
         ElseIf rbEsExtranjeroDestinoIntermedio.Checked Then
             ES_PERSONA_MORAL_DESTINO_INTERMEDIO = False
@@ -1695,11 +1676,11 @@ Public Class frmCartaPorte
             cbPaisDestinoIntermedio.SelectedValue = "-01"
             cbPaisDestinoIntermedio.Enabled = True
 
-            MarcaCampoComoObligatorio(txtApPaternoDestinoIntermedio)
-            MarcaCampoComoObligatorio(txtApMaternoDestinoIntermedio)
-            MarcaCampoComoObligatorio(txtNumregIdTribDestinoIntermedio)
-            MarcaCampoComoObligatorio(cbPaisResidenciaFiscalDestinoIntermedio)
-            MarcaCampoComoObligatorio(txtPaisResidenciaFiscalDestinoIntermedio)
+            MarcaCampoComoObligatorio(txtApPaternoDestinoIntermedio, tlpDatosFiscalesDestinoIntermedio)
+            MarcaCampoComoObligatorio(txtApMaternoDestinoIntermedio, tlpDatosFiscalesDestinoIntermedio)
+            MarcaCampoComoObligatorio(txtNumregIdTribDestinoIntermedio, tlpDatosFiscalesDestinoIntermedio)
+            MarcaCampoComoObligatorio(cbPaisResidenciaFiscalDestinoIntermedio, tlpDatosFiscalesDestinoIntermedio)
+            MarcaCampoComoObligatorio(txtPaisResidenciaFiscalDestinoIntermedio, tlpDatosFiscalesDestinoIntermedio)
         End If
     End Sub
 
@@ -1960,70 +1941,20 @@ Public Class frmCartaPorte
     End Sub
 
     Private Sub cbPaisDestinoIntermedio_SelectedValueChanged(sender As Object, e As EventArgs) Handles cbPaisDestinoIntermedio.SelectedValueChanged
-        Dim paisSeleccionado As String = ObtenValorCombobox(cbPaisDestinoIntermedio)
-        If paisSeleccionado = "-01" Then Return
-
-        If PaisTieneEstados(paisSeleccionado) Then
-            If refCbEstadoDestinoIntermedio Is Nothing Then
-                refCbEstadoDestinoIntermedio = New ComboBox
-                LimpiaDesactivaCombobox(refCbEstadoDestinoIntermedio)
-                BindCombobox(refCbEstadoDestinoIntermedio, ObtenEstadosPorPais(paisSeleccionado))
-                SustituyeEnGrid(txtEstadoDestinoIntermedio, refCbEstadoDestinoIntermedio, tlpDatosFiscalesDestinoIntermedio)
-                AddHandler refCbEstadoDestinoIntermedio.SelectedValueChanged, AddressOf cbEstadoDestinoIntermedio_SelectedValueChanged
-            Else
-                BindCombobox(refCbEstadoDestinoIntermedio, ObtenEstadosPorPais(paisSeleccionado))
-            End If
-            cbEstadoDestinoIntermedio_SelectedValueChanged(Nothing, Nothing)
-        Else
-            If txtEstadoDestinoIntermedio Is Nothing Then
-                txtEstadoDestinoIntermedio = New TextBox
-                txtEstadoDestinoIntermedio.Text = String.Empty
-                SustituyeEnGrid(refCbEstadoDestinoIntermedio, txtEstadoDestino, tlpDatosFiscalesDestinoIntermedio)
-            End If
-        End If
-
-        'Luego si es un país con municipios
-        If PaisTieneMunicipioLocalidad(paisSeleccionado) Then
-            If refCbMunicipioDestinoIntermedio Is Nothing Then
-                refCbMunicipioDestinoIntermedio = New ComboBox
-                LimpiaDesactivaCombobox(refCbMunicipioDestinoIntermedio)
-                SustituyeEnGrid(txtMunicipioDestinoIntermedio, refCbMunicipioDestinoIntermedio, tlpDatosFiscalesDestinoIntermedio)
-                AddHandler refCbMunicipioDestinoIntermedio.SelectedIndexChanged, AddressOf cbMunicipioDestinoIntermedio_SelectedIndexChanged
-            End If
-            If refCbLocalidadDestinoIntermedio Is Nothing Then
-                refCbLocalidadDestinoIntermedio = New ComboBox
-                LimpiaDesactivaCombobox(refCbLocalidadDestinoIntermedio)
-                SustituyeEnGrid(txtLocalidadDestinoIntermedio, refCbLocalidadDestinoIntermedio, tlpDatosFiscalesDestinoIntermedio)
-                AddHandler refCbLocalidadDestinoIntermedio.SelectedIndexChanged, AddressOf cbLocalidadDestinoIntermedio_SelectedIndexChanged
-            End If
-        Else
-            If txtMunicipioDestinoIntermedio Is Nothing Then
-                txtMunicipioDestinoIntermedio = New TextBox
-                txtMunicipioDestinoIntermedio.Text = String.Empty
-                SustituyeEnGrid(refCbMunicipioDestinoIntermedio, txtMunicipioDestinoIntermedio, tlpDatosFiscalesDestinoIntermedio)
-            End If
-            If txtLocalidadDestinoIntermedio Is Nothing Then
-                txtLocalidadDestinoIntermedio = New TextBox
-                txtLocalidadDestinoIntermedio.Text = String.Empty
-                SustituyeEnGrid(refCbLocalidadDestinoIntermedio, txtLocalidadDestinoIntermedio, tlpDatosFiscalesDestinoIntermedio)
-            End If
-        End If
-
-        'Finalmente, si es un país con colonias
-        If PaisTieneColonias(paisSeleccionado) Then
-            If refCbColoniaDestinoIntermedio Is Nothing Then
-                refCbColoniaDestinoIntermedio = New ComboBox
-                LimpiaDesactivaCombobox(refCbColoniaDestinoIntermedio)
-                SustituyeEnGrid(txtColoniaDestinoIntermedio, refCbColoniaDestinoIntermedio, tlpDatosFiscalesDestinoIntermedio)
-            End If
-            txtCpDestinoIntermedio_TextChanged(Nothing, Nothing)
-        Else
-            If txtColoniaDestinoIntermedio Is Nothing Then
-                txtColoniaDestinoIntermedio = New TextBox
-                txtColoniaDestinoIntermedio.Text = String.Empty
-                SustituyeEnGrid(refCbColoniaDestinoIntermedio, txtColoniaDestinoIntermedio, tlpDatosFiscalesDestinoIntermedio)
-            End If
-        End If
+        RealizaOperacionesSustitucionPaisesEstadoColonia(cbPaisDestinoIntermedio,
+                                                        refCbEstadoDestinoIntermedio,
+                                                        AddressOf cbEstadoDestinoIntermedio_SelectedValueChanged,
+                                                        refCbMunicipioDestinoIntermedio,
+                                                        AddressOf cbMunicipioDestinoIntermedio_SelectedValueChanged,
+                                                        refCbLocalidadDestinoIntermedio,
+                                                        AddressOf cbLocalidadDestinoIntermedio_SelectedValueChanged,
+                                                        refCbColoniaDestinoIntermedio,
+                                                        txtCpDestinoIntermedio,
+                                                        txtEstadoDestinoIntermedio,
+                                                        txtMunicipioDestinoIntermedio,
+                                                        txtLocalidadDestinoIntermedio,
+                                                        txtColoniaDestinoIntermedio,
+                                                        tlpDetallesDestinoIntermedio)
     End Sub
 
     Private Sub cbEstadoDestinoIntermedio_SelectedValueChanged(sender As Object, e As EventArgs) Handles cbEstadoDestinoIntermedio.SelectedValueChanged
@@ -2256,24 +2187,7 @@ Public Class frmCartaPorte
     End Sub
 
     Private Sub txtCpDestinoIntermedio_TextChanged(sender As Object, e As EventArgs) Handles txtCpDestinoIntermedio.TextChanged
-        LimpiaDesactivaCombobox(refCbColoniaDestinoIntermedio)
-        If EsCadenaVacia(ObtenValorTextbox(txtCpDestinoIntermedio)) Then Return
-        Dim cpDestinoIntermedio As String = ObtenValorTextbox(txtCpDestinoIntermedio)
-        If refCbColoniaDestinoIntermedio Is Nothing Then Return
-        If cpDestinoIntermedio.Length <> 5 Then Return
-
-        Dim cad As String = String.Empty
-        Dim estado As String = ObtenValorCombobox(refCbEstadoDestinoIntermedio)
-        Dim mun As String = ObtenValorCombobox(refCbMunicipioDestinoIntermedio)
-        Dim loc As String = ObtenValorCombobox(refCbLocalidadDestinoIntermedio)
-        Dim txtCp As String = ObtenValorTextbox(txtCpDestinoIntermedio)
-        Dim codValido As Boolean = conexionesCartaPorte.Get_ValidaCodigoPostal(txtCp, estado, mun, loc, cad)
-        If Not codValido Then
-            AlertaMensaje(cad)
-            Return
-        End If
-
-        BindCombobox(refCbColoniaDestinoIntermedio, ObtenColoniasPorCodigoPostal(cpDestinoIntermedio))
+        RealizaCargaValidacionCodigoCargaColonias(refCbEstadoDestinoIntermedio, refCbMunicipioDestinoIntermedio, refCbLocalidadDestinoIntermedio, refCbColoniaDestinoIntermedio, txtCpDestinoIntermedio)
     End Sub
 
     Private Sub btnLimpiarDestinosIntermedios_Click(sender As Object, e As EventArgs) Handles btnLimpiarDestinosIntermedios.Click
@@ -2476,8 +2390,8 @@ Public Class frmCartaPorte
 
     Private Sub ToggleComercioInternacional()
         If rbComercioInternacionalSi.Checked Then
-            MarcaCampoComoObligatorio(txtFraccionArancelaria)
-            MarcaCampoComoObligatorio(txtPedimento)
+            MarcaCampoComoObligatorio(txtFraccionArancelaria, tlpDetallesMercancia)
+            MarcaCampoComoObligatorio(txtPedimento, tlpDetallesMercancia)
             txtFraccionArancelaria.Enabled = True
             txtPedimento.Enabled = True
             If ESTA_CREANDO_MERCANCIA Then
@@ -2489,8 +2403,8 @@ Public Class frmCartaPorte
                 txtFraccionArancelaria.Text = merc.FraccionArancelaria
             End If
         ElseIf rbComercioInternacionalNo.Checked Then
-            MarcaCampoComoOpcional(txtPedimento)
-            MarcaCampoComoOpcional(txtFraccionArancelaria)
+            MarcaCampoComoOpcional(txtPedimento, tlpDetallesMercancia)
+            MarcaCampoComoOpcional(txtFraccionArancelaria, tlpDetallesMercancia)
             txtPedimento.Text = String.Empty
             txtPedimento.Enabled = False
             LimpiaDesactivaTextbox(txtFraccionArancelaria)
@@ -2505,20 +2419,20 @@ Public Class frmCartaPorte
             LimpiaDesactivaTextbox(txtEmbalaje)
             LimpiaDesactivaTextbox(txtDescripcionEmbalaje)
 
-            MarcaCampoComoOpcional(txtClaveMaterialPeligroso)
-            MarcaCampoComoOpcional(txtDescripcionMaterialPeligroso)
-            MarcaCampoComoOpcional(txtEmbalaje)
-            MarcaCampoComoOpcional(txtDescripcionEmbalaje)
+            MarcaCampoComoOpcional(txtClaveMaterialPeligroso, tlpDetallesMercancia)
+            MarcaCampoComoOpcional(txtDescripcionMaterialPeligroso, tlpDetallesMercancia)
+            MarcaCampoComoOpcional(txtEmbalaje, tlpDetallesMercancia)
+            MarcaCampoComoOpcional(txtDescripcionEmbalaje, tlpDetallesMercancia)
         ElseIf rbSiMaterialPeligroso.Checked Then
             txtDescripcionMaterialPeligroso.Enabled = True
             txtClaveMaterialPeligroso.Enabled = True
             txtEmbalaje.Enabled = True
             txtDescripcionEmbalaje.Enabled = True
 
-            MarcaCampoComoObligatorio(txtClaveMaterialPeligroso)
-            MarcaCampoComoObligatorio(txtDescripcionMaterialPeligroso)
-            MarcaCampoComoObligatorio(txtEmbalaje)
-            MarcaCampoComoObligatorio(txtDescripcionEmbalaje)
+            MarcaCampoComoObligatorio(txtClaveMaterialPeligroso, tlpDetallesMercancia)
+            MarcaCampoComoObligatorio(txtDescripcionMaterialPeligroso, tlpDetallesMercancia)
+            MarcaCampoComoObligatorio(txtEmbalaje, tlpDetallesMercancia)
+            MarcaCampoComoObligatorio(txtDescripcionEmbalaje, tlpDetallesMercancia)
 
             If ESTA_MODIFICANDO_MERCANCIA Then
                 txtDescripcionMaterialPeligroso.Text = merc.DescripcionMaterialPeligroso
@@ -2941,11 +2855,11 @@ Public Class frmCartaPorte
     Private Sub ValidaExisteMercanciaQueCuenteComoPeligroso()
         EXISTE_MERCANCIA_MATERIAL_PELIGROSO = listadoMercancias.FirstOrDefault(Function(m) m.MaterialPeligroso) IsNot Nothing
         If EXISTE_MERCANCIA_MATERIAL_PELIGROSO Then
-            MarcaCampoComoObligatorio(txtAseguradoraDanosMedioAmbiente)
-            MarcaCampoComoObligatorio(txtPolizaSegurosDanosMedioAmbiente)
+            MarcaCampoComoObligatorio(txtAseguradoraDanosMedioAmbiente, tlpContenedorSeguroMaterialPeligroso)
+            MarcaCampoComoObligatorio(txtPolizaSegurosDanosMedioAmbiente, tlpContenedorSeguroMaterialPeligroso)
         Else
-            MarcaCampoComoOpcional(txtAseguradoraDanosMedioAmbiente)
-            MarcaCampoComoOpcional(txtPolizaSegurosDanosMedioAmbiente)
+            MarcaCampoComoOpcional(txtAseguradoraDanosMedioAmbiente, tlpContenedorSeguroMaterialPeligroso)
+            MarcaCampoComoOpcional(txtPolizaSegurosDanosMedioAmbiente, tlpContenedorSeguroMaterialPeligroso)
         End If
     End Sub
 
@@ -3006,14 +2920,14 @@ Public Class frmCartaPorte
     End Sub
 
     Private Sub TogglePartesTransporte()
-        MarcaCampoComoOpcional(cbPropiedadRemolque1)
-        MarcaCampoComoOpcional(cbPropiedadRemolque2)
-        MarcaCampoComoOpcional(cbTipoRemolque1)
-        MarcaCampoComoOpcional(cbTipoRemolque2)
-        MarcaCampoComoOpcional(txtTipoRemolque1)
-        MarcaCampoComoOpcional(txtTipoRemolque2)
-        MarcaCampoComoOpcional(txtPlacasRemolque1)
-        MarcaCampoComoOpcional(txtPlacasRemolque2)
+        MarcaCampoComoOpcional(cbPropiedadRemolque1, tlpContenedorRemolques)
+        MarcaCampoComoOpcional(cbPropiedadRemolque2, tlpContenedorRemolques)
+        MarcaCampoComoOpcional(cbTipoRemolque1, tlpContenedorRemolques)
+        MarcaCampoComoOpcional(cbTipoRemolque2, tlpContenedorRemolques)
+        MarcaCampoComoOpcional(txtTipoRemolque1, tlpContenedorRemolques)
+        MarcaCampoComoOpcional(txtTipoRemolque2, tlpContenedorRemolques)
+        MarcaCampoComoOpcional(txtPlacasRemolque1, tlpContenedorRemolques)
+        MarcaCampoComoOpcional(txtPlacasRemolque2, tlpContenedorRemolques)
 
         If numCantidadRemolquesTransporte.Value = 0 Then
             LimpiaDesactivaCombobox(cbPropiedadRemolque1)
@@ -3034,10 +2948,10 @@ Public Class frmCartaPorte
             LimpiaDesactivaTextbox(txtTipoRemolque2)
             LimpiaDesactivaTextbox(txtPlacasRemolque2)
 
-            MarcaCampoComoObligatorio(cbPropiedadRemolque1)
-            MarcaCampoComoObligatorio(cbTipoRemolque1)
-            MarcaCampoComoObligatorio(txtTipoRemolque1)
-            MarcaCampoComoObligatorio(txtPlacasRemolque1)
+            MarcaCampoComoObligatorio(cbPropiedadRemolque1, tlpContenedorRemolques)
+            MarcaCampoComoObligatorio(cbTipoRemolque1, tlpContenedorRemolques)
+            MarcaCampoComoObligatorio(txtTipoRemolque1, tlpContenedorRemolques)
+            MarcaCampoComoObligatorio(txtPlacasRemolque1, tlpContenedorRemolques)
         End If
         If numCantidadRemolquesTransporte.Value = 2 Then
             BindCombobox(cbPropiedadRemolque2, conexionesCartaPorte.Get_OpcionesPropiedadTransporte())
@@ -3046,10 +2960,10 @@ Public Class frmCartaPorte
             txtPlacasRemolque2.Enabled = True
             LimpiaDesactivaTextbox(txtTipoRemolque2)
 
-            MarcaCampoComoObligatorio(cbPropiedadRemolque2)
-            MarcaCampoComoObligatorio(cbTipoRemolque2)
-            MarcaCampoComoObligatorio(txtTipoRemolque2)
-            MarcaCampoComoObligatorio(txtPlacasRemolque2)
+            MarcaCampoComoObligatorio(cbPropiedadRemolque2, tlpContenedorRemolques)
+            MarcaCampoComoObligatorio(cbTipoRemolque2, tlpContenedorRemolques)
+            MarcaCampoComoObligatorio(txtTipoRemolque2, tlpContenedorRemolques)
+            MarcaCampoComoObligatorio(txtPlacasRemolque2, tlpContenedorRemolques)
         End If
     End Sub
 
@@ -3237,7 +3151,7 @@ Public Class frmCartaPorte
 
     Private listaParteTransporte As List(Of ItemTransporte)
 
-    Private Sub cbMunicipioOperador_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cbMunicipioOperador.SelectedIndexChanged
+    Private Sub cbMunicipioOperador_SelectedValueChanged(sender As Object, e As EventArgs) Handles cbMunicipioOperador.SelectedValueChanged
         ValidaOrdenMunicipioLocalidadCodigo(cbPaisOperador,
                                             refCbEstadoOperador,
                                             refCbLocalidadOperador,
@@ -3246,7 +3160,7 @@ Public Class frmCartaPorte
                                             refCbColoniaOperador)
     End Sub
 
-    Private Sub cbLocalidadOperador_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cbLocalidadOperador.SelectedIndexChanged
+    Private Sub cbLocalidadOperador_SelectedValueChanged(sender As Object, e As EventArgs) Handles cbLocalidadOperador.SelectedValueChanged
         ValidaOrdenMunicipioLocalidadCodigo(cbPaisOperador,
                                             refCbEstadoOperador,
                                             refCbLocalidadOperador,
@@ -3399,13 +3313,13 @@ Public Class frmCartaPorte
             txtRfcOperador.Enabled = False
             cbPaisOperador.Enabled = True
             cbPaisOperador.SelectedValue = "-01"
-            MarcaCampoComoObligatorio(txtNumRegIdTribFiscOperador)
+            MarcaCampoComoObligatorio(txtNumRegIdTribFiscOperador, tlpSeleccionOperador)
         ElseIf rbOperadorMexicano.Checked Then
             txtRfcOperador.Text = String.Empty
             txtRfcOperador.Enabled = True
             LimpiaDesactivaTextbox(txtNumRegIdTribFiscOperador)
             BindCombobox(cbPaisOperador, ObtenListadoPaises("MEX"))
-            MarcaCampoComoOpcional(txtNumRegIdTribFiscOperador)
+            MarcaCampoComoOpcional(txtNumRegIdTribFiscOperador, tlpSeleccionOperador)
             cbPaisOperador.SelectedValue = "MEX"
             cbPaisOperador.Enabled = True
         End If
@@ -3474,78 +3388,20 @@ Public Class frmCartaPorte
     End Sub
 
     Private Sub cbPaisOperador_SelectedValueChanged(sender As Object, e As EventArgs) Handles cbPaisOperador.SelectedValueChanged
-        If ObtenValorCombobox(cbPaisOperador) = "-01" Then Return
-
-        Dim paisSeleccionado As String = cbPaisOperador.SelectedValue
-
-        'Igual, validación de países con estados
-        If PaisTieneEstados(paisSeleccionado) Then
-            If refCbEstadoOperador Is Nothing Then
-                refCbEstadoOperador = New ComboBox
-                LimpiaDesactivaCombobox(refCbEstadoOperador)
-                SustituyeEnGrid(txtEstadoOperador, refCbEstadoOperador, tlpDireccionOperador)
-            End If
-            MarcaCampoComoObligatorio(refCbEstadoOperador)
-            BindCombobox(refCbEstadoOperador, ObtenEstadosPorPais(paisSeleccionado))
-            AddHandler refCbEstadoOperador.SelectedValueChanged, AddressOf cbEstadoOperador_SelectedValueChanged
-        Else
-            If txtEstadoOperador Is Nothing Then
-                txtEstadoOperador = New TextBox
-                txtEstadoOperador.Text = String.Empty
-                SustituyeEnGrid(refCbEstadoOperador, txtEstadoOperador, tlpDireccionOperador)
-            End If
-            MarcaCampoComoObligatorio(txtEstadoOperador)
-        End If
-
-        'Luego validación de países con municipios y localidades
-        If PaisTieneMunicipioLocalidad(paisSeleccionado) Then
-            If refCbMunicipioOperador Is Nothing Then
-                refCbMunicipioOperador = New ComboBox
-                LimpiaDesactivaCombobox(refCbMunicipioOperador)
-                SustituyeEnGrid(txtMunicipioOperador, refCbMunicipioOperador, tlpDireccionOperador)
-                AddHandler refCbMunicipioOperador.SelectedIndexChanged, AddressOf cbMunicipioDestinoIntermedio_SelectedIndexChanged
-            End If
-            If refCbLocalidadOperador Is Nothing Then
-                refCbLocalidadOperador = New ComboBox
-                LimpiaDesactivaCombobox(refCbLocalidadOperador)
-                SustituyeEnGrid(txtLocalidadOperador, refCbLocalidadOperador, tlpDireccionOperador)
-                AddHandler refCbLocalidadOperador.SelectedIndexChanged, AddressOf cbLocalidadOperador_SelectedIndexChanged
-            End If
-            MarcaCampoComoObligatorio(refCbMunicipioOperador)
-            MarcaCampoComoObligatorio(refCbLocalidadOperador)
-            cbEstadoOperador_SelectedValueChanged(Nothing, Nothing)
-        Else
-            If txtMunicipioOperador Is Nothing Then
-                txtMunicipioOperador = New TextBox
-                txtMunicipioOperador.Text = String.Empty
-                SustituyeEnGrid(refCbMunicipioOperador, txtMunicipioOperador, tlpDireccionOperador)
-            End If
-            If txtLocalidadOperador Is Nothing Then
-                txtLocalidadOperador = New TextBox
-                txtLocalidadOperador.Text = String.Empty
-                SustituyeEnGrid(refCbLocalidadOperador, txtLocalidadOperador, tlpDireccionOperador)
-            End If
-            MarcaCampoComoOpcional(txtMunicipioOperador)
-            MarcaCampoComoOpcional(txtLocalidadOperador)
-        End If
-
-        'Luego validación de paises con colonias
-        If PaisTieneColonias(paisSeleccionado) Then
-            If refCbColoniaOperador Is Nothing Then
-                refCbColoniaOperador = New ComboBox
-                LimpiaDesactivaCombobox(refCbColoniaOperador)
-                SustituyeEnGrid(txtColoniaOperador, refCbColoniaOperador, tlpDireccionOperador)
-            End If
-            txtCpOperador_TextChanged(Nothing, Nothing)
-            MarcaCampoComoObligatorio(refCbColoniaOperador)
-        Else
-            If txtColoniaOperador Is Nothing Then
-                txtColoniaOperador = New TextBox
-                txtColoniaOperador.Text = String.Empty
-                SustituyeEnGrid(refCbColoniaOperador, txtColoniaOperador, tlpDireccionOperador)
-            End If
-            MarcaCampoComoObligatorio(txtColoniaOperador)
-        End If
+        RealizaOperacionesSustitucionPaisesEstadoColonia(cbPaisOperador,
+                                                        refCbEstadoOperador,
+                                                        AddressOf cbEstadoOperador_SelectedValueChanged,
+                                                        refCbMunicipioOperador,
+                                                        AddressOf cbMunicipioOperador_SelectedValueChanged,
+                                                        refCbLocalidadOperador,
+                                                        AddressOf cbLocalidadOperador_SelectedValueChanged,
+                                                        refCbColoniaOperador,
+                                                        txtCpOperador,
+                                                        txtEstadoOperador,
+                                                        txtMunicipioOperador,
+                                                        txtLocalidadOperador,
+                                                        txtColoniaOperador,
+                                                        tlpDireccionOperador)
     End Sub
 
     Private Sub cbEstadoOperador_SelectedValueChanged(sender As Object, e As EventArgs) Handles cbEstadoOperador.SelectedValueChanged
@@ -3562,30 +3418,7 @@ Public Class frmCartaPorte
     End Sub
 
     Private Sub txtCpOperador_TextChanged(sender As Object, e As EventArgs) Handles txtCpOperador.TextChanged
-        LimpiaDesactivaCombobox(refCbColoniaOperador)
-        If Trim(txtCpOperador.Text).Length <> 5 Then '5 es la longitud de un CP válido
-            Return
-        End If
-
-        If txtColoniaOperador IsNot Nothing Then 'No tiene caso cargar el catálogo si hay un país sin catalogo de colonias
-            Return
-        End If
-
-        Dim cad As String = String.Empty
-        Dim estado As String = ObtenValorCombobox(refCbEstadoOperador)
-        Dim mun As String = ObtenValorCombobox(refCbMunicipioOperador)
-        Dim loc As String = ObtenValorCombobox(refCbLocalidadOperador)
-        Dim txtCp As String = ObtenValorTextbox(txtCpOperador)
-        Dim codValido As Boolean = conexionesCartaPorte.Get_ValidaCodigoPostal(txtCp, estado, mun, loc, cad)
-        If Not codValido Then
-            AlertaMensaje(cad)
-            Return
-        End If
-
-        Dim regExpCP As String = ObtenParametroPorLlave("REGEXP_CODIGO_POSTAL")
-        If Regex.IsMatch(Trim(txtCpOperador.Text), regExpCP) Then
-            BindCombobox(refCbColoniaOperador, ObtenColoniasPorCodigoPostal(ObtenValorTextbox(txtCpOperador)))
-        End If
+        RealizaCargaValidacionCodigoCargaColonias(refCbEstadoOperador, refCbMunicipioOperador, refCbLocalidadOperador, refCbColoniaOperador, txtCpOperador)
     End Sub
 
     Private Sub ValidaInformacionOperador()
@@ -4023,6 +3856,7 @@ Public Class frmCartaPorte
     Private Sub txtClaveMaterialPeligroso_DoubleClick(sender As Object, e As EventArgs) Handles txtClaveMaterialPeligroso.DoubleClick
         Dim formaBusqueda As New frmBusqueda(AddressOf conexionesCartaPorte.Get_DetalleMaterialPeligroso)
         esperandoBusqueda = txtClaveMaterialPeligroso
+        AddHandler formaBusqueda.ElementoSeleccionado, AddressOf AtrapaEvento
         AddHandler formaBusqueda.ElementoSeleccionado, AddressOf AtrapaEvento
         formaBusqueda.ShowDialog()
     End Sub

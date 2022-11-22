@@ -22,12 +22,10 @@ Partial Class frmCartaPorte
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Dim DataGridViewCellStyle7 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle8 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle9 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle10 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle11 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle12 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle45 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle46 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle47 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle48 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.TabControl1 = New System.Windows.Forms.TabControl()
         Me.tabOrigen = New System.Windows.Forms.TabPage()
         Me.tlpPrincipalOrigen = New System.Windows.Forms.TableLayoutPanel()
@@ -587,6 +585,7 @@ Partial Class frmCartaPorte
         Me.tlpContenedorDatosFiscalesOrigen.Controls.Add(Me.txtHoraSalidaRemitente, 3, 7)
         Me.tlpContenedorDatosFiscalesOrigen.Controls.Add(Me.Label4, 2, 2)
         Me.tlpContenedorDatosFiscalesOrigen.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.tlpContenedorDatosFiscalesOrigen.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.tlpContenedorDatosFiscalesOrigen.Location = New System.Drawing.Point(3, 3)
         Me.tlpContenedorDatosFiscalesOrigen.Name = "tlpContenedorDatosFiscalesOrigen"
         Me.tlpContenedorDatosFiscalesOrigen.RowCount = 8
@@ -604,29 +603,34 @@ Partial Class frmCartaPorte
         'Label1
         '
         Me.Label1.AutoSize = True
+        Me.Label1.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label1.Location = New System.Drawing.Point(3, 0)
         Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(213, 20)
+        Me.Label1.Size = New System.Drawing.Size(242, 20)
         Me.Label1.TabIndex = 0
         Me.Label1.Text = "Datos de la ubicación origen:"
         '
         'Label2
         '
         Me.Label2.AutoSize = True
+        Me.Label2.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label2.ForeColor = System.Drawing.Color.IndianRed
         Me.Label2.Location = New System.Drawing.Point(3, 34)
         Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(114, 20)
+        Me.Label2.Size = New System.Drawing.Size(141, 20)
         Me.Label2.TabIndex = 1
-        Me.Label2.Text = "Tipo ubicación:"
+        Me.Label2.Text = "Tipo ubicación: *"
         '
         'Label3
         '
         Me.Label3.AutoSize = True
+        Me.Label3.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label3.ForeColor = System.Drawing.Color.IndianRed
         Me.Label3.Location = New System.Drawing.Point(547, 34)
         Me.Label3.Name = "Label3"
-        Me.Label3.Size = New System.Drawing.Size(104, 20)
+        Me.Label3.Size = New System.Drawing.Size(129, 20)
         Me.Label3.TabIndex = 2
-        Me.Label3.Text = "ID Ubicación:"
+        Me.Label3.Text = "ID Ubicación: *"
         '
         'gbOrigenPersonaFisicaMoral
         '
@@ -644,9 +648,10 @@ Partial Class frmCartaPorte
         'rbExtranjeroOrigen
         '
         Me.rbExtranjeroOrigen.AutoSize = True
+        Me.rbExtranjeroOrigen.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.rbExtranjeroOrigen.Location = New System.Drawing.Point(361, 0)
         Me.rbExtranjeroOrigen.Name = "rbExtranjeroOrigen"
-        Me.rbExtranjeroOrigen.Size = New System.Drawing.Size(127, 24)
+        Me.rbExtranjeroOrigen.Size = New System.Drawing.Size(140, 24)
         Me.rbExtranjeroOrigen.TabIndex = 2
         Me.rbExtranjeroOrigen.TabStop = True
         Me.rbExtranjeroOrigen.Text = "Es extranjero"
@@ -655,9 +660,10 @@ Partial Class frmCartaPorte
         'rbPersonaMoralOrigen
         '
         Me.rbPersonaMoralOrigen.AutoSize = True
+        Me.rbPersonaMoralOrigen.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.rbPersonaMoralOrigen.Location = New System.Drawing.Point(175, 0)
         Me.rbPersonaMoralOrigen.Name = "rbPersonaMoralOrigen"
-        Me.rbPersonaMoralOrigen.Size = New System.Drawing.Size(136, 24)
+        Me.rbPersonaMoralOrigen.Size = New System.Drawing.Size(149, 24)
         Me.rbPersonaMoralOrigen.TabIndex = 1
         Me.rbPersonaMoralOrigen.TabStop = True
         Me.rbPersonaMoralOrigen.Text = "Persona moral"
@@ -666,9 +672,10 @@ Partial Class frmCartaPorte
         'rbPersonaFisicaOrigen
         '
         Me.rbPersonaFisicaOrigen.AutoSize = True
+        Me.rbPersonaFisicaOrigen.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.rbPersonaFisicaOrigen.Location = New System.Drawing.Point(0, -3)
         Me.rbPersonaFisicaOrigen.Name = "rbPersonaFisicaOrigen"
-        Me.rbPersonaFisicaOrigen.Size = New System.Drawing.Size(133, 24)
+        Me.rbPersonaFisicaOrigen.Size = New System.Drawing.Size(147, 24)
         Me.rbPersonaFisicaOrigen.TabIndex = 0
         Me.rbPersonaFisicaOrigen.TabStop = True
         Me.rbPersonaFisicaOrigen.Text = "Persona física"
@@ -677,35 +684,42 @@ Partial Class frmCartaPorte
         'lblNombreOrigen
         '
         Me.lblNombreOrigen.AutoSize = True
+        Me.lblNombreOrigen.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblNombreOrigen.ForeColor = System.Drawing.Color.IndianRed
         Me.lblNombreOrigen.Location = New System.Drawing.Point(3, 110)
         Me.lblNombreOrigen.Name = "lblNombreOrigen"
-        Me.lblNombreOrigen.Size = New System.Drawing.Size(69, 20)
+        Me.lblNombreOrigen.Size = New System.Drawing.Size(88, 20)
         Me.lblNombreOrigen.TabIndex = 5
-        Me.lblNombreOrigen.Text = "Nombre:"
+        Me.lblNombreOrigen.Text = "Nombre: *"
         '
         'lblApPaternoOrigen
         '
         Me.lblApPaternoOrigen.AutoSize = True
+        Me.lblApPaternoOrigen.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblApPaternoOrigen.ForeColor = System.Drawing.Color.IndianRed
         Me.lblApPaternoOrigen.Location = New System.Drawing.Point(547, 110)
         Me.lblApPaternoOrigen.Name = "lblApPaternoOrigen"
-        Me.lblApPaternoOrigen.Size = New System.Drawing.Size(128, 20)
+        Me.lblApPaternoOrigen.Size = New System.Drawing.Size(157, 20)
         Me.lblApPaternoOrigen.TabIndex = 6
-        Me.lblApPaternoOrigen.Text = "Apellido paterno:"
+        Me.lblApPaternoOrigen.Text = "Apellido paterno: *"
         '
         'lblApMaternoOrigen
         '
         Me.lblApMaternoOrigen.AutoSize = True
+        Me.lblApMaternoOrigen.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblApMaternoOrigen.ForeColor = System.Drawing.Color.IndianRed
         Me.lblApMaternoOrigen.Location = New System.Drawing.Point(3, 148)
         Me.lblApMaternoOrigen.Name = "lblApMaternoOrigen"
-        Me.lblApMaternoOrigen.Size = New System.Drawing.Size(132, 20)
+        Me.lblApMaternoOrigen.Size = New System.Drawing.Size(161, 20)
         Me.lblApMaternoOrigen.TabIndex = 7
-        Me.lblApMaternoOrigen.Text = "Apellido materno:"
+        Me.lblApMaternoOrigen.Text = "Apellido materno: *"
         '
         'Label8
         '
         Me.Label8.AutoSize = True
         Me.tlpContenedorDatosFiscalesOrigen.SetColumnSpan(Me.Label8, 2)
         Me.Label8.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.Label8.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label8.Location = New System.Drawing.Point(3, 186)
         Me.Label8.Name = "Label8"
         Me.Label8.Size = New System.Drawing.Size(538, 38)
@@ -715,29 +729,34 @@ Partial Class frmCartaPorte
         'Label9
         '
         Me.Label9.AutoSize = True
+        Me.Label9.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label9.Location = New System.Drawing.Point(3, 224)
         Me.Label9.Name = "Label9"
-        Me.Label9.Size = New System.Drawing.Size(132, 20)
+        Me.Label9.Size = New System.Drawing.Size(150, 20)
         Me.Label9.TabIndex = 9
         Me.Label9.Text = "Residencia fiscal:"
         '
         'Label10
         '
         Me.Label10.AutoSize = True
+        Me.Label10.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label10.ForeColor = System.Drawing.Color.IndianRed
         Me.Label10.Location = New System.Drawing.Point(3, 262)
         Me.Label10.Name = "Label10"
-        Me.Label10.Size = New System.Drawing.Size(125, 20)
+        Me.Label10.Size = New System.Drawing.Size(153, 20)
         Me.Label10.TabIndex = 10
-        Me.Label10.Text = "Fecha de salida:"
+        Me.Label10.Text = "Fecha de salida: *"
         '
         'Label11
         '
         Me.Label11.AutoSize = True
+        Me.Label11.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label11.ForeColor = System.Drawing.Color.IndianRed
         Me.Label11.Location = New System.Drawing.Point(547, 262)
         Me.Label11.Name = "Label11"
-        Me.Label11.Size = New System.Drawing.Size(115, 20)
+        Me.Label11.Size = New System.Drawing.Size(142, 20)
         Me.Label11.TabIndex = 11
-        Me.Label11.Text = "Hora de salida:"
+        Me.Label11.Text = "Hora de salida: *"
         '
         'txtTipoUbicacion
         '
@@ -843,11 +862,13 @@ Partial Class frmCartaPorte
         'Label4
         '
         Me.Label4.AutoSize = True
+        Me.Label4.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label4.ForeColor = System.Drawing.Color.IndianRed
         Me.Label4.Location = New System.Drawing.Point(547, 72)
         Me.Label4.Name = "Label4"
-        Me.Label4.Size = New System.Drawing.Size(117, 20)
+        Me.Label4.Size = New System.Drawing.Size(143, 20)
         Me.Label4.TabIndex = 24
-        Me.Label4.Text = "RFC remitente:"
+        Me.Label4.Text = "RFC remitente: *"
         '
         'tlpDetalleDomicilioOrigen
         '
@@ -881,6 +902,7 @@ Partial Class frmCartaPorte
         Me.tlpDetalleDomicilioOrigen.Controls.Add(Me.cbLocalidadRemitente, 1, 2)
         Me.tlpDetalleDomicilioOrigen.Controls.Add(Me.cbColoniaOrigen, 1, 3)
         Me.tlpDetalleDomicilioOrigen.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.tlpDetalleDomicilioOrigen.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.tlpDetalleDomicilioOrigen.Location = New System.Drawing.Point(3, 312)
         Me.tlpDetalleDomicilioOrigen.Name = "tlpDetalleDomicilioOrigen"
         Me.tlpDetalleDomicilioOrigen.RowCount = 6
@@ -898,6 +920,7 @@ Partial Class frmCartaPorte
         Me.Label12.AutoSize = True
         Me.tlpDetalleDomicilioOrigen.SetColumnSpan(Me.Label12, 3)
         Me.Label12.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.Label12.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label12.Location = New System.Drawing.Point(3, 0)
         Me.Label12.Name = "Label12"
         Me.Label12.Size = New System.Drawing.Size(548, 24)
@@ -907,90 +930,107 @@ Partial Class frmCartaPorte
         'Label13
         '
         Me.Label13.AutoSize = True
+        Me.Label13.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label13.ForeColor = System.Drawing.Color.IndianRed
         Me.Label13.Location = New System.Drawing.Point(3, 24)
         Me.Label13.Name = "Label13"
-        Me.Label13.Size = New System.Drawing.Size(43, 20)
+        Me.Label13.Size = New System.Drawing.Size(60, 20)
         Me.Label13.TabIndex = 1
-        Me.Label13.Text = "País:"
+        Me.Label13.Text = "País: *"
         '
         'Label14
         '
         Me.Label14.AutoSize = True
+        Me.Label14.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label14.ForeColor = System.Drawing.Color.IndianRed
         Me.Label14.Location = New System.Drawing.Point(379, 24)
         Me.Label14.Name = "Label14"
-        Me.Label14.Size = New System.Drawing.Size(64, 20)
+        Me.Label14.Size = New System.Drawing.Size(83, 20)
         Me.Label14.TabIndex = 2
-        Me.Label14.Text = "Estado:"
+        Me.Label14.Text = "Estado: *"
         '
         'Label15
         '
         Me.Label15.AutoSize = True
+        Me.Label15.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label15.ForeColor = System.Drawing.Color.IndianRed
         Me.Label15.Location = New System.Drawing.Point(735, 24)
         Me.Label15.Name = "Label15"
-        Me.Label15.Size = New System.Drawing.Size(79, 20)
+        Me.Label15.Size = New System.Drawing.Size(101, 20)
         Me.Label15.TabIndex = 3
-        Me.Label15.Text = "Municipio:"
+        Me.Label15.Text = "Municipio: *"
         '
         'Label16
         '
         Me.Label16.AutoSize = True
+        Me.Label16.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label16.ForeColor = System.Drawing.Color.IndianRed
         Me.Label16.Location = New System.Drawing.Point(3, 67)
         Me.Label16.Name = "Label16"
-        Me.Label16.Size = New System.Drawing.Size(81, 20)
+        Me.Label16.Size = New System.Drawing.Size(103, 20)
         Me.Label16.TabIndex = 4
-        Me.Label16.Text = "Localidad:"
+        Me.Label16.Text = "Localidad: *"
         '
         'Label17
         '
         Me.Label17.AutoSize = True
+        Me.Label17.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label17.ForeColor = System.Drawing.Color.IndianRed
         Me.Label17.Location = New System.Drawing.Point(735, 67)
         Me.Label17.Name = "Label17"
-        Me.Label17.Size = New System.Drawing.Size(34, 20)
+        Me.Label17.Size = New System.Drawing.Size(49, 20)
         Me.Label17.TabIndex = 5
-        Me.Label17.Text = "CP:"
+        Me.Label17.Text = "CP: *"
         '
         'Label18
         '
         Me.Label18.AutoSize = True
+        Me.Label18.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label18.ForeColor = System.Drawing.Color.IndianRed
         Me.Label18.Location = New System.Drawing.Point(3, 110)
         Me.Label18.Name = "Label18"
-        Me.Label18.Size = New System.Drawing.Size(66, 20)
+        Me.Label18.Size = New System.Drawing.Size(86, 20)
         Me.Label18.TabIndex = 6
-        Me.Label18.Text = "Colonia:"
+        Me.Label18.Text = "Colonia: *"
         '
         'Label19
         '
         Me.Label19.AutoSize = True
+        Me.Label19.ForeColor = System.Drawing.Color.IndianRed
         Me.Label19.Location = New System.Drawing.Point(379, 110)
         Me.Label19.Name = "Label19"
-        Me.Label19.Size = New System.Drawing.Size(62, 20)
+        Me.Label19.Size = New System.Drawing.Size(82, 20)
         Me.Label19.TabIndex = 7
-        Me.Label19.Text = "No. ext:"
+        Me.Label19.Text = "No. ext: *"
         '
         'Label20
         '
         Me.Label20.AutoSize = True
+        Me.Label20.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label20.Location = New System.Drawing.Point(735, 110)
         Me.Label20.Name = "Label20"
-        Me.Label20.Size = New System.Drawing.Size(58, 20)
+        Me.Label20.Size = New System.Drawing.Size(66, 20)
         Me.Label20.TabIndex = 8
         Me.Label20.Text = "No. int:"
         '
         'Label21
         '
         Me.Label21.AutoSize = True
+        Me.Label21.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label21.ForeColor = System.Drawing.Color.IndianRed
         Me.Label21.Location = New System.Drawing.Point(3, 153)
         Me.Label21.Name = "Label21"
-        Me.Label21.Size = New System.Drawing.Size(48, 20)
+        Me.Label21.Size = New System.Drawing.Size(66, 20)
         Me.Label21.TabIndex = 9
-        Me.Label21.Text = "Calle:"
+        Me.Label21.Text = "Calle: *"
         '
         'Label22
         '
         Me.Label22.AutoSize = True
+        Me.Label22.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label22.Location = New System.Drawing.Point(3, 196)
         Me.Label22.Name = "Label22"
-        Me.Label22.Size = New System.Drawing.Size(91, 20)
+        Me.Label22.Size = New System.Drawing.Size(102, 20)
         Me.Label22.TabIndex = 10
         Me.Label22.Text = "Referencia:"
         '
@@ -1166,6 +1206,7 @@ Partial Class frmCartaPorte
         Me.tlpDatosDestino.Controls.Add(Me.tlpHoraLlegadaDestino, 2, 7)
         Me.tlpDatosDestino.Controls.Add(Me.tlpNumKilometros, 3, 7)
         Me.tlpDatosDestino.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.tlpDatosDestino.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.tlpDatosDestino.Location = New System.Drawing.Point(3, 3)
         Me.tlpDatosDestino.Name = "tlpDatosDestino"
         Me.tlpDatosDestino.RowCount = 8
@@ -1184,38 +1225,45 @@ Partial Class frmCartaPorte
         'Label23
         '
         Me.Label23.AutoSize = True
+        Me.Label23.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label23.Location = New System.Drawing.Point(3, 0)
         Me.Label23.Name = "Label23"
-        Me.Label23.Size = New System.Drawing.Size(221, 20)
+        Me.Label23.Size = New System.Drawing.Size(251, 20)
         Me.Label23.TabIndex = 0
         Me.Label23.Text = "Datos de la ubicación destino:"
         '
         'Label24
         '
         Me.Label24.AutoSize = True
+        Me.Label24.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label24.ForeColor = System.Drawing.Color.IndianRed
         Me.Label24.Location = New System.Drawing.Point(3, 34)
         Me.Label24.Name = "Label24"
-        Me.Label24.Size = New System.Drawing.Size(114, 20)
+        Me.Label24.Size = New System.Drawing.Size(141, 20)
         Me.Label24.TabIndex = 1
-        Me.Label24.Text = "Tipo ubicación:"
+        Me.Label24.Text = "Tipo ubicación: *"
         '
         'Label25
         '
         Me.Label25.AutoSize = True
+        Me.Label25.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label25.ForeColor = System.Drawing.Color.IndianRed
         Me.Label25.Location = New System.Drawing.Point(547, 34)
         Me.Label25.Name = "Label25"
-        Me.Label25.Size = New System.Drawing.Size(104, 20)
+        Me.Label25.Size = New System.Drawing.Size(129, 20)
         Me.Label25.TabIndex = 2
-        Me.Label25.Text = "ID Ubicación:"
+        Me.Label25.Text = "ID Ubicación: *"
         '
         'Label26
         '
         Me.Label26.AutoSize = True
+        Me.Label26.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label26.ForeColor = System.Drawing.Color.IndianRed
         Me.Label26.Location = New System.Drawing.Point(547, 72)
         Me.Label26.Name = "Label26"
-        Me.Label26.Size = New System.Drawing.Size(117, 20)
+        Me.Label26.Size = New System.Drawing.Size(143, 20)
         Me.Label26.TabIndex = 3
-        Me.Label26.Text = "RFC remitente:"
+        Me.Label26.Text = "RFC remitente: *"
         '
         'GroupBox1
         '
@@ -1233,9 +1281,10 @@ Partial Class frmCartaPorte
         'rbEsExtranjeroDestino
         '
         Me.rbEsExtranjeroDestino.AutoSize = True
+        Me.rbEsExtranjeroDestino.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.rbEsExtranjeroDestino.Location = New System.Drawing.Point(345, 2)
         Me.rbEsExtranjeroDestino.Name = "rbEsExtranjeroDestino"
-        Me.rbEsExtranjeroDestino.Size = New System.Drawing.Size(127, 24)
+        Me.rbEsExtranjeroDestino.Size = New System.Drawing.Size(140, 24)
         Me.rbEsExtranjeroDestino.TabIndex = 2
         Me.rbEsExtranjeroDestino.TabStop = True
         Me.rbEsExtranjeroDestino.Text = "Es extranjero"
@@ -1244,9 +1293,10 @@ Partial Class frmCartaPorte
         'rbPersonaMoralDestino
         '
         Me.rbPersonaMoralDestino.AutoSize = True
+        Me.rbPersonaMoralDestino.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.rbPersonaMoralDestino.Location = New System.Drawing.Point(169, 0)
         Me.rbPersonaMoralDestino.Name = "rbPersonaMoralDestino"
-        Me.rbPersonaMoralDestino.Size = New System.Drawing.Size(136, 24)
+        Me.rbPersonaMoralDestino.Size = New System.Drawing.Size(149, 24)
         Me.rbPersonaMoralDestino.TabIndex = 1
         Me.rbPersonaMoralDestino.TabStop = True
         Me.rbPersonaMoralDestino.Text = "Persona moral"
@@ -1255,9 +1305,10 @@ Partial Class frmCartaPorte
         'rbPersonaFisicaDestino
         '
         Me.rbPersonaFisicaDestino.AutoSize = True
+        Me.rbPersonaFisicaDestino.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.rbPersonaFisicaDestino.Location = New System.Drawing.Point(0, -3)
         Me.rbPersonaFisicaDestino.Name = "rbPersonaFisicaDestino"
-        Me.rbPersonaFisicaDestino.Size = New System.Drawing.Size(133, 24)
+        Me.rbPersonaFisicaDestino.Size = New System.Drawing.Size(147, 24)
         Me.rbPersonaFisicaDestino.TabIndex = 0
         Me.rbPersonaFisicaDestino.TabStop = True
         Me.rbPersonaFisicaDestino.Text = "Persona física"
@@ -1266,35 +1317,42 @@ Partial Class frmCartaPorte
         'Label27
         '
         Me.Label27.AutoSize = True
+        Me.Label27.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label27.ForeColor = System.Drawing.Color.IndianRed
         Me.Label27.Location = New System.Drawing.Point(3, 110)
         Me.Label27.Name = "Label27"
-        Me.Label27.Size = New System.Drawing.Size(69, 20)
+        Me.Label27.Size = New System.Drawing.Size(88, 20)
         Me.Label27.TabIndex = 5
-        Me.Label27.Text = "Nombre:"
+        Me.Label27.Text = "Nombre: *"
         '
         'Label28
         '
         Me.Label28.AutoSize = True
+        Me.Label28.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label28.ForeColor = System.Drawing.Color.IndianRed
         Me.Label28.Location = New System.Drawing.Point(547, 110)
         Me.Label28.Name = "Label28"
-        Me.Label28.Size = New System.Drawing.Size(128, 20)
+        Me.Label28.Size = New System.Drawing.Size(157, 20)
         Me.Label28.TabIndex = 6
-        Me.Label28.Text = "Apellido paterno:"
+        Me.Label28.Text = "Apellido paterno: *"
         '
         'Label29
         '
         Me.Label29.AutoSize = True
+        Me.Label29.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label29.ForeColor = System.Drawing.Color.IndianRed
         Me.Label29.Location = New System.Drawing.Point(3, 148)
         Me.Label29.Name = "Label29"
-        Me.Label29.Size = New System.Drawing.Size(132, 20)
+        Me.Label29.Size = New System.Drawing.Size(161, 20)
         Me.Label29.TabIndex = 7
-        Me.Label29.Text = "Apellido materno:"
+        Me.Label29.Text = "Apellido materno: *"
         '
         'Label30
         '
         Me.Label30.AutoSize = True
         Me.tlpDatosDestino.SetColumnSpan(Me.Label30, 2)
         Me.Label30.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.Label30.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label30.Location = New System.Drawing.Point(3, 186)
         Me.Label30.Name = "Label30"
         Me.Label30.Size = New System.Drawing.Size(538, 38)
@@ -1304,20 +1362,23 @@ Partial Class frmCartaPorte
         'Label31
         '
         Me.Label31.AutoSize = True
+        Me.Label31.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label31.Location = New System.Drawing.Point(3, 224)
         Me.Label31.Name = "Label31"
-        Me.Label31.Size = New System.Drawing.Size(132, 20)
+        Me.Label31.Size = New System.Drawing.Size(150, 20)
         Me.Label31.TabIndex = 9
         Me.Label31.Text = "Residencia fiscal:"
         '
         'Label32
         '
         Me.Label32.AutoSize = True
+        Me.Label32.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label32.ForeColor = System.Drawing.Color.IndianRed
         Me.Label32.Location = New System.Drawing.Point(3, 262)
         Me.Label32.Name = "Label32"
-        Me.Label32.Size = New System.Drawing.Size(135, 20)
+        Me.Label32.Size = New System.Drawing.Size(164, 20)
         Me.Label32.TabIndex = 10
-        Me.Label32.Text = "Fecha de llegada:"
+        Me.Label32.Text = "Fecha de llegada: *"
         '
         'txtTipoUbicacionDestino
         '
@@ -1435,11 +1496,13 @@ Partial Class frmCartaPorte
         '
         Me.Label5.AutoSize = True
         Me.Label5.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.Label5.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label5.ForeColor = System.Drawing.Color.IndianRed
         Me.Label5.Location = New System.Drawing.Point(3, 0)
         Me.Label5.Name = "Label5"
         Me.Label5.Size = New System.Drawing.Size(127, 35)
         Me.Label5.TabIndex = 22
-        Me.Label5.Text = "Hora de llegada:"
+        Me.Label5.Text = "Hora arribo: *"
         '
         'tlpNumKilometros
         '
@@ -1460,11 +1523,13 @@ Partial Class frmCartaPorte
         'Label6
         '
         Me.Label6.AutoSize = True
+        Me.Label6.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label6.ForeColor = System.Drawing.Color.IndianRed
         Me.Label6.Location = New System.Drawing.Point(3, 0)
         Me.Label6.Name = "Label6"
-        Me.Label6.Size = New System.Drawing.Size(110, 20)
+        Me.Label6.Size = New System.Drawing.Size(123, 20)
         Me.Label6.TabIndex = 0
-        Me.Label6.Text = "Km. recorridos"
+        Me.Label6.Text = "Km distancia *"
         '
         'nupKmRecorridos
         '
@@ -1524,6 +1589,7 @@ Partial Class frmCartaPorte
         Me.Label34.AutoSize = True
         Me.tlpDetallesDestino.SetColumnSpan(Me.Label34, 3)
         Me.Label34.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.Label34.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label34.Location = New System.Drawing.Point(3, 0)
         Me.Label34.Name = "Label34"
         Me.Label34.Size = New System.Drawing.Size(548, 24)
@@ -1533,90 +1599,108 @@ Partial Class frmCartaPorte
         'Label35
         '
         Me.Label35.AutoSize = True
+        Me.Label35.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label35.ForeColor = System.Drawing.Color.IndianRed
         Me.Label35.Location = New System.Drawing.Point(3, 24)
         Me.Label35.Name = "Label35"
-        Me.Label35.Size = New System.Drawing.Size(43, 20)
+        Me.Label35.Size = New System.Drawing.Size(60, 20)
         Me.Label35.TabIndex = 1
-        Me.Label35.Text = "País:"
+        Me.Label35.Text = "País: *"
         '
         'Label36
         '
         Me.Label36.AutoSize = True
+        Me.Label36.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label36.ForeColor = System.Drawing.Color.IndianRed
         Me.Label36.Location = New System.Drawing.Point(379, 24)
         Me.Label36.Name = "Label36"
-        Me.Label36.Size = New System.Drawing.Size(64, 20)
+        Me.Label36.Size = New System.Drawing.Size(83, 20)
         Me.Label36.TabIndex = 2
-        Me.Label36.Text = "Estado:"
+        Me.Label36.Text = "Estado: *"
         '
         'Label37
         '
         Me.Label37.AutoSize = True
+        Me.Label37.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label37.ForeColor = System.Drawing.Color.IndianRed
         Me.Label37.Location = New System.Drawing.Point(735, 24)
         Me.Label37.Name = "Label37"
-        Me.Label37.Size = New System.Drawing.Size(79, 20)
+        Me.Label37.Size = New System.Drawing.Size(101, 20)
         Me.Label37.TabIndex = 3
-        Me.Label37.Text = "Municipio:"
+        Me.Label37.Text = "Municipio: *"
         '
         'Label38
         '
         Me.Label38.AutoSize = True
+        Me.Label38.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label38.ForeColor = System.Drawing.Color.IndianRed
         Me.Label38.Location = New System.Drawing.Point(3, 67)
         Me.Label38.Name = "Label38"
-        Me.Label38.Size = New System.Drawing.Size(81, 20)
+        Me.Label38.Size = New System.Drawing.Size(103, 20)
         Me.Label38.TabIndex = 4
-        Me.Label38.Text = "Localidad:"
+        Me.Label38.Text = "Localidad: *"
         '
         'Label39
         '
         Me.Label39.AutoSize = True
+        Me.Label39.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label39.ForeColor = System.Drawing.Color.IndianRed
         Me.Label39.Location = New System.Drawing.Point(735, 67)
         Me.Label39.Name = "Label39"
-        Me.Label39.Size = New System.Drawing.Size(34, 20)
+        Me.Label39.Size = New System.Drawing.Size(49, 20)
         Me.Label39.TabIndex = 5
-        Me.Label39.Text = "CP:"
+        Me.Label39.Text = "CP: *"
         '
         'Label40
         '
         Me.Label40.AutoSize = True
+        Me.Label40.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label40.ForeColor = System.Drawing.Color.IndianRed
         Me.Label40.Location = New System.Drawing.Point(3, 110)
         Me.Label40.Name = "Label40"
-        Me.Label40.Size = New System.Drawing.Size(66, 20)
+        Me.Label40.Size = New System.Drawing.Size(86, 20)
         Me.Label40.TabIndex = 6
-        Me.Label40.Text = "Colonia:"
+        Me.Label40.Text = "Colonia: *"
         '
         'Label41
         '
         Me.Label41.AutoSize = True
+        Me.Label41.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label41.ForeColor = System.Drawing.Color.IndianRed
         Me.Label41.Location = New System.Drawing.Point(379, 110)
         Me.Label41.Name = "Label41"
-        Me.Label41.Size = New System.Drawing.Size(62, 20)
+        Me.Label41.Size = New System.Drawing.Size(82, 20)
         Me.Label41.TabIndex = 7
-        Me.Label41.Text = "No. ext:"
+        Me.Label41.Text = "No. ext: *"
         '
         'Label42
         '
         Me.Label42.AutoSize = True
+        Me.Label42.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label42.Location = New System.Drawing.Point(735, 110)
         Me.Label42.Name = "Label42"
-        Me.Label42.Size = New System.Drawing.Size(58, 20)
+        Me.Label42.Size = New System.Drawing.Size(66, 20)
         Me.Label42.TabIndex = 8
         Me.Label42.Text = "No. int:"
         '
         'Label43
         '
         Me.Label43.AutoSize = True
+        Me.Label43.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label43.ForeColor = System.Drawing.Color.IndianRed
         Me.Label43.Location = New System.Drawing.Point(3, 153)
         Me.Label43.Name = "Label43"
-        Me.Label43.Size = New System.Drawing.Size(48, 20)
+        Me.Label43.Size = New System.Drawing.Size(66, 20)
         Me.Label43.TabIndex = 9
-        Me.Label43.Text = "Calle:"
+        Me.Label43.Text = "Calle: *"
         '
         'Label44
         '
         Me.Label44.AutoSize = True
+        Me.Label44.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label44.Location = New System.Drawing.Point(3, 196)
         Me.Label44.Name = "Label44"
-        Me.Label44.Size = New System.Drawing.Size(91, 20)
+        Me.Label44.Size = New System.Drawing.Size(102, 20)
         Me.Label44.TabIndex = 10
         Me.Label44.Text = "Referencia:"
         '
@@ -1783,6 +1867,7 @@ Partial Class frmCartaPorte
         Me.tlpMainDestinosIntermedios.Controls.Add(Me.tlpGridDestinosIntermedios, 0, 0)
         Me.tlpMainDestinosIntermedios.Controls.Add(Me.tlpBotonesSiguienteAtrasDestinosIntermedios, 0, 3)
         Me.tlpMainDestinosIntermedios.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.tlpMainDestinosIntermedios.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.tlpMainDestinosIntermedios.Location = New System.Drawing.Point(3, 3)
         Me.tlpMainDestinosIntermedios.Name = "tlpMainDestinosIntermedios"
         Me.tlpMainDestinosIntermedios.RowCount = 4
@@ -1824,6 +1909,7 @@ Partial Class frmCartaPorte
         Me.tlpDetallesDestinoIntermedio.Controls.Add(Me.cbLocalidadDestinoIntermedio, 1, 2)
         Me.tlpDetallesDestinoIntermedio.Controls.Add(Me.cbColoniaDestinoIntermedio, 1, 3)
         Me.tlpDetallesDestinoIntermedio.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.tlpDetallesDestinoIntermedio.ForeColor = System.Drawing.Color.IndianRed
         Me.tlpDetallesDestinoIntermedio.Location = New System.Drawing.Point(3, 373)
         Me.tlpDetallesDestinoIntermedio.Name = "tlpDetallesDestinoIntermedio"
         Me.tlpDetallesDestinoIntermedio.RowCount = 6
@@ -1841,6 +1927,7 @@ Partial Class frmCartaPorte
         Me.Label57.AutoSize = True
         Me.tlpDetallesDestinoIntermedio.SetColumnSpan(Me.Label57, 3)
         Me.Label57.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.Label57.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label57.Location = New System.Drawing.Point(3, 0)
         Me.Label57.Name = "Label57"
         Me.Label57.Size = New System.Drawing.Size(548, 17)
@@ -1850,90 +1937,110 @@ Partial Class frmCartaPorte
         'Label58
         '
         Me.Label58.AutoSize = True
+        Me.Label58.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label58.ForeColor = System.Drawing.Color.IndianRed
         Me.Label58.Location = New System.Drawing.Point(3, 17)
         Me.Label58.Name = "Label58"
-        Me.Label58.Size = New System.Drawing.Size(43, 20)
+        Me.Label58.Size = New System.Drawing.Size(60, 20)
         Me.Label58.TabIndex = 1
-        Me.Label58.Text = "País:"
+        Me.Label58.Text = "País: *"
         '
         'Label59
         '
         Me.Label59.AutoSize = True
+        Me.Label59.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label59.ForeColor = System.Drawing.Color.IndianRed
         Me.Label59.Location = New System.Drawing.Point(379, 17)
         Me.Label59.Name = "Label59"
-        Me.Label59.Size = New System.Drawing.Size(64, 20)
+        Me.Label59.Size = New System.Drawing.Size(83, 20)
         Me.Label59.TabIndex = 2
-        Me.Label59.Text = "Estado:"
+        Me.Label59.Text = "Estado: *"
         '
         'Label60
         '
         Me.Label60.AutoSize = True
+        Me.Label60.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label60.ForeColor = System.Drawing.Color.IndianRed
         Me.Label60.Location = New System.Drawing.Point(735, 17)
         Me.Label60.Name = "Label60"
-        Me.Label60.Size = New System.Drawing.Size(79, 20)
+        Me.Label60.Size = New System.Drawing.Size(101, 20)
         Me.Label60.TabIndex = 3
-        Me.Label60.Text = "Municipio:"
+        Me.Label60.Text = "Municipio: *"
         '
         'Label61
         '
         Me.Label61.AutoSize = True
+        Me.Label61.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label61.ForeColor = System.Drawing.Color.IndianRed
         Me.Label61.Location = New System.Drawing.Point(3, 49)
         Me.Label61.Name = "Label61"
-        Me.Label61.Size = New System.Drawing.Size(81, 20)
+        Me.Label61.Size = New System.Drawing.Size(103, 20)
         Me.Label61.TabIndex = 4
-        Me.Label61.Text = "Localidad:"
+        Me.Label61.Text = "Localidad: *"
         '
         'Label62
         '
         Me.Label62.AutoSize = True
+        Me.Label62.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label62.ForeColor = System.Drawing.Color.IndianRed
         Me.Label62.Location = New System.Drawing.Point(735, 49)
         Me.Label62.Name = "Label62"
-        Me.Label62.Size = New System.Drawing.Size(34, 20)
+        Me.Label62.Size = New System.Drawing.Size(49, 20)
         Me.Label62.TabIndex = 5
-        Me.Label62.Text = "CP:"
+        Me.Label62.Text = "CP: *"
         '
         'Label63
         '
         Me.Label63.AutoSize = True
+        Me.Label63.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label63.ForeColor = System.Drawing.Color.IndianRed
         Me.Label63.Location = New System.Drawing.Point(3, 81)
         Me.Label63.Name = "Label63"
-        Me.Label63.Size = New System.Drawing.Size(66, 20)
+        Me.Label63.Size = New System.Drawing.Size(86, 20)
         Me.Label63.TabIndex = 6
-        Me.Label63.Text = "Colonia:"
+        Me.Label63.Text = "Colonia: *"
         '
         'Label64
         '
         Me.Label64.AutoSize = True
+        Me.Label64.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label64.ForeColor = System.Drawing.Color.IndianRed
         Me.Label64.Location = New System.Drawing.Point(379, 81)
         Me.Label64.Name = "Label64"
-        Me.Label64.Size = New System.Drawing.Size(62, 20)
+        Me.Label64.Size = New System.Drawing.Size(82, 20)
         Me.Label64.TabIndex = 7
-        Me.Label64.Text = "No. ext:"
+        Me.Label64.Text = "No. ext: *"
         '
         'Label65
         '
         Me.Label65.AutoSize = True
+        Me.Label65.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label65.ForeColor = System.Drawing.SystemColors.InfoText
         Me.Label65.Location = New System.Drawing.Point(735, 81)
         Me.Label65.Name = "Label65"
-        Me.Label65.Size = New System.Drawing.Size(58, 20)
+        Me.Label65.Size = New System.Drawing.Size(66, 20)
         Me.Label65.TabIndex = 8
         Me.Label65.Text = "No. int:"
         '
         'Label66
         '
         Me.Label66.AutoSize = True
+        Me.Label66.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label66.ForeColor = System.Drawing.Color.IndianRed
         Me.Label66.Location = New System.Drawing.Point(3, 113)
         Me.Label66.Name = "Label66"
-        Me.Label66.Size = New System.Drawing.Size(48, 20)
+        Me.Label66.Size = New System.Drawing.Size(66, 20)
         Me.Label66.TabIndex = 9
-        Me.Label66.Text = "Calle:"
+        Me.Label66.Text = "Calle: *"
         '
         'Label67
         '
         Me.Label67.AutoSize = True
+        Me.Label67.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label67.ForeColor = System.Drawing.SystemColors.ControlText
         Me.Label67.Location = New System.Drawing.Point(3, 145)
         Me.Label67.Name = "Label67"
-        Me.Label67.Size = New System.Drawing.Size(91, 20)
+        Me.Label67.Size = New System.Drawing.Size(102, 20)
         Me.Label67.TabIndex = 10
         Me.Label67.Text = "Referencia:"
         '
@@ -2093,38 +2200,45 @@ Partial Class frmCartaPorte
         'Label46
         '
         Me.Label46.AutoSize = True
+        Me.Label46.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label46.Location = New System.Drawing.Point(3, 0)
         Me.Label46.Name = "Label46"
-        Me.Label46.Size = New System.Drawing.Size(221, 20)
+        Me.Label46.Size = New System.Drawing.Size(251, 20)
         Me.Label46.TabIndex = 0
         Me.Label46.Text = "Datos de la ubicación destino:"
         '
         'Label47
         '
         Me.Label47.AutoSize = True
+        Me.Label47.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label47.ForeColor = System.Drawing.Color.IndianRed
         Me.Label47.Location = New System.Drawing.Point(3, 26)
         Me.Label47.Name = "Label47"
-        Me.Label47.Size = New System.Drawing.Size(114, 20)
+        Me.Label47.Size = New System.Drawing.Size(141, 20)
         Me.Label47.TabIndex = 1
-        Me.Label47.Text = "Tipo ubicación:"
+        Me.Label47.Text = "Tipo ubicación: *"
         '
         'Label48
         '
         Me.Label48.AutoSize = True
+        Me.Label48.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label48.ForeColor = System.Drawing.Color.IndianRed
         Me.Label48.Location = New System.Drawing.Point(547, 26)
         Me.Label48.Name = "Label48"
-        Me.Label48.Size = New System.Drawing.Size(104, 20)
+        Me.Label48.Size = New System.Drawing.Size(129, 20)
         Me.Label48.TabIndex = 2
-        Me.Label48.Text = "ID Ubicación:"
+        Me.Label48.Text = "ID Ubicación: *"
         '
         'Label49
         '
         Me.Label49.AutoSize = True
+        Me.Label49.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label49.ForeColor = System.Drawing.Color.IndianRed
         Me.Label49.Location = New System.Drawing.Point(547, 52)
         Me.Label49.Name = "Label49"
-        Me.Label49.Size = New System.Drawing.Size(117, 20)
+        Me.Label49.Size = New System.Drawing.Size(143, 20)
         Me.Label49.TabIndex = 3
-        Me.Label49.Text = "RFC remitente:"
+        Me.Label49.Text = "RFC remitente: *"
         '
         'GroupBox2
         '
@@ -2142,9 +2256,10 @@ Partial Class frmCartaPorte
         'rbEsExtranjeroDestinoIntermedio
         '
         Me.rbEsExtranjeroDestinoIntermedio.AutoSize = True
+        Me.rbEsExtranjeroDestinoIntermedio.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.rbEsExtranjeroDestinoIntermedio.Location = New System.Drawing.Point(361, 2)
         Me.rbEsExtranjeroDestinoIntermedio.Name = "rbEsExtranjeroDestinoIntermedio"
-        Me.rbEsExtranjeroDestinoIntermedio.Size = New System.Drawing.Size(127, 24)
+        Me.rbEsExtranjeroDestinoIntermedio.Size = New System.Drawing.Size(140, 24)
         Me.rbEsExtranjeroDestinoIntermedio.TabIndex = 2
         Me.rbEsExtranjeroDestinoIntermedio.TabStop = True
         Me.rbEsExtranjeroDestinoIntermedio.Text = "Es extranjero"
@@ -2153,9 +2268,10 @@ Partial Class frmCartaPorte
         'rbEsPersonaMoralDestinoIntermedio
         '
         Me.rbEsPersonaMoralDestinoIntermedio.AutoSize = True
+        Me.rbEsPersonaMoralDestinoIntermedio.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.rbEsPersonaMoralDestinoIntermedio.Location = New System.Drawing.Point(173, 0)
         Me.rbEsPersonaMoralDestinoIntermedio.Name = "rbEsPersonaMoralDestinoIntermedio"
-        Me.rbEsPersonaMoralDestinoIntermedio.Size = New System.Drawing.Size(136, 24)
+        Me.rbEsPersonaMoralDestinoIntermedio.Size = New System.Drawing.Size(149, 24)
         Me.rbEsPersonaMoralDestinoIntermedio.TabIndex = 1
         Me.rbEsPersonaMoralDestinoIntermedio.TabStop = True
         Me.rbEsPersonaMoralDestinoIntermedio.Text = "Persona moral"
@@ -2164,9 +2280,10 @@ Partial Class frmCartaPorte
         'rbEsPersonaFisicaDestinoIntermedio
         '
         Me.rbEsPersonaFisicaDestinoIntermedio.AutoSize = True
+        Me.rbEsPersonaFisicaDestinoIntermedio.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.rbEsPersonaFisicaDestinoIntermedio.Location = New System.Drawing.Point(0, -3)
         Me.rbEsPersonaFisicaDestinoIntermedio.Name = "rbEsPersonaFisicaDestinoIntermedio"
-        Me.rbEsPersonaFisicaDestinoIntermedio.Size = New System.Drawing.Size(133, 24)
+        Me.rbEsPersonaFisicaDestinoIntermedio.Size = New System.Drawing.Size(147, 24)
         Me.rbEsPersonaFisicaDestinoIntermedio.TabIndex = 0
         Me.rbEsPersonaFisicaDestinoIntermedio.TabStop = True
         Me.rbEsPersonaFisicaDestinoIntermedio.Text = "Persona física"
@@ -2175,36 +2292,41 @@ Partial Class frmCartaPorte
         'Label50
         '
         Me.Label50.AutoSize = True
+        Me.Label50.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label50.ForeColor = System.Drawing.Color.IndianRed
         Me.Label50.Location = New System.Drawing.Point(3, 78)
         Me.Label50.Name = "Label50"
-        Me.Label50.Size = New System.Drawing.Size(69, 20)
+        Me.Label50.Size = New System.Drawing.Size(88, 20)
         Me.Label50.TabIndex = 5
-        Me.Label50.Text = "Nombre:"
+        Me.Label50.Text = "Nombre: *"
         '
         'Label51
         '
         Me.Label51.AutoSize = True
-        Me.Label51.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
+        Me.Label51.ForeColor = System.Drawing.Color.IndianRed
         Me.Label51.Location = New System.Drawing.Point(547, 78)
         Me.Label51.Name = "Label51"
-        Me.Label51.Size = New System.Drawing.Size(128, 20)
+        Me.Label51.Size = New System.Drawing.Size(157, 20)
         Me.Label51.TabIndex = 6
-        Me.Label51.Text = "Apellido paterno:"
+        Me.Label51.Text = "Apellido paterno: *"
         '
         'Label52
         '
         Me.Label52.AutoSize = True
+        Me.Label52.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label52.ForeColor = System.Drawing.Color.IndianRed
         Me.Label52.Location = New System.Drawing.Point(3, 104)
         Me.Label52.Name = "Label52"
-        Me.Label52.Size = New System.Drawing.Size(132, 20)
+        Me.Label52.Size = New System.Drawing.Size(161, 20)
         Me.Label52.TabIndex = 7
-        Me.Label52.Text = "Apellido materno:"
+        Me.Label52.Text = "Apellido materno: *"
         '
         'Label53
         '
         Me.Label53.AutoSize = True
         Me.tlpDatosFiscalesDestinoIntermedio.SetColumnSpan(Me.Label53, 2)
         Me.Label53.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.Label53.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label53.Location = New System.Drawing.Point(3, 130)
         Me.Label53.Name = "Label53"
         Me.Label53.Size = New System.Drawing.Size(538, 26)
@@ -2214,20 +2336,23 @@ Partial Class frmCartaPorte
         'Label54
         '
         Me.Label54.AutoSize = True
+        Me.Label54.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label54.Location = New System.Drawing.Point(3, 156)
         Me.Label54.Name = "Label54"
-        Me.Label54.Size = New System.Drawing.Size(132, 20)
+        Me.Label54.Size = New System.Drawing.Size(150, 20)
         Me.Label54.TabIndex = 9
         Me.Label54.Text = "Residencia fiscal:"
         '
         'Label55
         '
         Me.Label55.AutoSize = True
+        Me.Label55.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label55.ForeColor = System.Drawing.Color.IndianRed
         Me.Label55.Location = New System.Drawing.Point(3, 184)
         Me.Label55.Name = "Label55"
-        Me.Label55.Size = New System.Drawing.Size(135, 20)
+        Me.Label55.Size = New System.Drawing.Size(164, 20)
         Me.Label55.TabIndex = 10
-        Me.Label55.Text = "Fecha de llegada:"
+        Me.Label55.Text = "Fecha de llegada: *"
         '
         'txtTipoUbicacionDestinoIntermedio
         '
@@ -2347,11 +2472,13 @@ Partial Class frmCartaPorte
         '
         Me.Label33.AutoSize = True
         Me.Label33.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.Label33.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label33.ForeColor = System.Drawing.Color.IndianRed
         Me.Label33.Location = New System.Drawing.Point(3, 0)
         Me.Label33.Name = "Label33"
         Me.Label33.Size = New System.Drawing.Size(127, 22)
         Me.Label33.TabIndex = 22
-        Me.Label33.Text = "Hora de llegada:"
+        Me.Label33.Text = "Hora arribo: *"
         '
         'tlpKmDestinoIntermedio
         '
@@ -2382,11 +2509,13 @@ Partial Class frmCartaPorte
         '
         Me.Label7.AutoSize = True
         Me.Label7.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.Label7.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label7.ForeColor = System.Drawing.Color.IndianRed
         Me.Label7.Location = New System.Drawing.Point(3, 0)
         Me.Label7.Name = "Label7"
         Me.Label7.Size = New System.Drawing.Size(128, 22)
         Me.Label7.TabIndex = 1
-        Me.Label7.Text = "Km. recorridos"
+        Me.Label7.Text = "Km distancia: *"
         '
         'lblFechaHoraMaximaDestInter
         '
@@ -2417,33 +2546,18 @@ Partial Class frmCartaPorte
         'Label45
         '
         Me.Label45.AutoSize = True
+        Me.Label45.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label45.Location = New System.Drawing.Point(3, 0)
         Me.Label45.Name = "Label45"
-        Me.Label45.Size = New System.Drawing.Size(158, 20)
+        Me.Label45.Size = New System.Drawing.Size(178, 20)
         Me.Label45.TabIndex = 0
         Me.Label45.Text = "Destinos intermedios"
         '
         'dgvCartaPorteDestinosIntermedios
         '
         Me.dgvCartaPorteDestinosIntermedios.AllowUserToAddRows = False
-        DataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle7.BackColor = System.Drawing.SystemColors.Control
-        DataGridViewCellStyle7.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle7.ForeColor = System.Drawing.SystemColors.WindowText
-        DataGridViewCellStyle7.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle7.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.dgvCartaPorteDestinosIntermedios.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle7
         Me.dgvCartaPorteDestinosIntermedios.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
         Me.dgvCartaPorteDestinosIntermedios.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.DIMovimientoClm, Me.DIDestinoClm, Me.DIFechaLlegadaClm, Me.DIHoraLlegadaClm, Me.DIKmClm, Me.DIVerClm, Me.DIEliminarClm, Me.IDUbicacionClm, Me.DIUsuarioProblemasFechaClm, Me.DIUsuarioCausoProblemasConKm})
-        DataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle8.BackColor = System.Drawing.SystemColors.Window
-        DataGridViewCellStyle8.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle8.ForeColor = System.Drawing.SystemColors.ControlText
-        DataGridViewCellStyle8.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle8.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle8.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
-        Me.dgvCartaPorteDestinosIntermedios.DefaultCellStyle = DataGridViewCellStyle8
         Me.dgvCartaPorteDestinosIntermedios.Dock = System.Windows.Forms.DockStyle.Fill
         Me.dgvCartaPorteDestinosIntermedios.Location = New System.Drawing.Point(3, 26)
         Me.dgvCartaPorteDestinosIntermedios.Name = "dgvCartaPorteDestinosIntermedios"
@@ -2660,33 +2774,34 @@ Partial Class frmCartaPorte
         'Label68
         '
         Me.Label68.AutoSize = True
+        Me.Label68.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label68.Location = New System.Drawing.Point(3, 0)
         Me.Label68.Name = "Label68"
-        Me.Label68.Size = New System.Drawing.Size(97, 20)
+        Me.Label68.Size = New System.Drawing.Size(108, 20)
         Me.Label68.TabIndex = 0
         Me.Label68.Text = "Movimientos"
         '
         'dgvListadoMovimientosPestanaMercancia
         '
         Me.dgvListadoMovimientosPestanaMercancia.AllowUserToAddRows = False
-        DataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle9.BackColor = System.Drawing.SystemColors.Control
-        DataGridViewCellStyle9.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle9.ForeColor = System.Drawing.SystemColors.WindowText
-        DataGridViewCellStyle9.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle9.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle9.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.dgvListadoMovimientosPestanaMercancia.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle9
+        DataGridViewCellStyle45.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle45.BackColor = System.Drawing.SystemColors.Control
+        DataGridViewCellStyle45.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle45.ForeColor = System.Drawing.SystemColors.WindowText
+        DataGridViewCellStyle45.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle45.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle45.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.dgvListadoMovimientosPestanaMercancia.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle45
         Me.dgvListadoMovimientosPestanaMercancia.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
         Me.dgvListadoMovimientosPestanaMercancia.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.MovimientoMercanciaClm, Me.DestinoMercanciaClm, Me.MovimientosTipoMovimientoClm, Me.MercanciasBtnClm, Me.AnadirMercanciaMovimientoClm, Me.IdUbicacionMovimientoPestanaMercanciaClm})
-        DataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle10.BackColor = System.Drawing.SystemColors.Window
-        DataGridViewCellStyle10.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle10.ForeColor = System.Drawing.SystemColors.ControlText
-        DataGridViewCellStyle10.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle10.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle10.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
-        Me.dgvListadoMovimientosPestanaMercancia.DefaultCellStyle = DataGridViewCellStyle10
+        DataGridViewCellStyle46.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle46.BackColor = System.Drawing.SystemColors.Window
+        DataGridViewCellStyle46.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle46.ForeColor = System.Drawing.SystemColors.ControlText
+        DataGridViewCellStyle46.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle46.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle46.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
+        Me.dgvListadoMovimientosPestanaMercancia.DefaultCellStyle = DataGridViewCellStyle46
         Me.dgvListadoMovimientosPestanaMercancia.Dock = System.Windows.Forms.DockStyle.Fill
         Me.dgvListadoMovimientosPestanaMercancia.Location = New System.Drawing.Point(3, 26)
         Me.dgvListadoMovimientosPestanaMercancia.Name = "dgvListadoMovimientosPestanaMercancia"
@@ -2768,33 +2883,34 @@ Partial Class frmCartaPorte
         'Label69
         '
         Me.Label69.AutoSize = True
+        Me.Label69.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label69.Location = New System.Drawing.Point(3, 0)
         Me.Label69.Name = "Label69"
-        Me.Label69.Size = New System.Drawing.Size(199, 20)
+        Me.Label69.Size = New System.Drawing.Size(224, 20)
         Me.Label69.TabIndex = 0
         Me.Label69.Text = "Mercancías del movimiento"
         '
         'dgvMercanciasPorMovimiento
         '
         Me.dgvMercanciasPorMovimiento.AllowUserToAddRows = False
-        DataGridViewCellStyle11.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle11.BackColor = System.Drawing.SystemColors.Control
-        DataGridViewCellStyle11.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle11.ForeColor = System.Drawing.SystemColors.WindowText
-        DataGridViewCellStyle11.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle11.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle11.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.dgvMercanciasPorMovimiento.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle11
+        DataGridViewCellStyle47.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle47.BackColor = System.Drawing.SystemColors.Control
+        DataGridViewCellStyle47.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle47.ForeColor = System.Drawing.SystemColors.WindowText
+        DataGridViewCellStyle47.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle47.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle47.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.dgvMercanciasPorMovimiento.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle47
         Me.dgvMercanciasPorMovimiento.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
         Me.dgvMercanciasPorMovimiento.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.MercanciaClaveProdServClm, Me.MovimientoDescripcionClm, Me.ClaveUnidadClm, Me.DescripcionUnidadClm, Me.MercanciaMovimientoPeligrosaClm, Me.MovimientoComercioIntClm, Me.MovimientoDetallesMercClm, Me.MovimientoMercanciaEliminarClm})
-        DataGridViewCellStyle12.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle12.BackColor = System.Drawing.SystemColors.Window
-        DataGridViewCellStyle12.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle12.ForeColor = System.Drawing.SystemColors.ControlText
-        DataGridViewCellStyle12.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle12.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle12.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
-        Me.dgvMercanciasPorMovimiento.DefaultCellStyle = DataGridViewCellStyle12
+        DataGridViewCellStyle48.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle48.BackColor = System.Drawing.SystemColors.Window
+        DataGridViewCellStyle48.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle48.ForeColor = System.Drawing.SystemColors.ControlText
+        DataGridViewCellStyle48.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle48.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle48.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
+        Me.dgvMercanciasPorMovimiento.DefaultCellStyle = DataGridViewCellStyle48
         Me.dgvMercanciasPorMovimiento.Dock = System.Windows.Forms.DockStyle.Fill
         Me.dgvMercanciasPorMovimiento.Location = New System.Drawing.Point(3, 26)
         Me.dgvMercanciasPorMovimiento.Name = "dgvMercanciasPorMovimiento"
@@ -2937,6 +3053,7 @@ Partial Class frmCartaPorte
         Me.Label70.AutoSize = True
         Me.tlpDetallesMercancia.SetColumnSpan(Me.Label70, 3)
         Me.Label70.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.Label70.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label70.Location = New System.Drawing.Point(3, 0)
         Me.Label70.Name = "Label70"
         Me.Label70.Size = New System.Drawing.Size(585, 30)
@@ -2947,16 +3064,20 @@ Partial Class frmCartaPorte
         '
         Me.Label71.AutoSize = True
         Me.Label71.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.Label71.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label71.ForeColor = System.Drawing.Color.IndianRed
         Me.Label71.Location = New System.Drawing.Point(3, 30)
         Me.Label71.Name = "Label71"
         Me.Label71.Size = New System.Drawing.Size(191, 30)
         Me.Label71.TabIndex = 1
-        Me.Label71.Text = "Clave ProdServ:"
+        Me.Label71.Text = "Clave ProdServ: *"
         '
         'Label72
         '
         Me.Label72.AutoSize = True
         Me.Label72.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.Label72.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label72.ForeColor = System.Drawing.Color.IndianRed
         Me.Label72.Location = New System.Drawing.Point(397, 30)
         Me.Label72.Name = "Label72"
         Me.Label72.Size = New System.Drawing.Size(191, 30)
@@ -2987,31 +3108,37 @@ Partial Class frmCartaPorte
         '
         Me.Label73.AutoSize = True
         Me.Label73.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.Label73.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label73.ForeColor = System.Drawing.Color.IndianRed
         Me.Label73.Location = New System.Drawing.Point(3, 60)
         Me.Label73.Name = "Label73"
         Me.Label73.Size = New System.Drawing.Size(191, 30)
         Me.Label73.TabIndex = 5
-        Me.Label73.Text = "Cantidad:"
+        Me.Label73.Text = "Cantidad: *"
         '
         'Label74
         '
         Me.Label74.AutoSize = True
         Me.Label74.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.Label74.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label74.ForeColor = System.Drawing.Color.IndianRed
         Me.Label74.Location = New System.Drawing.Point(397, 60)
         Me.Label74.Name = "Label74"
         Me.Label74.Size = New System.Drawing.Size(191, 30)
         Me.Label74.TabIndex = 6
-        Me.Label74.Text = "Clave unidad:"
+        Me.Label74.Text = "Clave unidad: *"
         '
         'Label75
         '
         Me.Label75.AutoSize = True
         Me.Label75.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.Label75.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label75.ForeColor = System.Drawing.Color.IndianRed
         Me.Label75.Location = New System.Drawing.Point(791, 60)
         Me.Label75.Name = "Label75"
         Me.Label75.Size = New System.Drawing.Size(191, 30)
         Me.Label75.TabIndex = 7
-        Me.Label75.Text = "Unidad:"
+        Me.Label75.Text = "Unidad: *"
         '
         'txtCantidadMercancia
         '
@@ -3043,29 +3170,35 @@ Partial Class frmCartaPorte
         'Label76
         '
         Me.Label76.AutoSize = True
+        Me.Label76.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label76.ForeColor = System.Drawing.Color.IndianRed
         Me.Label76.Location = New System.Drawing.Point(3, 90)
         Me.Label76.Name = "Label76"
-        Me.Label76.Size = New System.Drawing.Size(49, 20)
+        Me.Label76.Size = New System.Drawing.Size(66, 20)
         Me.Label76.TabIndex = 11
-        Me.Label76.Text = "Peso:"
+        Me.Label76.Text = "Peso: *"
         '
         'Label77
         '
         Me.Label77.AutoSize = True
+        Me.Label77.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label77.ForeColor = System.Drawing.Color.IndianRed
         Me.Label77.Location = New System.Drawing.Point(397, 90)
         Me.Label77.Name = "Label77"
-        Me.Label77.Size = New System.Drawing.Size(50, 20)
+        Me.Label77.Size = New System.Drawing.Size(68, 20)
         Me.Label77.TabIndex = 12
-        Me.Label77.Text = "Valor:"
+        Me.Label77.Text = "Valor: *"
         '
         'Label78
         '
         Me.Label78.AutoSize = True
+        Me.Label78.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label78.ForeColor = System.Drawing.Color.IndianRed
         Me.Label78.Location = New System.Drawing.Point(791, 90)
         Me.Label78.Name = "Label78"
-        Me.Label78.Size = New System.Drawing.Size(71, 20)
+        Me.Label78.Size = New System.Drawing.Size(90, 20)
         Me.Label78.TabIndex = 13
-        Me.Label78.Text = "Moneda:"
+        Me.Label78.Text = "Moneda: *"
         '
         'txtPeso
         '
@@ -3097,9 +3230,10 @@ Partial Class frmCartaPorte
         'Label79
         '
         Me.Label79.AutoSize = True
+        Me.Label79.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label79.Location = New System.Drawing.Point(3, 120)
         Me.Label79.Name = "Label79"
-        Me.Label79.Size = New System.Drawing.Size(101, 20)
+        Me.Label79.Size = New System.Drawing.Size(112, 20)
         Me.Label79.TabIndex = 17
         Me.Label79.Text = "Dimensiones"
         '
@@ -3123,6 +3257,7 @@ Partial Class frmCartaPorte
         '
         Me.Label80.AutoSize = True
         Me.Label80.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.Label80.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label80.Location = New System.Drawing.Point(3, 0)
         Me.Label80.Name = "Label80"
         Me.Label80.Size = New System.Drawing.Size(89, 24)
@@ -3156,6 +3291,7 @@ Partial Class frmCartaPorte
         '
         Me.Label81.AutoSize = True
         Me.Label81.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.Label81.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label81.Location = New System.Drawing.Point(3, 0)
         Me.Label81.Name = "Label81"
         Me.Label81.Size = New System.Drawing.Size(89, 24)
@@ -3190,6 +3326,7 @@ Partial Class frmCartaPorte
         '
         Me.Label82.AutoSize = True
         Me.Label82.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.Label82.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label82.Location = New System.Drawing.Point(3, 0)
         Me.Label82.Name = "Label82"
         Me.Label82.Size = New System.Drawing.Size(89, 24)
@@ -3216,27 +3353,30 @@ Partial Class frmCartaPorte
         'Label83
         '
         Me.Label83.AutoSize = True
+        Me.Label83.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label83.Location = New System.Drawing.Point(3, 150)
         Me.Label83.Name = "Label83"
-        Me.Label83.Size = New System.Drawing.Size(137, 20)
+        Me.Label83.Size = New System.Drawing.Size(156, 20)
         Me.Label83.TabIndex = 22
         Me.Label83.Text = "Material peligroso:"
         '
         'Label84
         '
         Me.Label84.AutoSize = True
+        Me.Label84.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label84.Location = New System.Drawing.Point(3, 180)
         Me.Label84.Name = "Label84"
-        Me.Label84.Size = New System.Drawing.Size(151, 20)
+        Me.Label84.Size = New System.Drawing.Size(171, 20)
         Me.Label84.TabIndex = 25
         Me.Label84.Text = "Clave mat peligroso:"
         '
         'Label85
         '
         Me.Label85.AutoSize = True
+        Me.Label85.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label85.Location = New System.Drawing.Point(3, 210)
         Me.Label85.Name = "Label85"
-        Me.Label85.Size = New System.Drawing.Size(79, 20)
+        Me.Label85.Size = New System.Drawing.Size(88, 20)
         Me.Label85.TabIndex = 26
         Me.Label85.Text = "Embalaje:"
         '
@@ -3277,18 +3417,20 @@ Partial Class frmCartaPorte
         'Label86
         '
         Me.Label86.AutoSize = True
+        Me.Label86.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label86.Location = New System.Drawing.Point(3, 240)
         Me.Label86.Name = "Label86"
-        Me.Label86.Size = New System.Drawing.Size(174, 20)
+        Me.Label86.Size = New System.Drawing.Size(117, 30)
         Me.Label86.TabIndex = 31
         Me.Label86.Text = "Comercio internacional:"
         '
         'Label87
         '
         Me.Label87.AutoSize = True
+        Me.Label87.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label87.Location = New System.Drawing.Point(3, 270)
         Me.Label87.Name = "Label87"
-        Me.Label87.Size = New System.Drawing.Size(89, 20)
+        Me.Label87.Size = New System.Drawing.Size(99, 20)
         Me.Label87.TabIndex = 32
         Me.Label87.Text = "Pedimento:"
         '
@@ -3305,6 +3447,7 @@ Partial Class frmCartaPorte
         '
         Me.Label56.AutoSize = True
         Me.Label56.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.Label56.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label56.Location = New System.Drawing.Point(594, 270)
         Me.Label56.Name = "Label56"
         Me.Label56.Size = New System.Drawing.Size(191, 36)
@@ -3334,9 +3477,10 @@ Partial Class frmCartaPorte
         'rbSiMaterialPeligroso
         '
         Me.rbSiMaterialPeligroso.AutoSize = True
+        Me.rbSiMaterialPeligroso.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.rbSiMaterialPeligroso.Location = New System.Drawing.Point(0, 4)
         Me.rbSiMaterialPeligroso.Name = "rbSiMaterialPeligroso"
-        Me.rbSiMaterialPeligroso.Size = New System.Drawing.Size(48, 24)
+        Me.rbSiMaterialPeligroso.Size = New System.Drawing.Size(50, 24)
         Me.rbSiMaterialPeligroso.TabIndex = 23
         Me.rbSiMaterialPeligroso.TabStop = True
         Me.rbSiMaterialPeligroso.Text = "Sí"
@@ -3345,9 +3489,10 @@ Partial Class frmCartaPorte
         'rbNoMaterialPeligroso
         '
         Me.rbNoMaterialPeligroso.AutoSize = True
+        Me.rbNoMaterialPeligroso.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.rbNoMaterialPeligroso.Location = New System.Drawing.Point(190, 0)
         Me.rbNoMaterialPeligroso.Name = "rbNoMaterialPeligroso"
-        Me.rbNoMaterialPeligroso.Size = New System.Drawing.Size(54, 24)
+        Me.rbNoMaterialPeligroso.Size = New System.Drawing.Size(56, 24)
         Me.rbNoMaterialPeligroso.TabIndex = 24
         Me.rbNoMaterialPeligroso.TabStop = True
         Me.rbNoMaterialPeligroso.Text = "No"
@@ -3367,9 +3512,10 @@ Partial Class frmCartaPorte
         'rbComercioInternacionalSi
         '
         Me.rbComercioInternacionalSi.AutoSize = True
+        Me.rbComercioInternacionalSi.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.rbComercioInternacionalSi.Location = New System.Drawing.Point(3, 0)
         Me.rbComercioInternacionalSi.Name = "rbComercioInternacionalSi"
-        Me.rbComercioInternacionalSi.Size = New System.Drawing.Size(48, 24)
+        Me.rbComercioInternacionalSi.Size = New System.Drawing.Size(50, 24)
         Me.rbComercioInternacionalSi.TabIndex = 34
         Me.rbComercioInternacionalSi.TabStop = True
         Me.rbComercioInternacionalSi.Text = "Sí"
@@ -3378,9 +3524,10 @@ Partial Class frmCartaPorte
         'rbComercioInternacionalNo
         '
         Me.rbComercioInternacionalNo.AutoSize = True
+        Me.rbComercioInternacionalNo.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.rbComercioInternacionalNo.Location = New System.Drawing.Point(190, 0)
         Me.rbComercioInternacionalNo.Name = "rbComercioInternacionalNo"
-        Me.rbComercioInternacionalNo.Size = New System.Drawing.Size(54, 24)
+        Me.rbComercioInternacionalNo.Size = New System.Drawing.Size(56, 24)
         Me.rbComercioInternacionalNo.TabIndex = 35
         Me.rbComercioInternacionalNo.TabStop = True
         Me.rbComercioInternacionalNo.Text = "No"
@@ -3559,9 +3706,10 @@ Partial Class frmCartaPorte
         'Label88
         '
         Me.Label88.AutoSize = True
+        Me.Label88.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label88.Location = New System.Drawing.Point(3, 0)
         Me.Label88.Name = "Label88"
-        Me.Label88.Size = New System.Drawing.Size(138, 20)
+        Me.Label88.Size = New System.Drawing.Size(156, 20)
         Me.Label88.TabIndex = 0
         Me.Label88.Text = "Datos del vehículo"
         '
@@ -3569,11 +3717,13 @@ Partial Class frmCartaPorte
         '
         Me.Label89.AutoSize = True
         Me.Label89.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.Label89.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label89.ForeColor = System.Drawing.Color.IndianRed
         Me.Label89.Location = New System.Drawing.Point(3, 24)
         Me.Label89.Name = "Label89"
         Me.Label89.Size = New System.Drawing.Size(268, 36)
         Me.Label89.TabIndex = 1
-        Me.Label89.Text = "Seleccionar vehículo:"
+        Me.Label89.Text = "Seleccionar vehículo: *"
         '
         'cbSeleccionarVehiculo
         '
@@ -3589,21 +3739,25 @@ Partial Class frmCartaPorte
         '
         Me.Label90.AutoSize = True
         Me.Label90.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.Label90.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label90.ForeColor = System.Drawing.Color.IndianRed
         Me.Label90.Location = New System.Drawing.Point(3, 60)
         Me.Label90.Name = "Label90"
         Me.Label90.Size = New System.Drawing.Size(268, 36)
         Me.Label90.TabIndex = 3
-        Me.Label90.Text = "Perm SCT:"
+        Me.Label90.Text = "Perm SCT: *"
         '
         'Label91
         '
         Me.Label91.AutoSize = True
         Me.Label91.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.Label91.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label91.ForeColor = System.Drawing.Color.IndianRed
         Me.Label91.Location = New System.Drawing.Point(551, 24)
         Me.Label91.Name = "Label91"
         Me.Label91.Size = New System.Drawing.Size(268, 36)
         Me.Label91.TabIndex = 4
-        Me.Label91.Text = "Num. permiso SCT:"
+        Me.Label91.Text = "Num. permiso SCT: *"
         '
         'txtNumPermisoSCT
         '
@@ -3628,29 +3782,35 @@ Partial Class frmCartaPorte
         'Label92
         '
         Me.Label92.AutoSize = True
+        Me.Label92.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label92.ForeColor = System.Drawing.Color.IndianRed
         Me.Label92.Location = New System.Drawing.Point(3, 96)
         Me.Label92.Name = "Label92"
-        Me.Label92.Size = New System.Drawing.Size(125, 20)
+        Me.Label92.Size = New System.Drawing.Size(154, 20)
         Me.Label92.TabIndex = 8
-        Me.Label92.Text = "Config vehícular:"
+        Me.Label92.Text = "Config vehícular: *"
         '
         'Label93
         '
         Me.Label93.AutoSize = True
+        Me.Label93.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label93.ForeColor = System.Drawing.Color.IndianRed
         Me.Label93.Location = New System.Drawing.Point(3, 132)
         Me.Label93.Name = "Label93"
-        Me.Label93.Size = New System.Drawing.Size(48, 20)
+        Me.Label93.Size = New System.Drawing.Size(70, 20)
         Me.Label93.TabIndex = 10
-        Me.Label93.Text = "Placa"
+        Me.Label93.Text = "Placa: *"
         '
         'Label94
         '
         Me.Label94.AutoSize = True
+        Me.Label94.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label94.ForeColor = System.Drawing.Color.IndianRed
         Me.Label94.Location = New System.Drawing.Point(551, 132)
         Me.Label94.Name = "Label94"
-        Me.Label94.Size = New System.Drawing.Size(98, 20)
+        Me.Label94.Size = New System.Drawing.Size(121, 20)
         Me.Label94.TabIndex = 11
-        Me.Label94.Text = "Año modelo:"
+        Me.Label94.Text = "Año modelo: *"
         '
         'txtPlacaTransporte
         '
@@ -3673,20 +3833,24 @@ Partial Class frmCartaPorte
         'Label95
         '
         Me.Label95.AutoSize = True
+        Me.Label95.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label95.ForeColor = System.Drawing.Color.IndianRed
         Me.Label95.Location = New System.Drawing.Point(3, 168)
         Me.Label95.Name = "Label95"
-        Me.Label95.Size = New System.Drawing.Size(105, 20)
+        Me.Label95.Size = New System.Drawing.Size(203, 20)
         Me.Label95.TabIndex = 14
-        Me.Label95.Text = "Aseguradora:"
+        Me.Label95.Text = "Aseguradora resp civil: *"
         '
         'Label96
         '
         Me.Label96.AutoSize = True
+        Me.Label96.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label96.ForeColor = System.Drawing.Color.IndianRed
         Me.Label96.Location = New System.Drawing.Point(551, 168)
         Me.Label96.Name = "Label96"
-        Me.Label96.Size = New System.Drawing.Size(55, 20)
+        Me.Label96.Size = New System.Drawing.Size(153, 20)
         Me.Label96.TabIndex = 15
-        Me.Label96.Text = "Póliza:"
+        Me.Label96.Text = "Póliza resp. civil: *"
         '
         'txtAseguradoraTransporte
         '
@@ -3717,11 +3881,13 @@ Partial Class frmCartaPorte
         'Label97
         '
         Me.Label97.AutoSize = True
+        Me.Label97.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label97.ForeColor = System.Drawing.Color.IndianRed
         Me.Label97.Location = New System.Drawing.Point(3, 204)
         Me.Label97.Name = "Label97"
-        Me.Label97.Size = New System.Drawing.Size(171, 20)
+        Me.Label97.Size = New System.Drawing.Size(204, 20)
         Me.Label97.TabIndex = 19
-        Me.Label97.Text = "Aseguradora de carga:"
+        Me.Label97.Text = "Aseguradora de carga: *"
         '
         'tlpContenedorPoliza
         '
@@ -3743,11 +3909,13 @@ Partial Class frmCartaPorte
         '
         Me.Label98.AutoSize = True
         Me.Label98.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.Label98.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label98.ForeColor = System.Drawing.Color.IndianRed
         Me.Label98.Location = New System.Drawing.Point(3, 0)
         Me.Label98.Name = "Label98"
         Me.Label98.Size = New System.Drawing.Size(128, 33)
         Me.Label98.TabIndex = 0
-        Me.Label98.Text = "Póliza de carga:"
+        Me.Label98.Text = "Póliza carga: *"
         '
         'txtPolizaCargaTransporte
         '
@@ -3777,11 +3945,13 @@ Partial Class frmCartaPorte
         '
         Me.Label99.AutoSize = True
         Me.Label99.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.Label99.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label99.ForeColor = System.Drawing.Color.IndianRed
         Me.Label99.Location = New System.Drawing.Point(3, 0)
         Me.Label99.Name = "Label99"
         Me.Label99.Size = New System.Drawing.Size(128, 33)
         Me.Label99.TabIndex = 0
-        Me.Label99.Text = "Prima seguro:"
+        Me.Label99.Text = "Prima seguro *"
         '
         'txtPrimaSeguroTransporte
         '
@@ -3858,9 +4028,10 @@ Partial Class frmCartaPorte
         'Label100
         '
         Me.Label100.AutoSize = True
+        Me.Label100.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label100.Location = New System.Drawing.Point(3, 0)
         Me.Label100.Name = "Label100"
-        Me.Label100.Size = New System.Drawing.Size(90, 18)
+        Me.Label100.Size = New System.Drawing.Size(99, 18)
         Me.Label100.TabIndex = 0
         Me.Label100.Text = "Remolques"
         '
@@ -3869,6 +4040,7 @@ Partial Class frmCartaPorte
         Me.Label101.AutoSize = True
         Me.tlpContenedorRemolques.SetColumnSpan(Me.Label101, 2)
         Me.Label101.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.Label101.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label101.Location = New System.Drawing.Point(3, 18)
         Me.Label101.Name = "Label101"
         Me.Label101.Size = New System.Drawing.Size(300, 54)
@@ -3878,36 +4050,40 @@ Partial Class frmCartaPorte
         'Label104
         '
         Me.Label104.AutoSize = True
+        Me.Label104.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label104.Location = New System.Drawing.Point(112, 72)
         Me.Label104.Name = "Label104"
-        Me.Label104.Size = New System.Drawing.Size(135, 20)
+        Me.Label104.Size = New System.Drawing.Size(152, 20)
         Me.Label104.TabIndex = 4
         Me.Label104.Text = "Tipo de remolque:"
         '
         'Label105
         '
         Me.Label105.AutoSize = True
+        Me.Label105.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label105.Location = New System.Drawing.Point(112, 126)
         Me.Label105.Name = "Label105"
-        Me.Label105.Size = New System.Drawing.Size(135, 20)
+        Me.Label105.Size = New System.Drawing.Size(152, 20)
         Me.Label105.TabIndex = 5
         Me.Label105.Text = "Tipo de remolque:"
         '
         'Label106
         '
         Me.Label106.AutoSize = True
+        Me.Label106.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label106.Location = New System.Drawing.Point(703, 72)
         Me.Label106.Name = "Label106"
-        Me.Label106.Size = New System.Drawing.Size(60, 20)
+        Me.Label106.Size = New System.Drawing.Size(67, 20)
         Me.Label106.TabIndex = 6
         Me.Label106.Text = "Placas:"
         '
         'Label107
         '
         Me.Label107.AutoSize = True
+        Me.Label107.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label107.Location = New System.Drawing.Point(703, 126)
         Me.Label107.Name = "Label107"
-        Me.Label107.Size = New System.Drawing.Size(60, 20)
+        Me.Label107.Size = New System.Drawing.Size(67, 20)
         Me.Label107.TabIndex = 7
         Me.Label107.Text = "Placas:"
         '
@@ -4011,6 +4187,7 @@ Partial Class frmCartaPorte
         '
         Me.Label102.AutoSize = True
         Me.Label102.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.Label102.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label102.Location = New System.Drawing.Point(3, 0)
         Me.Label102.Name = "Label102"
         Me.Label102.Size = New System.Drawing.Size(432, 23)
@@ -4021,6 +4198,7 @@ Partial Class frmCartaPorte
         '
         Me.Label103.AutoSize = True
         Me.Label103.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.Label103.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label103.Location = New System.Drawing.Point(3, 23)
         Me.Label103.Name = "Label103"
         Me.Label103.Size = New System.Drawing.Size(432, 47)
@@ -4031,6 +4209,7 @@ Partial Class frmCartaPorte
         '
         Me.Label108.AutoSize = True
         Me.Label108.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.Label108.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label108.Location = New System.Drawing.Point(3, 70)
         Me.Label108.Name = "Label108"
         Me.Label108.Size = New System.Drawing.Size(432, 48)
@@ -4130,6 +4309,7 @@ Partial Class frmCartaPorte
         '
         Me.Label109.AutoSize = True
         Me.Label109.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.Label109.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label109.Location = New System.Drawing.Point(3, 0)
         Me.Label109.Name = "Label109"
         Me.Label109.Size = New System.Drawing.Size(212, 24)
@@ -4140,36 +4320,43 @@ Partial Class frmCartaPorte
         '
         Me.Label110.AutoSize = True
         Me.Label110.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.Label110.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label110.ForeColor = System.Drawing.Color.IndianRed
         Me.Label110.Location = New System.Drawing.Point(3, 24)
         Me.Label110.Name = "Label110"
         Me.Label110.Size = New System.Drawing.Size(212, 43)
         Me.Label110.TabIndex = 1
-        Me.Label110.Text = "Seleccione operador:"
+        Me.Label110.Text = "Seleccione operador: *"
         '
         'Label111
         '
         Me.Label111.AutoSize = True
         Me.Label111.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.Label111.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label111.ForeColor = System.Drawing.Color.IndianRed
         Me.Label111.Location = New System.Drawing.Point(3, 67)
         Me.Label111.Name = "Label111"
         Me.Label111.Size = New System.Drawing.Size(212, 43)
         Me.Label111.TabIndex = 2
-        Me.Label111.Text = "Nacionalidad"
+        Me.Label111.Text = "Nacionalidad: *"
         '
         'Label112
         '
         Me.Label112.AutoSize = True
         Me.Label112.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.Label112.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label112.ForeColor = System.Drawing.Color.IndianRed
         Me.Label112.Location = New System.Drawing.Point(3, 110)
         Me.Label112.Name = "Label112"
         Me.Label112.Size = New System.Drawing.Size(212, 43)
         Me.Label112.TabIndex = 3
-        Me.Label112.Text = "RFC:"
+        Me.Label112.Text = "RFC: *"
         '
         'Label113
         '
         Me.Label113.AutoSize = True
         Me.Label113.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.Label113.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label113.Location = New System.Drawing.Point(395, 110)
         Me.Label113.Name = "Label113"
         Me.Label113.Size = New System.Drawing.Size(168, 43)
@@ -4180,41 +4367,49 @@ Partial Class frmCartaPorte
         '
         Me.Label114.AutoSize = True
         Me.Label114.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.Label114.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label114.ForeColor = System.Drawing.Color.IndianRed
         Me.Label114.Location = New System.Drawing.Point(3, 153)
         Me.Label114.Name = "Label114"
         Me.Label114.Size = New System.Drawing.Size(212, 43)
         Me.Label114.TabIndex = 5
-        Me.Label114.Text = "Nombre:"
+        Me.Label114.Text = "Nombre: *"
         '
         'Label115
         '
         Me.Label115.AutoSize = True
         Me.Label115.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.Label115.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label115.ForeColor = System.Drawing.Color.IndianRed
         Me.Label115.Location = New System.Drawing.Point(395, 153)
         Me.Label115.Name = "Label115"
         Me.Label115.Size = New System.Drawing.Size(168, 43)
         Me.Label115.TabIndex = 6
-        Me.Label115.Text = "Ap. paterno:"
+        Me.Label115.Text = "Ap. paterno: *"
         '
         'Label116
         '
         Me.Label116.AutoSize = True
         Me.Label116.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.Label116.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label116.ForeColor = System.Drawing.Color.IndianRed
         Me.Label116.Location = New System.Drawing.Point(743, 153)
         Me.Label116.Name = "Label116"
         Me.Label116.Size = New System.Drawing.Size(168, 43)
         Me.Label116.TabIndex = 7
-        Me.Label116.Text = "Ap. materno:"
+        Me.Label116.Text = "Ap. materno: *"
         '
         'Label117
         '
         Me.Label117.AutoSize = True
         Me.Label117.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.Label117.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label117.ForeColor = System.Drawing.Color.IndianRed
         Me.Label117.Location = New System.Drawing.Point(3, 196)
         Me.Label117.Name = "Label117"
         Me.Label117.Size = New System.Drawing.Size(212, 45)
         Me.Label117.TabIndex = 8
-        Me.Label117.Text = "Tipo figura:"
+        Me.Label117.Text = "Tipo figura: *"
         '
         'txtRfcOperador
         '
@@ -4276,6 +4471,7 @@ Partial Class frmCartaPorte
         Me.rbOperadorMexicano.AutoSize = True
         Me.tlpSeleccionOperador.SetColumnSpan(Me.rbOperadorMexicano, 2)
         Me.rbOperadorMexicano.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.rbOperadorMexicano.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.rbOperadorMexicano.Location = New System.Drawing.Point(221, 70)
         Me.rbOperadorMexicano.Name = "rbOperadorMexicano"
         Me.rbOperadorMexicano.Size = New System.Drawing.Size(342, 37)
@@ -4289,6 +4485,7 @@ Partial Class frmCartaPorte
         Me.rbOperadorExtranjero.AutoSize = True
         Me.tlpSeleccionOperador.SetColumnSpan(Me.rbOperadorExtranjero, 3)
         Me.rbOperadorExtranjero.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.rbOperadorExtranjero.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.rbOperadorExtranjero.Location = New System.Drawing.Point(569, 70)
         Me.rbOperadorExtranjero.Name = "rbOperadorExtranjero"
         Me.rbOperadorExtranjero.Size = New System.Drawing.Size(519, 37)
@@ -4313,11 +4510,13 @@ Partial Class frmCartaPorte
         'Label138
         '
         Me.Label138.AutoSize = True
+        Me.Label138.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label138.ForeColor = System.Drawing.Color.IndianRed
         Me.Label138.Location = New System.Drawing.Point(569, 196)
         Me.Label138.Name = "Label138"
-        Me.Label138.Size = New System.Drawing.Size(106, 20)
+        Me.Label138.Size = New System.Drawing.Size(132, 20)
         Me.Label138.TabIndex = 18
-        Me.Label138.Text = "Num. licencia:"
+        Me.Label138.Text = "Num. licencia: *"
         '
         'txtNumLicenciaOperador
         '
@@ -4372,6 +4571,7 @@ Partial Class frmCartaPorte
         '
         Me.Label118.AutoSize = True
         Me.Label118.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.Label118.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label118.Location = New System.Drawing.Point(3, 0)
         Me.Label118.Name = "Label118"
         Me.Label118.Size = New System.Drawing.Size(266, 17)
@@ -4381,56 +4581,68 @@ Partial Class frmCartaPorte
         'Label119
         '
         Me.Label119.AutoSize = True
+        Me.Label119.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label119.ForeColor = System.Drawing.Color.IndianRed
         Me.Label119.Location = New System.Drawing.Point(3, 17)
         Me.Label119.Name = "Label119"
-        Me.Label119.Size = New System.Drawing.Size(43, 20)
+        Me.Label119.Size = New System.Drawing.Size(60, 20)
         Me.Label119.TabIndex = 1
-        Me.Label119.Text = "País:"
+        Me.Label119.Text = "País: *"
         '
         'Label120
         '
         Me.Label120.AutoSize = True
+        Me.Label120.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label120.ForeColor = System.Drawing.Color.IndianRed
         Me.Label120.Location = New System.Drawing.Point(547, 17)
         Me.Label120.Name = "Label120"
-        Me.Label120.Size = New System.Drawing.Size(64, 20)
+        Me.Label120.Size = New System.Drawing.Size(83, 20)
         Me.Label120.TabIndex = 2
-        Me.Label120.Text = "Estado:"
+        Me.Label120.Text = "Estado: *"
         '
         'Label121
         '
         Me.Label121.AutoSize = True
+        Me.Label121.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label121.ForeColor = System.Drawing.Color.IndianRed
         Me.Label121.Location = New System.Drawing.Point(3, 49)
         Me.Label121.Name = "Label121"
-        Me.Label121.Size = New System.Drawing.Size(79, 20)
+        Me.Label121.Size = New System.Drawing.Size(101, 20)
         Me.Label121.TabIndex = 3
-        Me.Label121.Text = "Municipio:"
+        Me.Label121.Text = "Municipio: *"
         '
         'Label122
         '
         Me.Label122.AutoSize = True
+        Me.Label122.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label122.ForeColor = System.Drawing.Color.IndianRed
         Me.Label122.Location = New System.Drawing.Point(547, 49)
         Me.Label122.Name = "Label122"
-        Me.Label122.Size = New System.Drawing.Size(81, 20)
+        Me.Label122.Size = New System.Drawing.Size(103, 20)
         Me.Label122.TabIndex = 4
-        Me.Label122.Text = "Localidad:"
+        Me.Label122.Text = "Localidad: *"
         '
         'Label123
         '
         Me.Label123.AutoSize = True
+        Me.Label123.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label123.ForeColor = System.Drawing.Color.IndianRed
         Me.Label123.Location = New System.Drawing.Point(3, 81)
         Me.Label123.Name = "Label123"
-        Me.Label123.Size = New System.Drawing.Size(34, 20)
+        Me.Label123.Size = New System.Drawing.Size(49, 20)
         Me.Label123.TabIndex = 5
-        Me.Label123.Text = "CP:"
+        Me.Label123.Text = "CP: *"
         '
         'Label124
         '
         Me.Label124.AutoSize = True
+        Me.Label124.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label124.ForeColor = System.Drawing.Color.IndianRed
         Me.Label124.Location = New System.Drawing.Point(547, 81)
         Me.Label124.Name = "Label124"
-        Me.Label124.Size = New System.Drawing.Size(66, 20)
+        Me.Label124.Size = New System.Drawing.Size(86, 20)
         Me.Label124.TabIndex = 6
-        Me.Label124.Text = "Colonia:"
+        Me.Label124.Text = "Colonia: *"
         '
         'tlpNoIntDomicilioOperador
         '
@@ -4451,11 +4663,13 @@ Partial Class frmCartaPorte
         'Label128
         '
         Me.Label128.AutoSize = True
+        Me.Label128.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label128.ForeColor = System.Drawing.Color.IndianRed
         Me.Label128.Location = New System.Drawing.Point(3, 0)
         Me.Label128.Name = "Label128"
-        Me.Label128.Size = New System.Drawing.Size(58, 20)
+        Me.Label128.Size = New System.Drawing.Size(77, 20)
         Me.Label128.TabIndex = 0
-        Me.Label128.Text = "No ext:"
+        Me.Label128.Text = "No ext: *"
         '
         'txtNoExtOperador
         '
@@ -4485,9 +4699,10 @@ Partial Class frmCartaPorte
         'Label130
         '
         Me.Label130.AutoSize = True
+        Me.Label130.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label130.Location = New System.Drawing.Point(3, 0)
         Me.Label130.Name = "Label130"
-        Me.Label130.Size = New System.Drawing.Size(58, 20)
+        Me.Label130.Size = New System.Drawing.Size(66, 20)
         Me.Label130.TabIndex = 0
         Me.Label130.Text = "No. int:"
         '
@@ -4502,18 +4717,21 @@ Partial Class frmCartaPorte
         'Label125
         '
         Me.Label125.AutoSize = True
+        Me.Label125.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label125.ForeColor = System.Drawing.Color.IndianRed
         Me.Label125.Location = New System.Drawing.Point(3, 113)
         Me.Label125.Name = "Label125"
-        Me.Label125.Size = New System.Drawing.Size(48, 20)
+        Me.Label125.Size = New System.Drawing.Size(66, 20)
         Me.Label125.TabIndex = 9
-        Me.Label125.Text = "Calle:"
+        Me.Label125.Text = "Calle: *"
         '
         'Label126
         '
         Me.Label126.AutoSize = True
+        Me.Label126.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label126.Location = New System.Drawing.Point(3, 145)
         Me.Label126.Name = "Label126"
-        Me.Label126.Size = New System.Drawing.Size(91, 20)
+        Me.Label126.Size = New System.Drawing.Size(102, 20)
         Me.Label126.TabIndex = 10
         Me.Label126.Text = "Referencia:"
         '
@@ -4667,6 +4885,7 @@ Partial Class frmCartaPorte
         '
         Me.Label127.AutoSize = True
         Me.Label127.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.Label127.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label127.Location = New System.Drawing.Point(3, 0)
         Me.Label127.Name = "Label127"
         Me.Label127.Size = New System.Drawing.Size(212, 17)
@@ -4676,9 +4895,10 @@ Partial Class frmCartaPorte
         'Label129
         '
         Me.Label129.AutoSize = True
+        Me.Label129.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label129.Location = New System.Drawing.Point(3, 17)
         Me.Label129.Name = "Label129"
-        Me.Label129.Size = New System.Drawing.Size(91, 20)
+        Me.Label129.Size = New System.Drawing.Size(102, 20)
         Me.Label129.TabIndex = 2
         Me.Label129.Text = "Seleccione:"
         '
@@ -4756,6 +4976,7 @@ Partial Class frmCartaPorte
         Me.tlpPrincipalConfirmacion.Controls.Add(Me.tlpDatosFinalesCarga, 0, 4)
         Me.tlpPrincipalConfirmacion.Controls.Add(Me.tlpBotonesGenerarAtras, 0, 5)
         Me.tlpPrincipalConfirmacion.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.tlpPrincipalConfirmacion.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.tlpPrincipalConfirmacion.Location = New System.Drawing.Point(0, 0)
         Me.tlpPrincipalConfirmacion.Name = "tlpPrincipalConfirmacion"
         Me.tlpPrincipalConfirmacion.RowCount = 6
@@ -4773,6 +4994,7 @@ Partial Class frmCartaPorte
         '
         Me.Label131.AutoSize = True
         Me.Label131.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.Label131.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label131.Location = New System.Drawing.Point(3, 0)
         Me.Label131.Name = "Label131"
         Me.Label131.Size = New System.Drawing.Size(1097, 31)
@@ -4798,6 +5020,7 @@ Partial Class frmCartaPorte
         '
         Me.Label132.AutoSize = True
         Me.Label132.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.Label132.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label132.Location = New System.Drawing.Point(3, 0)
         Me.Label132.Name = "Label132"
         Me.Label132.Size = New System.Drawing.Size(1091, 30)
@@ -4862,6 +5085,7 @@ Partial Class frmCartaPorte
         '
         Me.Label133.AutoSize = True
         Me.Label133.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.Label133.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label133.Location = New System.Drawing.Point(3, 0)
         Me.Label133.Name = "Label133"
         Me.Label133.Size = New System.Drawing.Size(1091, 30)
@@ -5068,21 +5292,25 @@ Partial Class frmCartaPorte
         '
         Me.Label135.AutoSize = True
         Me.Label135.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.Label135.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label135.ForeColor = System.Drawing.Color.IndianRed
         Me.Label135.Location = New System.Drawing.Point(3, 0)
         Me.Label135.Name = "Label135"
         Me.Label135.Size = New System.Drawing.Size(175, 56)
         Me.Label135.TabIndex = 0
-        Me.Label135.Text = "Peso bruto total:"
+        Me.Label135.Text = "Peso bruto total: *"
         '
         'Label136
         '
         Me.Label136.AutoSize = True
         Me.Label136.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.Label136.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label136.ForeColor = System.Drawing.Color.IndianRed
         Me.Label136.Location = New System.Drawing.Point(365, 0)
         Me.Label136.Name = "Label136"
         Me.Label136.Size = New System.Drawing.Size(175, 56)
         Me.Label136.TabIndex = 1
-        Me.Label136.Text = "Unidad peso:"
+        Me.Label136.Text = "Unidad peso: *"
         '
         'txtPesoBrutoTotalMercancias
         '
