@@ -8,7 +8,6 @@ Public Class frmCartaPorte
     Private datosOrigenParaCartaPorte As OrigenDestino
     Private datosDestinoParaCartaPorte As OrigenDestino
     Private datosDestinosIntermediosParaCartaPorte As List(Of OrigenDestino)
-    Private datosDestinoIntermedioEnModificacion As OrigenDestino
     Private listadoMercancias As List(Of Mercancia)
     Private datosAutoTransporte As Autotransporte
 
@@ -90,8 +89,6 @@ Public Class frmCartaPorte
         conexionesCartaPorte = New ConexionesCartaPorte()
         CargaParametros()
         PreparaPestanaOrigen()
-
-        dtFechaSalidaRemitente.BackColor = Color.FromName(colorCampoObligatorio)
     End Sub
 
     'Este método recibe un objeto Date y una cadena de horas, y entrega
@@ -580,6 +577,7 @@ Public Class frmCartaPorte
     Private refCbLocalidadOrigen As ComboBox = Nothing
     Private refCbColoniaOrigen As ComboBox = Nothing
 
+
     Private Sub PreparaPestanaOrigen()
         'Ver si se puede importar la información o no
         txtTipoUbicacion.Text = "Origen"
@@ -1047,51 +1045,77 @@ Public Class frmCartaPorte
     Private ES_EXTRANJERO_DESTINO As Boolean = False
     Private INFORMACION_VALIDA_DESTINO As Boolean = False
 
-    Private Sub fechaHoraLlegada_GotFocus(sender As Object, e As EventArgs)
-        If datosDestinosIntermediosParaCartaPorte Is Nothing Then
-            Return
-        End If
-        If datosDestinosIntermediosParaCartaPorte.Count = 0 Then
-            Return
-        End If
-        Dim rsult = MsgBox(ObtenParametroPorLlave("EXISTEN_FECHAS"), vbQuestion + vbYesNo, "Alerta")
-        If rsult = MsgBoxResult.No Then Return
-        ReiniciaFechaHoraLlegada()
-    End Sub
+    'ESTAS SON BANDERAS PARA SABER SI YA AVISO DE POSIBLES
+    'PROBLEMAS CON LAS FECHAS, HORAS Y KILOMETROS'
+    Private YA_AVISO_FECHA As Boolean = True
+    Private YA_AVISO_HORA As Boolean = True
+    Private YA_AVISO_KM As Boolean = True
 
-    Private Sub nupKmRecorridos_GotFocus(sender As Object, e As EventArgs)
-        If datosDestinosIntermediosParaCartaPorte Is Nothing Then
-            Return
-        End If
-        If datosDestinosIntermediosParaCartaPorte.Count = 0 Then
-            Return
-        End If
+    Private Sub nupKmDestino_Click(sender As Object, e As EventArgs) Handles nupKmRecorridos.Click
+        If datosDestinosIntermediosParaCartaPorte Is Nothing Then Return
+        If datosDestinosIntermediosParaCartaPorte.Count = 0 Then Return
+        If YA_AVISO_KM Then Return
         Dim rsult = MsgBox(ObtenParametroPorLlave("EXISTEN_KM"), vbQuestion + vbYesNo, "Alerta")
         If rsult = MsgBoxResult.No Then Return
-        ReiniciaKmDestinosIntermedios()
+        YA_AVISO_KM = True
+        ReiniciaKm()
+    End Sub
+
+    Private Sub txtHoraLlegada_Click(sender As Object, e As EventArgs) Handles txtHoraSalidaDestino.Click
+        If datosDestinosIntermediosParaCartaPorte Is Nothing Then Return
+        If datosDestinosIntermediosParaCartaPorte.Count = 0 Then Return
+        If YA_AVISO_HORA Then Return
+        Dim rsult = MsgBox(ObtenParametroPorLlave("EXISTEN_FECHAS"), vbQuestion + vbYesNo, "Alerta")
+        If rsult = MsgBoxResult.No Then Return
+        YA_AVISO_HORA = True
+        ReiniciaFechas()
+    End Sub
+
+    Private Sub dtFechaLlegada_MouseDown(sender As Object, e As MouseEventArgs) Handles dtFechaSalidaDestino.MouseDown
+        If datosDestinosIntermediosParaCartaPorte Is Nothing Then Return
+        If datosDestinosIntermediosParaCartaPorte.Count = 0 Then Return
+        If YA_AVISO_FECHA Then Return
+        Dim rsult = MsgBox(ObtenParametroPorLlave("EXISTEN_FECHAS"), vbQuestion + vbYesNo, "Alerta")
+        If rsult = MsgBoxResult.No Then Return
+        YA_AVISO_FECHA = True
+        ReiniciaFechas()
+    End Sub
+
+    Private Sub ReiniciaKm()
+        datosDestinosIntermediosParaCartaPorte.ForEach(Sub(x)
+                                                           x.UsuarioCausoProblemasConKm = True
+                                                           x.DistanciaRecorrida = 0
+                                                       End Sub)
+    End Sub
+
+    Private Sub ReiniciaFechas()
+        datosDestinosIntermediosParaCartaPorte.ForEach(Sub(x)
+                                                           x.UsuarioCausoProblemasConFecha = True
+                                                           x.FechaSalidaLlegada = datosOrigenParaCartaPorte.FechaSalidaLlegada
+                                                       End Sub)
     End Sub
 
     Private Sub nupKmRecorridos_ValueChanged(sender As Object, e As EventArgs) Handles nupKmRecorridos.ValueChanged
-        If datosDestinosIntermediosParaCartaPorte Is Nothing Then
-            Return
-        End If
+        'If datosDestinosIntermediosParaCartaPorte Is Nothing Then
+        '    Return
+        'End If
 
-        If datosDestinosIntermediosParaCartaPorte.Count = 0 Then
-            Return
-        End If
+        'If datosDestinosIntermediosParaCartaPorte.Count = 0 Then
+        '    Return
+        'End If
 
-        Dim kmConsumidos = 0
-        For Each destInter As OrigenDestino In datosDestinosIntermediosParaCartaPorte
-            kmConsumidos = kmConsumidos + destInter.DistanciaRecorrida
-        Next
+        'Dim kmConsumidos = 0
+        'For Each destInter As OrigenDestino In datosDestinosIntermediosParaCartaPorte
+        '    kmConsumidos = kmConsumidos + destInter.DistanciaRecorrida
+        'Next
 
-        If nupKmRecorridos.Value > kmConsumidos Then
-            Dim rsult = MsgBox(ObtenParametroPorLlave("PROBLEMAS_KM"), vbQuestion + vbYesNo, "Alerta")
-            If rsult = MsgBoxResult.No Then Return
-            For Each destInter As OrigenDestino In datosDestinosIntermediosParaCartaPorte
-                destInter.DistanciaRecorrida = 0
-            Next
-        End If
+        'If nupKmRecorridos.Value > kmConsumidos Then
+        '    Dim rsult = MsgBox(ObtenParametroPorLlave("PROBLEMAS_KM"), vbQuestion + vbYesNo, "Alerta")
+        '    If rsult = MsgBoxResult.No Then Return
+        '    For Each destInter As OrigenDestino In datosDestinosIntermediosParaCartaPorte
+        '        destInter.DistanciaRecorrida = 0
+        '    Next
+        'End If
     End Sub
     Private Sub cbMunicipioDestino_SelectedValueChanged(sender As Object, e As EventArgs) Handles cbMunicipioDestino.SelectedValueChanged
         ValidaOrdenMunicipioLocalidadCodigo(cbPaisDestino,
@@ -1118,6 +1142,7 @@ Public Class frmCartaPorte
         LimpiarDatosOrigen()
         rbPersonaFisicaDestino.Checked = True
         CargaDatosDestino()
+
     End Sub
 
     Private Sub LimpiarDatosDestino()
@@ -1530,21 +1555,6 @@ Public Class frmCartaPorte
     Private ESTA_CREANDO_DESTINO_INTERMEDIO As Boolean = False
     Private ESTA_ACTUALIZANDO_DESTINO_INTERMEDIO As Boolean = False
 
-    Private Sub ReiniciaKmDestinosIntermedios()
-        datosDestinosIntermediosParaCartaPorte.ForEach(Sub(x)
-                                                           x.UsuarioCausoProblemasConKm = True
-                                                           x.DistanciaRecorrida = 0
-                                                       End Sub)
-    End Sub
-
-    Private Sub ReiniciaFechaHoraLlegada()
-        datosDestinosIntermediosParaCartaPorte.ForEach(Sub(x)
-                                                           x.UsuarioCausoProblemasConFecha = True
-                                                           x.FechaSalidaLlegada = Nothing
-                                                           x.HoraSalidaLlegada = String.Empty
-                                                       End Sub)
-    End Sub
-
     Private Sub cbMunicipioDestinoIntermedio_SelectedValueChanged(sender As Object, e As EventArgs) Handles cbMunicipioDestinoIntermedio.SelectedValueChanged
         ValidaOrdenMunicipioLocalidadCodigo(cbPaisDestinoIntermedio,
                                            refCbEstadoDestinoIntermedio,
@@ -1572,9 +1582,9 @@ Public Class frmCartaPorte
         dgvCartaPorteDestinosIntermedios.AutoGenerateColumns = False
         dgvCartaPorteDestinosIntermedios.Columns("DIMovimientoClm").DataPropertyName = NameOf(OrigenDestino.IDUbicacion)
         dgvCartaPorteDestinosIntermedios.Columns("DIDestinoClm").DataPropertyName = NameOf(OrigenDestino.DestinoDesplegado)
-        dgvCartaPorteDestinosIntermedios.Columns("DIFechaLlegadaClm").DataPropertyName = NameOf(OrigenDestino.FechaSalidaLlegada)
+        dgvCartaPorteDestinosIntermedios.Columns("DIFechaLlegadaClm").DataPropertyName = NameOf(OrigenDestino.FechaSalidaLlegadaCadena)
         dgvCartaPorteDestinosIntermedios.Columns("DIHoraLlegadaClm").DataPropertyName = NameOf(OrigenDestino.HoraSalidaLlegada)
-        dgvCartaPorteDestinosIntermedios.Columns("DIKmClm").DataPropertyName = NameOf(OrigenDestino.DistanciaRecorrida)
+        dgvCartaPorteDestinosIntermedios.Columns("DIKmClm").DataPropertyName = NameOf(OrigenDestino.DistanciaRecorridaCadena)
         dgvCartaPorteDestinosIntermedios.Columns("IDUbicacionClm").DataPropertyName = NameOf(OrigenDestino.IDUbicacion)
         dgvCartaPorteDestinosIntermedios.Columns("DIUsuarioProblemasFechaClm").DataPropertyName = NameOf(OrigenDestino.UsuarioCausoProblemasConFecha)
         dgvCartaPorteDestinosIntermedios.Columns("DIUsuarioCausoProblemasConKm").DataPropertyName = NameOf(OrigenDestino.UsuarioCausoProblemasConKm)
@@ -1599,6 +1609,9 @@ Public Class frmCartaPorte
     Private Sub PreparaPestanaDestinoIntermedio()
         BloqueaDestinoIntermedio()
         BindGridDestinosIntermedios()
+        If datosDestinosIntermediosParaCartaPorte Is Nothing Then
+            datosDestinosIntermediosParaCartaPorte = New List(Of OrigenDestino)
+        End If
     End Sub
 
     Private Sub BloqueaDestinoIntermedio()
@@ -1615,6 +1628,7 @@ Public Class frmCartaPorte
         LimpiaDesactivaTextbox(txtApMaternoDestinoIntermedio)
         LimpiaDesactivaCombobox(cbPaisResidenciaFiscalDestinoIntermedio)
         LimpiaDesactivaTextbox(txtPaisResidenciaFiscalDestinoIntermedio)
+        dtFechaLlegadaDestinoIntermedio.Value = dtFechaLlegadaDestinoIntermedio.MinDate
         dtFechaLlegadaDestinoIntermedio.Enabled = False
         LimpiaDesactivaTextbox(txtHoraLlegadaDestinoIntermedio)
         nupKmDestinoIntermedio.Enabled = False
@@ -1646,12 +1660,14 @@ Public Class frmCartaPorte
 
         nupKmDestinoIntermedio.Minimum = 0
         nupKmDestinoIntermedio.Maximum = ObtenKilometrosDisponibles()
+        nupKmDestinoIntermedio.Enabled = True
 
         Dim fechaSalidaOrigen As DateTime
         Dim fechaLlegadaMax As DateTime
         ObtenMaximosMinimosFecha(fechaSalidaOrigen, fechaLlegadaMax)
         dtFechaLlegadaDestinoIntermedio.MinDate = fechaSalidaOrigen.Date
         dtFechaLlegadaDestinoIntermedio.MaxDate = fechaLlegadaMax.Date
+        dtFechaLlegadaDestinoIntermedio.Enabled = True
         lblFechaHoraMaximaDestInter.Text = String.Format(ObtenParametroPorLlave("AVISO_FECHAS"), fechaSalidaOrigen.ToString("dd-MM-yyyy HH:mm"), fechaLlegadaMax.ToString("dd-MM-yyyy HH:mm"))
         lblFechaHoraMaximaDestInter.ForeColor = Color.Red
 
@@ -1734,11 +1750,6 @@ Public Class frmCartaPorte
 
 
         INFORMACION_VALIDA_DESTINO_INTERMEDIO = False
-
-        If datosDestinoIntermedioEnModificacion Is Nothing Then
-            datosDestinoIntermedioEnModificacion = New OrigenDestino
-        End If
-
         Dim tipoUbicacionDestInter As String = "Destino"
         Dim idUbicacionDestInter As String = ObtenValorTextbox(txtIdUbicacionDestinoIntermedio)
 
@@ -1856,27 +1867,27 @@ Public Class frmCartaPorte
             estadoDestino = ObtenValorCombobox(refCbEstadoDestinoIntermedio)
             municipioDestino = ObtenValorCombobox(refCbMunicipioDestinoIntermedio)
             localidadDestino = ObtenValorCombobox(refCbLocalidadDestinoIntermedio)
+            If estadoDestino = "-01" Then AlertaMensaje(ObtenParametroPorLlave("INGRESE_ESTADO")) : Return
             If municipioDestino = "-01" Then AlertaMensaje(ObtenParametroPorLlave("INGRESE_MUNICIPIO")) : Return
             If localidadDestino = "-01" Then AlertaMensaje(ObtenParametroPorLlave("INGRESE_LOCALIDAD")) : Return
             coloniaDestino = ObtenValorCombobox(refCbColoniaDestinoIntermedio)
             If coloniaDestino = "-01" Then AlertaMensaje(ObtenParametroPorLlave("INGRESE_COLONIA")) : Return
+            Dim regExpCp2 As String = ObtenParametroPorLlave("REGEXP_CODIGO_POSTAL")
+            If Not Regex.IsMatch(ObtenValorTextbox(txtCpDestinoIntermedio), regExpCp2) Then AlertaMensaje(ObtenParametroPorLlave("INGRESE_CODIGO_POSTAL")) : Return
         End If
 
         Dim regExpHora = ObtenParametroPorLlave("REGEXP_HORA")
         Dim horaLlegadaDestInter = ObtenValorTextbox(txtHoraLlegadaDestinoIntermedio)
         If Not Regex.IsMatch(horaLlegadaDestInter, regExpHora) Then AlertaMensaje(ObtenParametroPorLlave("HORA_MALFORMADA")) : Return
 
-        Dim fechaLlegadaDestInter As New DateTime
-        fechaLlegadaDestInter = dtFechaLlegadaDestinoIntermedio.Value
-        fechaLlegadaDestInter.AddHours(horaLlegadaDestInter.Split(":")(0))
-        fechaLlegadaDestInter.AddMinutes(horaLlegadaDestInter.Split(":")(1))
+        Dim fechaLlegadaDestInter As DateTime = ObtenDateTime(dtFechaLlegadaDestinoIntermedio.Value, horaLlegadaDestInter)
 
         Dim fechaHoraMinima As DateTime
         Dim fechaHoraMaxima As DateTime
         ObtenMaximosMinimosFecha(fechaHoraMinima, fechaHoraMaxima)
         'Verifico que las fechas estén dentro del rango correcto
-        If (fechaLlegadaDestInter <= fechaHoraMinima) And (fechaLlegadaDestInter >= fechaHoraMaxima) Then
-            AlertaMensaje(ObtenParametroPorLlave("FECHA_ERRONEA"))
+        If (fechaLlegadaDestInter <= fechaHoraMinima) Or (fechaLlegadaDestInter >= fechaHoraMaxima) Then
+            AlertaMensaje(String.Format(ObtenParametroPorLlave("FECHA_ERRONEA"), fechaHoraMinima.ToString("dd-MM-yyyy HH:mm"), fechaHoraMaxima.ToString("dd-MM-yyyy HH:mm")))
             Return
         End If
 
@@ -1897,6 +1908,18 @@ Public Class frmCartaPorte
 
         Dim kmRecorridos As Int32 = nupKmDestinoIntermedio.Value
         If kmRecorridos <= 0 Then AlertaMensaje(ObtenParametroPorLlave("INGRESE_KILOMETROS_RECORRIDOS")) : Return
+        Dim kmDisponibles As Int32 = ObtenKilometrosDisponibles()
+        If kmRecorridos > kmDisponibles Then AlertaMensaje(String.Format(ObtenParametroPorLlave("KILOMETROS_EXCEDEN"), kmDisponibles)) : Return
+
+
+        Dim datosDestinoIntermedioEnModificacion As OrigenDestino
+
+        'Veo si estamos actualizando o añadiendo
+        If ESTA_CREANDO_DESTINO_INTERMEDIO Then
+            datosDestinoIntermedioEnModificacion = New OrigenDestino
+        ElseIf ESTA_ACTUALIZANDO_DESTINO_INTERMEDIO Then
+            datosDestinoIntermedioEnModificacion = datosDestinosIntermediosParaCartaPorte.FirstOrDefault(Function(f) f.IDUbicacion.Equals(idUbicacionDestInter))
+        End If
 
         datosDestinoIntermedioEnModificacion.TipoUbicacion = tipoUbicacionDestInter
         datosDestinoIntermedioEnModificacion.RFCRemitenteDestinatario = rfcRemitenteDestInter
@@ -1911,7 +1934,7 @@ Public Class frmCartaPorte
         datosDestinoIntermedioEnModificacion.ResidenciaFiscal = paisResidenciaDestFiscal
         datosDestinoIntermedioEnModificacion.NumRegIdTrib = numRegIdTribDestInter
         datosDestinoIntermedioEnModificacion.FechaSalidaLlegada = dtFechaLlegadaDestinoIntermedio.Value
-        datosDestinoIntermedioEnModificacion.HoraSalidaLlegada = txtHoraLlegadaDestinoIntermedio.Text
+        datosDestinoIntermedioEnModificacion.HoraSalidaLlegada = ObtenValorTextbox(txtHoraLlegadaDestinoIntermedio)
         datosDestinoIntermedioEnModificacion.DistanciaRecorrida = kmRecorridos
         datosDestinoIntermedioEnModificacion.EsDestinoIntermedio = True
         datosDestinoIntermedioEnModificacion.UsuarioCausoProblemasConKm = False
@@ -1930,16 +1953,12 @@ Public Class frmCartaPorte
         domicilio.CodigoPostal = CPDestino
         datosDestinoIntermedioEnModificacion.DatosDomicilio = domicilio
 
-        'Hemos terminado la validación
-        INFORMACION_VALIDA_DESTINO_INTERMEDIO = True
-
-        'Veo si estamos actualizando o añadiendo
         If ESTA_CREANDO_DESTINO_INTERMEDIO Then
             datosDestinosIntermediosParaCartaPorte.Add(datosDestinoIntermedioEnModificacion)
-        ElseIf ESTA_ACTUALIZANDO_DESTINO_INTERMEDIO Then
-            Dim objEnModif As OrigenDestino = datosDestinosIntermediosParaCartaPorte.FirstOrDefault(Function(f) f.IDUbicacion.Equals(datosDestinoIntermedioEnModificacion.IDUbicacion))
-            objEnModif = datosDestinoIntermedioEnModificacion
         End If
+
+        'Hemos terminado la validación
+        INFORMACION_VALIDA_DESTINO_INTERMEDIO = True
         BindGridDestinosIntermedios()
         btnReiniciarDestinosIntermedios_Click(Nothing, Nothing)
     End Sub
@@ -1947,12 +1966,14 @@ Public Class frmCartaPorte
     Private Function ObtenKilometrosDisponibles() As Int32
         Dim kmTotales As Int32 = datosDestinoParaCartaPorte.DistanciaRecorrida
         Dim kmConsumidosDeTotal As Int32 = 0
-        If datosDestinosIntermediosParaCartaPorte Is Nothing Then
-            datosDestinosIntermediosParaCartaPorte = New List(Of OrigenDestino)
+        Dim destInterEnMod As String = String.Empty
+        If ESTA_ACTUALIZANDO_DESTINO_INTERMEDIO Then
+            destInterEnMod = ObtenValorTextbox(txtIdUbicacionDestinoIntermedio)
         End If
         If datosDestinosIntermediosParaCartaPorte.Count > 0 Then
             For Each lugar As OrigenDestino In datosDestinosIntermediosParaCartaPorte
-                kmConsumidosDeTotal = kmConsumidosDeTotal + lugar.DistanciaRecorrida
+                If lugar.IDUbicacion.Equals(destInterEnMod) Then Continue For
+                kmConsumidosDeTotal = IIf(lugar.UsuarioCausoProblemasConKm, kmConsumidosDeTotal, kmConsumidosDeTotal + lugar.DistanciaRecorrida)
             Next
         Else
             Return kmTotales - 1
@@ -1999,6 +2020,14 @@ Public Class frmCartaPorte
     End Sub
 
     Private Sub cbEstadoDestinoIntermedio_SelectedValueChanged(sender As Object, e As EventArgs) Handles cbEstadoDestinoIntermedio.SelectedValueChanged
+        If ObtenValorCombobox(refCbEstadoDestinoIntermedio) = "-01" Then
+            LimpiaDesactivaCombobox(refCbMunicipioDestinoIntermedio)
+            LimpiaDesactivaCombobox(refCbLocalidadDestinoIntermedio)
+            LimpiaDesactivaTextbox(txtCpDestinoIntermedio)
+            LimpiaDesactivaCombobox(refCbColoniaDestinoIntermedio)
+            Return
+        End If
+
         ValidaOrdenMunicipioLocalidadCodigo(cbPaisDestinoIntermedio,
                                             refCbEstadoDestinoIntermedio,
                                             refCbLocalidadDestinoIntermedio,
@@ -2006,10 +2035,7 @@ Public Class frmCartaPorte
                                             txtCpDestinoIntermedio,
                                             refCbColoniaDestinoIntermedio)
 
-        If ObtenValorCombobox(refCbEstadoDestinoIntermedio) = "-01" Then Return
-
-        Dim paisSeleccionado As String = ObtenValorCombobox(cbPaisDestinoIntermedio)
-        If PaisTieneMunicipioLocalidad(paisSeleccionado) Then
+        If refCbMunicipioDestinoIntermedio IsNot Nothing And refCbLocalidadDestinoIntermedio IsNot Nothing Then
             BindCombobox(refCbMunicipioDestinoIntermedio, ObtenMunicipiosPorEstado(cbEstadoDestinoIntermedio.SelectedValue))
             BindCombobox(refCbLocalidadDestinoIntermedio, ObtenLocalidadesPorEstado(cbEstadoDestinoIntermedio.SelectedValue))
         End If
@@ -2018,7 +2044,6 @@ Public Class frmCartaPorte
     Private Sub btnReiniciarDestinosIntermedios_Click(sender As Object, e As EventArgs) Handles btnReiniciarDestinosIntermedios.Click
         BloqueaDestinoIntermedio()
         PreparaEntradaPestanaDestinoIntermedio()
-        datosDestinoIntermedioEnModificacion = Nothing
         ESTA_ACTUALIZANDO_DESTINO_INTERMEDIO = False
         ESTA_CREANDO_DESTINO_INTERMEDIO = True
         rbEsPersonaFisicaDestinoIntermedio.Checked = True
@@ -2026,6 +2051,11 @@ Public Class frmCartaPorte
 
     Private Sub btnAtrasDestinosIntermedios_Click(sender As Object, e As EventArgs) Handles btnAtrasDestinosIntermedios.Click
         ESTOY_CAMBIANDO_MEDIANTE_INDICE = True
+        If datosDestinosIntermediosParaCartaPorte.Count > 0 Then
+            YA_AVISO_FECHA = False
+            YA_AVISO_HORA = False
+            YA_AVISO_KM = False
+        End If
         TabControl1.SelectedTab = TabControl1.TabPages("tabDestino")
         ESTOY_CAMBIANDO_MEDIANTE_INDICE = False
     End Sub
@@ -2141,6 +2171,9 @@ Public Class frmCartaPorte
                 dtFechaLlegadaDestinoIntermedio.Value = objDestino.FechaSalidaLlegada
                 txtHoraLlegadaDestinoIntermedio.Text = objDestino.HoraSalidaLlegada
             End If
+
+            nupKmDestinoIntermedio.Minimum = 0
+            nupKmDestinoIntermedio.Maximum = datosDestinoParaCartaPorte.DistanciaRecorrida
 
             If objDestino.UsuarioCausoProblemasConKm Then
                 nupKmDestinoIntermedio.Value = 0

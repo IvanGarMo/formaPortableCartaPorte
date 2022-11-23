@@ -149,13 +149,37 @@ Public Class OrigenDestino
         End Set
     End Property
 
+    Public ReadOnly Property FechaSalidaLlegadaCadena As String
+        Get
+            If _UsuarioCausoProblemasConFecha Then
+                Return "PENDIENTE"
+            Else
+                Return _FechaSalidaLlegada.Date.ToString("dd-MM-yyyy")
+            End If
+        End Get
+    End Property
+
     Public Property HoraSalidaLlegada As String
         Get
-            Return _HoraSalidaLlegada
+            If _UsuarioCausoProblemasConFecha Then
+                Return "PENDIENTE"
+            Else
+                Return _HoraSalidaLlegada
+            End If
         End Get
         Set(value As String)
             _HoraSalidaLlegada = value
         End Set
+    End Property
+
+    Public ReadOnly Property DistanciaRecorridaCadena As String
+        Get
+            If _UsuarioCausoProblemasConKm Then
+                Return "PENDIENTE"
+            Else
+                Return _DistanciaRecorrida.ToString
+            End If
+        End Get
     End Property
 
     Public Property DistanciaRecorrida As Integer
@@ -276,7 +300,7 @@ Public Class OrigenDestino
             Return _UsuarioCausoProblemasConFecha
         End Get
         Set(value As Boolean)
-            _UsuarioCausoProblemasConKm = value
+            _UsuarioCausoProblemasConFecha = value
         End Set
     End Property
 
