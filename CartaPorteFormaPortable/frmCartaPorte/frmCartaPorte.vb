@@ -2567,14 +2567,15 @@ Public Class frmCartaPorte
         Dim satMarcaPeligroso As Boolean = False
         conexionesCartaPorte.Get_ObtenDescripcionPorClaveProdServ(mercancia.ClaveProdServ, descripcionProducto, requiereNodoMercPeligroso, satMarcaPeligroso)
 
+        txtCantidadMercancia.Text = mercancia.Cantidad.ToString
+        txtUnidadClaveMercancia.Text = mercancia.ClaveUnidad
+        txtUnidadMercancia.Text = conexionesCartaPorte.Get_ClaveUnidadPeso(mercancia.ClaveUnidad)
+
         txtDescripcionProducto.Text = descripcionProducto
         AplicaValidacionesSatMaterialPeligroso(requiereNodoMercPeligroso,
                                                 satMarcaPeligroso,
                                                 mercancia)
 
-        txtCantidadMercancia.Text = mercancia.Cantidad.ToString
-        txtUnidadClaveMercancia.Text = mercancia.ClaveUnidad
-        txtUnidadMercancia.Text = conexionesCartaPorte.Get_ClaveUnidadPeso(mercancia.ClaveUnidad)
         txtPeso.Text = mercancia.PesoEnKg.ToString
         txtValor.Text = mercancia.ValorMercancia.ToString
         txtMoneda.Text = mercancia.Moneda
@@ -2592,9 +2593,12 @@ Public Class frmCartaPorte
         If mercancia.MaterialPeligroso Then
             rbSiMaterialPeligroso.Checked = True
             txtClaveMaterialPeligroso.Text = mercancia.ClaveMaterialPeligroso
+            txtClaveMaterialPeligroso_TextChanged(Nothing, Nothing)
             txtClaveMaterialPeligroso.Enabled = True
+
             txtEmbalaje.Text = mercancia.Embalaje
-            txtEmbalaje.Enabled = False
+            txtEmbalaje.Enabled = True
+            txtEmbalaje_TextChanged(Nothing, Nothing)
         Else
             rbNoMaterialPeligroso.Checked = True
         End If
@@ -2661,7 +2665,7 @@ Public Class frmCartaPorte
         txtDescripcionMaterialPeligroso.Text = matPeligroso
     End Sub
 
-    Private Sub txtEmbalaje_TextChanged(sender As Object, e As EventArgs) Handles txtEmbalaje.TextAlignChanged
+    Private Sub txtEmbalaje_TextChanged(sender As Object, e As EventArgs) Handles txtEmbalaje.TextChanged
         LimpiaDesactivaTextbox(txtDescripcionEmbalaje)
         Dim claveEmbalaje As String = ObtenValorTextbox(txtEmbalaje)
         Dim descEmbalaje As String = conexionesCartaPorte.Get_ObtenDescripcionEmbalaje(claveEmbalaje)
