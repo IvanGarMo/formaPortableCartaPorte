@@ -590,6 +590,27 @@ Public Class frmCartaPorte
     Private refCbLocalidadOrigen As ComboBox = Nothing
     Private refCbColoniaOrigen As ComboBox = Nothing
 
+    Private ORIGEN_NO_HA_AVISADO_FECHA As Boolean = True
+    Private ORIGEN_NO_HA_AVISADO_HORA As Boolean = True
+
+    Private Sub txtHoraSalidaRemitente_Click(sender As Object, e As EventArgs) Handles txtHoraSalidaRemitente.Click
+        If datosDestinoParaCartaPorte IsNot Nothing And ORIGEN_NO_HA_AVISADO_HORA Then
+            Dim rsult = MsgBox(ObtenParametroPorLlave("EXISTE_FECHADF"), vbQuestion + vbYesNo, "Alerta")
+            If rsult = MsgBoxResult.No Then Return
+            ORIGEN_NO_HA_AVISADO_HORA = False
+            ReiniciaFechaHoraDestino()
+        End If
+    End Sub
+
+    Private Sub dtFechaSalidaRemitente_MouseDown(sender As Object, e As MouseEventArgs) Handles dtFechaSalidaRemitente.MouseDown
+        If datosDestinoParaCartaPorte IsNot Nothing And ORIGEN_NO_HA_AVISADO_FECHA Then
+            Dim rsult = MsgBox(ObtenParametroPorLlave("EXISTE_FECHADF"), vbQuestion + vbYesNo, "Alerta")
+            If rsult = MsgBoxResult.No Then Return
+            ORIGEN_NO_HA_AVISADO_FECHA = False
+            ReiniciaFechaHoraDestino()
+        End If
+    End Sub
+
 
     Private Sub PreparaPestanaOrigen()
         'Ver si se puede importar la información o no
@@ -1064,6 +1085,14 @@ Public Class frmCartaPorte
     Private YA_AVISO_HORA As Boolean = True
     Private YA_AVISO_KM As Boolean = True
 
+    'DEBIDO A LAS CONDICIONES PECULIARES DE ESTE OBJETO
+    'ME VEO FORZADO A AÑADIR ESTA BANDERA PARA SABER SI YA CREO UNO O NO
+    Private YA_CREO_DESTINO As Boolean = False
+
+    Private Sub ReiniciaFechaHoraDestino()
+        datosDestinoParaCartaPorte.UsuarioCausoProblemasConFecha = True
+    End Sub
+
     Private Sub nupKmDestino_Click(sender As Object, e As EventArgs) Handles nupKmRecorridos.Click
         If datosDestinosIntermediosParaCartaPorte Is Nothing Then Return
         If datosDestinosIntermediosParaCartaPorte.Count = 0 Then Return
@@ -1149,6 +1178,9 @@ Public Class frmCartaPorte
     End Sub
 
     Private Sub PreparaPestanaDestino()
+        If datosDestinoParaCartaPorte Is Nothing Then
+            datosDestinoParaCartaPorte = New OrigenDestino
+        End If
         dtFechaSalidaDestino.MinDate = dtFechaSalidaRemitente.Value
         BindCombobox(cbPaisDestino, ObtenListadoPaises())
         LimpiarDatosDestino()
@@ -1311,6 +1343,11 @@ Public Class frmCartaPorte
     End Sub
 
     Private Sub btnSiguienteDestino_Click(sender As Object, e As EventArgs) Handles btnSiguienteDestino.Click
+        If datosDestinoParaCartaPorte.UsuarioCausoProblemasConFecha Then
+            AlertaMensaje(ObtenParametroPorLlave("REVISE_FECHAHORA"))
+            Return
+            datosDestinoParaCartaPorte.UsuarioCausoProblemasConFecha = False
+        End If
         ValidarDatosDestino()
         If INFORMACION_VALIDA_DESTINO Then
             ESTOY_CAMBIANDO_MEDIANTE_INDICE = True
@@ -1326,7 +1363,6 @@ Public Class frmCartaPorte
     End Sub
 
     Private Sub ValidarDatosDestino()
-        datosDestinoParaCartaPorte = Nothing
         INFORMACION_VALIDA_DESTINO = False
         Dim tipoUbicacion = ObtenValorTextbox(txtTipoUbicacionDestino)
         Dim idUbicacion = ObtenValorTextbox(txtIdUbicacionDestino)
@@ -1392,7 +1428,7 @@ Public Class frmCartaPorte
         If Not Regex.IsMatch(horaLlegada, regExpHoras) Then AlertaMensaje(ObtenParametroPorLlave("HORA_MALFORMADA")) : Return
 
         Dim fechaHoraParaComparacion As DateTime = ObtenDateTime(fechaLlegadaDestino, horaLlegada)
-        If fechaHoraParaComparacion < datosOrigenParaCartaPorte.FechaHora Then AlertaMensaje(ObtenParametroPorLlave("FECHA_LLEGADA_FINAL_INCORRECTA")) : Return
+        If fechaHoraParaComparacion <= datosOrigenParaCartaPorte.FechaHora Then AlertaMensaje(ObtenParametroPorLlave("FECHA_LLEGADA_FINAL_INCORRECTA")) : Return
 
         Dim paisDestino As String = String.Empty
         Dim estadoDestino As String = String.Empty
@@ -1463,7 +1499,7 @@ Public Class frmCartaPorte
         Dim kmRecorridos As Int32 = nupKmRecorridos.Value
         If kmRecorridos <= 0 Then AlertaMensaje(ObtenParametroPorLlave("INGRESE_KILOMETROS_RECORRIDOS")) : Return
 
-        datosDestinoParaCartaPorte = New OrigenDestino
+        datosDestinoParaCartaPorte.UsuarioCausoProblemasConFecha = False
         datosDestinoParaCartaPorte.TipoUbicacion = tipoUbicacion
         datosDestinoParaCartaPorte.IDUbicacion = idUbicacion
         datosDestinoParaCartaPorte.RFCRemitenteDestinatario = rfcDestino
@@ -1497,10 +1533,13 @@ Public Class frmCartaPorte
         domicilio.CodigoPostal = CPDestino
         datosDestinoParaCartaPorte.DatosDomicilio = domicilio
         INFORMACION_VALIDA_DESTINO = True
+        YA_CREO_DESTINO = True
+        ORIGEN_NO_HA_AVISADO_FECHA = True
+        ORIGEN_NO_HA_AVISADO_HORA = True
     End Sub
 
     Private Sub CargaDatosDestino()
-        If datosDestinoParaCartaPorte IsNot Nothing Then
+        If YA_CREO_DESTINO Then
             txtTipoUbicacionDestino.Text = "Destino"
             txtIdUbicacionDestino.Text = datosDestinoParaCartaPorte.IDUbicacion
             rbEsExtranjeroDestino.Checked = datosDestinoParaCartaPorte.EsExtranjero
@@ -1512,11 +1551,18 @@ Public Class frmCartaPorte
             txtApMaternoDestino.Text = datosDestinoParaCartaPorte.ApMaterno
             txtNumIdRegFiscalDestino.Text = datosDestinoParaCartaPorte.NumRegIdTrib
 
-            If ES_EXTRANJERO_DESTINO Then
-                cbResidenciaFiscalDestino.SelectedValue = datosDestinoParaCartaPorte.ResidenciaFiscal
+            If datosDestinoParaCartaPorte.UsuarioCausoProblemasConFecha Then
+                dtFechaSalidaDestino.Value = datosOrigenParaCartaPorte.FechaHora
+                txtHoraSalidaDestino.Text = String.Empty
+            Else
                 dtFechaSalidaDestino.Value = datosDestinoParaCartaPorte.FechaSalidaLlegada
                 txtHoraSalidaDestino.Text = datosDestinoParaCartaPorte.HoraSalidaLlegada
-                nupKmRecorridos.Value = datosDestinoParaCartaPorte.DistanciaRecorrida
+            End If
+
+            nupKmRecorridos.Value = datosDestinoParaCartaPorte.DistanciaRecorrida
+
+            If ES_EXTRANJERO_DESTINO Then
+                cbResidenciaFiscalDestino.SelectedValue = datosDestinoParaCartaPorte.ResidenciaFiscal
             End If
 
             Dim dom As Domicilio = datosDestinoParaCartaPorte.DatosDomicilio
@@ -3043,13 +3089,13 @@ Public Class frmCartaPorte
         numCantidadRemolquesTransporte.Value = 0
         numCantidadRemolquesTransporte_ValueChanged(Nothing, Nothing)
         numCantidadRemolquesTransporte.Enabled = True
-
+        txtAseguradoraDanosMedioAmbiente.Enabled = True
+        txtPolizaSegurosDanosMedioAmbiente.Enabled = True
         ValidaExisteMercanciaQueCuenteComoPeligroso()
         If EXISTE_MERCANCIA_MATERIAL_PELIGROSO Then
-            txtAseguradoraDanosMedioAmbiente.Enabled = True
-            txtPolizaSegurosDanosMedioAmbiente.Enabled = True
+            MarcaCampoComoObligatorio(txtAseguradoraDanosMedioAmbiente, tlpContenedorSeguroMaterialPeligroso)
+            MarcaCampoComoObligatorio(txtPolizaSegurosDanosMedioAmbiente, tlpContenedorSeguroMaterialPeligroso)
         End If
-
     End Sub
 
     Private Sub TogglePartesTransporte()
@@ -3162,6 +3208,9 @@ Public Class frmCartaPorte
         claveInternaVehiculo = ObtenValorCombobox(cbSeleccionarVehiculo)
         tipoPermisoSct = ObtenValorTextbox(txtTipoPermisoSCT)
         numPermisoSct = ObtenValorTextbox(txtNumPermisoSCT)
+
+        If EsCadenaVacia(numPermisoSct) Then AlertaMensaje(ObtenParametroPorLlave("INGRESE_NUMPERM")) : Return
+
         configVehicular = ObtenValorTextbox(txtConVeh)
         placa = ObtenValorTextbox(txtPlacaTransporte).Replace("-", "").Replace(" ", "")
         If EsCadenaVacia(placa) Then AlertaMensaje(ObtenParametroPorLlave("INGRESE_PLACA")) : Return
@@ -3186,6 +3235,7 @@ Public Class frmCartaPorte
         If noRemolques >= 1 Then
             If cbPropiedadRemolque1.SelectedValue = "-01" Then AlertaMensaje(ObtenParametroPorLlave("INGRESE_PROPIEDAD_1")) : Return
             Dim remolque1 As Remolque = New Remolque
+            remolque1.PropiedadRemolque = ObtenValorCombobox(cbPropiedadRemolque1)
             remolque1.SubTipoRem = cbTipoRemolque1.SelectedValue
             If remolque1.SubTipoRem = "-01" Then AlertaMensaje(ObtenParametroPorLlave("INGRESE_TIPO_REMOLQUE_1")) : Return
             remolque1.Placa = ObtenValorTextbox(txtPlacasRemolque1).Replace("-", "").Replace(" ", "")
@@ -3197,6 +3247,7 @@ Public Class frmCartaPorte
         If noRemolques = 2 Then
             If cbPropiedadRemolque2.SelectedValue = "-01" Then AlertaMensaje(ObtenParametroPorLlave("INGRESE_PROPIEDAD_2")) : Return
             Dim remolque2 As Remolque = New Remolque
+            remolque2.PropiedadRemolque = ObtenValorCombobox(cbPropiedadRemolque2)
             remolque2.SubTipoRem = cbTipoRemolque1.SelectedValue
             If remolque2.SubTipoRem = "-01" Then AlertaMensaje(ObtenParametroPorLlave("INGRESE_TIPO_REMOLQUE_2")) : Return
             remolque2.Placa = ObtenValorTextbox(txtPlacasRemolque1).Replace("-", "").Replace(" ", "")
@@ -3608,6 +3659,7 @@ Public Class frmCartaPorte
         apPaternoOperador = ObtenValorTextbox(txtApPaternoOperador)
         apMaternoOperador = ObtenValorTextbox(txtApMaternoOperador)
         If EsCadenaVacia(nombreOperador) Then AlertaMensaje(ObtenParametroPorLlave("INGRESE_NOMBRE")) : Return
+        If EsCadenaVacia(apPaternoOperador) And EsCadenaVacia(apMaternoOperador) Then AlertaMensaje(ObtenParametroPorLlave("INGRESE_AL_MENOS_UN_APELLIDO")) : Return
 
         tipoFiguraOperador = ObtenValorCombobox(cbTipoFiguraOperador)
         If tipoFiguraOperador = "-01" Then AlertaMensaje(ObtenParametroPorLlave("INGRESE_TIPO_FIGURA")) : Return
@@ -3642,7 +3694,7 @@ Public Class frmCartaPorte
         If EsCadenaVacia(calleOperador) Then AlertaMensaje(ObtenParametroPorLlave("INGRESE_CALLE")) : Return
 
         noExtOperador = Trim(txtNoExtOperador.Text)
-        If Not Regex.IsMatch(noExtOperador, ObtenParametroPorLlave("REGEXP_CADENA_SOLO_NUMEROS'")) Then AlertaMensaje(String.Format(ObtenParametroPorLlave("CAMPO_SOLO_ACEPTA_NUMEROS"), "NO. EXT. OPERADOR")) : Return
+        If EsCadenaVacia(noExtOperador) Or Not Regex.IsMatch(noExtOperador, ObtenParametroPorLlave("REGEXP_CADENA_SOLO_NUMEROS")) Then AlertaMensaje(String.Format(ObtenParametroPorLlave("CAMPO_SOLO_ACEPTA_NUMEROS"), "NO. EXT. OPERADOR")) : Return
         noIntOperador = Trim(txtNoIntOperador.Text)
         referenciaOperador = ObtenValorTextbox(txtReferenciaOperador)
 
@@ -3676,7 +3728,7 @@ Public Class frmCartaPorte
         datosAutoTransporte.Transportista = datosTransportisa
 
         INFORMACION_VALIDA_OPERADOR = True
-    End Sub
+        End Sub
 
     Private Sub btnSiguienteOperador_Click(sender As Object, e As EventArgs) Handles btnSiguienteOperador.Click
         ValidaInformacionOperador()
@@ -4036,4 +4088,9 @@ Public Class frmCartaPorte
         If EsCadenaVacia(conVehicular) Then Return
         txtDescripConfigVehicular.Text = conexionesCartaPorte.Get_ObtenDescripcionConfiguracionAutoTransporte(conVehicular)
     End Sub
+
+    Private Sub tlpContenedorSeguroMaterialPeligroso_Paint(sender As Object, e As PaintEventArgs) Handles tlpContenedorSeguroMaterialPeligroso.Paint
+
+    End Sub
+
 End Class
