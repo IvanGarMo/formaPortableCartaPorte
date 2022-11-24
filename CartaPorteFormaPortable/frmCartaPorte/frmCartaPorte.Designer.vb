@@ -22,10 +22,10 @@ Partial Class frmCartaPorte
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Dim DataGridViewCellStyle9 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle10 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle11 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle12 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle53 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle54 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle55 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle56 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.TabControl1 = New System.Windows.Forms.TabControl()
         Me.tabOrigen = New System.Windows.Forms.TabPage()
         Me.tlpPrincipalOrigen = New System.Windows.Forms.TableLayoutPanel()
@@ -652,7 +652,7 @@ Partial Class frmCartaPorte
         Me.rbExtranjeroOrigen.Location = New System.Drawing.Point(361, 0)
         Me.rbExtranjeroOrigen.Name = "rbExtranjeroOrigen"
         Me.rbExtranjeroOrigen.Size = New System.Drawing.Size(140, 24)
-        Me.rbExtranjeroOrigen.TabIndex = 2
+        Me.rbExtranjeroOrigen.TabIndex = 4
         Me.rbExtranjeroOrigen.TabStop = True
         Me.rbExtranjeroOrigen.Text = "Es extranjero"
         Me.rbExtranjeroOrigen.UseVisualStyleBackColor = True
@@ -664,7 +664,7 @@ Partial Class frmCartaPorte
         Me.rbPersonaMoralOrigen.Location = New System.Drawing.Point(175, 0)
         Me.rbPersonaMoralOrigen.Name = "rbPersonaMoralOrigen"
         Me.rbPersonaMoralOrigen.Size = New System.Drawing.Size(149, 24)
-        Me.rbPersonaMoralOrigen.TabIndex = 1
+        Me.rbPersonaMoralOrigen.TabIndex = 3
         Me.rbPersonaMoralOrigen.TabStop = True
         Me.rbPersonaMoralOrigen.Text = "Persona moral"
         Me.rbPersonaMoralOrigen.UseVisualStyleBackColor = True
@@ -676,7 +676,7 @@ Partial Class frmCartaPorte
         Me.rbPersonaFisicaOrigen.Location = New System.Drawing.Point(0, -3)
         Me.rbPersonaFisicaOrigen.Name = "rbPersonaFisicaOrigen"
         Me.rbPersonaFisicaOrigen.Size = New System.Drawing.Size(147, 24)
-        Me.rbPersonaFisicaOrigen.TabIndex = 0
+        Me.rbPersonaFisicaOrigen.TabIndex = 2
         Me.rbPersonaFisicaOrigen.TabStop = True
         Me.rbPersonaFisicaOrigen.Text = "Persona física"
         Me.rbPersonaFisicaOrigen.UseVisualStyleBackColor = True
@@ -765,7 +765,7 @@ Partial Class frmCartaPorte
         Me.txtTipoUbicacion.Location = New System.Drawing.Point(275, 37)
         Me.txtTipoUbicacion.Name = "txtTipoUbicacion"
         Me.txtTipoUbicacion.Size = New System.Drawing.Size(266, 26)
-        Me.txtTipoUbicacion.TabIndex = 12
+        Me.txtTipoUbicacion.TabIndex = 0
         '
         'txtIdUbicacionOrigen
         '
@@ -774,7 +774,7 @@ Partial Class frmCartaPorte
         Me.txtIdUbicacionOrigen.Location = New System.Drawing.Point(819, 37)
         Me.txtIdUbicacionOrigen.Name = "txtIdUbicacionOrigen"
         Me.txtIdUbicacionOrigen.Size = New System.Drawing.Size(269, 26)
-        Me.txtIdUbicacionOrigen.TabIndex = 13
+        Me.txtIdUbicacionOrigen.TabIndex = 1
         '
         'txtRfcRemitente
         '
@@ -783,7 +783,7 @@ Partial Class frmCartaPorte
         Me.txtRfcRemitente.Location = New System.Drawing.Point(819, 75)
         Me.txtRfcRemitente.Name = "txtRfcRemitente"
         Me.txtRfcRemitente.Size = New System.Drawing.Size(269, 26)
-        Me.txtRfcRemitente.TabIndex = 14
+        Me.txtRfcRemitente.TabIndex = 5
         '
         'txtNombreRemitente
         '
@@ -792,7 +792,7 @@ Partial Class frmCartaPorte
         Me.txtNombreRemitente.Location = New System.Drawing.Point(275, 113)
         Me.txtNombreRemitente.Name = "txtNombreRemitente"
         Me.txtNombreRemitente.Size = New System.Drawing.Size(266, 26)
-        Me.txtNombreRemitente.TabIndex = 15
+        Me.txtNombreRemitente.TabIndex = 6
         '
         'txtApMaternoRemitente
         '
@@ -800,7 +800,7 @@ Partial Class frmCartaPorte
         Me.txtApMaternoRemitente.Location = New System.Drawing.Point(275, 151)
         Me.txtApMaternoRemitente.Name = "txtApMaternoRemitente"
         Me.txtApMaternoRemitente.Size = New System.Drawing.Size(266, 26)
-        Me.txtApMaternoRemitente.TabIndex = 16
+        Me.txtApMaternoRemitente.TabIndex = 8
         '
         'txtApPaternoRemitente
         '
@@ -809,7 +809,7 @@ Partial Class frmCartaPorte
         Me.txtApPaternoRemitente.Location = New System.Drawing.Point(819, 113)
         Me.txtApPaternoRemitente.Name = "txtApPaternoRemitente"
         Me.txtApPaternoRemitente.Size = New System.Drawing.Size(269, 26)
-        Me.txtApPaternoRemitente.TabIndex = 17
+        Me.txtApPaternoRemitente.TabIndex = 7
         '
         'txtNumRegidTribRemitente
         '
@@ -818,7 +818,7 @@ Partial Class frmCartaPorte
         Me.txtNumRegidTribRemitente.Location = New System.Drawing.Point(547, 189)
         Me.txtNumRegidTribRemitente.Name = "txtNumRegidTribRemitente"
         Me.txtNumRegidTribRemitente.Size = New System.Drawing.Size(541, 26)
-        Me.txtNumRegidTribRemitente.TabIndex = 18
+        Me.txtNumRegidTribRemitente.TabIndex = 9
         '
         'txtPaisResidenciaFiscalRemitente
         '
@@ -828,6 +828,7 @@ Partial Class frmCartaPorte
         Me.txtPaisResidenciaFiscalRemitente.Name = "txtPaisResidenciaFiscalRemitente"
         Me.txtPaisResidenciaFiscalRemitente.Size = New System.Drawing.Size(541, 26)
         Me.txtPaisResidenciaFiscalRemitente.TabIndex = 19
+        Me.txtPaisResidenciaFiscalRemitente.TabStop = False
         '
         'dtFechaSalidaRemitente
         '
@@ -838,7 +839,7 @@ Partial Class frmCartaPorte
         Me.dtFechaSalidaRemitente.Location = New System.Drawing.Point(275, 265)
         Me.dtFechaSalidaRemitente.Name = "dtFechaSalidaRemitente"
         Me.dtFechaSalidaRemitente.Size = New System.Drawing.Size(266, 26)
-        Me.dtFechaSalidaRemitente.TabIndex = 21
+        Me.dtFechaSalidaRemitente.TabIndex = 11
         '
         'cbResidenciaFiscalRemitente
         '
@@ -848,7 +849,7 @@ Partial Class frmCartaPorte
         Me.cbResidenciaFiscalRemitente.Location = New System.Drawing.Point(275, 227)
         Me.cbResidenciaFiscalRemitente.Name = "cbResidenciaFiscalRemitente"
         Me.cbResidenciaFiscalRemitente.Size = New System.Drawing.Size(266, 28)
-        Me.cbResidenciaFiscalRemitente.TabIndex = 22
+        Me.cbResidenciaFiscalRemitente.TabIndex = 10
         '
         'txtHoraSalidaRemitente
         '
@@ -857,7 +858,7 @@ Partial Class frmCartaPorte
         Me.txtHoraSalidaRemitente.Location = New System.Drawing.Point(819, 265)
         Me.txtHoraSalidaRemitente.Name = "txtHoraSalidaRemitente"
         Me.txtHoraSalidaRemitente.Size = New System.Drawing.Size(269, 26)
-        Me.txtHoraSalidaRemitente.TabIndex = 23
+        Me.txtHoraSalidaRemitente.TabIndex = 12
         '
         'Label4
         '
@@ -1041,7 +1042,7 @@ Partial Class frmCartaPorte
         Me.txtReferenciaRemitente.Location = New System.Drawing.Point(201, 199)
         Me.txtReferenciaRemitente.Name = "txtReferenciaRemitente"
         Me.txtReferenciaRemitente.Size = New System.Drawing.Size(887, 26)
-        Me.txtReferenciaRemitente.TabIndex = 11
+        Me.txtReferenciaRemitente.TabIndex = 22
         '
         'txtCalleRemitente
         '
@@ -1051,7 +1052,7 @@ Partial Class frmCartaPorte
         Me.txtCalleRemitente.Location = New System.Drawing.Point(201, 156)
         Me.txtCalleRemitente.Name = "txtCalleRemitente"
         Me.txtCalleRemitente.Size = New System.Drawing.Size(706, 26)
-        Me.txtCalleRemitente.TabIndex = 12
+        Me.txtCalleRemitente.TabIndex = 21
         '
         'txtNoExtRemitente
         '
@@ -1060,7 +1061,7 @@ Partial Class frmCartaPorte
         Me.txtNoExtRemitente.Location = New System.Drawing.Point(557, 113)
         Me.txtNoExtRemitente.Name = "txtNoExtRemitente"
         Me.txtNoExtRemitente.Size = New System.Drawing.Size(172, 26)
-        Me.txtNoExtRemitente.TabIndex = 13
+        Me.txtNoExtRemitente.TabIndex = 19
         '
         'txtNoIntRemitente
         '
@@ -1069,7 +1070,7 @@ Partial Class frmCartaPorte
         Me.txtNoIntRemitente.Location = New System.Drawing.Point(913, 113)
         Me.txtNoIntRemitente.Name = "txtNoIntRemitente"
         Me.txtNoIntRemitente.Size = New System.Drawing.Size(175, 26)
-        Me.txtNoIntRemitente.TabIndex = 14
+        Me.txtNoIntRemitente.TabIndex = 20
         '
         'txtCpRemitente
         '
@@ -1078,7 +1079,7 @@ Partial Class frmCartaPorte
         Me.txtCpRemitente.Location = New System.Drawing.Point(913, 70)
         Me.txtCpRemitente.Name = "txtCpRemitente"
         Me.txtCpRemitente.Size = New System.Drawing.Size(175, 26)
-        Me.txtCpRemitente.TabIndex = 15
+        Me.txtCpRemitente.TabIndex = 17
         '
         'cbPaisRemitente
         '
@@ -1089,7 +1090,7 @@ Partial Class frmCartaPorte
         Me.cbPaisRemitente.Location = New System.Drawing.Point(201, 27)
         Me.cbPaisRemitente.Name = "cbPaisRemitente"
         Me.cbPaisRemitente.Size = New System.Drawing.Size(172, 28)
-        Me.cbPaisRemitente.TabIndex = 16
+        Me.cbPaisRemitente.TabIndex = 13
         '
         'cbEstadoRemitente
         '
@@ -1100,7 +1101,7 @@ Partial Class frmCartaPorte
         Me.cbEstadoRemitente.Location = New System.Drawing.Point(557, 27)
         Me.cbEstadoRemitente.Name = "cbEstadoRemitente"
         Me.cbEstadoRemitente.Size = New System.Drawing.Size(172, 28)
-        Me.cbEstadoRemitente.TabIndex = 17
+        Me.cbEstadoRemitente.TabIndex = 14
         '
         'cbMunicipioRemitente
         '
@@ -1111,7 +1112,7 @@ Partial Class frmCartaPorte
         Me.cbMunicipioRemitente.Location = New System.Drawing.Point(913, 27)
         Me.cbMunicipioRemitente.Name = "cbMunicipioRemitente"
         Me.cbMunicipioRemitente.Size = New System.Drawing.Size(175, 28)
-        Me.cbMunicipioRemitente.TabIndex = 18
+        Me.cbMunicipioRemitente.TabIndex = 15
         '
         'cbLocalidadRemitente
         '
@@ -1123,7 +1124,7 @@ Partial Class frmCartaPorte
         Me.cbLocalidadRemitente.Location = New System.Drawing.Point(201, 70)
         Me.cbLocalidadRemitente.Name = "cbLocalidadRemitente"
         Me.cbLocalidadRemitente.Size = New System.Drawing.Size(350, 28)
-        Me.cbLocalidadRemitente.TabIndex = 19
+        Me.cbLocalidadRemitente.TabIndex = 16
         '
         'cbColoniaOrigen
         '
@@ -1134,7 +1135,7 @@ Partial Class frmCartaPorte
         Me.cbColoniaOrigen.Location = New System.Drawing.Point(201, 113)
         Me.cbColoniaOrigen.Name = "cbColoniaOrigen"
         Me.cbColoniaOrigen.Size = New System.Drawing.Size(172, 28)
-        Me.cbColoniaOrigen.TabIndex = 20
+        Me.cbColoniaOrigen.TabIndex = 18
         '
         'btnSiguienteOrigen
         '
@@ -1142,7 +1143,7 @@ Partial Class frmCartaPorte
         Me.btnSiguienteOrigen.Location = New System.Drawing.Point(933, 559)
         Me.btnSiguienteOrigen.Name = "btnSiguienteOrigen"
         Me.btnSiguienteOrigen.Size = New System.Drawing.Size(161, 56)
-        Me.btnSiguienteOrigen.TabIndex = 2
+        Me.btnSiguienteOrigen.TabIndex = 23
         Me.btnSiguienteOrigen.Text = "Siguiente"
         Me.btnSiguienteOrigen.UseVisualStyleBackColor = True
         '
@@ -1285,7 +1286,7 @@ Partial Class frmCartaPorte
         Me.rbEsExtranjeroDestino.Location = New System.Drawing.Point(345, 2)
         Me.rbEsExtranjeroDestino.Name = "rbEsExtranjeroDestino"
         Me.rbEsExtranjeroDestino.Size = New System.Drawing.Size(140, 24)
-        Me.rbEsExtranjeroDestino.TabIndex = 2
+        Me.rbEsExtranjeroDestino.TabIndex = 4
         Me.rbEsExtranjeroDestino.TabStop = True
         Me.rbEsExtranjeroDestino.Text = "Es extranjero"
         Me.rbEsExtranjeroDestino.UseVisualStyleBackColor = True
@@ -1297,7 +1298,7 @@ Partial Class frmCartaPorte
         Me.rbPersonaMoralDestino.Location = New System.Drawing.Point(169, 0)
         Me.rbPersonaMoralDestino.Name = "rbPersonaMoralDestino"
         Me.rbPersonaMoralDestino.Size = New System.Drawing.Size(149, 24)
-        Me.rbPersonaMoralDestino.TabIndex = 1
+        Me.rbPersonaMoralDestino.TabIndex = 3
         Me.rbPersonaMoralDestino.TabStop = True
         Me.rbPersonaMoralDestino.Text = "Persona moral"
         Me.rbPersonaMoralDestino.UseVisualStyleBackColor = True
@@ -1309,7 +1310,7 @@ Partial Class frmCartaPorte
         Me.rbPersonaFisicaDestino.Location = New System.Drawing.Point(0, -3)
         Me.rbPersonaFisicaDestino.Name = "rbPersonaFisicaDestino"
         Me.rbPersonaFisicaDestino.Size = New System.Drawing.Size(147, 24)
-        Me.rbPersonaFisicaDestino.TabIndex = 0
+        Me.rbPersonaFisicaDestino.TabIndex = 2
         Me.rbPersonaFisicaDestino.TabStop = True
         Me.rbPersonaFisicaDestino.Text = "Persona física"
         Me.rbPersonaFisicaDestino.UseVisualStyleBackColor = True
@@ -1387,7 +1388,7 @@ Partial Class frmCartaPorte
         Me.txtTipoUbicacionDestino.Location = New System.Drawing.Point(275, 37)
         Me.txtTipoUbicacionDestino.Name = "txtTipoUbicacionDestino"
         Me.txtTipoUbicacionDestino.Size = New System.Drawing.Size(266, 26)
-        Me.txtTipoUbicacionDestino.TabIndex = 12
+        Me.txtTipoUbicacionDestino.TabIndex = 0
         '
         'txtIdUbicacionDestino
         '
@@ -1396,7 +1397,7 @@ Partial Class frmCartaPorte
         Me.txtIdUbicacionDestino.Location = New System.Drawing.Point(819, 37)
         Me.txtIdUbicacionDestino.Name = "txtIdUbicacionDestino"
         Me.txtIdUbicacionDestino.Size = New System.Drawing.Size(269, 26)
-        Me.txtIdUbicacionDestino.TabIndex = 13
+        Me.txtIdUbicacionDestino.TabIndex = 1
         '
         'txtRfcDestino
         '
@@ -1405,7 +1406,7 @@ Partial Class frmCartaPorte
         Me.txtRfcDestino.Location = New System.Drawing.Point(819, 75)
         Me.txtRfcDestino.Name = "txtRfcDestino"
         Me.txtRfcDestino.Size = New System.Drawing.Size(269, 26)
-        Me.txtRfcDestino.TabIndex = 14
+        Me.txtRfcDestino.TabIndex = 5
         '
         'txtNombreDestino
         '
@@ -1413,7 +1414,7 @@ Partial Class frmCartaPorte
         Me.txtNombreDestino.Location = New System.Drawing.Point(275, 113)
         Me.txtNombreDestino.Name = "txtNombreDestino"
         Me.txtNombreDestino.Size = New System.Drawing.Size(266, 26)
-        Me.txtNombreDestino.TabIndex = 15
+        Me.txtNombreDestino.TabIndex = 6
         '
         'txtApMaternoDestino
         '
@@ -1421,7 +1422,7 @@ Partial Class frmCartaPorte
         Me.txtApMaternoDestino.Location = New System.Drawing.Point(275, 151)
         Me.txtApMaternoDestino.Name = "txtApMaternoDestino"
         Me.txtApMaternoDestino.Size = New System.Drawing.Size(266, 26)
-        Me.txtApMaternoDestino.TabIndex = 16
+        Me.txtApMaternoDestino.TabIndex = 8
         '
         'txtApPaternoDestino
         '
@@ -1429,7 +1430,7 @@ Partial Class frmCartaPorte
         Me.txtApPaternoDestino.Location = New System.Drawing.Point(819, 113)
         Me.txtApPaternoDestino.Name = "txtApPaternoDestino"
         Me.txtApPaternoDestino.Size = New System.Drawing.Size(269, 26)
-        Me.txtApPaternoDestino.TabIndex = 17
+        Me.txtApPaternoDestino.TabIndex = 7
         '
         'txtNumIdRegFiscalDestino
         '
@@ -1438,7 +1439,7 @@ Partial Class frmCartaPorte
         Me.txtNumIdRegFiscalDestino.Location = New System.Drawing.Point(547, 189)
         Me.txtNumIdRegFiscalDestino.Name = "txtNumIdRegFiscalDestino"
         Me.txtNumIdRegFiscalDestino.Size = New System.Drawing.Size(541, 26)
-        Me.txtNumIdRegFiscalDestino.TabIndex = 18
+        Me.txtNumIdRegFiscalDestino.TabIndex = 9
         '
         'txtResidenciaFiscalDestino
         '
@@ -1448,6 +1449,7 @@ Partial Class frmCartaPorte
         Me.txtResidenciaFiscalDestino.Name = "txtResidenciaFiscalDestino"
         Me.txtResidenciaFiscalDestino.Size = New System.Drawing.Size(541, 26)
         Me.txtResidenciaFiscalDestino.TabIndex = 19
+        Me.txtResidenciaFiscalDestino.TabStop = False
         '
         'dtFechaSalidaDestino
         '
@@ -1456,7 +1458,7 @@ Partial Class frmCartaPorte
         Me.dtFechaSalidaDestino.Location = New System.Drawing.Point(275, 265)
         Me.dtFechaSalidaDestino.Name = "dtFechaSalidaDestino"
         Me.dtFechaSalidaDestino.Size = New System.Drawing.Size(266, 26)
-        Me.dtFechaSalidaDestino.TabIndex = 21
+        Me.dtFechaSalidaDestino.TabIndex = 11
         '
         'cbResidenciaFiscalDestino
         '
@@ -1465,7 +1467,7 @@ Partial Class frmCartaPorte
         Me.cbResidenciaFiscalDestino.Location = New System.Drawing.Point(275, 227)
         Me.cbResidenciaFiscalDestino.Name = "cbResidenciaFiscalDestino"
         Me.cbResidenciaFiscalDestino.Size = New System.Drawing.Size(266, 28)
-        Me.cbResidenciaFiscalDestino.TabIndex = 22
+        Me.cbResidenciaFiscalDestino.TabIndex = 10
         '
         'tlpHoraLlegadaDestino
         '
@@ -1490,7 +1492,7 @@ Partial Class frmCartaPorte
         Me.txtHoraSalidaDestino.Location = New System.Drawing.Point(136, 3)
         Me.txtHoraSalidaDestino.Name = "txtHoraSalidaDestino"
         Me.txtHoraSalidaDestino.Size = New System.Drawing.Size(127, 26)
-        Me.txtHoraSalidaDestino.TabIndex = 21
+        Me.txtHoraSalidaDestino.TabIndex = 12
         '
         'Label5
         '
@@ -1539,7 +1541,7 @@ Partial Class frmCartaPorte
         Me.nupKmRecorridos.Maximum = New Decimal(New Integer() {1, 0, 0, 0})
         Me.nupKmRecorridos.Name = "nupKmRecorridos"
         Me.nupKmRecorridos.Size = New System.Drawing.Size(129, 26)
-        Me.nupKmRecorridos.TabIndex = 1
+        Me.nupKmRecorridos.TabIndex = 13
         '
         'tlpDetallesDestino
         '
@@ -1711,7 +1713,7 @@ Partial Class frmCartaPorte
         Me.txtReferenciaDestino.Location = New System.Drawing.Point(201, 199)
         Me.txtReferenciaDestino.Name = "txtReferenciaDestino"
         Me.txtReferenciaDestino.Size = New System.Drawing.Size(887, 26)
-        Me.txtReferenciaDestino.TabIndex = 11
+        Me.txtReferenciaDestino.TabIndex = 25
         '
         'txtCalleDestino
         '
@@ -1721,7 +1723,7 @@ Partial Class frmCartaPorte
         Me.txtCalleDestino.Location = New System.Drawing.Point(201, 156)
         Me.txtCalleDestino.Name = "txtCalleDestino"
         Me.txtCalleDestino.Size = New System.Drawing.Size(706, 26)
-        Me.txtCalleDestino.TabIndex = 12
+        Me.txtCalleDestino.TabIndex = 24
         '
         'txtNoExtDestino
         '
@@ -1730,7 +1732,7 @@ Partial Class frmCartaPorte
         Me.txtNoExtDestino.Location = New System.Drawing.Point(557, 113)
         Me.txtNoExtDestino.Name = "txtNoExtDestino"
         Me.txtNoExtDestino.Size = New System.Drawing.Size(172, 26)
-        Me.txtNoExtDestino.TabIndex = 13
+        Me.txtNoExtDestino.TabIndex = 22
         '
         'txtNoIntDestino
         '
@@ -1738,7 +1740,7 @@ Partial Class frmCartaPorte
         Me.txtNoIntDestino.Location = New System.Drawing.Point(913, 113)
         Me.txtNoIntDestino.Name = "txtNoIntDestino"
         Me.txtNoIntDestino.Size = New System.Drawing.Size(175, 26)
-        Me.txtNoIntDestino.TabIndex = 14
+        Me.txtNoIntDestino.TabIndex = 23
         '
         'txtCpDestino
         '
@@ -1747,7 +1749,7 @@ Partial Class frmCartaPorte
         Me.txtCpDestino.Location = New System.Drawing.Point(913, 70)
         Me.txtCpDestino.Name = "txtCpDestino"
         Me.txtCpDestino.Size = New System.Drawing.Size(175, 26)
-        Me.txtCpDestino.TabIndex = 15
+        Me.txtCpDestino.TabIndex = 20
         '
         'cbPaisDestino
         '
@@ -1759,7 +1761,7 @@ Partial Class frmCartaPorte
         Me.cbPaisDestino.Location = New System.Drawing.Point(201, 27)
         Me.cbPaisDestino.Name = "cbPaisDestino"
         Me.cbPaisDestino.Size = New System.Drawing.Size(172, 28)
-        Me.cbPaisDestino.TabIndex = 16
+        Me.cbPaisDestino.TabIndex = 14
         '
         'cbEstadoDestino
         '
@@ -1771,7 +1773,7 @@ Partial Class frmCartaPorte
         Me.cbEstadoDestino.Location = New System.Drawing.Point(557, 27)
         Me.cbEstadoDestino.Name = "cbEstadoDestino"
         Me.cbEstadoDestino.Size = New System.Drawing.Size(172, 28)
-        Me.cbEstadoDestino.TabIndex = 17
+        Me.cbEstadoDestino.TabIndex = 15
         '
         'cbMunicipioDestino
         '
@@ -1783,7 +1785,7 @@ Partial Class frmCartaPorte
         Me.cbMunicipioDestino.Location = New System.Drawing.Point(913, 27)
         Me.cbMunicipioDestino.Name = "cbMunicipioDestino"
         Me.cbMunicipioDestino.Size = New System.Drawing.Size(175, 28)
-        Me.cbMunicipioDestino.TabIndex = 18
+        Me.cbMunicipioDestino.TabIndex = 16
         '
         'cbLocalidadDestino
         '
@@ -1808,7 +1810,7 @@ Partial Class frmCartaPorte
         Me.cbColoniaDestino.Location = New System.Drawing.Point(201, 113)
         Me.cbColoniaDestino.Name = "cbColoniaDestino"
         Me.cbColoniaDestino.Size = New System.Drawing.Size(172, 28)
-        Me.cbColoniaDestino.TabIndex = 20
+        Me.cbColoniaDestino.TabIndex = 21
         '
         'tlpBotonesSiguienteAtrasDestino
         '
@@ -1832,7 +1834,7 @@ Partial Class frmCartaPorte
         Me.btnAtrasDestino.Location = New System.Drawing.Point(657, 3)
         Me.btnAtrasDestino.Name = "btnAtrasDestino"
         Me.btnAtrasDestino.Size = New System.Drawing.Size(212, 50)
-        Me.btnAtrasDestino.TabIndex = 0
+        Me.btnAtrasDestino.TabIndex = 26
         Me.btnAtrasDestino.Text = "Atrás"
         Me.btnAtrasDestino.UseVisualStyleBackColor = True
         '
@@ -1842,7 +1844,7 @@ Partial Class frmCartaPorte
         Me.btnSiguienteDestino.Location = New System.Drawing.Point(875, 3)
         Me.btnSiguienteDestino.Name = "btnSiguienteDestino"
         Me.btnSiguienteDestino.Size = New System.Drawing.Size(213, 50)
-        Me.btnSiguienteDestino.TabIndex = 1
+        Me.btnSiguienteDestino.TabIndex = 27
         Me.btnSiguienteDestino.Text = "Siguiente"
         Me.btnSiguienteDestino.UseVisualStyleBackColor = True
         '
@@ -2052,7 +2054,7 @@ Partial Class frmCartaPorte
         Me.txtReferenciaDestinoIntermedio.Location = New System.Drawing.Point(201, 148)
         Me.txtReferenciaDestinoIntermedio.Name = "txtReferenciaDestinoIntermedio"
         Me.txtReferenciaDestinoIntermedio.Size = New System.Drawing.Size(887, 26)
-        Me.txtReferenciaDestinoIntermedio.TabIndex = 11
+        Me.txtReferenciaDestinoIntermedio.TabIndex = 23
         '
         'txtCalleDestinoIntermedio
         '
@@ -2062,7 +2064,7 @@ Partial Class frmCartaPorte
         Me.txtCalleDestinoIntermedio.Location = New System.Drawing.Point(201, 116)
         Me.txtCalleDestinoIntermedio.Name = "txtCalleDestinoIntermedio"
         Me.txtCalleDestinoIntermedio.Size = New System.Drawing.Size(706, 26)
-        Me.txtCalleDestinoIntermedio.TabIndex = 12
+        Me.txtCalleDestinoIntermedio.TabIndex = 22
         '
         'txtNoExtDestinoIntermedio
         '
@@ -2071,7 +2073,7 @@ Partial Class frmCartaPorte
         Me.txtNoExtDestinoIntermedio.Location = New System.Drawing.Point(557, 84)
         Me.txtNoExtDestinoIntermedio.Name = "txtNoExtDestinoIntermedio"
         Me.txtNoExtDestinoIntermedio.Size = New System.Drawing.Size(172, 26)
-        Me.txtNoExtDestinoIntermedio.TabIndex = 13
+        Me.txtNoExtDestinoIntermedio.TabIndex = 20
         '
         'txtNoIntDestinoIntermedio
         '
@@ -2079,7 +2081,7 @@ Partial Class frmCartaPorte
         Me.txtNoIntDestinoIntermedio.Location = New System.Drawing.Point(913, 84)
         Me.txtNoIntDestinoIntermedio.Name = "txtNoIntDestinoIntermedio"
         Me.txtNoIntDestinoIntermedio.Size = New System.Drawing.Size(175, 26)
-        Me.txtNoIntDestinoIntermedio.TabIndex = 14
+        Me.txtNoIntDestinoIntermedio.TabIndex = 21
         '
         'txtCpDestinoIntermedio
         '
@@ -2088,7 +2090,7 @@ Partial Class frmCartaPorte
         Me.txtCpDestinoIntermedio.Location = New System.Drawing.Point(913, 52)
         Me.txtCpDestinoIntermedio.Name = "txtCpDestinoIntermedio"
         Me.txtCpDestinoIntermedio.Size = New System.Drawing.Size(175, 26)
-        Me.txtCpDestinoIntermedio.TabIndex = 15
+        Me.txtCpDestinoIntermedio.TabIndex = 18
         '
         'cbPaisDestinoIntermedio
         '
@@ -2100,7 +2102,7 @@ Partial Class frmCartaPorte
         Me.cbPaisDestinoIntermedio.Location = New System.Drawing.Point(201, 20)
         Me.cbPaisDestinoIntermedio.Name = "cbPaisDestinoIntermedio"
         Me.cbPaisDestinoIntermedio.Size = New System.Drawing.Size(172, 28)
-        Me.cbPaisDestinoIntermedio.TabIndex = 16
+        Me.cbPaisDestinoIntermedio.TabIndex = 14
         '
         'cbEstadoDestinoIntermedio
         '
@@ -2112,7 +2114,7 @@ Partial Class frmCartaPorte
         Me.cbEstadoDestinoIntermedio.Location = New System.Drawing.Point(557, 20)
         Me.cbEstadoDestinoIntermedio.Name = "cbEstadoDestinoIntermedio"
         Me.cbEstadoDestinoIntermedio.Size = New System.Drawing.Size(172, 28)
-        Me.cbEstadoDestinoIntermedio.TabIndex = 17
+        Me.cbEstadoDestinoIntermedio.TabIndex = 15
         '
         'cbMunicipioDestinoIntermedio
         '
@@ -2124,7 +2126,7 @@ Partial Class frmCartaPorte
         Me.cbMunicipioDestinoIntermedio.Location = New System.Drawing.Point(913, 20)
         Me.cbMunicipioDestinoIntermedio.Name = "cbMunicipioDestinoIntermedio"
         Me.cbMunicipioDestinoIntermedio.Size = New System.Drawing.Size(175, 28)
-        Me.cbMunicipioDestinoIntermedio.TabIndex = 18
+        Me.cbMunicipioDestinoIntermedio.TabIndex = 16
         '
         'cbLocalidadDestinoIntermedio
         '
@@ -2137,7 +2139,7 @@ Partial Class frmCartaPorte
         Me.cbLocalidadDestinoIntermedio.Location = New System.Drawing.Point(201, 52)
         Me.cbLocalidadDestinoIntermedio.Name = "cbLocalidadDestinoIntermedio"
         Me.cbLocalidadDestinoIntermedio.Size = New System.Drawing.Size(350, 28)
-        Me.cbLocalidadDestinoIntermedio.TabIndex = 19
+        Me.cbLocalidadDestinoIntermedio.TabIndex = 17
         '
         'cbColoniaDestinoIntermedio
         '
@@ -2149,7 +2151,7 @@ Partial Class frmCartaPorte
         Me.cbColoniaDestinoIntermedio.Location = New System.Drawing.Point(201, 84)
         Me.cbColoniaDestinoIntermedio.Name = "cbColoniaDestinoIntermedio"
         Me.cbColoniaDestinoIntermedio.Size = New System.Drawing.Size(172, 28)
-        Me.cbColoniaDestinoIntermedio.TabIndex = 20
+        Me.cbColoniaDestinoIntermedio.TabIndex = 19
         '
         'tlpDatosFiscalesDestinoIntermedio
         '
@@ -2261,7 +2263,7 @@ Partial Class frmCartaPorte
         Me.rbEsExtranjeroDestinoIntermedio.Location = New System.Drawing.Point(361, 2)
         Me.rbEsExtranjeroDestinoIntermedio.Name = "rbEsExtranjeroDestinoIntermedio"
         Me.rbEsExtranjeroDestinoIntermedio.Size = New System.Drawing.Size(140, 24)
-        Me.rbEsExtranjeroDestinoIntermedio.TabIndex = 2
+        Me.rbEsExtranjeroDestinoIntermedio.TabIndex = 4
         Me.rbEsExtranjeroDestinoIntermedio.TabStop = True
         Me.rbEsExtranjeroDestinoIntermedio.Text = "Es extranjero"
         Me.rbEsExtranjeroDestinoIntermedio.UseVisualStyleBackColor = True
@@ -2273,7 +2275,7 @@ Partial Class frmCartaPorte
         Me.rbEsPersonaMoralDestinoIntermedio.Location = New System.Drawing.Point(173, 0)
         Me.rbEsPersonaMoralDestinoIntermedio.Name = "rbEsPersonaMoralDestinoIntermedio"
         Me.rbEsPersonaMoralDestinoIntermedio.Size = New System.Drawing.Size(149, 24)
-        Me.rbEsPersonaMoralDestinoIntermedio.TabIndex = 1
+        Me.rbEsPersonaMoralDestinoIntermedio.TabIndex = 3
         Me.rbEsPersonaMoralDestinoIntermedio.TabStop = True
         Me.rbEsPersonaMoralDestinoIntermedio.Text = "Persona moral"
         Me.rbEsPersonaMoralDestinoIntermedio.UseVisualStyleBackColor = True
@@ -2285,7 +2287,7 @@ Partial Class frmCartaPorte
         Me.rbEsPersonaFisicaDestinoIntermedio.Location = New System.Drawing.Point(0, -3)
         Me.rbEsPersonaFisicaDestinoIntermedio.Name = "rbEsPersonaFisicaDestinoIntermedio"
         Me.rbEsPersonaFisicaDestinoIntermedio.Size = New System.Drawing.Size(147, 24)
-        Me.rbEsPersonaFisicaDestinoIntermedio.TabIndex = 0
+        Me.rbEsPersonaFisicaDestinoIntermedio.TabIndex = 2
         Me.rbEsPersonaFisicaDestinoIntermedio.TabStop = True
         Me.rbEsPersonaFisicaDestinoIntermedio.Text = "Persona física"
         Me.rbEsPersonaFisicaDestinoIntermedio.UseVisualStyleBackColor = True
@@ -2362,7 +2364,7 @@ Partial Class frmCartaPorte
         Me.txtTipoUbicacionDestinoIntermedio.Location = New System.Drawing.Point(275, 29)
         Me.txtTipoUbicacionDestinoIntermedio.Name = "txtTipoUbicacionDestinoIntermedio"
         Me.txtTipoUbicacionDestinoIntermedio.Size = New System.Drawing.Size(266, 26)
-        Me.txtTipoUbicacionDestinoIntermedio.TabIndex = 12
+        Me.txtTipoUbicacionDestinoIntermedio.TabIndex = 0
         '
         'txtIdUbicacionDestinoIntermedio
         '
@@ -2371,7 +2373,7 @@ Partial Class frmCartaPorte
         Me.txtIdUbicacionDestinoIntermedio.Location = New System.Drawing.Point(819, 29)
         Me.txtIdUbicacionDestinoIntermedio.Name = "txtIdUbicacionDestinoIntermedio"
         Me.txtIdUbicacionDestinoIntermedio.Size = New System.Drawing.Size(269, 26)
-        Me.txtIdUbicacionDestinoIntermedio.TabIndex = 13
+        Me.txtIdUbicacionDestinoIntermedio.TabIndex = 1
         '
         'txtRfcDestinoIntermedio
         '
@@ -2380,7 +2382,7 @@ Partial Class frmCartaPorte
         Me.txtRfcDestinoIntermedio.Location = New System.Drawing.Point(819, 55)
         Me.txtRfcDestinoIntermedio.Name = "txtRfcDestinoIntermedio"
         Me.txtRfcDestinoIntermedio.Size = New System.Drawing.Size(269, 26)
-        Me.txtRfcDestinoIntermedio.TabIndex = 14
+        Me.txtRfcDestinoIntermedio.TabIndex = 5
         '
         'txtNombreDestinoIntermedio
         '
@@ -2389,7 +2391,7 @@ Partial Class frmCartaPorte
         Me.txtNombreDestinoIntermedio.Location = New System.Drawing.Point(275, 81)
         Me.txtNombreDestinoIntermedio.Name = "txtNombreDestinoIntermedio"
         Me.txtNombreDestinoIntermedio.Size = New System.Drawing.Size(266, 26)
-        Me.txtNombreDestinoIntermedio.TabIndex = 15
+        Me.txtNombreDestinoIntermedio.TabIndex = 6
         '
         'txtApMaternoDestinoIntermedio
         '
@@ -2397,7 +2399,7 @@ Partial Class frmCartaPorte
         Me.txtApMaternoDestinoIntermedio.Location = New System.Drawing.Point(275, 107)
         Me.txtApMaternoDestinoIntermedio.Name = "txtApMaternoDestinoIntermedio"
         Me.txtApMaternoDestinoIntermedio.Size = New System.Drawing.Size(266, 26)
-        Me.txtApMaternoDestinoIntermedio.TabIndex = 16
+        Me.txtApMaternoDestinoIntermedio.TabIndex = 8
         '
         'txtApPaternoDestinoIntermedio
         '
@@ -2405,7 +2407,7 @@ Partial Class frmCartaPorte
         Me.txtApPaternoDestinoIntermedio.Location = New System.Drawing.Point(819, 81)
         Me.txtApPaternoDestinoIntermedio.Name = "txtApPaternoDestinoIntermedio"
         Me.txtApPaternoDestinoIntermedio.Size = New System.Drawing.Size(269, 26)
-        Me.txtApPaternoDestinoIntermedio.TabIndex = 17
+        Me.txtApPaternoDestinoIntermedio.TabIndex = 7
         '
         'txtNumregIdTribDestinoIntermedio
         '
@@ -2414,7 +2416,7 @@ Partial Class frmCartaPorte
         Me.txtNumregIdTribDestinoIntermedio.Location = New System.Drawing.Point(547, 133)
         Me.txtNumregIdTribDestinoIntermedio.Name = "txtNumregIdTribDestinoIntermedio"
         Me.txtNumregIdTribDestinoIntermedio.Size = New System.Drawing.Size(541, 26)
-        Me.txtNumregIdTribDestinoIntermedio.TabIndex = 18
+        Me.txtNumregIdTribDestinoIntermedio.TabIndex = 9
         '
         'txtPaisResidenciaFiscalDestinoIntermedio
         '
@@ -2432,7 +2434,7 @@ Partial Class frmCartaPorte
         Me.dtFechaLlegadaDestinoIntermedio.Location = New System.Drawing.Point(275, 187)
         Me.dtFechaLlegadaDestinoIntermedio.Name = "dtFechaLlegadaDestinoIntermedio"
         Me.dtFechaLlegadaDestinoIntermedio.Size = New System.Drawing.Size(266, 26)
-        Me.dtFechaLlegadaDestinoIntermedio.TabIndex = 21
+        Me.dtFechaLlegadaDestinoIntermedio.TabIndex = 11
         '
         'cbPaisResidenciaFiscalDestinoIntermedio
         '
@@ -2442,7 +2444,7 @@ Partial Class frmCartaPorte
         Me.cbPaisResidenciaFiscalDestinoIntermedio.Location = New System.Drawing.Point(275, 159)
         Me.cbPaisResidenciaFiscalDestinoIntermedio.Name = "cbPaisResidenciaFiscalDestinoIntermedio"
         Me.cbPaisResidenciaFiscalDestinoIntermedio.Size = New System.Drawing.Size(266, 28)
-        Me.cbPaisResidenciaFiscalDestinoIntermedio.TabIndex = 22
+        Me.cbPaisResidenciaFiscalDestinoIntermedio.TabIndex = 10
         '
         'tlpHoraLlegadaDestinoIntermedio
         '
@@ -2467,7 +2469,7 @@ Partial Class frmCartaPorte
         Me.txtHoraLlegadaDestinoIntermedio.Location = New System.Drawing.Point(136, 3)
         Me.txtHoraLlegadaDestinoIntermedio.Name = "txtHoraLlegadaDestinoIntermedio"
         Me.txtHoraLlegadaDestinoIntermedio.Size = New System.Drawing.Size(127, 26)
-        Me.txtHoraLlegadaDestinoIntermedio.TabIndex = 21
+        Me.txtHoraLlegadaDestinoIntermedio.TabIndex = 12
         '
         'Label33
         '
@@ -2504,7 +2506,7 @@ Partial Class frmCartaPorte
         Me.nupKmDestinoIntermedio.Location = New System.Drawing.Point(137, 3)
         Me.nupKmDestinoIntermedio.Name = "nupKmDestinoIntermedio"
         Me.nupKmDestinoIntermedio.Size = New System.Drawing.Size(120, 26)
-        Me.nupKmDestinoIntermedio.TabIndex = 0
+        Me.nupKmDestinoIntermedio.TabIndex = 13
         '
         'Label7
         '
@@ -2567,6 +2569,7 @@ Partial Class frmCartaPorte
         Me.dgvCartaPorteDestinosIntermedios.RowTemplate.Height = 28
         Me.dgvCartaPorteDestinosIntermedios.Size = New System.Drawing.Size(1085, 88)
         Me.dgvCartaPorteDestinosIntermedios.TabIndex = 1
+        Me.dgvCartaPorteDestinosIntermedios.TabStop = False
         '
         'DIMovimientoClm
         '
@@ -2683,7 +2686,7 @@ Partial Class frmCartaPorte
         Me.btnSiguienteDestinosIntermedios.Location = New System.Drawing.Point(927, 3)
         Me.btnSiguienteDestinosIntermedios.Name = "btnSiguienteDestinosIntermedios"
         Me.btnSiguienteDestinosIntermedios.Size = New System.Drawing.Size(161, 51)
-        Me.btnSiguienteDestinosIntermedios.TabIndex = 2
+        Me.btnSiguienteDestinosIntermedios.TabIndex = 28
         Me.btnSiguienteDestinosIntermedios.Text = "Siguiente"
         Me.btnSiguienteDestinosIntermedios.UseVisualStyleBackColor = True
         '
@@ -2693,7 +2696,7 @@ Partial Class frmCartaPorte
         Me.btnAtrasDestinosIntermedios.Location = New System.Drawing.Point(275, 3)
         Me.btnAtrasDestinosIntermedios.Name = "btnAtrasDestinosIntermedios"
         Me.btnAtrasDestinosIntermedios.Size = New System.Drawing.Size(157, 51)
-        Me.btnAtrasDestinosIntermedios.TabIndex = 0
+        Me.btnAtrasDestinosIntermedios.TabIndex = 24
         Me.btnAtrasDestinosIntermedios.Text = "Atrás"
         Me.btnAtrasDestinosIntermedios.UseVisualStyleBackColor = True
         '
@@ -2703,7 +2706,7 @@ Partial Class frmCartaPorte
         Me.btnReiniciarDestinosIntermedios.Location = New System.Drawing.Point(438, 3)
         Me.btnReiniciarDestinosIntermedios.Name = "btnReiniciarDestinosIntermedios"
         Me.btnReiniciarDestinosIntermedios.Size = New System.Drawing.Size(157, 51)
-        Me.btnReiniciarDestinosIntermedios.TabIndex = 3
+        Me.btnReiniciarDestinosIntermedios.TabIndex = 25
         Me.btnReiniciarDestinosIntermedios.Text = "Nuevo"
         Me.btnReiniciarDestinosIntermedios.UseVisualStyleBackColor = True
         '
@@ -2713,7 +2716,7 @@ Partial Class frmCartaPorte
         Me.btnGuardarDestinosIntermedios.Location = New System.Drawing.Point(764, 3)
         Me.btnGuardarDestinosIntermedios.Name = "btnGuardarDestinosIntermedios"
         Me.btnGuardarDestinosIntermedios.Size = New System.Drawing.Size(157, 51)
-        Me.btnGuardarDestinosIntermedios.TabIndex = 4
+        Me.btnGuardarDestinosIntermedios.TabIndex = 27
         Me.btnGuardarDestinosIntermedios.Text = "Guardar"
         Me.btnGuardarDestinosIntermedios.UseVisualStyleBackColor = True
         '
@@ -2723,7 +2726,7 @@ Partial Class frmCartaPorte
         Me.btnLimpiarDestinosIntermedios.Location = New System.Drawing.Point(601, 3)
         Me.btnLimpiarDestinosIntermedios.Name = "btnLimpiarDestinosIntermedios"
         Me.btnLimpiarDestinosIntermedios.Size = New System.Drawing.Size(157, 51)
-        Me.btnLimpiarDestinosIntermedios.TabIndex = 5
+        Me.btnLimpiarDestinosIntermedios.TabIndex = 26
         Me.btnLimpiarDestinosIntermedios.Text = "Limpiar"
         Me.btnLimpiarDestinosIntermedios.UseVisualStyleBackColor = True
         '
@@ -2785,24 +2788,24 @@ Partial Class frmCartaPorte
         'dgvListadoMovimientosPestanaMercancia
         '
         Me.dgvListadoMovimientosPestanaMercancia.AllowUserToAddRows = False
-        DataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle9.BackColor = System.Drawing.SystemColors.Control
-        DataGridViewCellStyle9.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle9.ForeColor = System.Drawing.SystemColors.WindowText
-        DataGridViewCellStyle9.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle9.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle9.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.dgvListadoMovimientosPestanaMercancia.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle9
+        DataGridViewCellStyle53.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle53.BackColor = System.Drawing.SystemColors.Control
+        DataGridViewCellStyle53.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle53.ForeColor = System.Drawing.SystemColors.WindowText
+        DataGridViewCellStyle53.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle53.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle53.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.dgvListadoMovimientosPestanaMercancia.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle53
         Me.dgvListadoMovimientosPestanaMercancia.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
         Me.dgvListadoMovimientosPestanaMercancia.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.MovimientoMercanciaClm, Me.DestinoMercanciaClm, Me.MovimientosTipoMovimientoClm, Me.MercanciasBtnClm, Me.AnadirMercanciaMovimientoClm, Me.IdUbicacionMovimientoPestanaMercanciaClm})
-        DataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle10.BackColor = System.Drawing.SystemColors.Window
-        DataGridViewCellStyle10.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle10.ForeColor = System.Drawing.SystemColors.ControlText
-        DataGridViewCellStyle10.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle10.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle10.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
-        Me.dgvListadoMovimientosPestanaMercancia.DefaultCellStyle = DataGridViewCellStyle10
+        DataGridViewCellStyle54.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle54.BackColor = System.Drawing.SystemColors.Window
+        DataGridViewCellStyle54.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle54.ForeColor = System.Drawing.SystemColors.ControlText
+        DataGridViewCellStyle54.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle54.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle54.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
+        Me.dgvListadoMovimientosPestanaMercancia.DefaultCellStyle = DataGridViewCellStyle54
         Me.dgvListadoMovimientosPestanaMercancia.Dock = System.Windows.Forms.DockStyle.Fill
         Me.dgvListadoMovimientosPestanaMercancia.Location = New System.Drawing.Point(3, 26)
         Me.dgvListadoMovimientosPestanaMercancia.Name = "dgvListadoMovimientosPestanaMercancia"
@@ -2811,6 +2814,7 @@ Partial Class frmCartaPorte
         Me.dgvListadoMovimientosPestanaMercancia.RowTemplate.Height = 28
         Me.dgvListadoMovimientosPestanaMercancia.Size = New System.Drawing.Size(1091, 89)
         Me.dgvListadoMovimientosPestanaMercancia.TabIndex = 1
+        Me.dgvListadoMovimientosPestanaMercancia.TabStop = False
         '
         'MovimientoMercanciaClm
         '
@@ -2894,24 +2898,24 @@ Partial Class frmCartaPorte
         'dgvMercanciasPorMovimiento
         '
         Me.dgvMercanciasPorMovimiento.AllowUserToAddRows = False
-        DataGridViewCellStyle11.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle11.BackColor = System.Drawing.SystemColors.Control
-        DataGridViewCellStyle11.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle11.ForeColor = System.Drawing.SystemColors.WindowText
-        DataGridViewCellStyle11.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle11.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle11.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.dgvMercanciasPorMovimiento.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle11
+        DataGridViewCellStyle55.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle55.BackColor = System.Drawing.SystemColors.Control
+        DataGridViewCellStyle55.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle55.ForeColor = System.Drawing.SystemColors.WindowText
+        DataGridViewCellStyle55.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle55.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle55.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.dgvMercanciasPorMovimiento.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle55
         Me.dgvMercanciasPorMovimiento.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
         Me.dgvMercanciasPorMovimiento.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.MercanciaClaveProdServClm, Me.MovimientoDescripcionClm, Me.ClaveUnidadClm, Me.DescripcionUnidadClm, Me.MercanciaMovimientoPeligrosaClm, Me.MovimientoComercioIntClm, Me.MovimientoDetallesMercClm, Me.MovimientoMercanciaEliminarClm})
-        DataGridViewCellStyle12.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle12.BackColor = System.Drawing.SystemColors.Window
-        DataGridViewCellStyle12.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle12.ForeColor = System.Drawing.SystemColors.ControlText
-        DataGridViewCellStyle12.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle12.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle12.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
-        Me.dgvMercanciasPorMovimiento.DefaultCellStyle = DataGridViewCellStyle12
+        DataGridViewCellStyle56.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle56.BackColor = System.Drawing.SystemColors.Window
+        DataGridViewCellStyle56.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle56.ForeColor = System.Drawing.SystemColors.ControlText
+        DataGridViewCellStyle56.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle56.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle56.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
+        Me.dgvMercanciasPorMovimiento.DefaultCellStyle = DataGridViewCellStyle56
         Me.dgvMercanciasPorMovimiento.Dock = System.Windows.Forms.DockStyle.Fill
         Me.dgvMercanciasPorMovimiento.Location = New System.Drawing.Point(3, 26)
         Me.dgvMercanciasPorMovimiento.Name = "dgvMercanciasPorMovimiento"
@@ -2920,6 +2924,7 @@ Partial Class frmCartaPorte
         Me.dgvMercanciasPorMovimiento.RowTemplate.Height = 28
         Me.dgvMercanciasPorMovimiento.Size = New System.Drawing.Size(1091, 89)
         Me.dgvMercanciasPorMovimiento.TabIndex = 1
+        Me.dgvMercanciasPorMovimiento.TabStop = False
         '
         'MercanciaClaveProdServClm
         '
@@ -3071,7 +3076,7 @@ Partial Class frmCartaPorte
         Me.Label71.Name = "Label71"
         Me.Label71.Size = New System.Drawing.Size(191, 30)
         Me.Label71.TabIndex = 1
-        Me.Label71.Text = "Clave ProdServ: *"
+        Me.Label71.Text = "Clave ProdServ: * +"
         '
         'Label72
         '
@@ -3092,7 +3097,7 @@ Partial Class frmCartaPorte
         Me.txtClaveProdServMercancia.Location = New System.Drawing.Point(200, 33)
         Me.txtClaveProdServMercancia.Name = "txtClaveProdServMercancia"
         Me.txtClaveProdServMercancia.Size = New System.Drawing.Size(191, 26)
-        Me.txtClaveProdServMercancia.TabIndex = 3
+        Me.txtClaveProdServMercancia.TabIndex = 0
         '
         'txtDescripcionProducto
         '
@@ -3104,6 +3109,7 @@ Partial Class frmCartaPorte
         Me.txtDescripcionProducto.Name = "txtDescripcionProducto"
         Me.txtDescripcionProducto.Size = New System.Drawing.Size(500, 26)
         Me.txtDescripcionProducto.TabIndex = 4
+        Me.txtDescripcionProducto.TabStop = False
         '
         'Label73
         '
@@ -3127,7 +3133,7 @@ Partial Class frmCartaPorte
         Me.Label74.Name = "Label74"
         Me.Label74.Size = New System.Drawing.Size(191, 30)
         Me.Label74.TabIndex = 6
-        Me.Label74.Text = "Clave unidad: *"
+        Me.Label74.Text = "Clave unidad: * +"
         '
         'Label75
         '
@@ -3148,7 +3154,7 @@ Partial Class frmCartaPorte
         Me.txtCantidadMercancia.Location = New System.Drawing.Point(200, 63)
         Me.txtCantidadMercancia.Name = "txtCantidadMercancia"
         Me.txtCantidadMercancia.Size = New System.Drawing.Size(191, 26)
-        Me.txtCantidadMercancia.TabIndex = 8
+        Me.txtCantidadMercancia.TabIndex = 1
         '
         'txtUnidadClaveMercancia
         '
@@ -3157,7 +3163,7 @@ Partial Class frmCartaPorte
         Me.txtUnidadClaveMercancia.Location = New System.Drawing.Point(594, 63)
         Me.txtUnidadClaveMercancia.Name = "txtUnidadClaveMercancia"
         Me.txtUnidadClaveMercancia.Size = New System.Drawing.Size(191, 26)
-        Me.txtUnidadClaveMercancia.TabIndex = 9
+        Me.txtUnidadClaveMercancia.TabIndex = 2
         '
         'txtUnidadMercancia
         '
@@ -3167,6 +3173,7 @@ Partial Class frmCartaPorte
         Me.txtUnidadMercancia.Name = "txtUnidadMercancia"
         Me.txtUnidadMercancia.Size = New System.Drawing.Size(106, 26)
         Me.txtUnidadMercancia.TabIndex = 10
+        Me.txtUnidadMercancia.TabStop = False
         '
         'Label76
         '
@@ -3197,9 +3204,9 @@ Partial Class frmCartaPorte
         Me.Label78.ForeColor = System.Drawing.Color.IndianRed
         Me.Label78.Location = New System.Drawing.Point(791, 90)
         Me.Label78.Name = "Label78"
-        Me.Label78.Size = New System.Drawing.Size(90, 20)
+        Me.Label78.Size = New System.Drawing.Size(105, 20)
         Me.Label78.TabIndex = 13
-        Me.Label78.Text = "Moneda: *"
+        Me.Label78.Text = "Moneda: * +"
         '
         'txtPeso
         '
@@ -3208,7 +3215,7 @@ Partial Class frmCartaPorte
         Me.txtPeso.Location = New System.Drawing.Point(200, 93)
         Me.txtPeso.Name = "txtPeso"
         Me.txtPeso.Size = New System.Drawing.Size(191, 26)
-        Me.txtPeso.TabIndex = 14
+        Me.txtPeso.TabIndex = 3
         '
         'txtValor
         '
@@ -3217,7 +3224,7 @@ Partial Class frmCartaPorte
         Me.txtValor.Location = New System.Drawing.Point(594, 93)
         Me.txtValor.Name = "txtValor"
         Me.txtValor.Size = New System.Drawing.Size(191, 26)
-        Me.txtValor.TabIndex = 15
+        Me.txtValor.TabIndex = 4
         '
         'txtMoneda
         '
@@ -3226,7 +3233,7 @@ Partial Class frmCartaPorte
         Me.txtMoneda.Location = New System.Drawing.Point(988, 93)
         Me.txtMoneda.Name = "txtMoneda"
         Me.txtMoneda.Size = New System.Drawing.Size(106, 26)
-        Me.txtMoneda.TabIndex = 16
+        Me.txtMoneda.TabIndex = 5
         '
         'Label79
         '
@@ -3271,7 +3278,7 @@ Partial Class frmCartaPorte
         Me.numAnchura.Location = New System.Drawing.Point(98, 3)
         Me.numAnchura.Name = "numAnchura"
         Me.numAnchura.Size = New System.Drawing.Size(90, 26)
-        Me.numAnchura.TabIndex = 1
+        Me.numAnchura.TabIndex = 7
         '
         'tlpContenedorAnchura
         '
@@ -3305,7 +3312,7 @@ Partial Class frmCartaPorte
         Me.numAltura.Location = New System.Drawing.Point(98, 3)
         Me.numAltura.Name = "numAltura"
         Me.numAltura.Size = New System.Drawing.Size(90, 26)
-        Me.numAltura.TabIndex = 1
+        Me.numAltura.TabIndex = 8
         '
         'tlpContenedorLongitud
         '
@@ -3340,7 +3347,7 @@ Partial Class frmCartaPorte
         Me.numLongitud.Location = New System.Drawing.Point(98, 3)
         Me.numLongitud.Name = "numLongitud"
         Me.numLongitud.Size = New System.Drawing.Size(90, 26)
-        Me.numLongitud.TabIndex = 1
+        Me.numLongitud.TabIndex = 9
         '
         'cbOpcionDimensiones
         '
@@ -3349,7 +3356,7 @@ Partial Class frmCartaPorte
         Me.cbOpcionDimensiones.Location = New System.Drawing.Point(200, 123)
         Me.cbOpcionDimensiones.Name = "cbOpcionDimensiones"
         Me.cbOpcionDimensiones.Size = New System.Drawing.Size(191, 28)
-        Me.cbOpcionDimensiones.TabIndex = 21
+        Me.cbOpcionDimensiones.TabIndex = 6
         '
         'Label83
         '
@@ -3367,9 +3374,9 @@ Partial Class frmCartaPorte
         Me.Label84.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label84.Location = New System.Drawing.Point(3, 180)
         Me.Label84.Name = "Label84"
-        Me.Label84.Size = New System.Drawing.Size(171, 20)
+        Me.Label84.Size = New System.Drawing.Size(186, 20)
         Me.Label84.TabIndex = 25
-        Me.Label84.Text = "Clave mat peligroso:"
+        Me.Label84.Text = "Clave mat peligroso: +"
         '
         'Label85
         '
@@ -3377,9 +3384,9 @@ Partial Class frmCartaPorte
         Me.Label85.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label85.Location = New System.Drawing.Point(3, 210)
         Me.Label85.Name = "Label85"
-        Me.Label85.Size = New System.Drawing.Size(88, 20)
+        Me.Label85.Size = New System.Drawing.Size(103, 20)
         Me.Label85.TabIndex = 26
-        Me.Label85.Text = "Embalaje:"
+        Me.Label85.Text = "Embalaje: +"
         '
         'txtClaveMaterialPeligroso
         '
@@ -3387,7 +3394,7 @@ Partial Class frmCartaPorte
         Me.txtClaveMaterialPeligroso.Location = New System.Drawing.Point(200, 183)
         Me.txtClaveMaterialPeligroso.Name = "txtClaveMaterialPeligroso"
         Me.txtClaveMaterialPeligroso.Size = New System.Drawing.Size(191, 26)
-        Me.txtClaveMaterialPeligroso.TabIndex = 27
+        Me.txtClaveMaterialPeligroso.TabIndex = 12
         '
         'txtEmbalaje
         '
@@ -3395,7 +3402,7 @@ Partial Class frmCartaPorte
         Me.txtEmbalaje.Location = New System.Drawing.Point(200, 213)
         Me.txtEmbalaje.Name = "txtEmbalaje"
         Me.txtEmbalaje.Size = New System.Drawing.Size(191, 26)
-        Me.txtEmbalaje.TabIndex = 28
+        Me.txtEmbalaje.TabIndex = 13
         '
         'txtDescripcionMaterialPeligroso
         '
@@ -3405,6 +3412,7 @@ Partial Class frmCartaPorte
         Me.txtDescripcionMaterialPeligroso.Name = "txtDescripcionMaterialPeligroso"
         Me.txtDescripcionMaterialPeligroso.Size = New System.Drawing.Size(500, 26)
         Me.txtDescripcionMaterialPeligroso.TabIndex = 29
+        Me.txtDescripcionMaterialPeligroso.TabStop = False
         '
         'txtDescripcionEmbalaje
         '
@@ -3414,6 +3422,7 @@ Partial Class frmCartaPorte
         Me.txtDescripcionEmbalaje.Name = "txtDescripcionEmbalaje"
         Me.txtDescripcionEmbalaje.Size = New System.Drawing.Size(388, 26)
         Me.txtDescripcionEmbalaje.TabIndex = 30
+        Me.txtDescripcionEmbalaje.TabStop = False
         '
         'Label86
         '
@@ -3442,7 +3451,7 @@ Partial Class frmCartaPorte
         Me.txtPedimento.Location = New System.Drawing.Point(200, 273)
         Me.txtPedimento.Name = "txtPedimento"
         Me.txtPedimento.Size = New System.Drawing.Size(388, 26)
-        Me.txtPedimento.TabIndex = 33
+        Me.txtPedimento.TabIndex = 16
         '
         'Label56
         '
@@ -3462,7 +3471,7 @@ Partial Class frmCartaPorte
         Me.txtFraccionArancelaria.Location = New System.Drawing.Point(791, 273)
         Me.txtFraccionArancelaria.Name = "txtFraccionArancelaria"
         Me.txtFraccionArancelaria.Size = New System.Drawing.Size(303, 26)
-        Me.txtFraccionArancelaria.TabIndex = 37
+        Me.txtFraccionArancelaria.TabIndex = 17
         '
         'pnlMaterialPeligroso
         '
@@ -3482,7 +3491,7 @@ Partial Class frmCartaPorte
         Me.rbSiMaterialPeligroso.Location = New System.Drawing.Point(0, 4)
         Me.rbSiMaterialPeligroso.Name = "rbSiMaterialPeligroso"
         Me.rbSiMaterialPeligroso.Size = New System.Drawing.Size(50, 24)
-        Me.rbSiMaterialPeligroso.TabIndex = 23
+        Me.rbSiMaterialPeligroso.TabIndex = 10
         Me.rbSiMaterialPeligroso.TabStop = True
         Me.rbSiMaterialPeligroso.Text = "Sí"
         Me.rbSiMaterialPeligroso.UseVisualStyleBackColor = True
@@ -3494,7 +3503,7 @@ Partial Class frmCartaPorte
         Me.rbNoMaterialPeligroso.Location = New System.Drawing.Point(190, 0)
         Me.rbNoMaterialPeligroso.Name = "rbNoMaterialPeligroso"
         Me.rbNoMaterialPeligroso.Size = New System.Drawing.Size(56, 24)
-        Me.rbNoMaterialPeligroso.TabIndex = 24
+        Me.rbNoMaterialPeligroso.TabIndex = 11
         Me.rbNoMaterialPeligroso.TabStop = True
         Me.rbNoMaterialPeligroso.Text = "No"
         Me.rbNoMaterialPeligroso.UseVisualStyleBackColor = True
@@ -3517,7 +3526,7 @@ Partial Class frmCartaPorte
         Me.rbComercioInternacionalSi.Location = New System.Drawing.Point(3, 0)
         Me.rbComercioInternacionalSi.Name = "rbComercioInternacionalSi"
         Me.rbComercioInternacionalSi.Size = New System.Drawing.Size(50, 24)
-        Me.rbComercioInternacionalSi.TabIndex = 34
+        Me.rbComercioInternacionalSi.TabIndex = 14
         Me.rbComercioInternacionalSi.TabStop = True
         Me.rbComercioInternacionalSi.Text = "Sí"
         Me.rbComercioInternacionalSi.UseVisualStyleBackColor = True
@@ -3529,7 +3538,7 @@ Partial Class frmCartaPorte
         Me.rbComercioInternacionalNo.Location = New System.Drawing.Point(190, 0)
         Me.rbComercioInternacionalNo.Name = "rbComercioInternacionalNo"
         Me.rbComercioInternacionalNo.Size = New System.Drawing.Size(56, 24)
-        Me.rbComercioInternacionalNo.TabIndex = 35
+        Me.rbComercioInternacionalNo.TabIndex = 15
         Me.rbComercioInternacionalNo.TabStop = True
         Me.rbComercioInternacionalNo.Text = "No"
         Me.rbComercioInternacionalNo.UseVisualStyleBackColor = True
@@ -3560,7 +3569,7 @@ Partial Class frmCartaPorte
         Me.btnAtrasMercancia.Location = New System.Drawing.Point(441, 3)
         Me.btnAtrasMercancia.Name = "btnAtrasMercancia"
         Me.btnAtrasMercancia.Size = New System.Drawing.Size(158, 52)
-        Me.btnAtrasMercancia.TabIndex = 0
+        Me.btnAtrasMercancia.TabIndex = 18
         Me.btnAtrasMercancia.Text = "Atrás"
         Me.btnAtrasMercancia.UseVisualStyleBackColor = True
         '
@@ -3570,7 +3579,7 @@ Partial Class frmCartaPorte
         Me.btnGuardarMercancia.Location = New System.Drawing.Point(769, 3)
         Me.btnGuardarMercancia.Name = "btnGuardarMercancia"
         Me.btnGuardarMercancia.Size = New System.Drawing.Size(158, 52)
-        Me.btnGuardarMercancia.TabIndex = 1
+        Me.btnGuardarMercancia.TabIndex = 20
         Me.btnGuardarMercancia.Text = "Guardar"
         Me.btnGuardarMercancia.UseVisualStyleBackColor = True
         '
@@ -3580,7 +3589,7 @@ Partial Class frmCartaPorte
         Me.btnSiguienteMercancia.Location = New System.Drawing.Point(933, 3)
         Me.btnSiguienteMercancia.Name = "btnSiguienteMercancia"
         Me.btnSiguienteMercancia.Size = New System.Drawing.Size(161, 52)
-        Me.btnSiguienteMercancia.TabIndex = 2
+        Me.btnSiguienteMercancia.TabIndex = 21
         Me.btnSiguienteMercancia.Text = "Siguiente"
         Me.btnSiguienteMercancia.UseVisualStyleBackColor = True
         '
@@ -3590,7 +3599,7 @@ Partial Class frmCartaPorte
         Me.btnLimpiarMercancia.Location = New System.Drawing.Point(605, 3)
         Me.btnLimpiarMercancia.Name = "btnLimpiarMercancia"
         Me.btnLimpiarMercancia.Size = New System.Drawing.Size(158, 52)
-        Me.btnLimpiarMercancia.TabIndex = 3
+        Me.btnLimpiarMercancia.TabIndex = 19
         Me.btnLimpiarMercancia.Text = "Limpiar"
         Me.btnLimpiarMercancia.UseVisualStyleBackColor = True
         '
@@ -3646,7 +3655,7 @@ Partial Class frmCartaPorte
         Me.btnAtrasTransporte.Location = New System.Drawing.Point(551, 3)
         Me.btnAtrasTransporte.Name = "btnAtrasTransporte"
         Me.btnAtrasTransporte.Size = New System.Drawing.Size(268, 52)
-        Me.btnAtrasTransporte.TabIndex = 0
+        Me.btnAtrasTransporte.TabIndex = 20
         Me.btnAtrasTransporte.Text = "Atrás"
         Me.btnAtrasTransporte.UseVisualStyleBackColor = True
         '
@@ -3656,7 +3665,7 @@ Partial Class frmCartaPorte
         Me.btnSiguienteTransporte.Location = New System.Drawing.Point(825, 3)
         Me.btnSiguienteTransporte.Name = "btnSiguienteTransporte"
         Me.btnSiguienteTransporte.Size = New System.Drawing.Size(269, 52)
-        Me.btnSiguienteTransporte.TabIndex = 1
+        Me.btnSiguienteTransporte.TabIndex = 21
         Me.btnSiguienteTransporte.Text = "Siguiente"
         Me.btnSiguienteTransporte.UseVisualStyleBackColor = True
         '
@@ -3734,7 +3743,7 @@ Partial Class frmCartaPorte
         Me.cbSeleccionarVehiculo.Location = New System.Drawing.Point(277, 27)
         Me.cbSeleccionarVehiculo.Name = "cbSeleccionarVehiculo"
         Me.cbSeleccionarVehiculo.Size = New System.Drawing.Size(268, 28)
-        Me.cbSeleccionarVehiculo.TabIndex = 2
+        Me.cbSeleccionarVehiculo.TabIndex = 0
         '
         'Label90
         '
@@ -3746,7 +3755,7 @@ Partial Class frmCartaPorte
         Me.Label90.Name = "Label90"
         Me.Label90.Size = New System.Drawing.Size(268, 36)
         Me.Label90.TabIndex = 3
-        Me.Label90.Text = "Perm SCT: *"
+        Me.Label90.Text = "Perm SCT: * +"
         '
         'Label91
         '
@@ -3767,7 +3776,7 @@ Partial Class frmCartaPorte
         Me.txtNumPermisoSCT.Location = New System.Drawing.Point(825, 27)
         Me.txtNumPermisoSCT.Name = "txtNumPermisoSCT"
         Me.txtNumPermisoSCT.Size = New System.Drawing.Size(269, 26)
-        Me.txtNumPermisoSCT.TabIndex = 6
+        Me.txtNumPermisoSCT.TabIndex = 1
         '
         'txtDescripConfigVehicular
         '
@@ -3779,6 +3788,7 @@ Partial Class frmCartaPorte
         Me.txtDescripConfigVehicular.Name = "txtDescripConfigVehicular"
         Me.txtDescripConfigVehicular.Size = New System.Drawing.Size(543, 26)
         Me.txtDescripConfigVehicular.TabIndex = 7
+        Me.txtDescripConfigVehicular.TabStop = False
         '
         'Label92
         '
@@ -3787,9 +3797,9 @@ Partial Class frmCartaPorte
         Me.Label92.ForeColor = System.Drawing.Color.IndianRed
         Me.Label92.Location = New System.Drawing.Point(3, 96)
         Me.Label92.Name = "Label92"
-        Me.Label92.Size = New System.Drawing.Size(154, 20)
+        Me.Label92.Size = New System.Drawing.Size(169, 20)
         Me.Label92.TabIndex = 8
-        Me.Label92.Text = "Config vehícular: *"
+        Me.Label92.Text = "Config vehícular: * +"
         '
         'Label93
         '
@@ -3810,7 +3820,7 @@ Partial Class frmCartaPorte
         Me.Label94.Location = New System.Drawing.Point(551, 132)
         Me.Label94.Name = "Label94"
         Me.Label94.Size = New System.Drawing.Size(121, 20)
-        Me.Label94.TabIndex = 11
+        Me.Label94.TabIndex = 100
         Me.Label94.Text = "Año modelo: *"
         '
         'txtPlacaTransporte
@@ -3820,7 +3830,7 @@ Partial Class frmCartaPorte
         Me.txtPlacaTransporte.Location = New System.Drawing.Point(277, 135)
         Me.txtPlacaTransporte.Name = "txtPlacaTransporte"
         Me.txtPlacaTransporte.Size = New System.Drawing.Size(268, 26)
-        Me.txtPlacaTransporte.TabIndex = 12
+        Me.txtPlacaTransporte.TabIndex = 4
         '
         'txtAnioModeloTransporte
         '
@@ -3829,7 +3839,7 @@ Partial Class frmCartaPorte
         Me.txtAnioModeloTransporte.Location = New System.Drawing.Point(825, 135)
         Me.txtAnioModeloTransporte.Name = "txtAnioModeloTransporte"
         Me.txtAnioModeloTransporte.Size = New System.Drawing.Size(269, 26)
-        Me.txtAnioModeloTransporte.TabIndex = 13
+        Me.txtAnioModeloTransporte.TabIndex = 5
         '
         'Label95
         '
@@ -3860,7 +3870,7 @@ Partial Class frmCartaPorte
         Me.txtAseguradoraTransporte.Location = New System.Drawing.Point(277, 171)
         Me.txtAseguradoraTransporte.Name = "txtAseguradoraTransporte"
         Me.txtAseguradoraTransporte.Size = New System.Drawing.Size(268, 26)
-        Me.txtAseguradoraTransporte.TabIndex = 16
+        Me.txtAseguradoraTransporte.TabIndex = 6
         '
         'txtPolizaTransporte
         '
@@ -3869,7 +3879,7 @@ Partial Class frmCartaPorte
         Me.txtPolizaTransporte.Location = New System.Drawing.Point(825, 171)
         Me.txtPolizaTransporte.Name = "txtPolizaTransporte"
         Me.txtPolizaTransporte.Size = New System.Drawing.Size(269, 26)
-        Me.txtPolizaTransporte.TabIndex = 17
+        Me.txtPolizaTransporte.TabIndex = 7
         '
         'txtAseguradoraCargaTransporte
         '
@@ -3877,18 +3887,18 @@ Partial Class frmCartaPorte
         Me.txtAseguradoraCargaTransporte.Location = New System.Drawing.Point(277, 207)
         Me.txtAseguradoraCargaTransporte.Name = "txtAseguradoraCargaTransporte"
         Me.txtAseguradoraCargaTransporte.Size = New System.Drawing.Size(268, 26)
-        Me.txtAseguradoraCargaTransporte.TabIndex = 18
+        Me.txtAseguradoraCargaTransporte.TabIndex = 8
         '
         'Label97
         '
         Me.Label97.AutoSize = True
         Me.Label97.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label97.ForeColor = System.Drawing.Color.IndianRed
+        Me.Label97.ForeColor = System.Drawing.Color.Black
         Me.Label97.Location = New System.Drawing.Point(3, 204)
         Me.Label97.Name = "Label97"
-        Me.Label97.Size = New System.Drawing.Size(204, 20)
+        Me.Label97.Size = New System.Drawing.Size(197, 20)
         Me.Label97.TabIndex = 19
-        Me.Label97.Text = "Aseguradora de carga: *"
+        Me.Label97.Text = "Aseguradora de carga: "
         '
         'tlpContenedorPoliza
         '
@@ -3911,12 +3921,12 @@ Partial Class frmCartaPorte
         Me.Label98.AutoSize = True
         Me.Label98.Dock = System.Windows.Forms.DockStyle.Fill
         Me.Label98.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label98.ForeColor = System.Drawing.Color.IndianRed
+        Me.Label98.ForeColor = System.Drawing.Color.Black
         Me.Label98.Location = New System.Drawing.Point(3, 0)
         Me.Label98.Name = "Label98"
         Me.Label98.Size = New System.Drawing.Size(128, 33)
         Me.Label98.TabIndex = 0
-        Me.Label98.Text = "Póliza carga: *"
+        Me.Label98.Text = "Póliza carga: "
         '
         'txtPolizaCargaTransporte
         '
@@ -3924,7 +3934,7 @@ Partial Class frmCartaPorte
         Me.txtPolizaCargaTransporte.Location = New System.Drawing.Point(137, 3)
         Me.txtPolizaCargaTransporte.Name = "txtPolizaCargaTransporte"
         Me.txtPolizaCargaTransporte.Size = New System.Drawing.Size(128, 26)
-        Me.txtPolizaCargaTransporte.TabIndex = 1
+        Me.txtPolizaCargaTransporte.TabIndex = 9
         '
         'tlpContenedorPrimaSeguro
         '
@@ -3960,7 +3970,7 @@ Partial Class frmCartaPorte
         Me.txtPrimaSeguroTransporte.Location = New System.Drawing.Point(137, 3)
         Me.txtPrimaSeguroTransporte.Name = "txtPrimaSeguroTransporte"
         Me.txtPrimaSeguroTransporte.Size = New System.Drawing.Size(129, 26)
-        Me.txtPrimaSeguroTransporte.TabIndex = 1
+        Me.txtPrimaSeguroTransporte.TabIndex = 10
         '
         'txtConVeh
         '
@@ -3969,7 +3979,7 @@ Partial Class frmCartaPorte
         Me.txtConVeh.Location = New System.Drawing.Point(277, 99)
         Me.txtConVeh.Name = "txtConVeh"
         Me.txtConVeh.Size = New System.Drawing.Size(268, 26)
-        Me.txtConVeh.TabIndex = 22
+        Me.txtConVeh.TabIndex = 3
         '
         'txtTipoPermisoSCT
         '
@@ -3978,7 +3988,7 @@ Partial Class frmCartaPorte
         Me.txtTipoPermisoSCT.Location = New System.Drawing.Point(277, 63)
         Me.txtTipoPermisoSCT.Name = "txtTipoPermisoSCT"
         Me.txtTipoPermisoSCT.Size = New System.Drawing.Size(268, 26)
-        Me.txtTipoPermisoSCT.TabIndex = 23
+        Me.txtTipoPermisoSCT.TabIndex = 2
         '
         'txtDescripcionTipoPermisoSCT
         '
@@ -3990,6 +4000,7 @@ Partial Class frmCartaPorte
         Me.txtDescripcionTipoPermisoSCT.Name = "txtDescripcionTipoPermisoSCT"
         Me.txtDescripcionTipoPermisoSCT.Size = New System.Drawing.Size(543, 26)
         Me.txtDescripcionTipoPermisoSCT.TabIndex = 24
+        Me.txtDescripcionTipoPermisoSCT.TabStop = False
         '
         'tlpContenedorRemolques
         '
@@ -4094,7 +4105,7 @@ Partial Class frmCartaPorte
         Me.numCantidadRemolquesTransporte.Location = New System.Drawing.Point(309, 21)
         Me.numCantidadRemolquesTransporte.Name = "numCantidadRemolquesTransporte"
         Me.numCantidadRemolquesTransporte.Size = New System.Drawing.Size(191, 26)
-        Me.numCantidadRemolquesTransporte.TabIndex = 8
+        Me.numCantidadRemolquesTransporte.TabIndex = 11
         '
         'cbPropiedadRemolque1
         '
@@ -4103,7 +4114,7 @@ Partial Class frmCartaPorte
         Me.cbPropiedadRemolque1.Location = New System.Drawing.Point(3, 75)
         Me.cbPropiedadRemolque1.Name = "cbPropiedadRemolque1"
         Me.cbPropiedadRemolque1.Size = New System.Drawing.Size(103, 28)
-        Me.cbPropiedadRemolque1.TabIndex = 9
+        Me.cbPropiedadRemolque1.TabIndex = 12
         '
         'cbPropiedadRemolque2
         '
@@ -4112,7 +4123,7 @@ Partial Class frmCartaPorte
         Me.cbPropiedadRemolque2.Location = New System.Drawing.Point(3, 129)
         Me.cbPropiedadRemolque2.Name = "cbPropiedadRemolque2"
         Me.cbPropiedadRemolque2.Size = New System.Drawing.Size(103, 28)
-        Me.cbPropiedadRemolque2.TabIndex = 10
+        Me.cbPropiedadRemolque2.TabIndex = 15
         '
         'cbTipoRemolque1
         '
@@ -4121,7 +4132,7 @@ Partial Class frmCartaPorte
         Me.cbTipoRemolque1.Location = New System.Drawing.Point(309, 75)
         Me.cbTipoRemolque1.Name = "cbTipoRemolque1"
         Me.cbTipoRemolque1.Size = New System.Drawing.Size(191, 28)
-        Me.cbTipoRemolque1.TabIndex = 11
+        Me.cbTipoRemolque1.TabIndex = 13
         '
         'cbTipoRemolque2
         '
@@ -4130,7 +4141,7 @@ Partial Class frmCartaPorte
         Me.cbTipoRemolque2.Location = New System.Drawing.Point(309, 129)
         Me.cbTipoRemolque2.Name = "cbTipoRemolque2"
         Me.cbTipoRemolque2.Size = New System.Drawing.Size(191, 28)
-        Me.cbTipoRemolque2.TabIndex = 12
+        Me.cbTipoRemolque2.TabIndex = 16
         '
         'txtTipoRemolque1
         '
@@ -4139,6 +4150,7 @@ Partial Class frmCartaPorte
         Me.txtTipoRemolque1.Name = "txtTipoRemolque1"
         Me.txtTipoRemolque1.Size = New System.Drawing.Size(191, 26)
         Me.txtTipoRemolque1.TabIndex = 13
+        Me.txtTipoRemolque1.TabStop = False
         '
         'txtTipoRemolque2
         '
@@ -4147,6 +4159,7 @@ Partial Class frmCartaPorte
         Me.txtTipoRemolque2.Name = "txtTipoRemolque2"
         Me.txtTipoRemolque2.Size = New System.Drawing.Size(191, 26)
         Me.txtTipoRemolque2.TabIndex = 14
+        Me.txtTipoRemolque2.TabStop = False
         '
         'txtPlacasRemolque1
         '
@@ -4154,7 +4167,7 @@ Partial Class frmCartaPorte
         Me.txtPlacasRemolque1.Location = New System.Drawing.Point(900, 75)
         Me.txtPlacasRemolque1.Name = "txtPlacasRemolque1"
         Me.txtPlacasRemolque1.Size = New System.Drawing.Size(194, 26)
-        Me.txtPlacasRemolque1.TabIndex = 15
+        Me.txtPlacasRemolque1.TabIndex = 14
         '
         'txtPlacasRemolque2
         '
@@ -4162,7 +4175,7 @@ Partial Class frmCartaPorte
         Me.txtPlacasRemolque2.Location = New System.Drawing.Point(900, 129)
         Me.txtPlacasRemolque2.Name = "txtPlacasRemolque2"
         Me.txtPlacasRemolque2.Size = New System.Drawing.Size(194, 26)
-        Me.txtPlacasRemolque2.TabIndex = 16
+        Me.txtPlacasRemolque2.TabIndex = 17
         '
         'tlpContenedorSeguroMaterialPeligroso
         '
@@ -4223,7 +4236,7 @@ Partial Class frmCartaPorte
         Me.txtAseguradoraDanosMedioAmbiente.Location = New System.Drawing.Point(441, 26)
         Me.txtAseguradoraDanosMedioAmbiente.Name = "txtAseguradoraDanosMedioAmbiente"
         Me.txtAseguradoraDanosMedioAmbiente.Size = New System.Drawing.Size(653, 26)
-        Me.txtAseguradoraDanosMedioAmbiente.TabIndex = 3
+        Me.txtAseguradoraDanosMedioAmbiente.TabIndex = 18
         '
         'txtPolizaSegurosDanosMedioAmbiente
         '
@@ -4231,7 +4244,7 @@ Partial Class frmCartaPorte
         Me.txtPolizaSegurosDanosMedioAmbiente.Location = New System.Drawing.Point(441, 73)
         Me.txtPolizaSegurosDanosMedioAmbiente.Name = "txtPolizaSegurosDanosMedioAmbiente"
         Me.txtPolizaSegurosDanosMedioAmbiente.Size = New System.Drawing.Size(653, 26)
-        Me.txtPolizaSegurosDanosMedioAmbiente.TabIndex = 4
+        Me.txtPolizaSegurosDanosMedioAmbiente.TabIndex = 19
         '
         'tabOperador
         '
@@ -4419,7 +4432,7 @@ Partial Class frmCartaPorte
         Me.txtRfcOperador.Location = New System.Drawing.Point(221, 113)
         Me.txtRfcOperador.Name = "txtRfcOperador"
         Me.txtRfcOperador.Size = New System.Drawing.Size(168, 26)
-        Me.txtRfcOperador.TabIndex = 9
+        Me.txtRfcOperador.TabIndex = 3
         '
         'txtNumRegIdTribFiscOperador
         '
@@ -4428,7 +4441,7 @@ Partial Class frmCartaPorte
         Me.txtNumRegIdTribFiscOperador.Location = New System.Drawing.Point(569, 113)
         Me.txtNumRegIdTribFiscOperador.Name = "txtNumRegIdTribFiscOperador"
         Me.txtNumRegIdTribFiscOperador.Size = New System.Drawing.Size(342, 26)
-        Me.txtNumRegIdTribFiscOperador.TabIndex = 10
+        Me.txtNumRegIdTribFiscOperador.TabIndex = 4
         '
         'txtNombreOperador
         '
@@ -4437,7 +4450,7 @@ Partial Class frmCartaPorte
         Me.txtNombreOperador.Location = New System.Drawing.Point(221, 156)
         Me.txtNombreOperador.Name = "txtNombreOperador"
         Me.txtNombreOperador.Size = New System.Drawing.Size(168, 26)
-        Me.txtNombreOperador.TabIndex = 11
+        Me.txtNombreOperador.TabIndex = 5
         '
         'txtApPaternoOperador
         '
@@ -4446,7 +4459,7 @@ Partial Class frmCartaPorte
         Me.txtApPaternoOperador.Location = New System.Drawing.Point(569, 156)
         Me.txtApPaternoOperador.Name = "txtApPaternoOperador"
         Me.txtApPaternoOperador.Size = New System.Drawing.Size(168, 26)
-        Me.txtApPaternoOperador.TabIndex = 12
+        Me.txtApPaternoOperador.TabIndex = 6
         '
         'txtApMaternoOperador
         '
@@ -4455,7 +4468,7 @@ Partial Class frmCartaPorte
         Me.txtApMaternoOperador.Location = New System.Drawing.Point(917, 156)
         Me.txtApMaternoOperador.Name = "txtApMaternoOperador"
         Me.txtApMaternoOperador.Size = New System.Drawing.Size(171, 26)
-        Me.txtApMaternoOperador.TabIndex = 13
+        Me.txtApMaternoOperador.TabIndex = 7
         '
         'cbTipoFiguraOperador
         '
@@ -4465,7 +4478,7 @@ Partial Class frmCartaPorte
         Me.cbTipoFiguraOperador.Location = New System.Drawing.Point(221, 199)
         Me.cbTipoFiguraOperador.Name = "cbTipoFiguraOperador"
         Me.cbTipoFiguraOperador.Size = New System.Drawing.Size(168, 28)
-        Me.cbTipoFiguraOperador.TabIndex = 14
+        Me.cbTipoFiguraOperador.TabIndex = 8
         '
         'rbOperadorMexicano
         '
@@ -4476,7 +4489,7 @@ Partial Class frmCartaPorte
         Me.rbOperadorMexicano.Location = New System.Drawing.Point(221, 70)
         Me.rbOperadorMexicano.Name = "rbOperadorMexicano"
         Me.rbOperadorMexicano.Size = New System.Drawing.Size(342, 37)
-        Me.rbOperadorMexicano.TabIndex = 15
+        Me.rbOperadorMexicano.TabIndex = 1
         Me.rbOperadorMexicano.TabStop = True
         Me.rbOperadorMexicano.Text = "Operador Mexicano"
         Me.rbOperadorMexicano.UseVisualStyleBackColor = True
@@ -4490,7 +4503,7 @@ Partial Class frmCartaPorte
         Me.rbOperadorExtranjero.Location = New System.Drawing.Point(569, 70)
         Me.rbOperadorExtranjero.Name = "rbOperadorExtranjero"
         Me.rbOperadorExtranjero.Size = New System.Drawing.Size(519, 37)
-        Me.rbOperadorExtranjero.TabIndex = 16
+        Me.rbOperadorExtranjero.TabIndex = 2
         Me.rbOperadorExtranjero.TabStop = True
         Me.rbOperadorExtranjero.Text = "Operador Extranjero"
         Me.rbOperadorExtranjero.UseVisualStyleBackColor = True
@@ -4506,7 +4519,7 @@ Partial Class frmCartaPorte
         Me.cbOpcionesOperador.Location = New System.Drawing.Point(221, 27)
         Me.cbOpcionesOperador.Name = "cbOpcionesOperador"
         Me.cbOpcionesOperador.Size = New System.Drawing.Size(516, 28)
-        Me.cbOpcionesOperador.TabIndex = 17
+        Me.cbOpcionesOperador.TabIndex = 0
         '
         'Label138
         '
@@ -4527,7 +4540,7 @@ Partial Class frmCartaPorte
         Me.txtNumLicenciaOperador.Location = New System.Drawing.Point(743, 199)
         Me.txtNumLicenciaOperador.Name = "txtNumLicenciaOperador"
         Me.txtNumLicenciaOperador.Size = New System.Drawing.Size(345, 26)
-        Me.txtNumLicenciaOperador.TabIndex = 19
+        Me.txtNumLicenciaOperador.TabIndex = 9
         '
         'tlpDireccionOperador
         '
@@ -4679,7 +4692,7 @@ Partial Class frmCartaPorte
         Me.txtNoExtOperador.Location = New System.Drawing.Point(136, 3)
         Me.txtNoExtOperador.Name = "txtNoExtOperador"
         Me.txtNoExtOperador.Size = New System.Drawing.Size(127, 26)
-        Me.txtNoExtOperador.TabIndex = 1
+        Me.txtNoExtOperador.TabIndex = 19
         '
         'tlpNoExtDomicilioOperador
         '
@@ -4713,7 +4726,7 @@ Partial Class frmCartaPorte
         Me.txtNoIntOperador.Location = New System.Drawing.Point(137, 3)
         Me.txtNoIntOperador.Name = "txtNoIntOperador"
         Me.txtNoIntOperador.Size = New System.Drawing.Size(129, 26)
-        Me.txtNoIntOperador.TabIndex = 1
+        Me.txtNoIntOperador.TabIndex = 20
         '
         'Label125
         '
@@ -4746,7 +4759,7 @@ Partial Class frmCartaPorte
         Me.cbPaisOperador.Location = New System.Drawing.Point(275, 20)
         Me.cbPaisOperador.Name = "cbPaisOperador"
         Me.cbPaisOperador.Size = New System.Drawing.Size(266, 28)
-        Me.cbPaisOperador.TabIndex = 11
+        Me.cbPaisOperador.TabIndex = 12
         '
         'cbEstadoOperador
         '
@@ -4758,7 +4771,7 @@ Partial Class frmCartaPorte
         Me.cbEstadoOperador.Location = New System.Drawing.Point(819, 20)
         Me.cbEstadoOperador.Name = "cbEstadoOperador"
         Me.cbEstadoOperador.Size = New System.Drawing.Size(269, 28)
-        Me.cbEstadoOperador.TabIndex = 12
+        Me.cbEstadoOperador.TabIndex = 13
         '
         'cbMunicipioOperador
         '
@@ -4770,7 +4783,7 @@ Partial Class frmCartaPorte
         Me.cbMunicipioOperador.Location = New System.Drawing.Point(275, 52)
         Me.cbMunicipioOperador.Name = "cbMunicipioOperador"
         Me.cbMunicipioOperador.Size = New System.Drawing.Size(266, 28)
-        Me.cbMunicipioOperador.TabIndex = 13
+        Me.cbMunicipioOperador.TabIndex = 14
         '
         'cbLocalidadOperador
         '
@@ -4782,7 +4795,7 @@ Partial Class frmCartaPorte
         Me.cbLocalidadOperador.Location = New System.Drawing.Point(819, 52)
         Me.cbLocalidadOperador.Name = "cbLocalidadOperador"
         Me.cbLocalidadOperador.Size = New System.Drawing.Size(269, 28)
-        Me.cbLocalidadOperador.TabIndex = 14
+        Me.cbLocalidadOperador.TabIndex = 15
         '
         'cbColoniaOperador
         '
@@ -4794,7 +4807,7 @@ Partial Class frmCartaPorte
         Me.cbColoniaOperador.Location = New System.Drawing.Point(819, 84)
         Me.cbColoniaOperador.Name = "cbColoniaOperador"
         Me.cbColoniaOperador.Size = New System.Drawing.Size(269, 28)
-        Me.cbColoniaOperador.TabIndex = 15
+        Me.cbColoniaOperador.TabIndex = 17
         '
         'txtCpOperador
         '
@@ -4812,7 +4825,7 @@ Partial Class frmCartaPorte
         Me.txtCalleOperador.Location = New System.Drawing.Point(275, 116)
         Me.txtCalleOperador.Name = "txtCalleOperador"
         Me.txtCalleOperador.Size = New System.Drawing.Size(266, 26)
-        Me.txtCalleOperador.TabIndex = 17
+        Me.txtCalleOperador.TabIndex = 18
         '
         'txtReferenciaOperador
         '
@@ -4821,7 +4834,7 @@ Partial Class frmCartaPorte
         Me.txtReferenciaOperador.Location = New System.Drawing.Point(275, 148)
         Me.txtReferenciaOperador.Name = "txtReferenciaOperador"
         Me.txtReferenciaOperador.Size = New System.Drawing.Size(538, 26)
-        Me.txtReferenciaOperador.TabIndex = 18
+        Me.txtReferenciaOperador.TabIndex = 21
         '
         'tlpAtrasSiguienteOperador
         '
@@ -4846,7 +4859,7 @@ Partial Class frmCartaPorte
         Me.btnAtrasOperador.Location = New System.Drawing.Point(766, 3)
         Me.btnAtrasOperador.Name = "btnAtrasOperador"
         Me.btnAtrasOperador.Size = New System.Drawing.Size(157, 51)
-        Me.btnAtrasOperador.TabIndex = 0
+        Me.btnAtrasOperador.TabIndex = 22
         Me.btnAtrasOperador.Text = "Atrás"
         Me.btnAtrasOperador.UseVisualStyleBackColor = True
         '
@@ -4856,7 +4869,7 @@ Partial Class frmCartaPorte
         Me.btnSiguienteOperador.Location = New System.Drawing.Point(929, 3)
         Me.btnSiguienteOperador.Name = "btnSiguienteOperador"
         Me.btnSiguienteOperador.Size = New System.Drawing.Size(159, 51)
-        Me.btnSiguienteOperador.TabIndex = 1
+        Me.btnSiguienteOperador.TabIndex = 23
         Me.btnSiguienteOperador.Text = "Siguiente"
         Me.btnSiguienteOperador.UseVisualStyleBackColor = True
         '
@@ -4912,7 +4925,7 @@ Partial Class frmCartaPorte
         Me.cbParteTransporteOperador.Location = New System.Drawing.Point(221, 20)
         Me.cbParteTransporteOperador.Name = "cbParteTransporteOperador"
         Me.cbParteTransporteOperador.Size = New System.Drawing.Size(430, 28)
-        Me.cbParteTransporteOperador.TabIndex = 3
+        Me.cbParteTransporteOperador.TabIndex = 10
         '
         'btnAnadirParteTransporte
         '
@@ -4920,7 +4933,7 @@ Partial Class frmCartaPorte
         Me.btnAnadirParteTransporte.Location = New System.Drawing.Point(517, 72)
         Me.btnAnadirParteTransporte.Name = "btnAnadirParteTransporte"
         Me.btnAnadirParteTransporte.Size = New System.Drawing.Size(134, 42)
-        Me.btnAnadirParteTransporte.TabIndex = 4
+        Me.btnAnadirParteTransporte.TabIndex = 11
         Me.btnAnadirParteTransporte.Text = "Añadir"
         Me.btnAnadirParteTransporte.UseVisualStyleBackColor = True
         '
@@ -4938,6 +4951,7 @@ Partial Class frmCartaPorte
         Me.gvParteTransporteOperador.RowTemplate.Height = 28
         Me.gvParteTransporteOperador.Size = New System.Drawing.Size(431, 94)
         Me.gvParteTransporteOperador.TabIndex = 5
+        Me.gvParteTransporteOperador.TabStop = False
         '
         'ParteTransporteAnadidoClm
         '
@@ -5042,6 +5056,7 @@ Partial Class frmCartaPorte
         Me.dgvConfirmacionUbicaciones.RowTemplate.Height = 28
         Me.dgvConfirmacionUbicaciones.Size = New System.Drawing.Size(1091, 114)
         Me.dgvConfirmacionUbicaciones.TabIndex = 1
+        Me.dgvConfirmacionUbicaciones.TabStop = False
         '
         'IdUbicacionClmMercMov
         '
@@ -5106,6 +5121,7 @@ Partial Class frmCartaPorte
         Me.dgvMercanciasSinUbicaciones.RowTemplate.Height = 28
         Me.dgvMercanciasSinUbicaciones.Size = New System.Drawing.Size(1091, 114)
         Me.dgvMercanciasSinUbicaciones.TabIndex = 1
+        Me.dgvMercanciasSinUbicaciones.TabStop = False
         '
         'AsignarClaveProdServClm
         '
@@ -5208,6 +5224,7 @@ Partial Class frmCartaPorte
         Me.dgvRelacionMercanciaUbicaciones.RowTemplate.Height = 28
         Me.dgvRelacionMercanciaUbicaciones.Size = New System.Drawing.Size(1091, 114)
         Me.dgvRelacionMercanciaUbicaciones.TabIndex = 1
+        Me.dgvRelacionMercanciaUbicaciones.TabStop = False
         '
         'RelMercUbiIdUbiClm
         '
@@ -5320,7 +5337,7 @@ Partial Class frmCartaPorte
         Me.txtPesoBrutoTotalMercancias.Location = New System.Drawing.Point(184, 3)
         Me.txtPesoBrutoTotalMercancias.Name = "txtPesoBrutoTotalMercancias"
         Me.txtPesoBrutoTotalMercancias.Size = New System.Drawing.Size(175, 26)
-        Me.txtPesoBrutoTotalMercancias.TabIndex = 3
+        Me.txtPesoBrutoTotalMercancias.TabIndex = 0
         '
         'txtUnidadPesoTotalMercancias
         '
@@ -5329,7 +5346,7 @@ Partial Class frmCartaPorte
         Me.txtUnidadPesoTotalMercancias.Location = New System.Drawing.Point(546, 3)
         Me.txtUnidadPesoTotalMercancias.Name = "txtUnidadPesoTotalMercancias"
         Me.txtUnidadPesoTotalMercancias.Size = New System.Drawing.Size(175, 26)
-        Me.txtUnidadPesoTotalMercancias.TabIndex = 4
+        Me.txtUnidadPesoTotalMercancias.TabIndex = 1
         '
         'tlpBotonesGenerarAtras
         '
@@ -5353,7 +5370,7 @@ Partial Class frmCartaPorte
         Me.btnAtrasConfirmacion.Location = New System.Drawing.Point(770, 3)
         Me.btnAtrasConfirmacion.Name = "btnAtrasConfirmacion"
         Me.btnAtrasConfirmacion.Size = New System.Drawing.Size(158, 51)
-        Me.btnAtrasConfirmacion.TabIndex = 0
+        Me.btnAtrasConfirmacion.TabIndex = 2
         Me.btnAtrasConfirmacion.Text = "Atrás"
         Me.btnAtrasConfirmacion.UseVisualStyleBackColor = True
         '
@@ -5363,7 +5380,7 @@ Partial Class frmCartaPorte
         Me.btnGenerarCartaPorte.Location = New System.Drawing.Point(934, 3)
         Me.btnGenerarCartaPorte.Name = "btnGenerarCartaPorte"
         Me.btnGenerarCartaPorte.Size = New System.Drawing.Size(160, 51)
-        Me.btnGenerarCartaPorte.TabIndex = 1
+        Me.btnGenerarCartaPorte.TabIndex = 3
         Me.btnGenerarCartaPorte.Text = "Generar carta porte"
         Me.btnGenerarCartaPorte.UseVisualStyleBackColor = True
         '

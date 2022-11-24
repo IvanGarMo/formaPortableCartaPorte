@@ -210,6 +210,12 @@ Public Class frmCartaPorte
         End If
     End Sub
 
+    Private Sub AbreSiEsEnter(ByRef key As KeyEventArgs, ByRef handler As EventHandler)
+        If key.KeyCode = Keys.Enter Then
+            handler(Nothing, Nothing)
+        End If
+    End Sub
+
     'Método que realiza validación de código postal y de carga de estos
     Private Sub RealizaCargaValidacionCodigoCargaColonias(ByRef refCbEstado As ComboBox,
                                                           ByRef refCbMunicipio As ComboBox,
@@ -2655,11 +2661,31 @@ Public Class frmCartaPorte
         txtDescripcionMaterialPeligroso.Text = matPeligroso
     End Sub
 
-    Private Sub txtEmbalaje_TextChanged(sender As Object, e As EventArgs) Handles txtEmbalaje.TextChanged
+    Private Sub txtEmbalaje_TextChanged(sender As Object, e As EventArgs) Handles txtEmbalaje.TextAlignChanged
         LimpiaDesactivaTextbox(txtDescripcionEmbalaje)
         Dim claveEmbalaje As String = ObtenValorTextbox(txtEmbalaje)
         Dim descEmbalaje As String = conexionesCartaPorte.Get_ObtenDescripcionEmbalaje(claveEmbalaje)
         txtDescripcionEmbalaje.Text = descEmbalaje
+    End Sub
+
+    Private Sub txtClaveProdServMercancia_KeyDown(sender As Object, e As KeyEventArgs) Handles txtClaveProdServMercancia.KeyDown
+        AbreSiEsEnter(e, AddressOf txtClaveProdServMercancia_DoubleClick)
+    End Sub
+
+    Private Sub txtUnidadClaveMercancia_KeyDown(sender As Object, e As KeyEventArgs) Handles txtUnidadClaveMercancia.KeyDown
+        AbreSiEsEnter(e, AddressOf txtUnidadClaveMercancia_DoubleClick)
+    End Sub
+
+    Private Sub txtMoneda_KeyDown(sender As Object, e As KeyEventArgs) Handles txtMoneda.KeyDown
+        AbreSiEsEnter(e, AddressOf txtMoneda_DoubleClick)
+    End Sub
+
+    Private Sub txtClaveMaterialPeligroso_KeyDown(sender As Object, e As KeyEventArgs) Handles txtClaveMaterialPeligroso.KeyDown
+        AbreSiEsEnter(e, AddressOf txtClaveMaterialPeligroso_DoubleClick)
+    End Sub
+
+    Private Sub txtEmbalaje_KeyDown(sender As Object, e As KeyEventArgs) Handles txtEmbalaje.KeyDown
+        AbreSiEsEnter(e, AddressOf txtEmbalaje_DoubleClick)
     End Sub
 
     Private Sub ValidarInformacionMercancia()
@@ -3478,6 +3504,14 @@ Public Class frmCartaPorte
 
     Private Sub btnAnadirParteTransporte_Click(sender As Object, e As EventArgs) Handles btnAnadirParteTransporte.Click
         AnadirParteTransporteOperador()
+    End Sub
+
+    Private Sub txtTipoPermisoSCT_KeyDown(sender As Object, e As KeyEventArgs) Handles txtTipoPermisoSCT.KeyDown
+        AbreSiEsEnter(e, AddressOf txtTipoPermisoSCT_DoubleClick)
+    End Sub
+
+    Private Sub txtConVeh_KeyDown(sender As Object, e As KeyEventArgs) Handles txtConVeh.KeyDown
+        AbreSiEsEnter(e, AddressOf txtConVeh_DoubleClick)
     End Sub
 
     Private Sub gvParteTransporteOperador_CellContentClick(sender As Object, e As DataGridViewCellEventArgs) Handles gvParteTransporteOperador.CellContentClick
