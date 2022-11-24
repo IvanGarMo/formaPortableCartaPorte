@@ -62,4 +62,10 @@ Public Class frmBusqueda
         RaiseEvent ElementoSeleccionado(claveSeleccionada)
         Me.Close()
     End Sub
+
+    Private Sub txtDescripcionBuscar_KeyDown(sender As Object, e As KeyEventArgs) Handles txtDescripcionBuscar.KeyDown
+        If e.KeyCode = Keys.Tab Or e.KeyCode = Keys.Enter Then
+            btnBuscar_Click(Nothing, Nothing)
+        End If
+    End Sub
 End Class

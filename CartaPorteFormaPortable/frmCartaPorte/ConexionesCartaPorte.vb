@@ -791,7 +791,7 @@ Public Class ConexionesCartaPorte
 
     Public Function Get_DetalleMaterialPeligroso(ByRef claveMatPeligroso As String) As DataTable
         Dim Cm As SqlCommand = Nothing
-        Cm = New SqlCommand("sat.SP_CCP_BuscaDetalleMoneda", obtenConexion())
+        Cm = New SqlCommand("sat.SP_CCP_BuscaDetalleMaterialPeligroso", obtenConexion())
         Cm.CommandType = CommandType.StoredProcedure
 
         Cm.Parameters.AddWithValue("@ParCadDescripcion", claveMatPeligroso)
