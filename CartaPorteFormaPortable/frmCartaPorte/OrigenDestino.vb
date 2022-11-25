@@ -270,9 +270,9 @@ Public Class OrigenDestino
     Public ReadOnly Property TipoMovimiento As String
         Get
             If _EsDestinoIntermedio Then
-                Return "Intermedio"
+                Return "Intermedio".ToUpper()
             Else
-                Return _TipoUbicacion
+                Return _TipoUbicacion.ToUpper()
             End If
         End Get
     End Property

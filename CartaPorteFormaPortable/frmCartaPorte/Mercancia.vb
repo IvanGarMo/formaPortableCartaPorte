@@ -355,4 +355,10 @@
             _SatConsideraPeligrosa = value
         End Set
     End Property
+
+    Public ReadOnly Property Cero As String
+        Get
+            Return "0"
+        End Get
+    End Property
 End Class
