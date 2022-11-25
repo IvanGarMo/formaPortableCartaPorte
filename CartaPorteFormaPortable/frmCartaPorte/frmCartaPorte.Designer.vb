@@ -22,10 +22,10 @@ Partial Class frmCartaPorte
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Dim DataGridViewCellStyle13 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle14 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle15 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle16 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle4 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.TabControl1 = New System.Windows.Forms.TabControl()
         Me.tabOrigen = New System.Windows.Forms.TabPage()
         Me.tlpPrincipalOrigen = New System.Windows.Forms.TableLayoutPanel()
@@ -413,17 +413,17 @@ Partial Class frmCartaPorte
         Me.tlpMercanciasSinAsignar = New System.Windows.Forms.TableLayoutPanel()
         Me.Label133 = New System.Windows.Forms.Label()
         Me.dgvMercanciasSinUbicaciones = New System.Windows.Forms.DataGridView()
+        Me.AsignarClaveProdServClm = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.AsignarDescripcionMercClm = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.AsignarClaveUnidadClm = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.AsignarDescUnidadClm = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.AsignarPeligrosoClm = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.AsignarCantidadRestanteClm = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.AsignarCantidadParaAsignarClm = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.AsignarDestinoAccionClm = New System.Windows.Forms.DataGridViewButtonColumn()
         Me.tlpRelacionMercanciaUbicaciones = New System.Windows.Forms.TableLayoutPanel()
         Me.Label134 = New System.Windows.Forms.Label()
         Me.dgvRelacionMercanciaUbicaciones = New System.Windows.Forms.DataGridView()
-        Me.tlpDatosFinalesCarga = New System.Windows.Forms.TableLayoutPanel()
-        Me.Label135 = New System.Windows.Forms.Label()
-        Me.Label136 = New System.Windows.Forms.Label()
-        Me.txtPesoBrutoTotalMercancias = New System.Windows.Forms.TextBox()
-        Me.txtUnidadPesoTotalMercancias = New System.Windows.Forms.TextBox()
-        Me.tlpBotonesGenerarAtras = New System.Windows.Forms.TableLayoutPanel()
-        Me.btnAtrasConfirmacion = New System.Windows.Forms.Button()
-        Me.btnGenerarCartaPorte = New System.Windows.Forms.Button()
         Me.RelMercUbiIdUbiClm = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.RelMercUbiClaveProdServClm = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.RelMercUbiDescMercClm = New System.Windows.Forms.DataGridViewTextBoxColumn()
@@ -433,14 +433,14 @@ Partial Class frmCartaPorte
         Me.RelMercUbiCantidadClm = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.RelMercUbiBtnEliminarClm = New System.Windows.Forms.DataGridViewButtonColumn()
         Me.RelMercUbiCantidadMaxima = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.AsignarClaveProdServClm = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.AsignarDescripcionMercClm = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.AsignarClaveUnidadClm = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.AsignarDescUnidadClm = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.AsignarPeligrosoClm = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.AsignarCantidadRestanteClm = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.AsignarCantidadParaAsignarClm = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.AsignarDestinoAccionClm = New System.Windows.Forms.DataGridViewButtonColumn()
+        Me.tlpDatosFinalesCarga = New System.Windows.Forms.TableLayoutPanel()
+        Me.Label135 = New System.Windows.Forms.Label()
+        Me.Label136 = New System.Windows.Forms.Label()
+        Me.txtPesoBrutoTotalMercancias = New System.Windows.Forms.TextBox()
+        Me.txtUnidadPesoTotalMercancias = New System.Windows.Forms.TextBox()
+        Me.tlpBotonesGenerarAtras = New System.Windows.Forms.TableLayoutPanel()
+        Me.btnAtrasConfirmacion = New System.Windows.Forms.Button()
+        Me.btnGenerarCartaPorte = New System.Windows.Forms.Button()
         Me.TabControl1.SuspendLayout()
         Me.tabOrigen.SuspendLayout()
         Me.tlpPrincipalOrigen.SuspendLayout()
@@ -2792,24 +2792,24 @@ Partial Class frmCartaPorte
         'dgvListadoMovimientosPestanaMercancia
         '
         Me.dgvListadoMovimientosPestanaMercancia.AllowUserToAddRows = False
-        DataGridViewCellStyle13.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle13.BackColor = System.Drawing.SystemColors.Control
-        DataGridViewCellStyle13.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle13.ForeColor = System.Drawing.SystemColors.WindowText
-        DataGridViewCellStyle13.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle13.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle13.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.dgvListadoMovimientosPestanaMercancia.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle13
+        DataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control
+        DataGridViewCellStyle1.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText
+        DataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.dgvListadoMovimientosPestanaMercancia.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle1
         Me.dgvListadoMovimientosPestanaMercancia.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
         Me.dgvListadoMovimientosPestanaMercancia.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.MovimientoMercanciaClm, Me.DestinoMercanciaClm, Me.MovimientosTipoMovimientoClm, Me.MercanciasBtnClm, Me.AnadirMercanciaMovimientoClm, Me.IdUbicacionMovimientoPestanaMercanciaClm})
-        DataGridViewCellStyle14.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle14.BackColor = System.Drawing.SystemColors.Window
-        DataGridViewCellStyle14.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle14.ForeColor = System.Drawing.SystemColors.ControlText
-        DataGridViewCellStyle14.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle14.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle14.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
-        Me.dgvListadoMovimientosPestanaMercancia.DefaultCellStyle = DataGridViewCellStyle14
+        DataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window
+        DataGridViewCellStyle2.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText
+        DataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
+        Me.dgvListadoMovimientosPestanaMercancia.DefaultCellStyle = DataGridViewCellStyle2
         Me.dgvListadoMovimientosPestanaMercancia.Dock = System.Windows.Forms.DockStyle.Fill
         Me.dgvListadoMovimientosPestanaMercancia.Location = New System.Drawing.Point(3, 26)
         Me.dgvListadoMovimientosPestanaMercancia.Name = "dgvListadoMovimientosPestanaMercancia"
@@ -2902,24 +2902,24 @@ Partial Class frmCartaPorte
         'dgvMercanciasPorMovimiento
         '
         Me.dgvMercanciasPorMovimiento.AllowUserToAddRows = False
-        DataGridViewCellStyle15.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle15.BackColor = System.Drawing.SystemColors.Control
-        DataGridViewCellStyle15.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle15.ForeColor = System.Drawing.SystemColors.WindowText
-        DataGridViewCellStyle15.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle15.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle15.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.dgvMercanciasPorMovimiento.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle15
+        DataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control
+        DataGridViewCellStyle3.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText
+        DataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.dgvMercanciasPorMovimiento.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle3
         Me.dgvMercanciasPorMovimiento.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
         Me.dgvMercanciasPorMovimiento.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.MercanciaClaveProdServClm, Me.MovimientoDescripcionClm, Me.ClaveUnidadClm, Me.DescripcionUnidadClm, Me.MercanciaMovimientoPeligrosaClm, Me.MovimientoComercioIntClm, Me.MovimientoDetallesMercClm, Me.MovimientoMercanciaEliminarClm, Me.MovimientoMercanciaCheckboxMaterialPeligrosoClm})
-        DataGridViewCellStyle16.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle16.BackColor = System.Drawing.SystemColors.Window
-        DataGridViewCellStyle16.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle16.ForeColor = System.Drawing.SystemColors.ControlText
-        DataGridViewCellStyle16.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle16.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle16.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
-        Me.dgvMercanciasPorMovimiento.DefaultCellStyle = DataGridViewCellStyle16
+        DataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Window
+        DataGridViewCellStyle4.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.ControlText
+        DataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
+        Me.dgvMercanciasPorMovimiento.DefaultCellStyle = DataGridViewCellStyle4
         Me.dgvMercanciasPorMovimiento.Dock = System.Windows.Forms.DockStyle.Fill
         Me.dgvMercanciasPorMovimiento.Location = New System.Drawing.Point(3, 26)
         Me.dgvMercanciasPorMovimiento.Name = "dgvMercanciasPorMovimiento"
@@ -5145,6 +5145,69 @@ Partial Class frmCartaPorte
         Me.dgvMercanciasSinUbicaciones.TabIndex = 1
         Me.dgvMercanciasSinUbicaciones.TabStop = False
         '
+        'AsignarClaveProdServClm
+        '
+        Me.AsignarClaveProdServClm.HeaderText = "ClaveProdServ"
+        Me.AsignarClaveProdServClm.MinimumWidth = 8
+        Me.AsignarClaveProdServClm.Name = "AsignarClaveProdServClm"
+        Me.AsignarClaveProdServClm.ReadOnly = True
+        Me.AsignarClaveProdServClm.Width = 150
+        '
+        'AsignarDescripcionMercClm
+        '
+        Me.AsignarDescripcionMercClm.HeaderText = "Descripcion"
+        Me.AsignarDescripcionMercClm.MinimumWidth = 8
+        Me.AsignarDescripcionMercClm.Name = "AsignarDescripcionMercClm"
+        Me.AsignarDescripcionMercClm.ReadOnly = True
+        Me.AsignarDescripcionMercClm.Width = 150
+        '
+        'AsignarClaveUnidadClm
+        '
+        Me.AsignarClaveUnidadClm.HeaderText = "ClaveUnidad"
+        Me.AsignarClaveUnidadClm.MinimumWidth = 8
+        Me.AsignarClaveUnidadClm.Name = "AsignarClaveUnidadClm"
+        Me.AsignarClaveUnidadClm.ReadOnly = True
+        Me.AsignarClaveUnidadClm.Width = 150
+        '
+        'AsignarDescUnidadClm
+        '
+        Me.AsignarDescUnidadClm.HeaderText = "Unidad"
+        Me.AsignarDescUnidadClm.MinimumWidth = 8
+        Me.AsignarDescUnidadClm.Name = "AsignarDescUnidadClm"
+        Me.AsignarDescUnidadClm.ReadOnly = True
+        Me.AsignarDescUnidadClm.Width = 150
+        '
+        'AsignarPeligrosoClm
+        '
+        Me.AsignarPeligrosoClm.HeaderText = "¿Peligroso?"
+        Me.AsignarPeligrosoClm.MinimumWidth = 8
+        Me.AsignarPeligrosoClm.Name = "AsignarPeligrosoClm"
+        Me.AsignarPeligrosoClm.ReadOnly = True
+        Me.AsignarPeligrosoClm.Width = 150
+        '
+        'AsignarCantidadRestanteClm
+        '
+        Me.AsignarCantidadRestanteClm.HeaderText = "Cantidad sin asignar"
+        Me.AsignarCantidadRestanteClm.MinimumWidth = 8
+        Me.AsignarCantidadRestanteClm.Name = "AsignarCantidadRestanteClm"
+        Me.AsignarCantidadRestanteClm.ReadOnly = True
+        Me.AsignarCantidadRestanteClm.Width = 150
+        '
+        'AsignarCantidadParaAsignarClm
+        '
+        Me.AsignarCantidadParaAsignarClm.HeaderText = "Cantidad a asignar"
+        Me.AsignarCantidadParaAsignarClm.MinimumWidth = 8
+        Me.AsignarCantidadParaAsignarClm.Name = "AsignarCantidadParaAsignarClm"
+        Me.AsignarCantidadParaAsignarClm.Resizable = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.AsignarCantidadParaAsignarClm.Width = 150
+        '
+        'AsignarDestinoAccionClm
+        '
+        Me.AsignarDestinoAccionClm.HeaderText = "Realizar asignación"
+        Me.AsignarDestinoAccionClm.MinimumWidth = 8
+        Me.AsignarDestinoAccionClm.Name = "AsignarDestinoAccionClm"
+        Me.AsignarDestinoAccionClm.Width = 150
+        '
         'tlpRelacionMercanciaUbicaciones
         '
         Me.tlpRelacionMercanciaUbicaciones.ColumnCount = 1
@@ -5184,6 +5247,80 @@ Partial Class frmCartaPorte
         Me.dgvRelacionMercanciaUbicaciones.Size = New System.Drawing.Size(1091, 114)
         Me.dgvRelacionMercanciaUbicaciones.TabIndex = 1
         Me.dgvRelacionMercanciaUbicaciones.TabStop = False
+        '
+        'RelMercUbiIdUbiClm
+        '
+        Me.RelMercUbiIdUbiClm.HeaderText = "IdUbicacion"
+        Me.RelMercUbiIdUbiClm.MinimumWidth = 8
+        Me.RelMercUbiIdUbiClm.Name = "RelMercUbiIdUbiClm"
+        Me.RelMercUbiIdUbiClm.ReadOnly = True
+        Me.RelMercUbiIdUbiClm.Width = 150
+        '
+        'RelMercUbiClaveProdServClm
+        '
+        Me.RelMercUbiClaveProdServClm.HeaderText = "ClaveProdServ"
+        Me.RelMercUbiClaveProdServClm.MinimumWidth = 8
+        Me.RelMercUbiClaveProdServClm.Name = "RelMercUbiClaveProdServClm"
+        Me.RelMercUbiClaveProdServClm.ReadOnly = True
+        Me.RelMercUbiClaveProdServClm.Width = 150
+        '
+        'RelMercUbiDescMercClm
+        '
+        Me.RelMercUbiDescMercClm.HeaderText = "Mercancía"
+        Me.RelMercUbiDescMercClm.MinimumWidth = 8
+        Me.RelMercUbiDescMercClm.Name = "RelMercUbiDescMercClm"
+        Me.RelMercUbiDescMercClm.ReadOnly = True
+        Me.RelMercUbiDescMercClm.Width = 150
+        '
+        'RelMercUbiClaveUnidadClm
+        '
+        Me.RelMercUbiClaveUnidadClm.HeaderText = "ClaveUnidad"
+        Me.RelMercUbiClaveUnidadClm.MinimumWidth = 8
+        Me.RelMercUbiClaveUnidadClm.Name = "RelMercUbiClaveUnidadClm"
+        Me.RelMercUbiClaveUnidadClm.ReadOnly = True
+        Me.RelMercUbiClaveUnidadClm.Width = 150
+        '
+        'RelMercUbiDescUnidadClm
+        '
+        Me.RelMercUbiDescUnidadClm.HeaderText = "DescripcionUnidad"
+        Me.RelMercUbiDescUnidadClm.MinimumWidth = 8
+        Me.RelMercUbiDescUnidadClm.Name = "RelMercUbiDescUnidadClm"
+        Me.RelMercUbiDescUnidadClm.ReadOnly = True
+        Me.RelMercUbiDescUnidadClm.Width = 150
+        '
+        'RelacionMercUbiPeligrosaClm
+        '
+        Me.RelacionMercUbiPeligrosaClm.HeaderText = "¿Peligrosa?"
+        Me.RelacionMercUbiPeligrosaClm.MinimumWidth = 8
+        Me.RelacionMercUbiPeligrosaClm.Name = "RelacionMercUbiPeligrosaClm"
+        Me.RelacionMercUbiPeligrosaClm.ReadOnly = True
+        Me.RelacionMercUbiPeligrosaClm.Width = 150
+        '
+        'RelMercUbiCantidadClm
+        '
+        Me.RelMercUbiCantidadClm.HeaderText = "Cantidad a remover"
+        Me.RelMercUbiCantidadClm.MinimumWidth = 8
+        Me.RelMercUbiCantidadClm.Name = "RelMercUbiCantidadClm"
+        Me.RelMercUbiCantidadClm.Width = 150
+        '
+        'RelMercUbiBtnEliminarClm
+        '
+        Me.RelMercUbiBtnEliminarClm.HeaderText = "Remover"
+        Me.RelMercUbiBtnEliminarClm.MinimumWidth = 8
+        Me.RelMercUbiBtnEliminarClm.Name = "RelMercUbiBtnEliminarClm"
+        Me.RelMercUbiBtnEliminarClm.Text = "Remover"
+        Me.RelMercUbiBtnEliminarClm.ToolTipText = "Remueve la mercancía de este destino"
+        Me.RelMercUbiBtnEliminarClm.UseColumnTextForButtonValue = True
+        Me.RelMercUbiBtnEliminarClm.Width = 150
+        '
+        'RelMercUbiCantidadMaxima
+        '
+        Me.RelMercUbiCantidadMaxima.HeaderText = "CantidadMaxima"
+        Me.RelMercUbiCantidadMaxima.MinimumWidth = 8
+        Me.RelMercUbiCantidadMaxima.Name = "RelMercUbiCantidadMaxima"
+        Me.RelMercUbiCantidadMaxima.ReadOnly = True
+        Me.RelMercUbiCantidadMaxima.Visible = False
+        Me.RelMercUbiCantidadMaxima.Width = 150
         '
         'tlpDatosFinalesCarga
         '
@@ -5284,143 +5421,6 @@ Partial Class frmCartaPorte
         Me.btnGenerarCartaPorte.TabIndex = 3
         Me.btnGenerarCartaPorte.Text = "Generar carta porte"
         Me.btnGenerarCartaPorte.UseVisualStyleBackColor = True
-        '
-        'RelMercUbiIdUbiClm
-        '
-        Me.RelMercUbiIdUbiClm.HeaderText = "IdUbicacion"
-        Me.RelMercUbiIdUbiClm.MinimumWidth = 8
-        Me.RelMercUbiIdUbiClm.Name = "RelMercUbiIdUbiClm"
-        Me.RelMercUbiIdUbiClm.ReadOnly = True
-        Me.RelMercUbiIdUbiClm.Width = 150
-        '
-        'RelMercUbiClaveProdServClm
-        '
-        Me.RelMercUbiClaveProdServClm.HeaderText = "ClaveProdServ"
-        Me.RelMercUbiClaveProdServClm.MinimumWidth = 8
-        Me.RelMercUbiClaveProdServClm.Name = "RelMercUbiClaveProdServClm"
-        Me.RelMercUbiClaveProdServClm.ReadOnly = True
-        Me.RelMercUbiClaveProdServClm.Width = 150
-        '
-        'RelMercUbiDescMercClm
-        '
-        Me.RelMercUbiDescMercClm.HeaderText = "Mercancía"
-        Me.RelMercUbiDescMercClm.MinimumWidth = 8
-        Me.RelMercUbiDescMercClm.Name = "RelMercUbiDescMercClm"
-        Me.RelMercUbiDescMercClm.ReadOnly = True
-        Me.RelMercUbiDescMercClm.Width = 150
-        '
-        'RelMercUbiClaveUnidadClm
-        '
-        Me.RelMercUbiClaveUnidadClm.HeaderText = "ClaveUnidad"
-        Me.RelMercUbiClaveUnidadClm.MinimumWidth = 8
-        Me.RelMercUbiClaveUnidadClm.Name = "RelMercUbiClaveUnidadClm"
-        Me.RelMercUbiClaveUnidadClm.ReadOnly = True
-        Me.RelMercUbiClaveUnidadClm.Width = 150
-        '
-        'RelMercUbiDescUnidadClm
-        '
-        Me.RelMercUbiDescUnidadClm.HeaderText = "DescripcionUnidad"
-        Me.RelMercUbiDescUnidadClm.MinimumWidth = 8
-        Me.RelMercUbiDescUnidadClm.Name = "RelMercUbiDescUnidadClm"
-        Me.RelMercUbiDescUnidadClm.ReadOnly = True
-        Me.RelMercUbiDescUnidadClm.Width = 150
-        '
-        'RelacionMercUbiPeligrosaClm
-        '
-        Me.RelacionMercUbiPeligrosaClm.HeaderText = "¿Peligrosa?"
-        Me.RelacionMercUbiPeligrosaClm.MinimumWidth = 8
-        Me.RelacionMercUbiPeligrosaClm.Name = "RelacionMercUbiPeligrosaClm"
-        Me.RelacionMercUbiPeligrosaClm.ReadOnly = True
-        Me.RelacionMercUbiPeligrosaClm.Width = 150
-        '
-        'RelMercUbiCantidadClm
-        '
-        Me.RelMercUbiCantidadClm.HeaderText = "Cantidad a remover"
-        Me.RelMercUbiCantidadClm.MinimumWidth = 8
-        Me.RelMercUbiCantidadClm.Name = "RelMercUbiCantidadClm"
-        Me.RelMercUbiCantidadClm.Width = 150
-        '
-        'RelMercUbiBtnEliminarClm
-        '
-        Me.RelMercUbiBtnEliminarClm.HeaderText = "Remover"
-        Me.RelMercUbiBtnEliminarClm.MinimumWidth = 8
-        Me.RelMercUbiBtnEliminarClm.Name = "RelMercUbiBtnEliminarClm"
-        Me.RelMercUbiBtnEliminarClm.Text = "Remover"
-        Me.RelMercUbiBtnEliminarClm.ToolTipText = "Remueve la mercancía de este destino"
-        Me.RelMercUbiBtnEliminarClm.UseColumnTextForButtonValue = True
-        Me.RelMercUbiBtnEliminarClm.Width = 150
-        '
-        'RelMercUbiCantidadMaxima
-        '
-        Me.RelMercUbiCantidadMaxima.HeaderText = "CantidadMaxima"
-        Me.RelMercUbiCantidadMaxima.MinimumWidth = 8
-        Me.RelMercUbiCantidadMaxima.Name = "RelMercUbiCantidadMaxima"
-        Me.RelMercUbiCantidadMaxima.ReadOnly = True
-        Me.RelMercUbiCantidadMaxima.Visible = False
-        Me.RelMercUbiCantidadMaxima.Width = 150
-        '
-        'AsignarClaveProdServClm
-        '
-        Me.AsignarClaveProdServClm.HeaderText = "ClaveProdServ"
-        Me.AsignarClaveProdServClm.MinimumWidth = 8
-        Me.AsignarClaveProdServClm.Name = "AsignarClaveProdServClm"
-        Me.AsignarClaveProdServClm.ReadOnly = True
-        Me.AsignarClaveProdServClm.Width = 150
-        '
-        'AsignarDescripcionMercClm
-        '
-        Me.AsignarDescripcionMercClm.HeaderText = "Descripcion"
-        Me.AsignarDescripcionMercClm.MinimumWidth = 8
-        Me.AsignarDescripcionMercClm.Name = "AsignarDescripcionMercClm"
-        Me.AsignarDescripcionMercClm.ReadOnly = True
-        Me.AsignarDescripcionMercClm.Width = 150
-        '
-        'AsignarClaveUnidadClm
-        '
-        Me.AsignarClaveUnidadClm.HeaderText = "ClaveUnidad"
-        Me.AsignarClaveUnidadClm.MinimumWidth = 8
-        Me.AsignarClaveUnidadClm.Name = "AsignarClaveUnidadClm"
-        Me.AsignarClaveUnidadClm.ReadOnly = True
-        Me.AsignarClaveUnidadClm.Width = 150
-        '
-        'AsignarDescUnidadClm
-        '
-        Me.AsignarDescUnidadClm.HeaderText = "Unidad"
-        Me.AsignarDescUnidadClm.MinimumWidth = 8
-        Me.AsignarDescUnidadClm.Name = "AsignarDescUnidadClm"
-        Me.AsignarDescUnidadClm.ReadOnly = True
-        Me.AsignarDescUnidadClm.Width = 150
-        '
-        'AsignarPeligrosoClm
-        '
-        Me.AsignarPeligrosoClm.HeaderText = "¿Peligroso?"
-        Me.AsignarPeligrosoClm.MinimumWidth = 8
-        Me.AsignarPeligrosoClm.Name = "AsignarPeligrosoClm"
-        Me.AsignarPeligrosoClm.ReadOnly = True
-        Me.AsignarPeligrosoClm.Width = 150
-        '
-        'AsignarCantidadRestanteClm
-        '
-        Me.AsignarCantidadRestanteClm.HeaderText = "Cantidad sin asignar"
-        Me.AsignarCantidadRestanteClm.MinimumWidth = 8
-        Me.AsignarCantidadRestanteClm.Name = "AsignarCantidadRestanteClm"
-        Me.AsignarCantidadRestanteClm.ReadOnly = True
-        Me.AsignarCantidadRestanteClm.Width = 150
-        '
-        'AsignarCantidadParaAsignarClm
-        '
-        Me.AsignarCantidadParaAsignarClm.HeaderText = "Cantidad a asignar"
-        Me.AsignarCantidadParaAsignarClm.MinimumWidth = 8
-        Me.AsignarCantidadParaAsignarClm.Name = "AsignarCantidadParaAsignarClm"
-        Me.AsignarCantidadParaAsignarClm.Resizable = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.AsignarCantidadParaAsignarClm.Width = 150
-        '
-        'AsignarDestinoAccionClm
-        '
-        Me.AsignarDestinoAccionClm.HeaderText = "Realizar asignación"
-        Me.AsignarDestinoAccionClm.MinimumWidth = 8
-        Me.AsignarDestinoAccionClm.Name = "AsignarDestinoAccionClm"
-        Me.AsignarDestinoAccionClm.Width = 150
         '
         'frmCartaPorte
         '

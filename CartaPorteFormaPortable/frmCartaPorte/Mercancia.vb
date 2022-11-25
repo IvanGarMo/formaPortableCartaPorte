@@ -277,7 +277,7 @@
         'Si ya existe una relacion, solo la añadimos
         Dim existeRel = _RelacionMercanciaDestino.Find(Function(r) r.IdDestino.Equals(idUbi))
         If existeRel IsNot Nothing Then
-            existeRel.Cantidad = relMercUbi.Cantidad
+            existeRel.Cantidad = existeRel.Cantidad + relMercUbi.Cantidad
         Else
             _RelacionMercanciaDestino.Add(relMercUbi)
         End If
