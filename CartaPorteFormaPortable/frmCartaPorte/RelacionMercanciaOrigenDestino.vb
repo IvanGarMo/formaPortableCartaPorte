@@ -4,7 +4,7 @@
     Private _ClaveProdServ As String
     Private _DescripcionProductoServicio As String
     Private _Cantidad As Int32
-    Private _DescripcionDestino As String
+    Private _EsMaterialPeligroso As Boolean
 
     Public Property IdOrigen As String
         Get
@@ -42,21 +42,21 @@
         End Set
     End Property
 
-    Public Property DescripcionDestino As String
-        Get
-            Return _DescripcionDestino
-        End Get
-        Set(value As String)
-            _DescripcionDestino = value
-        End Set
-    End Property
-
     Public Property DescripcionProductoServicio As String
         Get
             Return _DescripcionProductoServicio
         End Get
         Set(value As String)
             _DescripcionProductoServicio = value
+        End Set
+    End Property
+
+    Public Property EsMaterialPeligroso As Boolean
+        Get
+            Return _EsMaterialPeligroso
+        End Get
+        Set(value As Boolean)
+            _EsMaterialPeligroso = value
         End Set
     End Property
 End Class

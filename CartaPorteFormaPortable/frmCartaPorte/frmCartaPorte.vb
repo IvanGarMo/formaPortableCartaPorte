@@ -2687,6 +2687,42 @@ Public Class frmCartaPorte
         ToggleComercioInternacional()
     End Sub
 
+    Private Sub txtClaveProdServMercancia_DoubleClick(sender As Object, e As EventArgs) Handles txtClaveProdServMercancia.DoubleClick
+        Dim formaBusqueda As New frmBusqueda(AddressOf conexionesCartaPorte.Get_DetalleClaveProdServ)
+        esperandoBusqueda = txtClaveProdServMercancia
+        AddHandler formaBusqueda.ElementoSeleccionado, AddressOf AtrapaEvento
+        formaBusqueda.ShowDialog()
+    End Sub
+
+    Private Sub txtUnidadClaveMercancia_DoubleClick(sender As Object, e As EventArgs) Handles txtUnidadClaveMercancia.DoubleClick
+        Dim formaBusqueda As New frmBusqueda(AddressOf conexionesCartaPorte.Get_DetalleClaveUnidad)
+        esperandoBusqueda = txtUnidadClaveMercancia
+        AddHandler formaBusqueda.ElementoSeleccionado, AddressOf AtrapaEvento
+        formaBusqueda.ShowDialog()
+    End Sub
+
+    Private Sub txtMoneda_DoubleClick(sender As Object, e As EventArgs) Handles txtMoneda.DoubleClick
+        Dim formaBusqueda As New frmBusqueda(AddressOf conexionesCartaPorte.Get_DetalleMoneda)
+        esperandoBusqueda = txtMoneda
+        AddHandler formaBusqueda.ElementoSeleccionado, AddressOf AtrapaEvento
+        formaBusqueda.ShowDialog()
+    End Sub
+
+    Private Sub txtClaveMaterialPeligroso_DoubleClick(sender As Object, e As EventArgs) Handles txtClaveMaterialPeligroso.DoubleClick
+        Dim formaBusqueda As New frmBusqueda(AddressOf conexionesCartaPorte.Get_DetalleMaterialPeligroso)
+        esperandoBusqueda = txtClaveMaterialPeligroso
+        AddHandler formaBusqueda.ElementoSeleccionado, AddressOf AtrapaEvento
+        AddHandler formaBusqueda.ElementoSeleccionado, AddressOf AtrapaEvento
+        formaBusqueda.ShowDialog()
+    End Sub
+
+    Private Sub txtEmbalaje_DoubleClick(sender As Object, e As EventArgs) Handles txtEmbalaje.DoubleClick
+        Dim formaBusqueda As New frmBusqueda(AddressOf conexionesCartaPorte.Get_DetalleEmbalaje)
+        esperandoBusqueda = txtEmbalaje
+        AddHandler formaBusqueda.ElementoSeleccionado, AddressOf AtrapaEvento
+        formaBusqueda.ShowDialog()
+    End Sub
+
     Private Sub txtClaveProdServMercancia_TextChanged(sender As Object, e As EventArgs) Handles txtClaveProdServMercancia.TextChanged
         txtDescripcionProducto.Enabled = False
         Dim longitudClaveProdServ As Int32 = CInt(ObtenParametroPorLlave("LONGITUD_CLAVE_PROD_SERV"))
@@ -2873,13 +2909,6 @@ Public Class frmCartaPorte
         mercanciaEnModificacion.EsComercioInternacional = rbComercioInternacionalSi.Checked
         mercanciaEnModificacion.Pedimento = pedimento
         mercanciaEnModificacion.FraccionArancelaria = fraccionArancelaria
-
-        Dim relUbiMerc As New RelacionMercanciaOrigenDestino
-        relUbiMerc.IdDestino = PESTANA_MERCANCIAS_ID_MOVIMIENTO_EN_MODIFICACION
-        relUbiMerc.ClaveProdServ = claveProdServ
-        relUbiMerc.DescripcionProductoServicio = descripcionProducto
-        relUbiMerc.Cantidad = cantidadMercancia
-        mercanciaEnModificacion.AnadeRelacion(relUbiMerc)
 
         If ESTA_CREANDO_MERCANCIA Then
             If ObtenMercancia(PESTANA_MERCANCIAS_ID_MOVIMIENTO_EN_MODIFICACION, claveProdServ, claveUnidad, rbSiMaterialPeligroso.Checked) IsNot Nothing Then
@@ -3579,6 +3608,34 @@ Public Class frmCartaPorte
         AbreSiEsEnter(e, AddressOf txtConVeh_DoubleClick)
     End Sub
 
+    Private Sub txtTipoPermisoSCT_DoubleClick(sender As Object, e As EventArgs) Handles txtTipoPermisoSCT.DoubleClick
+        Dim formaBusqueda As New frmBusqueda(AddressOf conexionesCartaPorte.Get_DetalleTipoPermiso)
+        esperandoBusqueda = txtTipoPermisoSCT
+        AddHandler formaBusqueda.ElementoSeleccionado, AddressOf AtrapaEvento
+        formaBusqueda.ShowDialog()
+    End Sub
+
+    Private Sub txtConVeh_DoubleClick(sender As Object, e As EventArgs) Handles txtConVeh.DoubleClick
+        Dim formaBusqueda As New frmBusqueda(AddressOf conexionesCartaPorte.Get_DetalleConfigVehicular)
+        esperandoBusqueda = txtConVeh
+        AddHandler formaBusqueda.ElementoSeleccionado, AddressOf AtrapaEvento
+        formaBusqueda.ShowDialog()
+    End Sub
+
+    Private Sub txtTipoPermisoSCT_TextChanged(sender As Object, e As EventArgs) Handles txtTipoPermisoSCT.TextChanged
+        LimpiaDesactivaTextbox(txtDescripcionTipoPermisoSCT)
+        Dim claveTipoPermiso = ObtenValorTextbox(txtTipoPermisoSCT)
+        If EsCadenaVacia(claveTipoPermiso) Then Return
+        txtDescripcionTipoPermisoSCT.Text = conexionesCartaPorte.Get_ObtenDescripcionTipoPermiso(claveTipoPermiso)
+    End Sub
+
+    Private Sub txtConVeh_TextChanged(sender As Object, e As EventArgs) Handles txtConVeh.TextChanged
+        LimpiaDesactivaTextbox(txtDescripConfigVehicular)
+        Dim conVehicular = ObtenValorTextbox(txtConVeh)
+        If EsCadenaVacia(conVehicular) Then Return
+        txtDescripConfigVehicular.Text = conexionesCartaPorte.Get_ObtenDescripcionConfiguracionAutoTransporte(conVehicular)
+    End Sub
+
     Private Sub gvParteTransporteOperador_CellContentClick(sender As Object, e As DataGridViewCellEventArgs) Handles gvParteTransporteOperador.CellContentClick
         If e.RowIndex < 0 Then Return
         Dim indiceIdEliminar As Int32 = gvParteTransporteOperador.Columns.IndexOf(gvParteTransporteOperador.Columns("EliminarParteTransporteClm"))
@@ -4001,45 +4058,63 @@ Public Class frmCartaPorte
         If Not Regex.IsMatch(pesoBrutoTotal, regExpDec) Then AlertaMensaje(ObtenParametroPorLlave("INGRESE_PESOBRUTO_TOT")) : Return
         If EsCadenaVacia(unidadPeso) Then AlertaMensaje(ObtenParametroPorLlave("INGRESE_UNIDAD_TOT")) : Return
 
-        'Preparamos la lista final de mercancías
-        'Aquí vamos a juntar todas mientras tengan la misma claveprodserv y unidad peso
-        Dim listaFinalMercancias As New List(Of Mercancia)
-        For Each mercParaMover As Mercancia In pestConfirmacionListaFinalMercancias
+        'Preparamos la lista final de mercancías, porque la carta porte solo recibe
+        'una lista de mercancías
 
-            'Si existe una mercancia así en la lista sin añadir, la sumamos
-            Dim mercSinDestino As Mercancia = EncuentraMercancia(pestConfirmacionListaMercanciaSinDestino, mercParaMover.ClaveProdServ, mercParaMover.ClaveUnidad)
-            If mercSinDestino IsNot Nothing Then
-                mercParaMover.Cantidad = mercParaMover.Cantidad + mercSinDestino.Cantidad
-            End If
+        '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+        'Para facilitar las cosas, primero vamos a ordenar, esto nos ahorrará problemas a futuro
+        '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
-            'Ahora, veo si ya tengo alguna con las mismas características en mi lista final
-            Dim mercFinal As Mercancia = EncuentraMercancia(listaFinalMercancias, mercParaMover.ClaveProdServ, mercParaMover.ClaveUnidad)
-            If mercFinal Is Nothing Then
-                'Si no, añado una copia
-                listaFinalMercancias.Add(Mercancia.CreaCopiaMercancia(mercParaMover, True))
-            Else
-                'Si si existe, solo sumamos la cantidad y añadimos la relacion
-                mercFinal.Cantidad = mercFinal.Cantidad + mercParaMover.Cantidad
-                For Each relUbiMerc As RelacionMercanciaOrigenDestino In mercParaMover.RelacionMercanciaDestino
-                    'tengo que verificar que no exista ya ese destino
-                    Dim rel As RelacionMercanciaOrigenDestino = mercFinal.RelacionMercanciaDestino.FirstOrDefault(Function(g) g.IdDestino.Equals(relUbiMerc.IdDestino))
-                    If rel Is Nothing Then
-                        mercFinal.AnadeRelacion(relUbiMerc)
-                    Else
-                        rel.Cantidad = rel.Cantidad + relUbiMerc.Cantidad
+        For Each key As String In datosMercancias.Keys
+            datosMercancias(key) = datosMercancias(key).OrderBy(Of String)(Function(m) m.ClaveProdServ).ToList
+        Next
+
+        '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+        'Ahora, recorremos toda la lista de mercancías, y la iremos añadiendo y creando la relación
+        '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+        pestConfirmacionListaFinalMercancias = New List(Of Mercancia)
+        For Each key As String In datosMercancias.Keys
+            Dim listaMercanciasParaAnadir As List(Of Mercancia) = datosMercancias(key)
+            For Each mer As Mercancia In listaMercanciasParaAnadir
+
+                'Creamos la relación para el detalle del nodo
+                Dim relMercUbi As New RelacionMercanciaOrigenDestino
+                relMercUbi.IdOrigen = datosOrigenParaCartaPorte.IDUbicacion
+                relMercUbi.IdDestino = key
+                relMercUbi.ClaveProdServ = mer.ClaveProdServ
+                relMercUbi.DescripcionProductoServicio = mer.Descripcion
+                relMercUbi.EsMaterialPeligroso = mer.MaterialPeligroso
+                relMercUbi.Cantidad = mer.Cantidad
+
+                'Luego, vemos si existe una mercancía exactamente igual
+                Dim existeMercancia As Boolean = False
+                Dim posibleChoque As Mercancia = Nothing
+                For Each merIncluidas In pestConfirmacionListaFinalMercancias
+                    If merIncluidas.Equals(mer) Then
+                        posibleChoque = merIncluidas
+                        existeMercancia = True
+                        Exit For
                     End If
                 Next
-            End If
+
+                'En caso de que exista, solo sumo cantidades y añado la relación
+                If existeMercancia Then
+                    posibleChoque.Cantidad = posibleChoque.Cantidad + mer.Cantidad
+                    posibleChoque.AnadeRelacion(relMercUbi)
+                Else
+                    pestConfirmacionListaFinalMercancias.Add(mer)
+                    mer.AnadeRelacion(relMercUbi)
+                End If
+            Next
         Next
 
         'Ahora sí, a generar el XML
-        pestConfirmacioListaDestinos.Insert(0, datosOrigenParaCartaPorte)
         Dim xmlCartaPorte As String = conexionesCartaPorte.GeneraXmlCartaPorte(
                 "T", False, "", "", "", datosDestinoParaCartaPorte.DistanciaRecorrida,
-                pestConfirmacioListaDestinos,
+                pestConfirmacionListaDestinos,
                 Decimal.Parse(pesoBrutoTotal),
                 unidadPeso,
-                listaFinalMercancias,
+                pestConfirmacionListaFinalMercancias,
                 datosAutoTransporte,
                 datosAutoTransporte.Transportista)
 
@@ -4053,74 +4128,10 @@ Public Class frmCartaPorte
             datosDestinoParaCartaPorte.NombreUbicacionParaComplemento,
             datosDestinoParaCartaPorte.DatosDomicilio.CodigoPostal,
             "601",
-            listaFinalMercancias
+            pestConfirmacionListaFinalMercancias
         )
         Dim xmlFinal As String = String.Format(xmlTraslado, xmlCartaPorte)
         Dim aaaaa = xmlFinal
-    End Sub
-
-    Private Sub txtClaveProdServMercancia_DoubleClick(sender As Object, e As EventArgs) Handles txtClaveProdServMercancia.DoubleClick
-        Dim formaBusqueda As New frmBusqueda(AddressOf conexionesCartaPorte.Get_DetalleClaveProdServ)
-        esperandoBusqueda = txtClaveProdServMercancia
-        AddHandler formaBusqueda.ElementoSeleccionado, AddressOf AtrapaEvento
-        formaBusqueda.ShowDialog()
-    End Sub
-
-    Private Sub txtUnidadClaveMercancia_DoubleClick(sender As Object, e As EventArgs) Handles txtUnidadClaveMercancia.DoubleClick
-        Dim formaBusqueda As New frmBusqueda(AddressOf conexionesCartaPorte.Get_DetalleClaveUnidad)
-        esperandoBusqueda = txtUnidadClaveMercancia
-        AddHandler formaBusqueda.ElementoSeleccionado, AddressOf AtrapaEvento
-        formaBusqueda.ShowDialog()
-    End Sub
-
-    Private Sub txtMoneda_DoubleClick(sender As Object, e As EventArgs) Handles txtMoneda.DoubleClick
-        Dim formaBusqueda As New frmBusqueda(AddressOf conexionesCartaPorte.Get_DetalleMoneda)
-        esperandoBusqueda = txtMoneda
-        AddHandler formaBusqueda.ElementoSeleccionado, AddressOf AtrapaEvento
-        formaBusqueda.ShowDialog()
-    End Sub
-
-    Private Sub txtClaveMaterialPeligroso_DoubleClick(sender As Object, e As EventArgs) Handles txtClaveMaterialPeligroso.DoubleClick
-        Dim formaBusqueda As New frmBusqueda(AddressOf conexionesCartaPorte.Get_DetalleMaterialPeligroso)
-        esperandoBusqueda = txtClaveMaterialPeligroso
-        AddHandler formaBusqueda.ElementoSeleccionado, AddressOf AtrapaEvento
-        AddHandler formaBusqueda.ElementoSeleccionado, AddressOf AtrapaEvento
-        formaBusqueda.ShowDialog()
-    End Sub
-
-    Private Sub txtEmbalaje_DoubleClick(sender As Object, e As EventArgs) Handles txtEmbalaje.DoubleClick
-        Dim formaBusqueda As New frmBusqueda(AddressOf conexionesCartaPorte.Get_DetalleEmbalaje)
-        esperandoBusqueda = txtEmbalaje
-        AddHandler formaBusqueda.ElementoSeleccionado, AddressOf AtrapaEvento
-        formaBusqueda.ShowDialog()
-    End Sub
-
-    Private Sub txtTipoPermisoSCT_DoubleClick(sender As Object, e As EventArgs) Handles txtTipoPermisoSCT.DoubleClick
-        Dim formaBusqueda As New frmBusqueda(AddressOf conexionesCartaPorte.Get_DetalleTipoPermiso)
-        esperandoBusqueda = txtTipoPermisoSCT
-        AddHandler formaBusqueda.ElementoSeleccionado, AddressOf AtrapaEvento
-        formaBusqueda.ShowDialog()
-    End Sub
-
-    Private Sub txtConVeh_DoubleClick(sender As Object, e As EventArgs) Handles txtConVeh.DoubleClick
-        Dim formaBusqueda As New frmBusqueda(AddressOf conexionesCartaPorte.Get_DetalleConfigVehicular)
-        esperandoBusqueda = txtConVeh
-        AddHandler formaBusqueda.ElementoSeleccionado, AddressOf AtrapaEvento
-        formaBusqueda.ShowDialog()
-    End Sub
-
-    Private Sub txtTipoPermisoSCT_TextChanged(sender As Object, e As EventArgs) Handles txtTipoPermisoSCT.TextChanged
-        LimpiaDesactivaTextbox(txtDescripcionTipoPermisoSCT)
-        Dim claveTipoPermiso = ObtenValorTextbox(txtTipoPermisoSCT)
-        If EsCadenaVacia(claveTipoPermiso) Then Return
-        txtDescripcionTipoPermisoSCT.Text = conexionesCartaPorte.Get_ObtenDescripcionTipoPermiso(claveTipoPermiso)
-    End Sub
-
-    Private Sub txtConVeh_TextChanged(sender As Object, e As EventArgs) Handles txtConVeh.TextChanged
-        LimpiaDesactivaTextbox(txtDescripConfigVehicular)
-        Dim conVehicular = ObtenValorTextbox(txtConVeh)
-        If EsCadenaVacia(conVehicular) Then Return
-        txtDescripConfigVehicular.Text = conexionesCartaPorte.Get_ObtenDescripcionConfiguracionAutoTransporte(conVehicular)
     End Sub
 
     Private Sub tlpContenedorSeguroMaterialPeligroso_Paint(sender As Object, e As PaintEventArgs) Handles tlpContenedorSeguroMaterialPeligroso.Paint

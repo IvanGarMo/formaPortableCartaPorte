@@ -283,11 +283,6 @@
         End If
     End Sub
 
-    Public Sub RemueveDeRelacion(ByVal idMovimiento As String)
-        Dim rel As RelacionMercanciaOrigenDestino = _RelacionMercanciaDestino.FirstOrDefault(Function(r) r.IdDestino.Equals(idMovimiento))
-        _RelacionMercanciaDestino.Remove(rel)
-    End Sub
-
     Public Shared Function CreaCopiaMercancia(ByRef mercancia As Mercancia, ByVal incluyeRelacion As Boolean)
         Dim merc As New Mercancia
 
@@ -325,11 +320,31 @@
         Return merc
     End Function
 
-    Public Function SumatoriaTotalRelacion() As Int32
-        Dim total As Int32 = 0
-        If _RelacionMercanciaDestino Is Nothing Then Return 0
-        Me._RelacionMercanciaDestino.ForEach(Function(m) total = total + m.Cantidad)
-        Return total
+    Public Overrides Function Equals(obj As Object) As Boolean
+        Dim mercancia = TryCast(obj, Mercancia)
+        Return mercancia IsNot Nothing AndAlso
+               _ClaveProdServ = mercancia._ClaveProdServ AndAlso
+               _Descripcion = mercancia._Descripcion AndAlso
+               _ClaveUnidad = mercancia._ClaveUnidad AndAlso
+               _Unidad = mercancia._Unidad AndAlso
+               _Longitud = mercancia._Longitud AndAlso
+               _Altura = mercancia._Altura AndAlso
+               _Anchura = mercancia._Anchura AndAlso
+               _EsCentimetros = mercancia._EsCentimetros AndAlso
+               _EsPulgadas = mercancia._EsPulgadas AndAlso
+               _RequiereNodoMaterialPeligroso = mercancia._RequiereNodoMaterialPeligroso AndAlso
+               _SatConsideraPeligrosa = mercancia._SatConsideraPeligrosa AndAlso
+               _MaterialPeligroso = mercancia._MaterialPeligroso AndAlso
+               _ClaveMaterialPeligroso = mercancia._ClaveMaterialPeligroso AndAlso
+               _DescripcionMaterialPeligroso = mercancia._DescripcionMaterialPeligroso AndAlso
+               _Embalaje = mercancia._Embalaje AndAlso
+               _DescripcionEmbalaje = mercancia._DescripcionEmbalaje AndAlso
+               _PesoEnKg = mercancia._PesoEnKg AndAlso
+               _ValorMercancia = mercancia._ValorMercancia AndAlso
+               _Moneda = mercancia._Moneda AndAlso
+               _EsComercioInternacional = mercancia._EsComercioInternacional AndAlso
+               _FraccionArancelaria = mercancia._FraccionArancelaria AndAlso
+               _Pedimento = mercancia._Pedimento
     End Function
 
     Public ReadOnly Property MovimientoMercancia As String
