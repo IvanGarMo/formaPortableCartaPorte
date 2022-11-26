@@ -27,6 +27,8 @@ Public Class frmCartaPorte
     Private colorCampoOpcional As String = String.Empty
     Private colorUsuarioCausoProblemas As String = String.Empty
 
+#Region "Eventos de carga de la forma"
+
     '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
     '''''''MÉTODOS COMUNES
     '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -42,6 +44,296 @@ Public Class frmCartaPorte
         Me.numeroEscenario = idEscenario
         Me.idEmpresa = idEmpresa
     End Sub
+
+    Private Sub PreparaPruebasCartaPorte()
+
+        'Preparo los datos de origen
+        datosOrigenParaCartaPorte = New OrigenDestino
+        datosOrigenParaCartaPorte.TipoUbicacion = "Origen"
+        datosOrigenParaCartaPorte.IDUbicacion = "OR000001"
+        datosOrigenParaCartaPorte.EsDestinoIntermedio = False
+        datosOrigenParaCartaPorte.EsPersonaFisica = False
+        datosOrigenParaCartaPorte.EsPersonaMoral = True
+        datosOrigenParaCartaPorte.EsExtranjero = False
+        datosOrigenParaCartaPorte.Nombre = String.Empty
+        datosOrigenParaCartaPorte.ApPaterno = String.Empty
+        datosOrigenParaCartaPorte.ApMaterno = String.Empty
+        datosOrigenParaCartaPorte.NombrePersonaMoral = "EAGLE IMPORTACIONES"
+        datosOrigenParaCartaPorte.NumRegIdTrib = String.Empty
+        datosOrigenParaCartaPorte.ResidenciaFiscal = String.Empty
+
+        datosOrigenParaCartaPorte.RFCRemitenteDestinatario = "EIM951002R19"
+        datosOrigenParaCartaPorte.NumRegIdTrib = String.Empty
+        datosOrigenParaCartaPorte.FechaSalidaLlegada = DateTime.Today.Date
+        datosOrigenParaCartaPorte.HoraSalidaLlegada = "20:00"
+        datosOrigenParaCartaPorte.DistanciaRecorrida = 0
+
+        Dim domicilio As New Domicilio
+        domicilio.Calle = "LAZARO CARDENAS"
+        domicilio.NumeroExterior = "170"
+        domicilio.NumeroInterior = String.Empty
+        domicilio.Colonia = "2034"
+        domicilio.Municipio = "007"
+        domicilio.Localidad = "02"
+        domicilio.Estado = "DUR"
+        domicilio.Pais = "MEX"
+        domicilio.Referencia = String.Empty
+        domicilio.CodigoPostal = "35077"
+        datosOrigenParaCartaPorte.DatosDomicilio = domicilio
+
+        'Ahora preparo los datos de destino
+        datosDestinoParaCartaPorte = New OrigenDestino
+        datosDestinoParaCartaPorte.UsuarioCausoProblemasConFecha = False
+        datosDestinoParaCartaPorte.TipoUbicacion = "Destino"
+        datosDestinoParaCartaPorte.IDUbicacion = "DE000001"
+        datosDestinoParaCartaPorte.RFCRemitenteDestinatario = "EIM951002R19"
+        datosDestinoParaCartaPorte.NombrePersonaMoral = "EAGLE IMPORTACIONES"
+        datosDestinoParaCartaPorte.Nombre = String.Empty
+        datosDestinoParaCartaPorte.ApPaterno = String.Empty
+        datosDestinoParaCartaPorte.ApMaterno = String.Empty
+        datosDestinoParaCartaPorte.ResidenciaFiscal = String.Empty
+        datosDestinoParaCartaPorte.NumRegIdTrib = String.Empty
+        datosDestinoParaCartaPorte.FechaSalidaLlegada = DateTime.Today.AddDays(1).Date
+        datosDestinoParaCartaPorte.HoraSalidaLlegada = "20:00"
+        datosDestinoParaCartaPorte.DistanciaRecorrida = 2000
+        datosDestinoParaCartaPorte.EsPersonaFisica = False
+        datosDestinoParaCartaPorte.EsPersonaMoral = True
+        datosDestinoParaCartaPorte.EsExtranjero = False
+
+        Dim domicilioDestino As New Domicilio
+        domicilioDestino.Calle = "CARRETERA INTERNACIONAL KM 1.5"
+        domicilioDestino.NumeroExterior = "313"
+        domicilioDestino.NumeroInterior = String.Empty
+        domicilioDestino.Colonia = "1079"
+        domicilioDestino.Localidad = "05"
+        domicilioDestino.Municipio = "012"
+        domicilioDestino.Estado = "SIN"
+        domicilioDestino.Pais = "MEX"
+        domicilioDestino.Referencia = String.Empty
+        domicilioDestino.CodigoPostal = "82129"
+        datosDestinoParaCartaPorte.DatosDomicilio = domicilioDestino
+
+        'Creo la de destinos intermedios para evitar broncas
+        datosDestinosIntermediosParaCartaPorte = New List(Of OrigenDestino)
+
+        'Ahora creo los destinos intermedios
+        Dim datosDestinoIntermedio1ParaCartaPorte = New OrigenDestino
+        datosDestinoIntermedio1ParaCartaPorte.UsuarioCausoProblemasConFecha = False
+        datosDestinoIntermedio1ParaCartaPorte.TipoUbicacion = "Destino"
+        datosDestinoIntermedio1ParaCartaPorte.IDUbicacion = "DE000011"
+        datosDestinoIntermedio1ParaCartaPorte.RFCRemitenteDestinatario = "EIM951002R19"
+        datosDestinoIntermedio1ParaCartaPorte.NombrePersonaMoral = "EAGLE IMPORTACIONES"
+        datosDestinoIntermedio1ParaCartaPorte.Nombre = String.Empty
+        datosDestinoIntermedio1ParaCartaPorte.ApPaterno = String.Empty
+        datosDestinoIntermedio1ParaCartaPorte.ApMaterno = String.Empty
+        datosDestinoIntermedio1ParaCartaPorte.ResidenciaFiscal = String.Empty
+        datosDestinoIntermedio1ParaCartaPorte.NumRegIdTrib = String.Empty
+        datosDestinoIntermedio1ParaCartaPorte.FechaSalidaLlegada = DateTime.Today.AddDays(1).Date
+        datosDestinoIntermedio1ParaCartaPorte.HoraSalidaLlegada = "14:00"
+        datosDestinoIntermedio1ParaCartaPorte.DistanciaRecorrida = 1000
+        datosDestinoIntermedio1ParaCartaPorte.EsPersonaFisica = False
+        datosDestinoIntermedio1ParaCartaPorte.EsPersonaMoral = True
+        datosDestinoIntermedio1ParaCartaPorte.EsExtranjero = False
+
+        Dim domicilioIntermedio1Destino As New Domicilio
+        domicilioIntermedio1Destino.Calle = "HOTEL PARADOR"
+        domicilioIntermedio1Destino.NumeroExterior = "300"
+        domicilioIntermedio1Destino.NumeroInterior = String.Empty
+        domicilioIntermedio1Destino.Colonia = "0001"
+        domicilioIntermedio1Destino.Localidad = "03"
+        domicilioIntermedio1Destino.Municipio = "056"
+        domicilioIntermedio1Destino.Estado = "ZAC"
+        domicilioIntermedio1Destino.Pais = "MEX"
+        domicilioIntermedio1Destino.Referencia = String.Empty
+        domicilioIntermedio1Destino.CodigoPostal = "98000"
+        datosDestinoIntermedio1ParaCartaPorte.DatosDomicilio = domicilioIntermedio1Destino
+        datosDestinosIntermediosParaCartaPorte.Add(datosDestinoIntermedio1ParaCartaPorte)
+
+        Dim datosDestinoIntermedio2ParaCartaPorte = New OrigenDestino
+        datosDestinoIntermedio2ParaCartaPorte.UsuarioCausoProblemasConFecha = False
+        datosDestinoIntermedio2ParaCartaPorte.TipoUbicacion = "Destino"
+        datosDestinoIntermedio2ParaCartaPorte.IDUbicacion = "DE000012"
+        datosDestinoIntermedio2ParaCartaPorte.RFCRemitenteDestinatario = "EIM951002R19"
+        datosDestinoIntermedio2ParaCartaPorte.NombrePersonaMoral = "EAGLE IMPORTACIONES"
+        datosDestinoIntermedio2ParaCartaPorte.Nombre = String.Empty
+        datosDestinoIntermedio2ParaCartaPorte.ApPaterno = String.Empty
+        datosDestinoIntermedio2ParaCartaPorte.ApMaterno = String.Empty
+        datosDestinoIntermedio2ParaCartaPorte.ResidenciaFiscal = String.Empty
+        datosDestinoIntermedio2ParaCartaPorte.NumRegIdTrib = String.Empty
+        datosDestinoIntermedio2ParaCartaPorte.FechaSalidaLlegada = DateTime.Today.AddDays(1).Date
+        datosDestinoIntermedio2ParaCartaPorte.HoraSalidaLlegada = "16:00"
+        datosDestinoIntermedio2ParaCartaPorte.DistanciaRecorrida = 100
+        datosDestinoIntermedio2ParaCartaPorte.EsPersonaFisica = False
+        datosDestinoIntermedio2ParaCartaPorte.EsPersonaMoral = True
+        datosDestinoIntermedio2ParaCartaPorte.EsExtranjero = False
+
+        Dim domicilioIntermedio2Destino As New Domicilio
+        domicilioIntermedio2Destino.Calle = "GUADALAJARA CENTRO"
+        domicilioIntermedio2Destino.NumeroExterior = "400"
+        domicilioIntermedio2Destino.NumeroInterior = String.Empty
+        domicilioIntermedio2Destino.Colonia = "0002"
+        domicilioIntermedio2Destino.Localidad = "03"
+        domicilioIntermedio2Destino.Municipio = "039"
+        domicilioIntermedio2Destino.Estado = "JAL"
+        domicilioIntermedio2Destino.Pais = "MEX"
+        domicilioIntermedio2Destino.Referencia = String.Empty
+        domicilioIntermedio2Destino.CodigoPostal = "440009"
+        datosDestinoIntermedio2ParaCartaPorte.DatosDomicilio = domicilioIntermedio2Destino
+        datosDestinosIntermediosParaCartaPorte.Add(datosDestinoIntermedio2ParaCartaPorte)
+
+        'Ahora creo la lista de mercancías y le añado una
+        Dim listaMercSinaloa As List(Of Mercancia) = New List(Of Mercancia)
+        Dim mercSinaloa As Mercancia = New Mercancia
+
+        mercSinaloa.ClaveProdServ = "12181600"
+        mercSinaloa.Descripcion = "Aceites"
+        mercSinaloa.RequiereNodoMaterialPeligroso = True
+        mercSinaloa.SatConsideraPeligrosa = False
+
+        mercSinaloa.Cantidad = 20
+        mercSinaloa.ClaveUnidad = "XBJ"
+        mercSinaloa.Unidad = "CUBETA"
+        mercSinaloa.EsCentimetros = True
+        mercSinaloa.EsPulgadas = True
+        mercSinaloa.Longitud = 0
+        mercSinaloa.Anchura = 0
+        mercSinaloa.Altura = 0
+
+        mercSinaloa.MaterialPeligroso = False
+        mercSinaloa.ClaveMaterialPeligroso = String.Empty
+        mercSinaloa.Embalaje = String.Empty
+        mercSinaloa.DescripcionEmbalaje = String.Empty
+
+        mercSinaloa.PesoEnKg = 10D
+        mercSinaloa.ValorMercancia = 0D
+        mercSinaloa.Moneda = "MXN"
+
+        mercSinaloa.EsComercioInternacional = False
+        mercSinaloa.Pedimento = String.Empty
+        mercSinaloa.FraccionArancelaria = String.Empty
+        listaMercSinaloa.Add(mercSinaloa)
+
+        'Mercancia para Zacatecas
+        Dim listaMercZacatecas As List(Of Mercancia) = New List(Of Mercancia)
+        Dim mercZacatecas As Mercancia = New Mercancia
+
+        mercZacatecas.ClaveProdServ = "15121807"
+        mercZacatecas.Descripcion = "Anticongelante"
+        mercZacatecas.RequiereNodoMaterialPeligroso = False
+        mercZacatecas.SatConsideraPeligrosa = False
+
+        mercZacatecas.Cantidad = 10
+        mercZacatecas.ClaveUnidad = "XBA"
+        mercZacatecas.Unidad = "BARRIL"
+        mercZacatecas.EsCentimetros = True
+        mercZacatecas.EsPulgadas = False
+        mercZacatecas.Longitud = 0
+        mercZacatecas.Anchura = 0
+        mercZacatecas.Altura = 0
+
+        mercZacatecas.MaterialPeligroso = False
+        mercZacatecas.ClaveMaterialPeligroso = String.Empty
+        mercZacatecas.Embalaje = String.Empty
+        mercZacatecas.DescripcionEmbalaje = String.Empty
+
+        mercZacatecas.PesoEnKg = 10D
+        mercZacatecas.ValorMercancia = 0D
+        mercZacatecas.Moneda = "MXN"
+
+        mercZacatecas.EsComercioInternacional = False
+        mercZacatecas.Pedimento = String.Empty
+        mercZacatecas.FraccionArancelaria = String.Empty
+        listaMercZacatecas.Add(mercZacatecas)
+
+        'Mercancia para Guadalajara
+        Dim listaMercJalisco As List(Of Mercancia) = New List(Of Mercancia)
+        Dim mercJalisco As Mercancia = New Mercancia
+
+        mercJalisco.ClaveProdServ = "12181600"
+        mercJalisco.Descripcion = "Aceites"
+        mercJalisco.RequiereNodoMaterialPeligroso = True
+        mercJalisco.SatConsideraPeligrosa = False
+
+        mercJalisco.Cantidad = 5
+        mercJalisco.ClaveUnidad = "XBJ"
+        mercJalisco.Unidad = "CUBETA"
+        mercJalisco.EsCentimetros = True
+        mercJalisco.EsPulgadas = True
+        mercJalisco.Longitud = 0
+        mercJalisco.Anchura = 0
+        mercJalisco.Altura = 0
+
+        mercJalisco.MaterialPeligroso = True
+        mercJalisco.ClaveMaterialPeligroso = "0454"
+        mercJalisco.Embalaje = "1A2"
+        mercJalisco.DescripcionEmbalaje = "BIDONES (TAMBORES)"
+
+        mercJalisco.PesoEnKg = 10D
+        mercJalisco.ValorMercancia = 0D
+        mercJalisco.Moneda = "MXN"
+
+        mercJalisco.EsComercioInternacional = False
+        mercJalisco.Pedimento = String.Empty
+        mercJalisco.FraccionArancelaria = String.Empty
+
+        Dim mercJalisco2 As Mercancia = New Mercancia
+        mercJalisco2.ClaveProdServ = "12181600"
+        mercJalisco2.Descripcion = "Aceites"
+        mercJalisco2.RequiereNodoMaterialPeligroso = True
+        mercJalisco2.SatConsideraPeligrosa = False
+        mercJalisco2.Cantidad = 5
+        mercJalisco2.ClaveUnidad = "XBA"
+        mercJalisco2.Unidad = "BARRIL"
+        mercJalisco2.EsCentimetros = True
+        mercJalisco2.EsPulgadas = True
+        mercJalisco2.Longitud = 0
+        mercJalisco2.Anchura = 0
+        mercJalisco2.Altura = 0
+        mercJalisco2.MaterialPeligroso = True
+        mercJalisco2.ClaveMaterialPeligroso = "0454"
+        mercJalisco2.Embalaje = "1A2"
+        mercJalisco2.DescripcionEmbalaje = "BIDONES (TAMBORES)"
+        mercJalisco2.PesoEnKg = 10D
+        mercJalisco2.ValorMercancia = 0D
+        mercJalisco2.Moneda = "MXN"
+        mercJalisco2.EsComercioInternacional = False
+        mercJalisco2.Pedimento = String.Empty
+        mercJalisco2.FraccionArancelaria = String.Empty
+        Dim mercJalisco3 As Mercancia = New Mercancia
+        mercJalisco3.ClaveProdServ = "12181600"
+        mercJalisco3.Descripcion = "Aceites"
+        mercJalisco3.RequiereNodoMaterialPeligroso = True
+        mercJalisco3.SatConsideraPeligrosa = False
+        mercJalisco3.Cantidad = 5
+        mercJalisco3.ClaveUnidad = "XBA"
+        mercJalisco3.Unidad = "BARRIL"
+        mercJalisco3.EsCentimetros = True
+        mercJalisco3.EsPulgadas = True
+        mercJalisco3.Longitud = 0
+        mercJalisco3.Anchura = 0
+        mercJalisco3.Altura = 0
+        mercJalisco3.MaterialPeligroso = False
+        mercJalisco3.ClaveMaterialPeligroso = String.Empty
+        mercJalisco3.Embalaje = String.Empty
+        mercJalisco3.DescripcionEmbalaje = String.Empty
+        mercJalisco3.PesoEnKg = 10D
+        mercJalisco3.ValorMercancia = 0D
+        mercJalisco3.Moneda = "MXN"
+        mercJalisco3.EsComercioInternacional = False
+        mercJalisco3.Pedimento = String.Empty
+        mercJalisco3.FraccionArancelaria = String.Empty
+
+        listaMercJalisco.Add(mercJalisco)
+        listaMercJalisco.Add(mercJalisco2)
+        listaMercJalisco.Add(mercJalisco3)
+
+        'Ahora añado la lista de mercancias al diccionario
+        datosMercancias = New Dictionary(Of String, List(Of Mercancia))
+        datosMercancias.Add("DE000001", listaMercSinaloa)
+        datosMercancias.Add("DE000011", listaMercZacatecas)
+        datosMercancias.Add("DE000012", listaMercJalisco)
+    End Sub
+
 
     'Pongo las referencias aquí para evitar cualquier problema
     'de referencias nulas
@@ -89,7 +381,16 @@ Public Class frmCartaPorte
         conexionesCartaPorte = New ConexionesCartaPorte()
         CargaParametros()
         PreparaPestanaOrigen()
+
+        'Para probar, me muevo a la pestaña de confirmacion
+        PreparaPruebasCartaPorte()
+        ESTOY_CAMBIANDO_MEDIANTE_INDICE = True
+        TabControl1.SelectedTab = TabControl1.TabPages("tabConfirmacion")
+        ESTOY_CAMBIANDO_MEDIANTE_INDICE = False
     End Sub
+#End Region
+
+#Region "Metodos Comunes usados por todas las pestañas"
 
     'Este método recibe un objeto Date y una cadena de horas, y entrega
     'a cambio un datetime correcto
@@ -585,7 +886,9 @@ Public Class frmCartaPorte
 
         refTxtCp.Enabled = True
     End Sub
+#End Region
 
+#Region "Datos de origen con sus eventos"
     '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
     '''''''DATOS DE ORIGEN
     '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -815,108 +1118,108 @@ Public Class frmCartaPorte
             If EsCadenaVacia(apPaternoRemitente) And EsCadenaVacia(apMaternoRemitente) Then AlertaMensaje(ObtenParametroPorLlave("INGRESE_AL_MENOS_UN_APELLIDO")) : Return
             Dim paisResidenciaFiscalRemitente As String = ObtenValorCombobox(cbResidenciaFiscalDestino)
             If paisResidenciaFiscalRemitente = "-01" Then AlertaMensaje(ObtenParametroPorLlave("INGRESE_RESIDENCIA_FISCAL")) : Return
-            End If
+        End If
 
-            Dim fechaSalida As Date = dtFechaSalidaRemitente.Value
+        Dim fechaSalida As Date = dtFechaSalidaRemitente.Value
 
-            Dim longitudHora As Int32 = CInt(ObtenParametroPorLlave("LONGITUD_HORA"))
-            Dim regExpHora As String = ObtenParametroPorLlave("REGEXP_HORA")
-            Dim horaSalida As String = txtHoraSalidaRemitente.Text
-            If horaSalida.Length <> longitudHora Then AlertaMensaje(ObtenParametroPorLlave("HORA_MALFORMADA")) : Return
-            If Not Regex.IsMatch(horaSalida, regExpHora) Then AlertaMensaje(ObtenParametroPorLlave("HORA_MALFORMADA")) : Return
+        Dim longitudHora As Int32 = CInt(ObtenParametroPorLlave("LONGITUD_HORA"))
+        Dim regExpHora As String = ObtenParametroPorLlave("REGEXP_HORA")
+        Dim horaSalida As String = txtHoraSalidaRemitente.Text
+        If horaSalida.Length <> longitudHora Then AlertaMensaje(ObtenParametroPorLlave("HORA_MALFORMADA")) : Return
+        If Not Regex.IsMatch(horaSalida, regExpHora) Then AlertaMensaje(ObtenParametroPorLlave("HORA_MALFORMADA")) : Return
 
-            Dim paisSeleccionado As String = ObtenValorCombobox(cbPaisRemitente)
-            Dim estadoRemitente As String = String.Empty
-            Dim municipioRemitente As String = String.Empty
-            Dim localidadRemitente As String = String.Empty
+        Dim paisSeleccionado As String = ObtenValorCombobox(cbPaisRemitente)
+        Dim estadoRemitente As String = String.Empty
+        Dim municipioRemitente As String = String.Empty
+        Dim localidadRemitente As String = String.Empty
 
-            'Valido que el país tenga estados
-            If PaisTieneEstados(paisSeleccionado) Then
-                If ObtenValorCombobox(refCbEstadoOrigen) = "-01" Then AlertaMensaje(ObtenParametroPorLlave("INGRESE_ESTADO")) : Return
-                estadoRemitente = ObtenValorCombobox(refCbEstadoOrigen)
-            Else
-                estadoRemitente = ObtenValorTextbox(txtEstadoOrigen)
-            End If
+        'Valido que el país tenga estados
+        If PaisTieneEstados(paisSeleccionado) Then
+            If ObtenValorCombobox(refCbEstadoOrigen) = "-01" Then AlertaMensaje(ObtenParametroPorLlave("INGRESE_ESTADO")) : Return
+            estadoRemitente = ObtenValorCombobox(refCbEstadoOrigen)
+        Else
+            estadoRemitente = ObtenValorTextbox(txtEstadoOrigen)
+        End If
 
-            'Ahora, valido que el país tenga municipios y localidades
-            If PaisTieneMunicipioLocalidad(paisSeleccionado) Then
-                If ObtenValorCombobox(refCbMunicipioOrigen) = "-01" Then ObtenParametroPorLlave("INGRESE_MUNICIPIO") : Return
-                If ObtenValorCombobox(refCbLocalidadOrigen) = "-01" Then ObtenParametroPorLlave("INGRESE_LOCALIDAD") : Return
-                municipioRemitente = ObtenValorCombobox(refCbMunicipioOrigen)
-                localidadRemitente = ObtenValorCombobox(refCbLocalidadOrigen)
-            Else
-                municipioRemitente = ObtenValorTextbox(txtMunicipioOrigen)
-                localidadRemitente = ObtenValorTextbox(txtLocalidadOrigen)
-            End If
+        'Ahora, valido que el país tenga municipios y localidades
+        If PaisTieneMunicipioLocalidad(paisSeleccionado) Then
+            If ObtenValorCombobox(refCbMunicipioOrigen) = "-01" Then ObtenParametroPorLlave("INGRESE_MUNICIPIO") : Return
+            If ObtenValorCombobox(refCbLocalidadOrigen) = "-01" Then ObtenParametroPorLlave("INGRESE_LOCALIDAD") : Return
+            municipioRemitente = ObtenValorCombobox(refCbMunicipioOrigen)
+            localidadRemitente = ObtenValorCombobox(refCbLocalidadOrigen)
+        Else
+            municipioRemitente = ObtenValorTextbox(txtMunicipioOrigen)
+            localidadRemitente = ObtenValorTextbox(txtLocalidadOrigen)
+        End If
 
-            'Ahora, valido que el país tenga colonias
-            Dim coloniaOrigen As String = String.Empty
-            If PaisTieneColonias(paisSeleccionado) Then
-                coloniaOrigen = ObtenValorCombobox(refCbColoniaOrigen)
-                If coloniaOrigen.Equals("-01") Then AlertaMensaje(ObtenParametroPorLlave("INGRESE_COLONIA")) : Return
-            Else
-                coloniaOrigen = ObtenValorTextbox(txtColoniaOrigen)
-                If EsCadenaVacia(coloniaOrigen) Then AlertaMensaje(ObtenParametroPorLlave("INGRESE_COLONIA")) : Return
-            End If
+        'Ahora, valido que el país tenga colonias
+        Dim coloniaOrigen As String = String.Empty
+        If PaisTieneColonias(paisSeleccionado) Then
+            coloniaOrigen = ObtenValorCombobox(refCbColoniaOrigen)
+            If coloniaOrigen.Equals("-01") Then AlertaMensaje(ObtenParametroPorLlave("INGRESE_COLONIA")) : Return
+        Else
+            coloniaOrigen = ObtenValorTextbox(txtColoniaOrigen)
+            If EsCadenaVacia(coloniaOrigen) Then AlertaMensaje(ObtenParametroPorLlave("INGRESE_COLONIA")) : Return
+        End If
 
-            Dim cpRemitente As String = Trim(txtCpRemitente.Text)
-            Dim regExpCp As String = ObtenParametroPorLlave("REGEXP_CODIGO_POSTAL")
-            If cpRemitente.Length <> 5 Then AlertaMensaje(ObtenParametroPorLlave("INGRESE_CODIGO_POSTAL")) : Return
-            If Not Regex.IsMatch(cpRemitente, regExpCp) Then AlertaMensaje(ObtenParametroPorLlave("INGRESE_CODIGO_POSTAL")) : Return
+        Dim cpRemitente As String = Trim(txtCpRemitente.Text)
+        Dim regExpCp As String = ObtenParametroPorLlave("REGEXP_CODIGO_POSTAL")
+        If cpRemitente.Length <> 5 Then AlertaMensaje(ObtenParametroPorLlave("INGRESE_CODIGO_POSTAL")) : Return
+        If Not Regex.IsMatch(cpRemitente, regExpCp) Then AlertaMensaje(ObtenParametroPorLlave("INGRESE_CODIGO_POSTAL")) : Return
 
-            Dim noExt As String = txtNoExtRemitente.Text
-            If EsCadenaVacia(noExt) Then AlertaMensaje(ObtenParametroPorLlave("INGRESE_NO_EXT")) : Return
+        Dim noExt As String = txtNoExtRemitente.Text
+        If EsCadenaVacia(noExt) Then AlertaMensaje(ObtenParametroPorLlave("INGRESE_NO_EXT")) : Return
 
-            Dim noInt As String = txtNoIntRemitente.Text
-            Dim calle As String = ObtenValorTextbox(txtCalleRemitente)
-            If EsCadenaVacia(calle) Then AlertaMensaje(ObtenParametroPorLlave("INGRESE_CALLE")) : Return
+        Dim noInt As String = txtNoIntRemitente.Text
+        Dim calle As String = ObtenValorTextbox(txtCalleRemitente)
+        If EsCadenaVacia(calle) Then AlertaMensaje(ObtenParametroPorLlave("INGRESE_CALLE")) : Return
 
-            Dim referencia As String = ObtenValorTextbox(txtReferenciaRemitente)
+        Dim referencia As String = ObtenValorTextbox(txtReferenciaRemitente)
 
-            datosOrigenParaCartaPorte = Nothing
-            datosOrigenParaCartaPorte = New OrigenDestino
-            datosOrigenParaCartaPorte.TipoUbicacion = txtTipoUbicacion.Text
-            datosOrigenParaCartaPorte.IDUbicacion = idUbicacion
-            datosOrigenParaCartaPorte.EsDestinoIntermedio = False
-            datosOrigenParaCartaPorte.EsPersonaFisica = REMITENTE_ES_PERSONA_FISICA
-            datosOrigenParaCartaPorte.EsPersonaMoral = REMITENTE_ES_PERSONA_MORAL
-            datosOrigenParaCartaPorte.EsExtranjero = REMITENTE_ES_EXTRANJERO
+        datosOrigenParaCartaPorte = Nothing
+        datosOrigenParaCartaPorte = New OrigenDestino
+        datosOrigenParaCartaPorte.TipoUbicacion = txtTipoUbicacion.Text
+        datosOrigenParaCartaPorte.IDUbicacion = idUbicacion
+        datosOrigenParaCartaPorte.EsDestinoIntermedio = False
+        datosOrigenParaCartaPorte.EsPersonaFisica = REMITENTE_ES_PERSONA_FISICA
+        datosOrigenParaCartaPorte.EsPersonaMoral = REMITENTE_ES_PERSONA_MORAL
+        datosOrigenParaCartaPorte.EsExtranjero = REMITENTE_ES_EXTRANJERO
 
-            If REMITENTE_ES_PERSONA_FISICA Then
-                datosOrigenParaCartaPorte.Nombre = nombreRemitente
-                datosOrigenParaCartaPorte.ApPaterno = apPaternoRemitente
-                datosOrigenParaCartaPorte.ApMaterno = apMaternoRemitente
-            ElseIf REMITENTE_ES_PERSONA_MORAL Then
-                datosOrigenParaCartaPorte.NombrePersonaMoral = nombreRemitente
-            ElseIf REMITENTE_ES_EXTRANJERO Then
-                datosOrigenParaCartaPorte.Nombre = nombreRemitente
-                datosOrigenParaCartaPorte.ApPaterno = apPaternoRemitente
-                datosOrigenParaCartaPorte.ApMaterno = apMaternoRemitente
-                datosOrigenParaCartaPorte.NumRegIdTrib = numRegIdTribRemitente
-                datosOrigenParaCartaPorte.ResidenciaFiscal = cbResidenciaFiscalRemitente.SelectedValue
-            End If
-
-            datosOrigenParaCartaPorte.RFCRemitenteDestinatario = rfcRemitente
+        If REMITENTE_ES_PERSONA_FISICA Then
+            datosOrigenParaCartaPorte.Nombre = nombreRemitente
+            datosOrigenParaCartaPorte.ApPaterno = apPaternoRemitente
+            datosOrigenParaCartaPorte.ApMaterno = apMaternoRemitente
+        ElseIf REMITENTE_ES_PERSONA_MORAL Then
+            datosOrigenParaCartaPorte.NombrePersonaMoral = nombreRemitente
+        ElseIf REMITENTE_ES_EXTRANJERO Then
+            datosOrigenParaCartaPorte.Nombre = nombreRemitente
+            datosOrigenParaCartaPorte.ApPaterno = apPaternoRemitente
+            datosOrigenParaCartaPorte.ApMaterno = apMaternoRemitente
             datosOrigenParaCartaPorte.NumRegIdTrib = numRegIdTribRemitente
-            datosOrigenParaCartaPorte.FechaSalidaLlegada = dtFechaSalidaRemitente.Value
-            datosOrigenParaCartaPorte.HoraSalidaLlegada = horaSalida
-            datosOrigenParaCartaPorte.DistanciaRecorrida = 0
+            datosOrigenParaCartaPorte.ResidenciaFiscal = cbResidenciaFiscalRemitente.SelectedValue
+        End If
 
-            Dim domicilio As New Domicilio
-            domicilio.Calle = txtCalleRemitente.Text
-            domicilio.NumeroExterior = txtNoExtRemitente.Text
-            domicilio.NumeroInterior = txtNoIntRemitente.Text
-            domicilio.Colonia = coloniaOrigen
-            domicilio.Municipio = municipioRemitente
-            domicilio.Localidad = localidadRemitente
-            domicilio.Estado = estadoRemitente
-            domicilio.Pais = paisSeleccionado
-            domicilio.Referencia = referencia
-            domicilio.CodigoPostal = cpRemitente
+        datosOrigenParaCartaPorte.RFCRemitenteDestinatario = rfcRemitente
+        datosOrigenParaCartaPorte.NumRegIdTrib = numRegIdTribRemitente
+        datosOrigenParaCartaPorte.FechaSalidaLlegada = dtFechaSalidaRemitente.Value
+        datosOrigenParaCartaPorte.HoraSalidaLlegada = horaSalida
+        datosOrigenParaCartaPorte.DistanciaRecorrida = 0
 
-            datosOrigenParaCartaPorte.DatosDomicilio = domicilio
-            INFORMACION_VALIDA_DATOS_ORIGEN = True
-            End Sub
+        Dim domicilio As New Domicilio
+        domicilio.Calle = txtCalleRemitente.Text
+        domicilio.NumeroExterior = txtNoExtRemitente.Text
+        domicilio.NumeroInterior = txtNoIntRemitente.Text
+        domicilio.Colonia = coloniaOrigen
+        domicilio.Municipio = municipioRemitente
+        domicilio.Localidad = localidadRemitente
+        domicilio.Estado = estadoRemitente
+        domicilio.Pais = paisSeleccionado
+        domicilio.Referencia = referencia
+        domicilio.CodigoPostal = cpRemitente
+
+        datosOrigenParaCartaPorte.DatosDomicilio = domicilio
+        INFORMACION_VALIDA_DATOS_ORIGEN = True
+    End Sub
 
     Private Sub cbMunicipioRemitente_SelectedValueChanged(sender As Object, e As EventArgs) Handles cbMunicipioRemitente.SelectedValueChanged
         ValidaOrdenMunicipioLocalidadCodigo(cbPaisRemitente,
@@ -1075,7 +1378,9 @@ Public Class frmCartaPorte
             txtReferenciaRemitente.Text = dom.Referencia
         End If
     End Sub
+#End Region
 
+#Region "Datos de destino con sus eventos"
     '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
     '''''''DATOS DE DESTINO
     '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -1607,7 +1912,9 @@ Public Class frmCartaPorte
             txtReferenciaDestino.Text = dom.Referencia
         End If
     End Sub
+#End Region
 
+#Region "Datos de destinos intermedios"
     '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
     '''''''DATOS DE DESTINOS INTERMEDIOS
     '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -2350,7 +2657,9 @@ Public Class frmCartaPorte
             nupKmDestinoIntermedio.Value = 0
         End If
     End Sub
+#End Region
 
+#Region "Datos de las mercancías"
     '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
     '''''''DATOS DE MERCANCIAS
     '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -2502,10 +2811,11 @@ Public Class frmCartaPorte
         dgvMercanciasPorMovimiento.Columns("MercanciaClaveProdServClm").DataPropertyName = NameOf(Mercancia.ClaveProdServ)
         dgvMercanciasPorMovimiento.Columns("MovimientoDescripcionClm").DataPropertyName = NameOf(Mercancia.Descripcion)
         dgvMercanciasPorMovimiento.Columns("MercanciaMovimientoPeligrosaClm").DataPropertyName = NameOf(Mercancia.EsMaterialPeligrosoCad)
+        dgvMercanciasPorMovimiento.Columns("MercanciaCantidadMercClm").DataPropertyName = NameOf(Mercancia.Cantidad)
         dgvMercanciasPorMovimiento.Columns("MovimientoComercioIntClm").DataPropertyName = NameOf(Mercancia.EsComercioInternacionalCad)
         dgvMercanciasPorMovimiento.Columns("ClaveUnidadClm").DataPropertyName = NameOf(Mercancia.ClaveUnidad)
         dgvMercanciasPorMovimiento.Columns("DescripcionUnidadClm").DataPropertyName = NameOf(Mercancia.Unidad)
-        dgvMercanciasPorMovimiento.Columns("MercanciaMovimientoPeligrosaClm").DataPropertyName = NameOf(Mercancia.MaterialPeligroso)
+        dgvMercanciasPorMovimiento.Columns("MovimientoMercanciaCheckboxMaterialCheckboxClm").DataPropertyName = NameOf(Mercancia.MaterialPeligroso)
         dgvMercanciasPorMovimiento.DataSource = mercanciasMovimiento
         Dim rows = dgvMercanciasPorMovimiento.Rows.Count
     End Sub
@@ -2925,9 +3235,20 @@ Public Class frmCartaPorte
         mercanciaEnModificacion.FraccionArancelaria = fraccionArancelaria
 
         If ESTA_CREANDO_MERCANCIA Then
+
             If ObtenMercancia(PESTANA_MERCANCIAS_ID_MOVIMIENTO_EN_MODIFICACION, claveProdServ, claveUnidad, rbSiMaterialPeligroso.Checked) IsNot Nothing Then
-                AlertaMensaje(ObtenParametroPorLlave("MERC_DUPLI"))
-                Return
+                Dim resp = MsgBox(ObtenParametroPorLlave("POSIBLE_CHOQUE"), vbQuestion + vbYesNo, "Alerta")
+                If resp = MsgBoxResult.No Then
+                    Return
+                Else
+                    Dim mercTemporal As Mercancia = ObtenMercancia(PESTANA_MERCANCIAS_ID_MOVIMIENTO_EN_MODIFICACION, claveProdServ, claveUnidad, rbSiMaterialPeligroso.Checked)
+                    mercTemporal.Cantidad = mercTemporal.Cantidad + CInt(cantidadMercancia)
+                    BindGridDetalleMercanciasPorMovimiento(PESTANA_MERCANCIAS_ID_MOVIMIENTO_EN_MODIFICACION)
+                    LimpiaPanelInformacionMercancias()
+                    RecargaLabelGridMercancias(PESTANA_MERCANCIAS_ID_MOVIMIENTO_EN_MODIFICACION)
+                    INFORMACION_VALIDA_MERCANCIA = True
+                    Return
+                End If
             End If
 
             Dim listMerc As List(Of Mercancia) = ObtenMercanciasPorMovimiento(PESTANA_MERCANCIAS_ID_MOVIMIENTO_EN_MODIFICACION)
@@ -3010,7 +3331,9 @@ Public Class frmCartaPorte
         ESTA_MODIFICANDO_MERCANCIA = False
         ESTA_CREANDO_MERCANCIA = False
     End Sub
+#End Region
 
+#Region "Datos del transporte"
     '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
     '''''''DATOS DE VEHÍCULO DE TRANSPORTE
     '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -3370,7 +3693,9 @@ Public Class frmCartaPorte
         TabControl1.SelectedTab = TabControl1.TabPages("tabMercancias")
         ESTOY_CAMBIANDO_MEDIANTE_INDICE = False
     End Sub
+#End Region
 
+#Region "Datos del operador"
     '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
     '''''''DATOS DEL OPERADOR
     '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -3809,7 +4134,7 @@ Public Class frmCartaPorte
         datosAutoTransporte.Transportista = datosTransportisa
 
         INFORMACION_VALIDA_OPERADOR = True
-        End Sub
+    End Sub
 
     Private Sub btnSiguienteOperador_Click(sender As Object, e As EventArgs) Handles btnSiguienteOperador.Click
         ValidaInformacionOperador()
@@ -3842,7 +4167,9 @@ Public Class frmCartaPorte
             ToggleDatosOperador()
         End If
     End Sub
+#End Region
 
+#Region "Pestana de confirmacion"
     '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
     ''''''' CONFIRMACIÓN
     '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -3850,8 +4177,10 @@ Public Class frmCartaPorte
     Private pestConfirmacionListaMercanciaSinDestino As List(Of Mercancia)
     Private pestConfirmacionListaDestinos As List(Of OrigenDestino)
     Private pestConfirmacionDestinoSeleccionado As String = String.Empty
+    Private nombreDestinoDesplegado As String = String.Empty
     Private Sub PreparaPestanaConfirmacion()
         pestConfirmacionDestinoSeleccionado = String.Empty
+        nombreDestinoDesplegado = String.Empty
 
         'Primero tenemos que preparar la lista de ubicaciones
         pestConfirmacionListaDestinos = New List(Of OrigenDestino)
@@ -3881,18 +4210,24 @@ Public Class frmCartaPorte
     End Sub
 
     Private Sub PestanaConfirmacionBindGridMercanciaMovimientos()
-        Dim listaMercancias As List(Of Mercancia) = ObtenMercanciasPorMovimiento(pestConfirmacionDestinoSeleccionado)
         LimpiaGrid(dgvRelacionMercanciaUbicaciones)
 
+        If String.IsNullOrEmpty(pestConfirmacionDestinoSeleccionado) Then Return
+
+        Dim listaMercancias As List(Of Mercancia) = ObtenMercanciasPorMovimiento(pestConfirmacionDestinoSeleccionado)
+
         dgvRelacionMercanciaUbicaciones.AutoGenerateColumns = False
-        dgvRelacionMercanciaUbicaciones.Columns("RelMercUbiIdUbiClm").DataPropertyName = NameOf(Mercancia.MovimientoMercancia)
+        dgvRelacionMercanciaUbicaciones.Columns("RelMercUbiIdUbiClm").ReadOnly = True
         dgvRelacionMercanciaUbicaciones.Columns("RelMercUbiClaveProdServClm").DataPropertyName = NameOf(Mercancia.ClaveProdServ)
         dgvRelacionMercanciaUbicaciones.Columns("RelMercUbiDescMercClm").DataPropertyName = NameOf(Mercancia.Descripcion)
         dgvRelacionMercanciaUbicaciones.Columns("RelMercUbiClaveUnidadClm").DataPropertyName = NameOf(Mercancia.ClaveUnidad)
         dgvRelacionMercanciaUbicaciones.Columns("RelMercUbiDescUnidadClm").DataPropertyName = NameOf(Mercancia.Unidad)
-        dgvRelacionMercanciaUbicaciones.Columns("RelMercUbiCantidadClm").DataPropertyName = NameOf(Mercancia.Cero)
+        dgvRelacionMercanciaUbicaciones.Columns("RelacionMercUbiPeligrosaClm").DataPropertyName = NameOf(Mercancia.EsMaterialPeligrosoCad)
+        'dgvRelacionMercanciaUbicaciones.Columns("RelMercUbiCantidadParaRemoverClm").DataPropertyName = NameOf(Mercancia.Cero)
         dgvRelacionMercanciaUbicaciones.Columns("RelMercUbiCantidadMaxima").DataPropertyName = NameOf(Mercancia.Cantidad)
-        dgvRelacionMercanciaUbicaciones.DataSource = pestConfirmacionListaFinalMercancias
+        dgvRelacionMercanciaUbicaciones.Columns("RelMercUbiCantidadMercClm").DataPropertyName = NameOf(Mercancia.Cantidad)
+        dgvRelacionMercanciaUbicaciones.Columns("RelMercUbiCantidadParaRemoverClm").ReadOnly = False
+        dgvRelacionMercanciaUbicaciones.DataSource = listaMercancias
     End Sub
 
     Private Sub PestanaConfirmacionBindGridMercanciasSinDestino()
@@ -3902,34 +4237,39 @@ Public Class frmCartaPorte
             dgvMercanciasSinUbicaciones.Columns.RemoveAt(dgvMercanciasSinUbicaciones.Columns("AsignarColumnaCombo").Index)
         End If
 
-        dgvMercanciasSinUbicaciones.Columns("AsignarClaveProdServClm").DataPropertyName = NameOf(Mercancia.ClaveProdServ)
-        dgvMercanciasSinUbicaciones.Columns("AsignarDescripcionMercClm").DataPropertyName = NameOf(Mercancia.Descripcion)
-        dgvMercanciasSinUbicaciones.Columns("AsignarClaveUnidadClm").DataPropertyName = NameOf(Mercancia.ClaveUnidad)
-        dgvMercanciasSinUbicaciones.Columns("AsignarDescUnidadClm").DataPropertyName = NameOf(Mercancia.Unidad)
-        dgvMercanciasSinUbicaciones.Columns("AsignarPeligrosoClm").DataPropertyName = NameOf(Mercancia.EsMaterialPeligrosoCad)
-        dgvMercanciasSinUbicaciones.Columns("AsignarCantidadRestanteClm").DataPropertyName = NameOf(Mercancia.CantidadSinAsignar)
-        dgvMercanciasSinUbicaciones.Columns("AsignarCantidadParaAsignarClm").DataPropertyName = NameOf(Mercancia.Cero)
-        dgvMercanciasSinUbicaciones.DataSource = pestConfirmacionListaMercanciaSinDestino
-
         Dim comboColumn As New DataGridViewComboBoxColumn
         comboColumn.ValueMember = NameOf(OrigenDestino.IDUbicacion)
         comboColumn.DisplayMember = NameOf(OrigenDestino.DestinoDesplegado)
         comboColumn.DataSource = pestConfirmacionListaDestinos.Where(Function(x) Not x.TipoUbicacion.ToUpper().Equals("ORIGEN")).ToList
         comboColumn.Name = "AsignarColumnaCombo"
+        comboColumn.HeaderText = "Posibles destinos"
+        comboColumn.ToolTipText = "Posibles destinos para asignar la mercancía"
 
         Dim indiceColumnaBoton As Int32 = dgvMercanciasSinUbicaciones.Columns("AsignarDestinoAccionClm").Index
         dgvMercanciasSinUbicaciones.Columns.Insert(indiceColumnaBoton - 1, comboColumn)
+
+        dgvMercanciasSinUbicaciones.AutoGenerateColumns = False
+        dgvMercanciasSinUbicaciones.Columns("AsignarClaveProdServClm").DataPropertyName = NameOf(Mercancia.ClaveProdServ)
+        dgvMercanciasSinUbicaciones.Columns("AsignarDescripcionMercClm").DataPropertyName = NameOf(Mercancia.Descripcion)
+        dgvMercanciasSinUbicaciones.Columns("AsignarClaveUnidadClm").DataPropertyName = NameOf(Mercancia.ClaveUnidad)
+        dgvMercanciasSinUbicaciones.Columns("AsignarDescUnidadClm").DataPropertyName = NameOf(Mercancia.Unidad)
+        dgvMercanciasSinUbicaciones.Columns("AsignarPeligrosoClm").DataPropertyName = NameOf(Mercancia.EsMaterialPeligrosoCad)
+        dgvMercanciasSinUbicaciones.Columns("AsignarCantidadRestanteClm").DataPropertyName = NameOf(Mercancia.Cantidad)
+        'dgvMercanciasSinUbicaciones.Columns("AsignarCantidadParaAsignarClm").DataPropertyName = NameOf(Mercancia.Cero)
+        dgvMercanciasSinUbicaciones.DataSource = pestConfirmacionListaMercanciaSinDestino
     End Sub
 
     Private Sub dgvConfirmacionUbicaciones_CellContentClick(sender As Object, e As DataGridViewCellEventArgs) Handles dgvConfirmacionUbicaciones.CellContentClick
         If e.RowIndex < 0 Then Return
         Dim tipoDestino As String = dgvConfirmacionUbicaciones.Rows(e.RowIndex).Cells("TipoDestinoPestUbiClm").Value
         If tipoDestino.ToUpper().Equals("ORIGEN") Then
+            nombreDestinoDesplegado = String.Empty
             AlertaMensaje(ObtenParametroPorLlave("ORIGEN_SINCARGA"))
             Return
         End If
 
         Dim idUbicacion As String = dgvConfirmacionUbicaciones.Rows(e.RowIndex).Cells("IdUbicacionClmMercMov").Value
+        nombreDestinoDesplegado = dgvConfirmacionUbicaciones.Rows(e.RowIndex).Cells("DestinoUbiClm").Value
         pestConfirmacionDestinoSeleccionado = idUbicacion
         PestanaConfirmacionBindGridMercanciaMovimientos()
     End Sub
@@ -3945,19 +4285,27 @@ Public Class frmCartaPorte
         Dim claveProdServ As String = dgvRelacionMercanciaUbicaciones.Rows(e.RowIndex).Cells("RelMercUbiClaveProdServClm").Value
         Dim claveUnidad As String = dgvRelacionMercanciaUbicaciones.Rows(e.RowIndex).Cells("RelMercUbiClaveUnidadClm").Value
         Dim esPeligrosa As Boolean = dgvRelacionMercanciaUbicaciones.Rows(e.RowIndex).Cells("RelacionMercUbiPeligrosaClm").Value.ToString().ToUpper().Equals("SI")
-        Dim cantidadParaEliminarCad As String = dgvRelacionMercanciaUbicaciones.Rows(e.RowIndex).Cells("RelMercUbiCantidadClm").Value
+        Dim cantidadParaEliminarCad As String = dgvRelacionMercanciaUbicaciones.Rows(e.RowIndex).Cells("RelMercUbiCantidadParaRemoverClm").Value
         Dim cantidadParaEliminar As Int32 = -1
         Dim cantidadMaxima As Int32 = CInt(dgvRelacionMercanciaUbicaciones.Rows(e.RowIndex).Cells("RelMercUbiCantidadMaxima").Value)
 
         'Reviso que no me estén metiendo datos incorrectos
-        If Not Int32.TryParse(cantidadParaEliminar, cantidadParaEliminar) Or cantidadParaEliminar <= 0 Or cantidadParaEliminar > cantidadMaxima Then
+        If Not Int32.TryParse(cantidadParaEliminarCad, cantidadParaEliminar) Or cantidadParaEliminar <= 0 Or cantidadParaEliminar > cantidadMaxima Then
             AlertaMensaje(String.Format(ObtenParametroPorLlave("ASIGNAR_CANTIDADMAL"), cantidadMaxima))
-            dgvRelacionMercanciaUbicaciones.Rows(e.RowIndex).Cells("RelMercUbiCantidadClm").Value = "0"
+            dgvRelacionMercanciaUbicaciones.Rows(e.RowIndex).Cells("RelMercUbiCantidadParaRemoverClm").Value = "0"
             Return
         End If
 
         'Si no, si puedo proceder a la eliminación
         RemueveMercanciaDeRelacion(pestConfirmacionDestinoSeleccionado, claveProdServ, claveUnidad, esPeligrosa, cantidadParaEliminar)
+    End Sub
+
+    Private Sub dgvRelacionMercanciaUbicaciones_CellFormatting(sender As Object, e As DataGridViewCellFormattingEventArgs) Handles dgvRelacionMercanciaUbicaciones.CellFormatting
+        If e.ColumnIndex <> 0 Then Return
+        dgvRelacionMercanciaUbicaciones.Rows(e.RowIndex).Cells(0).Value = pestConfirmacionDestinoSeleccionado
+        dgvRelacionMercanciaUbicaciones.Rows(e.RowIndex).Cells("RelMercUbiCantidadParaRemoverClm").Value = "0"
+        dgvRelacionMercanciaUbicaciones.Rows(e.RowIndex).Cells("RelMercUbiCantidadParaRemoverClm").ReadOnly = False
+        dgvRelacionMercanciaUbicaciones.Rows(e.RowIndex).Cells("RelMercUbiNombreDestinoClm").Value = nombreDestinoDesplegado
     End Sub
 
     Private Sub RemueveMercanciaDeRelacion(ByVal idMovimiento As String,
@@ -3998,6 +4346,13 @@ Public Class frmCartaPorte
         PestanaConfirmacionBindGridMercanciasSinDestino()
     End Sub
 
+    Private Sub dgvMercanciasSinUbicaciones_CellFormatting(sender As Object, e As DataGridViewCellFormattingEventArgs) Handles dgvMercanciasSinUbicaciones.CellFormatting
+        If e.ColumnIndex <> 0 Then Return
+        dgvMercanciasSinUbicaciones.Rows(e.RowIndex).Cells("AsignarCantidadParaAsignarClm").Value = "0"
+        dgvMercanciasSinUbicaciones.Rows(e.RowIndex).Cells("AsignarCantidadParaAsignarClm").ReadOnly = False
+        dgvMercanciasSinUbicaciones.Rows(e.RowIndex).Cells("AsignarColumnaCombo").Value = datosDestinoParaCartaPorte.IDUbicacion
+    End Sub
+
     Private Sub AnadeMercanciaARelacion(ByVal idMovimiento As String,
                                         ByVal claveProdServ As String,
                                         ByVal claveUnidad As String,
@@ -4026,6 +4381,7 @@ Public Class frmCartaPorte
                 Dim nuevaMerc As Mercancia = Mercancia.CreaCopiaMercancia(mercanciaParaAnadir, False)
                 nuevaMerc.Cantidad = cantidadAnadir
                 mercanciaParaAnadir.Cantidad = mercanciaParaAnadir.Cantidad - cantidadAnadir
+                mercsMov.Add(nuevaMerc)
             End If
         End If
 
@@ -4063,7 +4419,9 @@ Public Class frmCartaPorte
 
         AnadeMercanciaARelacion(destino, claveProdServ, claveUnidad, materialPeligroso, cantidadParaAsignar)
     End Sub
+#End Region
 
+#Region "Generacion de archivos"
     Private Sub btnGenerarCartaPorte_Click(sender As Object, e As EventArgs) Handles btnGenerarCartaPorte.Click
         Dim pesoBrutoTotal As String = ObtenValorTextbox(txtPesoBrutoTotalMercancias)
         Dim unidadPeso As String = ObtenValorTextbox(txtUnidadPesoTotalMercancias)
@@ -4099,6 +4457,8 @@ Public Class frmCartaPorte
                 relMercUbi.DescripcionProductoServicio = mer.Descripcion
                 relMercUbi.EsMaterialPeligroso = mer.MaterialPeligroso
                 relMercUbi.Cantidad = mer.Cantidad
+                relMercUbi.ClaveUnidad = mer.ClaveUnidad
+                relMercUbi.EsMaterialPeligroso = mer.MaterialPeligroso
 
                 'Luego, vemos si existe una mercancía exactamente igual
                 Dim existeMercancia As Boolean = False
@@ -4151,4 +4511,6 @@ Public Class frmCartaPorte
     Private Sub tlpContenedorSeguroMaterialPeligroso_Paint(sender As Object, e As PaintEventArgs) Handles tlpContenedorSeguroMaterialPeligroso.Paint
 
     End Sub
+#End Region
+
 End Class

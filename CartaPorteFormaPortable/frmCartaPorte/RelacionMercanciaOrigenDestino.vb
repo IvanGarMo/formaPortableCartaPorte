@@ -2,6 +2,7 @@
     Private _IdOrigen As String
     Private _IdDestino As String
     Private _ClaveProdServ As String
+    Private _ClaveUnidad As String
     Private _DescripcionProductoServicio As String
     Private _Cantidad As Int32
     Private _EsMaterialPeligroso As Boolean
@@ -59,4 +60,21 @@
             _EsMaterialPeligroso = value
         End Set
     End Property
+
+    Public Property ClaveUnidad As String
+        Get
+            Return _ClaveUnidad
+        End Get
+        Set(value As String)
+            _ClaveUnidad = value
+        End Set
+    End Property
+
+    Public Overrides Function Equals(obj As Object) As Boolean
+        Dim destino = TryCast(obj, RelacionMercanciaOrigenDestino)
+        Return destino IsNot Nothing AndAlso
+               _ClaveProdServ = destino._ClaveProdServ AndAlso
+               _ClaveUnidad = destino._ClaveUnidad AndAlso
+               _EsMaterialPeligroso = destino._EsMaterialPeligroso
+    End Function
 End Class

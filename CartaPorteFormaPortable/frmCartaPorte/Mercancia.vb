@@ -229,14 +229,14 @@
 
     Public ReadOnly Property EsComercioInternacionalCad As String
         Get
-            Dim res As String = IIf(_EsComercioInternacional, "SÍ", "NO")
+            Dim res As String = IIf(_EsComercioInternacional, "SI", "NO")
             Return res
         End Get
     End Property
 
     Public ReadOnly Property EsMaterialPeligrosoCad As String
         Get
-            Dim res As String = IIf(_MaterialPeligroso, "SÍ", "NO")
+            Dim res As String = IIf(_MaterialPeligroso, "SI", "NO")
             Return res
         End Get
     End Property
@@ -276,7 +276,7 @@
         End If
         'Si ya existe una relacion, solo la añadimos
         Dim existeRel = _RelacionMercanciaDestino.Find(Function(r) r.IdDestino.Equals(idUbi))
-        If existeRel IsNot Nothing Then
+        If existeRel IsNot Nothing AndAlso existeRel.Equals(relMercUbi) Then
             existeRel.Cantidad = existeRel.Cantidad + relMercUbi.Cantidad
         Else
             _RelacionMercanciaDestino.Add(relMercUbi)
@@ -346,12 +346,6 @@
                _FraccionArancelaria = mercancia._FraccionArancelaria AndAlso
                _Pedimento = mercancia._Pedimento
     End Function
-
-    Public ReadOnly Property MovimientoMercancia As String
-        Get
-            Return _RelacionMercanciaDestino(0).IdDestino
-        End Get
-    End Property
 
     Public Property RequiereNodoMaterialPeligroso As Boolean
         Get
