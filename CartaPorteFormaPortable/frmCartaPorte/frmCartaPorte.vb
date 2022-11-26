@@ -112,226 +112,6 @@ Public Class frmCartaPorte
         domicilioDestino.Referencia = String.Empty
         domicilioDestino.CodigoPostal = "82129"
         datosDestinoParaCartaPorte.DatosDomicilio = domicilioDestino
-
-        'Creo la de destinos intermedios para evitar broncas
-        datosDestinosIntermediosParaCartaPorte = New List(Of OrigenDestino)
-
-        'Ahora creo los destinos intermedios
-        Dim datosDestinoIntermedio1ParaCartaPorte = New OrigenDestino
-        datosDestinoIntermedio1ParaCartaPorte.UsuarioCausoProblemasConFecha = False
-        datosDestinoIntermedio1ParaCartaPorte.TipoUbicacion = "Destino"
-        datosDestinoIntermedio1ParaCartaPorte.IDUbicacion = "DE000011"
-        datosDestinoIntermedio1ParaCartaPorte.RFCRemitenteDestinatario = "EIM951002R19"
-        datosDestinoIntermedio1ParaCartaPorte.NombrePersonaMoral = "EAGLE IMPORTACIONES"
-        datosDestinoIntermedio1ParaCartaPorte.Nombre = String.Empty
-        datosDestinoIntermedio1ParaCartaPorte.ApPaterno = String.Empty
-        datosDestinoIntermedio1ParaCartaPorte.ApMaterno = String.Empty
-        datosDestinoIntermedio1ParaCartaPorte.ResidenciaFiscal = String.Empty
-        datosDestinoIntermedio1ParaCartaPorte.NumRegIdTrib = String.Empty
-        datosDestinoIntermedio1ParaCartaPorte.FechaSalidaLlegada = DateTime.Today.AddDays(1).Date
-        datosDestinoIntermedio1ParaCartaPorte.HoraSalidaLlegada = "14:00"
-        datosDestinoIntermedio1ParaCartaPorte.DistanciaRecorrida = 1000
-        datosDestinoIntermedio1ParaCartaPorte.EsPersonaFisica = False
-        datosDestinoIntermedio1ParaCartaPorte.EsPersonaMoral = True
-        datosDestinoIntermedio1ParaCartaPorte.EsExtranjero = False
-
-        Dim domicilioIntermedio1Destino As New Domicilio
-        domicilioIntermedio1Destino.Calle = "HOTEL PARADOR"
-        domicilioIntermedio1Destino.NumeroExterior = "300"
-        domicilioIntermedio1Destino.NumeroInterior = String.Empty
-        domicilioIntermedio1Destino.Colonia = "0001"
-        domicilioIntermedio1Destino.Localidad = "03"
-        domicilioIntermedio1Destino.Municipio = "056"
-        domicilioIntermedio1Destino.Estado = "ZAC"
-        domicilioIntermedio1Destino.Pais = "MEX"
-        domicilioIntermedio1Destino.Referencia = String.Empty
-        domicilioIntermedio1Destino.CodigoPostal = "98000"
-        datosDestinoIntermedio1ParaCartaPorte.DatosDomicilio = domicilioIntermedio1Destino
-        datosDestinosIntermediosParaCartaPorte.Add(datosDestinoIntermedio1ParaCartaPorte)
-
-        Dim datosDestinoIntermedio2ParaCartaPorte = New OrigenDestino
-        datosDestinoIntermedio2ParaCartaPorte.UsuarioCausoProblemasConFecha = False
-        datosDestinoIntermedio2ParaCartaPorte.TipoUbicacion = "Destino"
-        datosDestinoIntermedio2ParaCartaPorte.IDUbicacion = "DE000012"
-        datosDestinoIntermedio2ParaCartaPorte.RFCRemitenteDestinatario = "EIM951002R19"
-        datosDestinoIntermedio2ParaCartaPorte.NombrePersonaMoral = "EAGLE IMPORTACIONES"
-        datosDestinoIntermedio2ParaCartaPorte.Nombre = String.Empty
-        datosDestinoIntermedio2ParaCartaPorte.ApPaterno = String.Empty
-        datosDestinoIntermedio2ParaCartaPorte.ApMaterno = String.Empty
-        datosDestinoIntermedio2ParaCartaPorte.ResidenciaFiscal = String.Empty
-        datosDestinoIntermedio2ParaCartaPorte.NumRegIdTrib = String.Empty
-        datosDestinoIntermedio2ParaCartaPorte.FechaSalidaLlegada = DateTime.Today.AddDays(1).Date
-        datosDestinoIntermedio2ParaCartaPorte.HoraSalidaLlegada = "16:00"
-        datosDestinoIntermedio2ParaCartaPorte.DistanciaRecorrida = 100
-        datosDestinoIntermedio2ParaCartaPorte.EsPersonaFisica = False
-        datosDestinoIntermedio2ParaCartaPorte.EsPersonaMoral = True
-        datosDestinoIntermedio2ParaCartaPorte.EsExtranjero = False
-
-        Dim domicilioIntermedio2Destino As New Domicilio
-        domicilioIntermedio2Destino.Calle = "GUADALAJARA CENTRO"
-        domicilioIntermedio2Destino.NumeroExterior = "400"
-        domicilioIntermedio2Destino.NumeroInterior = String.Empty
-        domicilioIntermedio2Destino.Colonia = "0002"
-        domicilioIntermedio2Destino.Localidad = "03"
-        domicilioIntermedio2Destino.Municipio = "039"
-        domicilioIntermedio2Destino.Estado = "JAL"
-        domicilioIntermedio2Destino.Pais = "MEX"
-        domicilioIntermedio2Destino.Referencia = String.Empty
-        domicilioIntermedio2Destino.CodigoPostal = "440009"
-        datosDestinoIntermedio2ParaCartaPorte.DatosDomicilio = domicilioIntermedio2Destino
-        datosDestinosIntermediosParaCartaPorte.Add(datosDestinoIntermedio2ParaCartaPorte)
-
-        'Ahora creo la lista de mercancías y le añado una
-        Dim listaMercSinaloa As List(Of Mercancia) = New List(Of Mercancia)
-        Dim mercSinaloa As Mercancia = New Mercancia
-
-        mercSinaloa.ClaveProdServ = "12181600"
-        mercSinaloa.Descripcion = "Aceites"
-        mercSinaloa.RequiereNodoMaterialPeligroso = True
-        mercSinaloa.SatConsideraPeligrosa = False
-
-        mercSinaloa.Cantidad = 20
-        mercSinaloa.ClaveUnidad = "XBJ"
-        mercSinaloa.Unidad = "CUBETA"
-        mercSinaloa.EsCentimetros = True
-        mercSinaloa.EsPulgadas = True
-        mercSinaloa.Longitud = 0
-        mercSinaloa.Anchura = 0
-        mercSinaloa.Altura = 0
-
-        mercSinaloa.MaterialPeligroso = False
-        mercSinaloa.ClaveMaterialPeligroso = String.Empty
-        mercSinaloa.Embalaje = String.Empty
-        mercSinaloa.DescripcionEmbalaje = String.Empty
-
-        mercSinaloa.PesoEnKg = 10D
-        mercSinaloa.ValorMercancia = 0D
-        mercSinaloa.Moneda = "MXN"
-
-        mercSinaloa.EsComercioInternacional = False
-        mercSinaloa.Pedimento = String.Empty
-        mercSinaloa.FraccionArancelaria = String.Empty
-        listaMercSinaloa.Add(mercSinaloa)
-
-        'Mercancia para Zacatecas
-        Dim listaMercZacatecas As List(Of Mercancia) = New List(Of Mercancia)
-        Dim mercZacatecas As Mercancia = New Mercancia
-
-        mercZacatecas.ClaveProdServ = "15121807"
-        mercZacatecas.Descripcion = "Anticongelante"
-        mercZacatecas.RequiereNodoMaterialPeligroso = False
-        mercZacatecas.SatConsideraPeligrosa = False
-
-        mercZacatecas.Cantidad = 10
-        mercZacatecas.ClaveUnidad = "XBA"
-        mercZacatecas.Unidad = "BARRIL"
-        mercZacatecas.EsCentimetros = True
-        mercZacatecas.EsPulgadas = False
-        mercZacatecas.Longitud = 0
-        mercZacatecas.Anchura = 0
-        mercZacatecas.Altura = 0
-
-        mercZacatecas.MaterialPeligroso = False
-        mercZacatecas.ClaveMaterialPeligroso = String.Empty
-        mercZacatecas.Embalaje = String.Empty
-        mercZacatecas.DescripcionEmbalaje = String.Empty
-
-        mercZacatecas.PesoEnKg = 10D
-        mercZacatecas.ValorMercancia = 0D
-        mercZacatecas.Moneda = "MXN"
-
-        mercZacatecas.EsComercioInternacional = False
-        mercZacatecas.Pedimento = String.Empty
-        mercZacatecas.FraccionArancelaria = String.Empty
-        listaMercZacatecas.Add(mercZacatecas)
-
-        'Mercancia para Guadalajara
-        Dim listaMercJalisco As List(Of Mercancia) = New List(Of Mercancia)
-        Dim mercJalisco As Mercancia = New Mercancia
-
-        mercJalisco.ClaveProdServ = "12181600"
-        mercJalisco.Descripcion = "Aceites"
-        mercJalisco.RequiereNodoMaterialPeligroso = True
-        mercJalisco.SatConsideraPeligrosa = False
-
-        mercJalisco.Cantidad = 5
-        mercJalisco.ClaveUnidad = "XBJ"
-        mercJalisco.Unidad = "CUBETA"
-        mercJalisco.EsCentimetros = True
-        mercJalisco.EsPulgadas = True
-        mercJalisco.Longitud = 0
-        mercJalisco.Anchura = 0
-        mercJalisco.Altura = 0
-
-        mercJalisco.MaterialPeligroso = True
-        mercJalisco.ClaveMaterialPeligroso = "0454"
-        mercJalisco.Embalaje = "1A2"
-        mercJalisco.DescripcionEmbalaje = "BIDONES (TAMBORES)"
-
-        mercJalisco.PesoEnKg = 10D
-        mercJalisco.ValorMercancia = 0D
-        mercJalisco.Moneda = "MXN"
-
-        mercJalisco.EsComercioInternacional = False
-        mercJalisco.Pedimento = String.Empty
-        mercJalisco.FraccionArancelaria = String.Empty
-
-        Dim mercJalisco2 As Mercancia = New Mercancia
-        mercJalisco2.ClaveProdServ = "12181600"
-        mercJalisco2.Descripcion = "Aceites"
-        mercJalisco2.RequiereNodoMaterialPeligroso = True
-        mercJalisco2.SatConsideraPeligrosa = False
-        mercJalisco2.Cantidad = 5
-        mercJalisco2.ClaveUnidad = "XBA"
-        mercJalisco2.Unidad = "BARRIL"
-        mercJalisco2.EsCentimetros = True
-        mercJalisco2.EsPulgadas = True
-        mercJalisco2.Longitud = 0
-        mercJalisco2.Anchura = 0
-        mercJalisco2.Altura = 0
-        mercJalisco2.MaterialPeligroso = True
-        mercJalisco2.ClaveMaterialPeligroso = "0454"
-        mercJalisco2.Embalaje = "1A2"
-        mercJalisco2.DescripcionEmbalaje = "BIDONES (TAMBORES)"
-        mercJalisco2.PesoEnKg = 10D
-        mercJalisco2.ValorMercancia = 0D
-        mercJalisco2.Moneda = "MXN"
-        mercJalisco2.EsComercioInternacional = False
-        mercJalisco2.Pedimento = String.Empty
-        mercJalisco2.FraccionArancelaria = String.Empty
-        Dim mercJalisco3 As Mercancia = New Mercancia
-        mercJalisco3.ClaveProdServ = "12181600"
-        mercJalisco3.Descripcion = "Aceites"
-        mercJalisco3.RequiereNodoMaterialPeligroso = True
-        mercJalisco3.SatConsideraPeligrosa = False
-        mercJalisco3.Cantidad = 5
-        mercJalisco3.ClaveUnidad = "XBA"
-        mercJalisco3.Unidad = "BARRIL"
-        mercJalisco3.EsCentimetros = True
-        mercJalisco3.EsPulgadas = True
-        mercJalisco3.Longitud = 0
-        mercJalisco3.Anchura = 0
-        mercJalisco3.Altura = 0
-        mercJalisco3.MaterialPeligroso = False
-        mercJalisco3.ClaveMaterialPeligroso = String.Empty
-        mercJalisco3.Embalaje = String.Empty
-        mercJalisco3.DescripcionEmbalaje = String.Empty
-        mercJalisco3.PesoEnKg = 10D
-        mercJalisco3.ValorMercancia = 0D
-        mercJalisco3.Moneda = "MXN"
-        mercJalisco3.EsComercioInternacional = False
-        mercJalisco3.Pedimento = String.Empty
-        mercJalisco3.FraccionArancelaria = String.Empty
-
-        listaMercJalisco.Add(mercJalisco)
-        listaMercJalisco.Add(mercJalisco2)
-        listaMercJalisco.Add(mercJalisco3)
-
-        'Ahora añado la lista de mercancias al diccionario
-        datosMercancias = New Dictionary(Of String, List(Of Mercancia))
-        datosMercancias.Add("DE000001", listaMercSinaloa)
-        datosMercancias.Add("DE000011", listaMercZacatecas)
-        datosMercancias.Add("DE000012", listaMercJalisco)
     End Sub
 
 
@@ -385,7 +165,7 @@ Public Class frmCartaPorte
         'Para probar, me muevo a la pestaña de confirmacion
         PreparaPruebasCartaPorte()
         ESTOY_CAMBIANDO_MEDIANTE_INDICE = True
-        TabControl1.SelectedTab = TabControl1.TabPages("tabConfirmacion")
+        TabControl1.SelectedTab = TabControl1.TabPages("tabDestinosIntermedios")
         ESTOY_CAMBIANDO_MEDIANTE_INDICE = False
     End Sub
 #End Region
@@ -2021,6 +1801,7 @@ Public Class frmCartaPorte
         LimpiaDesactivaTextbox(txtCalleDestinoIntermedio)
         LimpiaDesactivaTextbox(txtReferenciaDestinoIntermedio)
         lblFechaHoraMaximaDestInter.Text = String.Empty
+        lblKilometrosDisponibles.Text = String.Empty
     End Sub
 
     Private Sub ObtenMaximosMinimosFecha(ByRef fechaMinima As DateTime,
@@ -2049,6 +1830,10 @@ Public Class frmCartaPorte
         dtFechaLlegadaDestinoIntermedio.Enabled = True
         lblFechaHoraMaximaDestInter.Text = String.Format(ObtenParametroPorLlave("AVISO_FECHAS"), fechaSalidaOrigen.ToString("dd-MM-yyyy HH:mm"), fechaLlegadaMax.ToString("dd-MM-yyyy HH:mm"))
         lblFechaHoraMaximaDestInter.ForeColor = Color.Red
+
+        Dim datoKmDisponibles As Int32 = ObtenKilometrosDisponibles()
+        lblKilometrosDisponibles.Text = String.Format(ObtenParametroPorLlave("QUEDAN_KM"), datoKmDisponibles)
+        lblKilometrosDisponibles.ForeColor = Color.Red
 
         txtHoraLlegadaDestinoIntermedio.Enabled = True
         txtNoExtDestinoIntermedio.Enabled = True
@@ -2543,6 +2328,10 @@ Public Class frmCartaPorte
             dtFechaLlegadaDestinoIntermedio.MaxDate = fechaLlegadaMax.Date
             lblFechaHoraMaximaDestInter.Text = String.Format(ObtenParametroPorLlave("AVISO_FECHAS"), fechaSalidaOrigen.ToString("dd-MM-yyyy HH:mm"), fechaLlegadaMax.ToString("dd-MM-yyyy HH:mm"))
             lblFechaHoraMaximaDestInter.ForeColor = Color.Red
+
+            Dim datoKmDisponibles As Int32 = ObtenKilometrosDisponibles()
+            lblKilometrosDisponibles.Text = String.Format(ObtenParametroPorLlave("QUEDAN_KM"), datoKmDisponibles)
+            lblKilometrosDisponibles.ForeColor = Color.Red
 
             If objDestino.UsuarioCausoProblemasConFecha Then
                 dtFechaLlegadaDestinoIntermedio.Value = dtFechaLlegadaDestinoIntermedio.MinDate
