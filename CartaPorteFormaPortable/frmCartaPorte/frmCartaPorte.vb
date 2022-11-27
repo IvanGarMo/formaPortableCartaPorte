@@ -180,7 +180,7 @@ Public Class frmCartaPorte
         datosDestinoIntermedio2ParaCartaPorte.DatosDomicilio = domicilioIntermedio2Destino
         datosDestinosIntermediosParaCartaPorte.Add(datosDestinoIntermedio2ParaCartaPorte)
 
-        datosAutoTransporte = New Autotransporte
+        datosMercancias = New Dictionary(Of String, List(Of Mercancia))
     End Sub
 
 
@@ -234,7 +234,7 @@ Public Class frmCartaPorte
         'Para probar, me muevo a la pestaña de confirmacion
         PreparaPruebasCartaPorte()
         ESTOY_CAMBIANDO_MEDIANTE_INDICE = True
-        TabControl1.SelectedTab = TabControl1.TabPages("tabOperador")
+        TabControl1.SelectedTab = TabControl1.TabPages("tabTransporte")
         ESTOY_CAMBIANDO_MEDIANTE_INDICE = False
     End Sub
 #End Region
@@ -3199,7 +3199,7 @@ Public Class frmCartaPorte
 
     Private Sub PreparaPestanaTransporte()
         ValidaExisteMercanciaQueCuenteComoPeligroso()
-        BindCombobox(cbSeleccionarVehiculo, conexionesCartaPorte.Get_ListadoVehiculos())
+        BindCombobox(cbSeleccionarVehiculo, conexionesCartaPorte.Get_ObtenCatalogoVehiculos("LINCOLN"))
         BloqueaDatosTransporte()
         numCantidadRemolquesTransporte.Minimum = 0
         numCantidadRemolquesTransporte.Maximum = 2
@@ -3215,8 +3215,35 @@ Public Class frmCartaPorte
 
         LimpiarPanelDatosTransporte()
         If cveVehiculo <> "00" Then
+            CargaTransporteDesdeBd()
             CargaDatosTransporte()
         End If
+    End Sub
+
+    Private Sub CargaTransporteDesdeBd()
+        Dim empresa = "LINCOLN"
+        Dim cveVehiculo = ObtenValorCombobox(cbSeleccionarVehiculo)
+        Dim dataTableTransporte As DataTable = conexionesCartaPorte.Get_ObtenDetalleVehiculo(empresa, cveVehiculo)
+        If dataTableTransporte Is Nothing OrElse dataTableTransporte.Rows.Count = 0 Then
+            datosAutoTransporte = Nothing
+            Return
+        End If
+
+        Dim row As DataRow = dataTableTransporte.Rows(0)
+        datosAutoTransporte = New Autotransporte
+        datosAutoTransporte.CveInternaVehiculo = ObtenValorCombobox(cbSeleccionarVehiculo)
+        datosAutoTransporte.PermSCT = row("PermSCT").ToString()
+        datosAutoTransporte.ConfigVehicular = row("ConfigVehicular").ToString()
+        datosAutoTransporte.PlacaVM = row("matricula").ToString()
+        datosAutoTransporte.AnioModeloVM = row("modeloAnio").ToString()
+        datosAutoTransporte.AseguraRespCivil = row("aseguradora").ToString()
+        datosAutoTransporte.PolizaRespCivil = row("poliza").ToString()
+        datosAutoTransporte.PrimaSeguro = 0
+        datosAutoTransporte.AseguraCarga = String.Empty
+        datosAutoTransporte.PolizaCarga = String.Empty
+        datosAutoTransporte.NoRemolques = 0
+        datosAutoTransporte.AseguraMedAmbiente = String.Empty
+        datosAutoTransporte.PolizaMedAmbiente = String.Empty
     End Sub
 
     Private Sub CargaDatosTransporte()
