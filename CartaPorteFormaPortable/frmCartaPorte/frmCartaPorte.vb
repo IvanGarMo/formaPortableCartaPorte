@@ -112,6 +112,75 @@ Public Class frmCartaPorte
         domicilioDestino.Referencia = String.Empty
         domicilioDestino.CodigoPostal = "82129"
         datosDestinoParaCartaPorte.DatosDomicilio = domicilioDestino
+
+
+        datosDestinosIntermediosParaCartaPorte = New List(Of OrigenDestino)
+        'Ahora creo los destinos intermedios
+        Dim datosDestinoIntermedio1ParaCartaPorte = New OrigenDestino
+        datosDestinoIntermedio1ParaCartaPorte.UsuarioCausoProblemasConFecha = False
+        datosDestinoIntermedio1ParaCartaPorte.TipoUbicacion = "Destino"
+        datosDestinoIntermedio1ParaCartaPorte.IDUbicacion = "DE000011"
+        datosDestinoIntermedio1ParaCartaPorte.RFCRemitenteDestinatario = "EIM951002R19"
+        datosDestinoIntermedio1ParaCartaPorte.NombrePersonaMoral = "EAGLE IMPORTACIONES"
+        datosDestinoIntermedio1ParaCartaPorte.Nombre = String.Empty
+        datosDestinoIntermedio1ParaCartaPorte.ApPaterno = String.Empty
+        datosDestinoIntermedio1ParaCartaPorte.ApMaterno = String.Empty
+        datosDestinoIntermedio1ParaCartaPorte.ResidenciaFiscal = String.Empty
+        datosDestinoIntermedio1ParaCartaPorte.NumRegIdTrib = String.Empty
+        datosDestinoIntermedio1ParaCartaPorte.FechaSalidaLlegada = DateTime.Today.AddDays(1).Date
+        datosDestinoIntermedio1ParaCartaPorte.HoraSalidaLlegada = "14:00"
+        datosDestinoIntermedio1ParaCartaPorte.DistanciaRecorrida = 1000
+        datosDestinoIntermedio1ParaCartaPorte.EsPersonaFisica = False
+        datosDestinoIntermedio1ParaCartaPorte.EsPersonaMoral = True
+        datosDestinoIntermedio1ParaCartaPorte.EsExtranjero = False
+
+        Dim domicilioIntermedio1Destino As New Domicilio
+        domicilioIntermedio1Destino.Calle = "HOTEL PARADOR"
+        domicilioIntermedio1Destino.NumeroExterior = "300"
+        domicilioIntermedio1Destino.NumeroInterior = String.Empty
+        domicilioIntermedio1Destino.Colonia = "0001"
+        domicilioIntermedio1Destino.Localidad = "03"
+        domicilioIntermedio1Destino.Municipio = "056"
+        domicilioIntermedio1Destino.Estado = "ZAC"
+        domicilioIntermedio1Destino.Pais = "MEX"
+        domicilioIntermedio1Destino.Referencia = String.Empty
+        domicilioIntermedio1Destino.CodigoPostal = "98000"
+        datosDestinoIntermedio1ParaCartaPorte.DatosDomicilio = domicilioIntermedio1Destino
+        datosDestinosIntermediosParaCartaPorte.Add(datosDestinoIntermedio1ParaCartaPorte)
+
+        Dim datosDestinoIntermedio2ParaCartaPorte = New OrigenDestino
+        datosDestinoIntermedio2ParaCartaPorte.UsuarioCausoProblemasConFecha = False
+        datosDestinoIntermedio2ParaCartaPorte.TipoUbicacion = "Destino"
+        datosDestinoIntermedio2ParaCartaPorte.IDUbicacion = "DE000012"
+        datosDestinoIntermedio2ParaCartaPorte.RFCRemitenteDestinatario = "EIM951002R19"
+        datosDestinoIntermedio2ParaCartaPorte.NombrePersonaMoral = "EAGLE IMPORTACIONES"
+        datosDestinoIntermedio2ParaCartaPorte.Nombre = String.Empty
+        datosDestinoIntermedio2ParaCartaPorte.ApPaterno = String.Empty
+        datosDestinoIntermedio2ParaCartaPorte.ApMaterno = String.Empty
+        datosDestinoIntermedio2ParaCartaPorte.ResidenciaFiscal = String.Empty
+        datosDestinoIntermedio2ParaCartaPorte.NumRegIdTrib = String.Empty
+        datosDestinoIntermedio2ParaCartaPorte.FechaSalidaLlegada = DateTime.Today.AddDays(1).Date
+        datosDestinoIntermedio2ParaCartaPorte.HoraSalidaLlegada = "16:00"
+        datosDestinoIntermedio2ParaCartaPorte.DistanciaRecorrida = 100
+        datosDestinoIntermedio2ParaCartaPorte.EsPersonaFisica = False
+        datosDestinoIntermedio2ParaCartaPorte.EsPersonaMoral = True
+        datosDestinoIntermedio2ParaCartaPorte.EsExtranjero = False
+
+        Dim domicilioIntermedio2Destino As New Domicilio
+        domicilioIntermedio2Destino.Calle = "GUADALAJARA CENTRO"
+        domicilioIntermedio2Destino.NumeroExterior = "400"
+        domicilioIntermedio2Destino.NumeroInterior = String.Empty
+        domicilioIntermedio2Destino.Colonia = "0002"
+        domicilioIntermedio2Destino.Localidad = "03"
+        domicilioIntermedio2Destino.Municipio = "039"
+        domicilioIntermedio2Destino.Estado = "JAL"
+        domicilioIntermedio2Destino.Pais = "MEX"
+        domicilioIntermedio2Destino.Referencia = String.Empty
+        domicilioIntermedio2Destino.CodigoPostal = "440009"
+        datosDestinoIntermedio2ParaCartaPorte.DatosDomicilio = domicilioIntermedio2Destino
+        datosDestinosIntermediosParaCartaPorte.Add(datosDestinoIntermedio2ParaCartaPorte)
+
+        datosAutoTransporte = New Autotransporte
     End Sub
 
 
@@ -165,7 +234,7 @@ Public Class frmCartaPorte
         'Para probar, me muevo a la pestaña de confirmacion
         PreparaPruebasCartaPorte()
         ESTOY_CAMBIANDO_MEDIANTE_INDICE = True
-        TabControl1.SelectedTab = TabControl1.TabPages("tabDestinosIntermedios")
+        TabControl1.SelectedTab = TabControl1.TabPages("tabOperador")
         ESTOY_CAMBIANDO_MEDIANTE_INDICE = False
     End Sub
 #End Region
@@ -2606,7 +2675,6 @@ Public Class frmCartaPorte
         dgvMercanciasPorMovimiento.Columns("DescripcionUnidadClm").DataPropertyName = NameOf(Mercancia.Unidad)
         dgvMercanciasPorMovimiento.Columns("MovimientoMercanciaCheckboxMaterialCheckboxClm").DataPropertyName = NameOf(Mercancia.MaterialPeligroso)
         dgvMercanciasPorMovimiento.DataSource = mercanciasMovimiento
-        Dim rows = dgvMercanciasPorMovimiento.Rows.Count
     End Sub
 
     Private Sub dgvListadoMovimientosPestanaMercancia_CellContentClick(sender As Object, e As DataGridViewCellEventArgs) Handles dgvListadoMovimientosPestanaMercancia.CellContentClick
@@ -3502,6 +3570,29 @@ Public Class frmCartaPorte
 
     Private listaParteTransporte As List(Of ItemTransporte)
 
+    Private Sub RevisaCodigoPostalOperador()
+        'Validaciones de default para evitar problemas
+        If refCbEstadoOperador Is Nothing OrElse refCbMunicipioOperador Is Nothing OrElse refCbLocalidadOperador Is Nothing OrElse refCbColoniaOperador Is Nothing Then
+            Return
+        End If
+
+        'Luego validaciones de edo, muncipio y localidad
+        Dim edoOp As String = ObtenValorCombobox(refCbEstadoOperador)
+        Dim munOp As String = ObtenValorCombobox(refCbMunicipioOperador)
+        Dim locOp As String = ObtenValorCombobox(refCbLocalidadOperador)
+
+        If edoOp = "-01" OrElse munOp = "-01" OrElse locOp = "-01" Then
+            Return
+        End If
+
+        Dim codigoPostalOp As String = datosAutoTransporte.Transportista.Domicilio.CodigoPostal
+        Dim valido = conexionesCartaPorte.Get_ValidaCodigoPostal(codigoPostalOp, edoOp, munOp, locOp, String.Empty)
+        If valido Then
+            txtCpOperador.Text = codigoPostalOp
+            txtCpOperador_TextChanged(Nothing, Nothing)
+        End If
+
+    End Sub
     Private Sub cbMunicipioOperador_SelectedValueChanged(sender As Object, e As EventArgs) Handles cbMunicipioOperador.SelectedValueChanged
         ValidaOrdenMunicipioLocalidadCodigo(cbPaisOperador,
                                             refCbEstadoOperador,
@@ -3509,6 +3600,7 @@ Public Class frmCartaPorte
                                             refCbMunicipioOperador,
                                             txtCpOperador,
                                             refCbColoniaOperador)
+        RevisaCodigoPostalOperador()
     End Sub
 
     Private Sub cbLocalidadOperador_SelectedValueChanged(sender As Object, e As EventArgs) Handles cbLocalidadOperador.SelectedValueChanged
@@ -3518,6 +3610,7 @@ Public Class frmCartaPorte
                                             refCbMunicipioOperador,
                                             txtCpOperador,
                                             refCbColoniaOperador)
+        RevisaCodigoPostalOperador()
     End Sub
 
     Private Sub PreparaDatosOperador()
@@ -3594,6 +3687,58 @@ Public Class frmCartaPorte
         BindCombobox(cbPaisOperador, ObtenListadoPaises())
         ValidaPropiedadAjena()
         BindCombobox(cbTipoFiguraOperador, conexionesCartaPorte.Get_ObtenFigurasDeTransporte(PARTE_DEL_REMOLQUE_ES_AJENA))
+    End Sub
+
+    Private Sub ObtenInformacionOperadorDeBd()
+        Dim claveOperador As String = ObtenValorCombobox(cbOpcionesOperador)
+        Dim empresa As String = "EAGLE"
+        Dim tablaDatosOperador As DataTable = conexionesCartaPorte.Get_ObtenDetalleChofer(empresa, claveOperador)
+        If tablaDatosOperador.Rows.Count = 0 Then
+            AlertaMensaje(ObtenParametroPorLlave("ERROR_CARGAROPERADOR"))
+            Return
+        End If
+        Dim row As DataRow = tablaDatosOperador.Rows(0)
+        Dim datosOperador As New DatosTransportista
+        datosOperador.CveInternaOperador = claveOperador
+        datosOperador.NombreTransportista = row("nombre").ToString()
+        datosOperador.ApellidoPaternoTransportista = row("apellidoPaterno").ToString()
+        datosOperador.ApellidoMaternoTransportista = row("apellidoMaterno").ToString()
+        datosOperador.EsTransportistaExtranjero = CType(row("esExtranjero"), Boolean)
+        datosOperador.EsTransportistaNacional = CType(row("esNacional"), Boolean)
+        datosOperador.RFCFigura = row("rfc").ToString()
+        datosOperador.NumRegIdTribFigura = row("numRegIdTribFigura").ToString()
+        datosOperador.TipoFigura = "-01"
+        datosOperador.NumLicencia = row("licencia").ToString()
+
+        Dim datosDomicilioOperador As New Domicilio
+        datosDomicilioOperador.Pais = row("pais").ToString()
+        datosDomicilioOperador.Estado = row("estado").ToString()
+        datosDomicilioOperador.CodigoPostal = row("codigoPostal").ToString()
+        datosDomicilioOperador.Municipio = row("municipio").ToString()
+        datosDomicilioOperador.Localidad = row("localidad").ToString()
+        datosDomicilioOperador.Colonia = row("colonia").ToString()
+        datosDomicilioOperador.Referencia = row("referencia").ToString()
+        datosDomicilioOperador.NumeroInterior = row("noInt").ToString()
+
+        Dim direccionOperador As String = row("direccion").ToString()
+
+        'Extraigo los posibles números
+        Dim numeroExterior As String = String.Empty
+        Dim regExNumeros As New Regex("[0-9]+")
+        Dim match As MatchCollection
+        match = regExNumeros.Matches(direccionOperador)
+        If match.Count > 0 Then
+            numeroExterior = match(0).Value
+        End If
+
+        Dim calle As String = String.Empty
+        calle = Regex.Replace(Regex.Replace(row("direccion").ToString(), " {2,}", " "), "[0-9]+", "").Replace("#", "")
+        datosDomicilioOperador.Calle = calle
+        datosDomicilioOperador.Colonia = "-01"
+        datosDomicilioOperador.NumeroExterior = numeroExterior
+
+        datosOperador.Domicilio = datosDomicilioOperador
+        datosAutoTransporte.Transportista = datosOperador
     End Sub
 
     Private Sub CargaInformacionOperador()
@@ -3683,7 +3828,7 @@ Public Class frmCartaPorte
             gvParteTransporteOperador.Rows.Clear()
         End If
 
-        If listaParteTransporte Is Nothing Then Return
+        If listaParteTransporte Is Nothing OrElse listaParteTransporte.Count = 0 Then Return
         gvParteTransporteOperador.Columns("ParteTransporteAnadidoClm").DataPropertyName = NameOf(ItemTransporte.DescripcionTipoTransporte)
         gvParteTransporteOperador.Columns("IdParteTransporteClm").DataPropertyName = NameOf(ItemTransporte.Id)
         gvParteTransporteOperador.DataSource = listaParteTransporte
@@ -3802,6 +3947,7 @@ Public Class frmCartaPorte
         If ObtenValorCombobox(refCbEstadoOperador) = "-01" Then Return
         BindCombobox(refCbMunicipioOperador, ObtenMunicipiosPorEstado(ObtenValorCombobox(refCbEstadoOperador)))
         BindCombobox(refCbLocalidadOperador, ObtenLocalidadesPorEstado(ObtenValorCombobox(refCbEstadoOperador)))
+        RevisaCodigoPostalOperador()
     End Sub
 
     Private Sub txtCpOperador_TextChanged(sender As Object, e As EventArgs) Handles txtCpOperador.TextChanged
@@ -3952,6 +4098,7 @@ Public Class frmCartaPorte
             ToggleDatosOperador()
         End If
         If claveOperador <> "00" Then
+            ObtenInformacionOperadorDeBd()
             CargaInformacionOperador()
             ToggleDatosOperador()
         End If

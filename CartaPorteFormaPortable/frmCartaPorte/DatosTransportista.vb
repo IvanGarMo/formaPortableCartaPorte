@@ -99,6 +99,9 @@ Public Class DatosTransportista
 
     Public Property ParteTransporte As List(Of ItemTransporte)
         Get
+            If _ParteTransporte Is Nothing Then
+                Return New List(Of ItemTransporte)
+            End If
             Return _ParteTransporte
         End Get
         Set(value As List(Of ItemTransporte))
