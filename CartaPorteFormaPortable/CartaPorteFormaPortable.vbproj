@@ -114,10 +114,30 @@
     <Compile Include="frmCartaPorte\frmCartaPorte.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="frmCartaPorte\frmInicioProcesoCartaPorte.Designer.vb">
+      <DependentUpon>frmInicioProcesoCartaPorte.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmCartaPorte\frmInicioProcesoCartaPorte.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmCartaPorte\frmMovimientosParaExportar.Designer.vb">
+      <DependentUpon>frmMovimientosParaExportar.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmCartaPorte\frmMovimientosParaExportar.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmCartaPorte\frmSeleccionEscenario.Designer.vb">
+      <DependentUpon>frmSeleccionEscenario.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmCartaPorte\frmSeleccionEscenario.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="frmCartaPorte\Mercancia.vb" />
+    <Compile Include="frmCartaPorte\ObjetoJson.vb" />
     <Compile Include="frmCartaPorte\OrigenDestino.vb" />
     <Compile Include="frmCartaPorte\RelacionMercanciaOrigenDestino.vb" />
     <Compile Include="frmCartaPorte\TiposCartaPorte.vb" />
+    <Compile Include="frmCartaPorte\Utils.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
@@ -144,6 +164,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="frmCartaPorte\frmCartaPorte.resx">
       <DependentUpon>frmCartaPorte.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmCartaPorte\frmInicioProcesoCartaPorte.resx">
+      <DependentUpon>frmInicioProcesoCartaPorte.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmCartaPorte\frmMovimientosParaExportar.resx">
+      <DependentUpon>frmMovimientosParaExportar.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmCartaPorte\frmSeleccionEscenario.resx">
+      <DependentUpon>frmSeleccionEscenario.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
       <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
@@ -176,6 +205,11 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json">
+      <Version>13.0.2</Version>
+    </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
 </Project>

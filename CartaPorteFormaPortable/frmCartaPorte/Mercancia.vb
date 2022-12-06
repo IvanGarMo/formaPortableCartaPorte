@@ -1,6 +1,7 @@
 ﻿Public Class Mercancia
     Private _ClaveProdServ As String
     Private _Descripcion As String
+    Private _DescripcionInterna As String
     Private _Cantidad As Int32
 
     'Esta es la cantidad que no ha sido asignada a un destino en
@@ -369,5 +370,14 @@
         Get
             Return "0"
         End Get
+    End Property
+
+    Public Property DescripcionInterna As String
+        Get
+            Return _DescripcionInterna
+        End Get
+        Set(value As String)
+            _DescripcionInterna = value
+        End Set
     End Property
 End Class

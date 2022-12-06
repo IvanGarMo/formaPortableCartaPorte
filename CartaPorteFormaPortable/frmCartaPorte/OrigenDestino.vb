@@ -295,6 +295,15 @@ Public Class OrigenDestino
         End Get
     End Property
 
+    Public ReadOnly Property CodigoPostalUbicacion As String
+        Get
+            If _DatosDomicilio IsNot Nothing Then
+                Return _DatosDomicilio.CodigoPostal
+            End If
+            Return String.Empty
+        End Get
+    End Property
+
     Public Property UsuarioCausoProblemasConFecha As Boolean
         Get
             Return _UsuarioCausoProblemasConFecha

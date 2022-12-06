@@ -1,4 +1,5 @@
-﻿Imports System.Text.RegularExpressions
+﻿Imports System.IO
+Imports System.Text.RegularExpressions
 
 Public Class frmCartaPorte
     Private parametrosFormaCartaPorte As DataTable
@@ -27,6 +28,93 @@ Public Class frmCartaPorte
     Private colorCampoOpcional As String = String.Empty
     Private colorUsuarioCausoProblemas As String = String.Empty
 
+    'Datos de resultado
+    Private _xmlGeneradoCorrectamente As Boolean = False
+    Private _xmlCartaPorte As String = String.Empty
+
+    'Datos que usa la forma para comunicarse con el exterior
+    Private _cartaPorteEsTraslado As Boolean = False
+    Private _datosEscenario As DataRow = Nothing
+    Private _idMovimientoPadre As String = String.Empty
+    Private _tipoMovimeinto As String = String.Empty
+    Private utils As Utils
+
+#Region "Eventos que usa la forma para comunicarse con el exterior"
+    Public Property XmlGeneradoCorrectamente As Boolean
+        Get
+            Return _xmlGeneradoCorrectamente
+        End Get
+        Set(value As Boolean)
+            _xmlGeneradoCorrectamente = value
+        End Set
+    End Property
+
+    Public Property XmlCartaPorte As String
+        Get
+            If _xmlGeneradoCorrectamente Then
+                Return _xmlCartaPorte
+            Else
+                Return String.Empty
+            End If
+        End Get
+        Set(value As String)
+            _xmlCartaPorte = value
+            _xmlGeneradoCorrectamente = True
+        End Set
+    End Property
+
+    Public Property DatosEscenario As DataRow
+        Get
+            Return _datosEscenario
+        End Get
+        Set(value As DataRow)
+            _datosEscenario = value
+        End Set
+    End Property
+
+    Public Property IdMovimientoPadre As String
+        Get
+            Return _idMovimientoPadre
+        End Get
+        Set(value As String)
+            _idMovimientoPadre = value
+        End Set
+    End Property
+
+    Public Property TipoMovimiento As String
+        Get
+            Return _tipoMovimeinto
+        End Get
+        Set(value As String)
+            _tipoMovimeinto = value
+        End Set
+    End Property
+
+    Public Property EsTraslado As Boolean
+        Get
+            Return _cartaPorteEsTraslado
+        End Get
+        Set(value As Boolean)
+            _cartaPorteEsTraslado = value
+        End Set
+    End Property
+
+    Public Sub GuardaArchivo()
+        If Not _xmlGeneradoCorrectamente Then Return
+        Dim path As String = String.Empty
+        Dim dr As DialogResult = DialogResult.Yes
+        While String.IsNullOrEmpty(path) AndAlso dr = DialogResult.Yes
+            path = ObtenPathParaGuardar("Archivos XML (*.XML)|*.XML")
+            If String.IsNullOrEmpty(path) Then
+                dr = MsgBox(ObtenParametroPorLlave("ARCHGUARD_NOSELEC"), vbQuestion + vbYesNo, "Alerta")
+            End If
+        End While
+
+        If String.IsNullOrEmpty(path) Then Return
+        File.AppendAllText(path, _xmlCartaPorte)
+    End Sub
+#End Region
+
 #Region "Eventos de carga de la forma"
 
     '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -38,149 +126,154 @@ Public Class frmCartaPorte
         InitializeComponent()
     End Sub
 
-    Public Sub New(ByVal idEmpresa As String, ByVal idEscenario As Int32)
+    Public Sub New(ByVal idEmpresa As String,
+                   ByVal idEscenario As Int32,
+                   ByVal descripcionEscenario As DataRow)
         ' This call is required by the designer.
         InitializeComponent()
         Me.numeroEscenario = idEscenario
         Me.idEmpresa = idEmpresa
+        Me._datosEscenario = descripcionEscenario
+        datosMercancias = New Dictionary(Of String, List(Of Mercancia))
+        utils = New Utils
     End Sub
 
     Private Sub PreparaPruebasCartaPorte()
 
         'Preparo los datos de origen
-        datosOrigenParaCartaPorte = New OrigenDestino
-        datosOrigenParaCartaPorte.TipoUbicacion = "Origen"
-        datosOrigenParaCartaPorte.IDUbicacion = "OR000001"
-        datosOrigenParaCartaPorte.EsDestinoIntermedio = False
-        datosOrigenParaCartaPorte.EsPersonaFisica = False
-        datosOrigenParaCartaPorte.EsPersonaMoral = True
-        datosOrigenParaCartaPorte.EsExtranjero = False
-        datosOrigenParaCartaPorte.Nombre = String.Empty
-        datosOrigenParaCartaPorte.ApPaterno = String.Empty
-        datosOrigenParaCartaPorte.ApMaterno = String.Empty
-        datosOrigenParaCartaPorte.NombrePersonaMoral = "EAGLE IMPORTACIONES"
-        datosOrigenParaCartaPorte.NumRegIdTrib = String.Empty
-        datosOrigenParaCartaPorte.ResidenciaFiscal = String.Empty
+        'datosOrigenParaCartaPorte = New OrigenDestino
+        'datosOrigenParaCartaPorte.TipoUbicacion = "Origen"
+        'datosOrigenParaCartaPorte.IDUbicacion = "OR000001"
+        'datosOrigenParaCartaPorte.EsDestinoIntermedio = False
+        'datosOrigenParaCartaPorte.EsPersonaFisica = False
+        'datosOrigenParaCartaPorte.EsPersonaMoral = True
+        'datosOrigenParaCartaPorte.EsExtranjero = False
+        'datosOrigenParaCartaPorte.Nombre = String.Empty
+        'datosOrigenParaCartaPorte.ApPaterno = String.Empty
+        'datosOrigenParaCartaPorte.ApMaterno = String.Empty
+        'datosOrigenParaCartaPorte.NombrePersonaMoral = "EAGLE IMPORTACIONES"
+        'datosOrigenParaCartaPorte.NumRegIdTrib = String.Empty
+        'datosOrigenParaCartaPorte.ResidenciaFiscal = String.Empty
 
-        datosOrigenParaCartaPorte.RFCRemitenteDestinatario = "EIM951002R19"
-        datosOrigenParaCartaPorte.NumRegIdTrib = String.Empty
-        datosOrigenParaCartaPorte.FechaSalidaLlegada = DateTime.Today.Date
-        datosOrigenParaCartaPorte.HoraSalidaLlegada = "20:00"
-        datosOrigenParaCartaPorte.DistanciaRecorrida = 0
+        'datosOrigenParaCartaPorte.RFCRemitenteDestinatario = "EIM951002R19"
+        'datosOrigenParaCartaPorte.NumRegIdTrib = String.Empty
+        'datosOrigenParaCartaPorte.FechaSalidaLlegada = DateTime.Today.Date
+        'datosOrigenParaCartaPorte.HoraSalidaLlegada = "20:00"
+        'datosOrigenParaCartaPorte.DistanciaRecorrida = 0
 
-        Dim domicilio As New Domicilio
-        domicilio.Calle = "LAZARO CARDENAS"
-        domicilio.NumeroExterior = "170"
-        domicilio.NumeroInterior = String.Empty
-        domicilio.Colonia = "2034"
-        domicilio.Municipio = "007"
-        domicilio.Localidad = "02"
-        domicilio.Estado = "DUR"
-        domicilio.Pais = "MEX"
-        domicilio.Referencia = String.Empty
-        domicilio.CodigoPostal = "35077"
-        datosOrigenParaCartaPorte.DatosDomicilio = domicilio
+        'Dim domicilio As New Domicilio
+        'domicilio.Calle = "LAZARO CARDENAS"
+        'domicilio.NumeroExterior = "170"
+        'domicilio.NumeroInterior = String.Empty
+        'domicilio.Colonia = "2034"
+        'domicilio.Municipio = "007"
+        'domicilio.Localidad = "02"
+        'domicilio.Estado = "DUR"
+        'domicilio.Pais = "MEX"
+        'domicilio.Referencia = String.Empty
+        'domicilio.CodigoPostal = "35077"
+        'datosOrigenParaCartaPorte.DatosDomicilio = domicilio
 
-        'Ahora preparo los datos de destino
-        datosDestinoParaCartaPorte = New OrigenDestino
-        datosDestinoParaCartaPorte.UsuarioCausoProblemasConFecha = False
-        datosDestinoParaCartaPorte.TipoUbicacion = "Destino"
-        datosDestinoParaCartaPorte.IDUbicacion = "DE000001"
-        datosDestinoParaCartaPorte.RFCRemitenteDestinatario = "EIM951002R19"
-        datosDestinoParaCartaPorte.NombrePersonaMoral = "EAGLE IMPORTACIONES"
-        datosDestinoParaCartaPorte.Nombre = String.Empty
-        datosDestinoParaCartaPorte.ApPaterno = String.Empty
-        datosDestinoParaCartaPorte.ApMaterno = String.Empty
-        datosDestinoParaCartaPorte.ResidenciaFiscal = String.Empty
-        datosDestinoParaCartaPorte.NumRegIdTrib = String.Empty
-        datosDestinoParaCartaPorte.FechaSalidaLlegada = DateTime.Today.AddDays(1).Date
-        datosDestinoParaCartaPorte.HoraSalidaLlegada = "20:00"
-        datosDestinoParaCartaPorte.DistanciaRecorrida = 2000
-        datosDestinoParaCartaPorte.EsPersonaFisica = False
-        datosDestinoParaCartaPorte.EsPersonaMoral = True
-        datosDestinoParaCartaPorte.EsExtranjero = False
+        ''Ahora preparo los datos de destino
+        'datosDestinoParaCartaPorte = New OrigenDestino
+        'datosDestinoParaCartaPorte.UsuarioCausoProblemasConFecha = False
+        'datosDestinoParaCartaPorte.TipoUbicacion = "Destino"
+        'datosDestinoParaCartaPorte.IDUbicacion = "DE000001"
+        'datosDestinoParaCartaPorte.RFCRemitenteDestinatario = "EIM951002R19"
+        'datosDestinoParaCartaPorte.NombrePersonaMoral = "EAGLE IMPORTACIONES"
+        'datosDestinoParaCartaPorte.Nombre = String.Empty
+        'datosDestinoParaCartaPorte.ApPaterno = String.Empty
+        'datosDestinoParaCartaPorte.ApMaterno = String.Empty
+        'datosDestinoParaCartaPorte.ResidenciaFiscal = String.Empty
+        'datosDestinoParaCartaPorte.NumRegIdTrib = String.Empty
+        'datosDestinoParaCartaPorte.FechaSalidaLlegada = DateTime.Today.AddDays(1).Date
+        'datosDestinoParaCartaPorte.HoraSalidaLlegada = "20:00"
+        'datosDestinoParaCartaPorte.DistanciaRecorrida = 2000
+        'datosDestinoParaCartaPorte.EsPersonaFisica = False
+        'datosDestinoParaCartaPorte.EsPersonaMoral = True
+        'datosDestinoParaCartaPorte.EsExtranjero = False
 
-        Dim domicilioDestino As New Domicilio
-        domicilioDestino.Calle = "CARRETERA INTERNACIONAL KM 1.5"
-        domicilioDestino.NumeroExterior = "313"
-        domicilioDestino.NumeroInterior = String.Empty
-        domicilioDestino.Colonia = "1079"
-        domicilioDestino.Localidad = "05"
-        domicilioDestino.Municipio = "012"
-        domicilioDestino.Estado = "SIN"
-        domicilioDestino.Pais = "MEX"
-        domicilioDestino.Referencia = String.Empty
-        domicilioDestino.CodigoPostal = "82129"
-        datosDestinoParaCartaPorte.DatosDomicilio = domicilioDestino
+        'Dim domicilioDestino As New Domicilio
+        'domicilioDestino.Calle = "CARRETERA INTERNACIONAL KM 1.5"
+        'domicilioDestino.NumeroExterior = "313"
+        'domicilioDestino.NumeroInterior = String.Empty
+        'domicilioDestino.Colonia = "1079"
+        'domicilioDestino.Localidad = "05"
+        'domicilioDestino.Municipio = "012"
+        'domicilioDestino.Estado = "SIN"
+        'domicilioDestino.Pais = "MEX"
+        'domicilioDestino.Referencia = String.Empty
+        'domicilioDestino.CodigoPostal = "82129"
+        'datosDestinoParaCartaPorte.DatosDomicilio = domicilioDestino
 
 
-        datosDestinosIntermediosParaCartaPorte = New List(Of OrigenDestino)
-        'Ahora creo los destinos intermedios
-        Dim datosDestinoIntermedio1ParaCartaPorte = New OrigenDestino
-        datosDestinoIntermedio1ParaCartaPorte.UsuarioCausoProblemasConFecha = False
-        datosDestinoIntermedio1ParaCartaPorte.TipoUbicacion = "Destino"
-        datosDestinoIntermedio1ParaCartaPorte.IDUbicacion = "DE000011"
-        datosDestinoIntermedio1ParaCartaPorte.RFCRemitenteDestinatario = "EIM951002R19"
-        datosDestinoIntermedio1ParaCartaPorte.NombrePersonaMoral = "EAGLE IMPORTACIONES"
-        datosDestinoIntermedio1ParaCartaPorte.Nombre = String.Empty
-        datosDestinoIntermedio1ParaCartaPorte.ApPaterno = String.Empty
-        datosDestinoIntermedio1ParaCartaPorte.ApMaterno = String.Empty
-        datosDestinoIntermedio1ParaCartaPorte.ResidenciaFiscal = String.Empty
-        datosDestinoIntermedio1ParaCartaPorte.NumRegIdTrib = String.Empty
-        datosDestinoIntermedio1ParaCartaPorte.FechaSalidaLlegada = DateTime.Today.AddDays(1).Date
-        datosDestinoIntermedio1ParaCartaPorte.HoraSalidaLlegada = "14:00"
-        datosDestinoIntermedio1ParaCartaPorte.DistanciaRecorrida = 1000
-        datosDestinoIntermedio1ParaCartaPorte.EsPersonaFisica = False
-        datosDestinoIntermedio1ParaCartaPorte.EsPersonaMoral = True
-        datosDestinoIntermedio1ParaCartaPorte.EsExtranjero = False
+        'datosDestinosIntermediosParaCartaPorte = New List(Of OrigenDestino)
+        ''Ahora creo los destinos intermedios
+        'Dim datosDestinoIntermedio1ParaCartaPorte = New OrigenDestino
+        'datosDestinoIntermedio1ParaCartaPorte.UsuarioCausoProblemasConFecha = False
+        'datosDestinoIntermedio1ParaCartaPorte.TipoUbicacion = "Destino"
+        'datosDestinoIntermedio1ParaCartaPorte.IDUbicacion = "DE000011"
+        'datosDestinoIntermedio1ParaCartaPorte.RFCRemitenteDestinatario = "EIM951002R19"
+        'datosDestinoIntermedio1ParaCartaPorte.NombrePersonaMoral = "EAGLE IMPORTACIONES"
+        'datosDestinoIntermedio1ParaCartaPorte.Nombre = String.Empty
+        'datosDestinoIntermedio1ParaCartaPorte.ApPaterno = String.Empty
+        'datosDestinoIntermedio1ParaCartaPorte.ApMaterno = String.Empty
+        'datosDestinoIntermedio1ParaCartaPorte.ResidenciaFiscal = String.Empty
+        'datosDestinoIntermedio1ParaCartaPorte.NumRegIdTrib = String.Empty
+        'datosDestinoIntermedio1ParaCartaPorte.FechaSalidaLlegada = DateTime.Today.AddDays(1).Date
+        'datosDestinoIntermedio1ParaCartaPorte.HoraSalidaLlegada = "14:00"
+        'datosDestinoIntermedio1ParaCartaPorte.DistanciaRecorrida = 1000
+        'datosDestinoIntermedio1ParaCartaPorte.EsPersonaFisica = False
+        'datosDestinoIntermedio1ParaCartaPorte.EsPersonaMoral = True
+        'datosDestinoIntermedio1ParaCartaPorte.EsExtranjero = False
 
-        Dim domicilioIntermedio1Destino As New Domicilio
-        domicilioIntermedio1Destino.Calle = "HOTEL PARADOR"
-        domicilioIntermedio1Destino.NumeroExterior = "300"
-        domicilioIntermedio1Destino.NumeroInterior = String.Empty
-        domicilioIntermedio1Destino.Colonia = "0001"
-        domicilioIntermedio1Destino.Localidad = "03"
-        domicilioIntermedio1Destino.Municipio = "056"
-        domicilioIntermedio1Destino.Estado = "ZAC"
-        domicilioIntermedio1Destino.Pais = "MEX"
-        domicilioIntermedio1Destino.Referencia = String.Empty
-        domicilioIntermedio1Destino.CodigoPostal = "98000"
-        datosDestinoIntermedio1ParaCartaPorte.DatosDomicilio = domicilioIntermedio1Destino
-        datosDestinosIntermediosParaCartaPorte.Add(datosDestinoIntermedio1ParaCartaPorte)
+        'Dim domicilioIntermedio1Destino As New Domicilio
+        'domicilioIntermedio1Destino.Calle = "HOTEL PARADOR"
+        'domicilioIntermedio1Destino.NumeroExterior = "300"
+        'domicilioIntermedio1Destino.NumeroInterior = String.Empty
+        'domicilioIntermedio1Destino.Colonia = "0001"
+        'domicilioIntermedio1Destino.Localidad = "03"
+        'domicilioIntermedio1Destino.Municipio = "056"
+        'domicilioIntermedio1Destino.Estado = "ZAC"
+        'domicilioIntermedio1Destino.Pais = "MEX"
+        'domicilioIntermedio1Destino.Referencia = String.Empty
+        'domicilioIntermedio1Destino.CodigoPostal = "98000"
+        'datosDestinoIntermedio1ParaCartaPorte.DatosDomicilio = domicilioIntermedio1Destino
+        'datosDestinosIntermediosParaCartaPorte.Add(datosDestinoIntermedio1ParaCartaPorte)
 
-        Dim datosDestinoIntermedio2ParaCartaPorte = New OrigenDestino
-        datosDestinoIntermedio2ParaCartaPorte.UsuarioCausoProblemasConFecha = False
-        datosDestinoIntermedio2ParaCartaPorte.TipoUbicacion = "Destino"
-        datosDestinoIntermedio2ParaCartaPorte.IDUbicacion = "DE000012"
-        datosDestinoIntermedio2ParaCartaPorte.RFCRemitenteDestinatario = "EIM951002R19"
-        datosDestinoIntermedio2ParaCartaPorte.NombrePersonaMoral = "EAGLE IMPORTACIONES"
-        datosDestinoIntermedio2ParaCartaPorte.Nombre = String.Empty
-        datosDestinoIntermedio2ParaCartaPorte.ApPaterno = String.Empty
-        datosDestinoIntermedio2ParaCartaPorte.ApMaterno = String.Empty
-        datosDestinoIntermedio2ParaCartaPorte.ResidenciaFiscal = String.Empty
-        datosDestinoIntermedio2ParaCartaPorte.NumRegIdTrib = String.Empty
-        datosDestinoIntermedio2ParaCartaPorte.FechaSalidaLlegada = DateTime.Today.AddDays(1).Date
-        datosDestinoIntermedio2ParaCartaPorte.HoraSalidaLlegada = "16:00"
-        datosDestinoIntermedio2ParaCartaPorte.DistanciaRecorrida = 100
-        datosDestinoIntermedio2ParaCartaPorte.EsPersonaFisica = False
-        datosDestinoIntermedio2ParaCartaPorte.EsPersonaMoral = True
-        datosDestinoIntermedio2ParaCartaPorte.EsExtranjero = False
+        'Dim datosDestinoIntermedio2ParaCartaPorte = New OrigenDestino
+        'datosDestinoIntermedio2ParaCartaPorte.UsuarioCausoProblemasConFecha = False
+        'datosDestinoIntermedio2ParaCartaPorte.TipoUbicacion = "Destino"
+        'datosDestinoIntermedio2ParaCartaPorte.IDUbicacion = "DE000012"
+        'datosDestinoIntermedio2ParaCartaPorte.RFCRemitenteDestinatario = "EIM951002R19"
+        'datosDestinoIntermedio2ParaCartaPorte.NombrePersonaMoral = "EAGLE IMPORTACIONES"
+        'datosDestinoIntermedio2ParaCartaPorte.Nombre = String.Empty
+        'datosDestinoIntermedio2ParaCartaPorte.ApPaterno = String.Empty
+        'datosDestinoIntermedio2ParaCartaPorte.ApMaterno = String.Empty
+        'datosDestinoIntermedio2ParaCartaPorte.ResidenciaFiscal = String.Empty
+        'datosDestinoIntermedio2ParaCartaPorte.NumRegIdTrib = String.Empty
+        'datosDestinoIntermedio2ParaCartaPorte.FechaSalidaLlegada = DateTime.Today.AddDays(1).Date
+        'datosDestinoIntermedio2ParaCartaPorte.HoraSalidaLlegada = "16:00"
+        'datosDestinoIntermedio2ParaCartaPorte.DistanciaRecorrida = 100
+        'datosDestinoIntermedio2ParaCartaPorte.EsPersonaFisica = False
+        'datosDestinoIntermedio2ParaCartaPorte.EsPersonaMoral = True
+        'datosDestinoIntermedio2ParaCartaPorte.EsExtranjero = False
 
-        Dim domicilioIntermedio2Destino As New Domicilio
-        domicilioIntermedio2Destino.Calle = "GUADALAJARA CENTRO"
-        domicilioIntermedio2Destino.NumeroExterior = "400"
-        domicilioIntermedio2Destino.NumeroInterior = String.Empty
-        domicilioIntermedio2Destino.Colonia = "0002"
-        domicilioIntermedio2Destino.Localidad = "03"
-        domicilioIntermedio2Destino.Municipio = "039"
-        domicilioIntermedio2Destino.Estado = "JAL"
-        domicilioIntermedio2Destino.Pais = "MEX"
-        domicilioIntermedio2Destino.Referencia = String.Empty
-        domicilioIntermedio2Destino.CodigoPostal = "440009"
-        datosDestinoIntermedio2ParaCartaPorte.DatosDomicilio = domicilioIntermedio2Destino
-        datosDestinosIntermediosParaCartaPorte.Add(datosDestinoIntermedio2ParaCartaPorte)
+        'Dim domicilioIntermedio2Destino As New Domicilio
+        'domicilioIntermedio2Destino.Calle = "GUADALAJARA CENTRO"
+        'domicilioIntermedio2Destino.NumeroExterior = "400"
+        'domicilioIntermedio2Destino.NumeroInterior = String.Empty
+        'domicilioIntermedio2Destino.Colonia = "0002"
+        'domicilioIntermedio2Destino.Localidad = "03"
+        'domicilioIntermedio2Destino.Municipio = "039"
+        'domicilioIntermedio2Destino.Estado = "JAL"
+        'domicilioIntermedio2Destino.Pais = "MEX"
+        'domicilioIntermedio2Destino.Referencia = String.Empty
+        'domicilioIntermedio2Destino.CodigoPostal = "440009"
+        'datosDestinoIntermedio2ParaCartaPorte.DatosDomicilio = domicilioIntermedio2Destino
+        'datosDestinosIntermediosParaCartaPorte.Add(datosDestinoIntermedio2ParaCartaPorte)
 
-        datosMercancias = New Dictionary(Of String, List(Of Mercancia))
+        'datosMercancias = New Dictionary(Of String, List(Of Mercancia))
     End Sub
 
 
@@ -240,6 +333,148 @@ Public Class frmCartaPorte
 #End Region
 
 #Region "Metodos Comunes usados por todas las pestañas"
+
+    'Este método carga la información del movimiento en los objetos
+    'para ahorrar teclazos
+    Private Sub CargaDatosTraslado()
+        Dim idEscenario As Int32 = CInt(_datosEscenario("idEscenario"))
+        If idEscenario = 1 Then Return 'Escenario de captura abierta
+
+        Dim dataSetMovimiento As DataSet = conexionesCartaPorte.Get_DatosTraslado(idEmpresa, _tipoMovimeinto, _idMovimientoPadre)
+        Dim datosOrigenRow As DataRow = dataSetMovimiento.Tables(0).Rows(0)
+
+        'Primero importo los datos del origen
+        datosOrigenParaCartaPorte = utils.CreaObjetoOrigenDestino(datosOrigenRow)
+
+        datosOrigenParaCartaPorte.Movimiento = IdMovimientoPadre
+        datosOrigenParaCartaPorte.TipoUbicacion = "Origen"
+        datosOrigenParaCartaPorte.IDUbicacion = "OR000001"
+
+        datosOrigenParaCartaPorte.ResidenciaFiscal = "-01"
+        datosOrigenParaCartaPorte.FechaSalidaLlegada = DateTime.Now
+        datosOrigenParaCartaPorte.HoraSalidaLlegada = "00:00"
+        datosOrigenParaCartaPorte.EsDestinoIntermedio = False
+        datosOrigenParaCartaPorte.UsuarioCausoProblemasConFecha = False
+        datosOrigenParaCartaPorte.UsuarioCausoProblemasConKm = False
+
+        Dim datosDomicilioOrigen As Domicilio = utils.CreaObjetoDomicilio(datosOrigenRow)
+        datosOrigenParaCartaPorte.DatosDomicilio = datosDomicilioOrigen
+
+        'Luego sigue el destino
+        datosDestinoParaCartaPorte = New OrigenDestino()
+        datosDestinoParaCartaPorte.Movimiento = _idMovimientoPadre
+        datosDestinoParaCartaPorte.TipoUbicacion = "Destino"
+        datosDestinoParaCartaPorte.IDUbicacion = "DE000001"
+
+        'Si estamos haciendo un CFDI de tipo traslado, 
+        'entonces serán los mismos datos
+        Dim datosDestinoRow As DataRow = Nothing
+        If _cartaPorteEsTraslado Then
+            utils.CopiaDatosFiscales(datosOrigenParaCartaPorte, datosDestinoParaCartaPorte)
+        ElseIf dataSetMovimiento.Tables(1) IsNot Nothing AndAlso dataSetMovimiento.Tables(1).Rows.Count > 0 Then 'Inclui esta validación porque hay ocasiones en que no hay info disponible
+            datosDestinoRow = dataSetMovimiento.Tables(1).Rows(0)
+            datosDestinoParaCartaPorte = utils.CreaObjetoOrigenDestino(datosDestinoRow)
+            datosDestinoParaCartaPorte.TipoUbicacion = "Destino"
+            datosDestinoParaCartaPorte.IDUbicacion = "DE000001"
+            datosDestinoParaCartaPorte.ResidenciaFiscal = "-01"
+        End If
+
+        datosDestinoParaCartaPorte.EsDestinoIntermedio = False
+        datosDestinoParaCartaPorte.UsuarioCausoProblemasConFecha = False
+        datosDestinoParaCartaPorte.UsuarioCausoProblemasConKm = False
+        datosDestinoParaCartaPorte.FechaSalidaLlegada = DateTime.Now.AddDays(1)
+        datosDestinoParaCartaPorte.HoraSalidaLlegada = "00:00"
+
+        Dim datosDomicilioDestino As New Domicilio()
+        If dataSetMovimiento.Tables(1) IsNot Nothing AndAlso dataSetMovimiento.Tables(1).Rows.Count > 0 Then
+            datosDomicilioDestino = utils.CreaObjetoDomicilio(dataSetMovimiento.Tables(1).Rows(0))
+        End If
+        datosDestinoParaCartaPorte.DatosDomicilio = datosDomicilioDestino
+
+        'Ahora cargo todas las mercancias
+        Dim listaMercancias As New List(Of Mercancia)
+        For Each dr As DataRow In dataSetMovimiento.Tables(2).Rows
+            listaMercancias.Add(utils.CreaObjetoMercancia(dr))
+        Next
+        datosMercancias.Add("DE000001", listaMercancias)
+    End Sub
+
+    Private Function ImportaMovimientoIntermedio(ByRef idMovimientoIntermedio As String) As Boolean
+        If Len(idMovimientoIntermedio) > 30 Then
+            AlertaMensaje(ObtenParametroPorLlave("NO_EXISTE_MOV"))
+            Return False
+        End If
+
+        Dim dataSetMovimientoIntermedio As DataSet = conexionesCartaPorte.Get_DatosTraslado(idEmpresa, _tipoMovimeinto, idMovimientoIntermedio)
+
+        'Primero vemos si ingreso un id válido
+        If dataSetMovimientoIntermedio.Tables.Count <= 1 Then
+            AlertaMensaje(ObtenParametroPorLlave("NO_EXISTE_MOV"))
+            Return False
+        End If
+
+        'Luego tenemos que ver que, efectivamente, tengan el mismo origen
+        Dim cpMovInter As String = dataSetMovimientoIntermedio.Tables(0).Rows(0)("cp").ToString()
+        If Not cpMovInter.Equals(datosOrigenParaCartaPorte.DatosDomicilio.CodigoPostal) Then
+            AlertaMensaje(ObtenParametroPorLlave("ORIGEN_DISTINTO"))
+            Return False
+        End If
+
+        Dim datosDestinoIntermedio As New OrigenDestino
+        utils.CopiaDatosFiscales(datosOrigenParaCartaPorte, datosDestinoIntermedio)
+        datosDestinoIntermedio.FechaSalidaLlegada = datosOrigenParaCartaPorte.FechaSalidaLlegada
+        datosDestinoIntermedio.HoraSalidaLlegada = datosOrigenParaCartaPorte.HoraSalidaLlegada
+        datosDestinoIntermedio.UsuarioCausoProblemasConFecha = True
+        datosDestinoIntermedio.UsuarioCausoProblemasConKm = True
+        datosDestinoIntermedio.EsDestinoIntermedio = True
+        datosDestinoIntermedio.TipoUbicacion = "Destino"
+        datosDestinoIntermedio.EsDestinoIntermedio = True
+        datosDestinoIntermedio.IDUbicacion = GeneraIdDestinoIntermedio()
+
+        Dim datosDomicilioDestinoIntermedio As Domicilio = Nothing
+        If dataSetMovimientoIntermedio.Tables(1).Rows.Count > 0 Then
+            datosDomicilioDestinoIntermedio = utils.CreaObjetoDomicilio(dataSetMovimientoIntermedio.Tables(1).Rows(0))
+        Else
+            datosDomicilioDestinoIntermedio = New Domicilio
+        End If
+        datosDestinoIntermedio.DatosDomicilio = datosDomicilioDestinoIntermedio
+
+        Dim listaMercancias As New List(Of Mercancia)
+        For Each dr As DataRow In dataSetMovimientoIntermedio.Tables(2).Rows
+            listaMercancias.Add(utils.CreaObjetoMercancia(dr))
+        Next
+
+        If datosDestinosIntermediosParaCartaPorte Is Nothing Then
+            datosDestinosIntermediosParaCartaPorte = New List(Of OrigenDestino)
+        End If
+
+        datosDestinosIntermediosParaCartaPorte.Add(datosDestinoIntermedio)
+        datosMercancias.Add(datosDestinoIntermedio.IDUbicacion, listaMercancias)
+        Return True
+    End Function
+
+    'Este método genera un ID de ubicacion para destino intermedio
+    Private Function GeneraIdDestinoIntermedio() As String
+        If datosDestinosIntermediosParaCartaPorte Is Nothing OrElse datosDestinosIntermediosParaCartaPorte.Count = 0 Then
+            Return "DE000011"
+        End If
+
+        Dim idRepetido As Boolean = True
+        Dim idUbicacionGenerado As String = String.Empty
+        While idRepetido
+            Dim idUbicacionUltima As String = datosDestinosIntermediosParaCartaPorte.Last().IDUbicacion
+            Dim idDeUbicacionInt As Int32 = CInt(Regex.Replace(idUbicacionUltima, "[A-Z]+", ""))
+            idDeUbicacionInt = idDeUbicacionInt + 1
+            Dim idDeUbicacionCad As String = idDeUbicacionInt.ToString()
+            idUbicacionGenerado = "DE"
+            For i As Int16 = 0 To 6 - 2 - Len(idDeUbicacionCad) Step 1
+                idUbicacionGenerado = idUbicacionGenerado + "0"
+            Next
+            idUbicacionGenerado = idUbicacionGenerado + idDeUbicacionCad
+            idRepetido = datosDestinosIntermediosParaCartaPorte.Exists(Function(x) x.IDUbicacion.Equals(idUbicacionGenerado))
+        End While
+        Return idUbicacionGenerado
+    End Function
 
     'Este método recibe un objeto Date y una cadena de horas, y entrega
     'a cambio un datetime correcto
@@ -417,6 +652,19 @@ Public Class frmCartaPorte
         End If
         BindCombobox(refCbColonia, ObtenColoniasPorCodigoPostal(valorCp))
     End Sub
+
+    Private Function ObtenPathParaGuardar(ByRef filtrosCadena As String) As String
+        Dim ofd As New OpenFileDialog()
+        ofd.Multiselect = False
+        ofd.Filter = filtrosCadena
+        ofd.FilterIndex = 0
+
+        If ofd.ShowDialog() = DialogResult.OK Then
+            Dim fileName = ofd.FileName
+            Return fileName
+        End If
+        Return String.Empty
+    End Function
 
     Private Sub MarcaCampoComoObligatorio(ByRef control As Control,
                                           ByRef panel As TableLayoutPanel)
@@ -759,6 +1007,10 @@ Public Class frmCartaPorte
     Private ORIGEN_NO_HA_AVISADO_FECHA As Boolean = True
     Private ORIGEN_NO_HA_AVISADO_HORA As Boolean = True
 
+    Private Sub btnImportarMovPadre_Click(sender As Object, e As EventArgs) Handles btnImportarMovPadre.Click
+        Dim filePath As String = String.Empty
+    End Sub
+
     Private Sub txtHoraSalidaRemitente_Click(sender As Object, e As EventArgs) Handles txtHoraSalidaRemitente.Click
         If datosDestinoParaCartaPorte IsNot Nothing And ORIGEN_NO_HA_AVISADO_HORA Then
             Dim rsult = MsgBox(ObtenParametroPorLlave("EXISTE_FECHADF"), vbQuestion + vbYesNo, "Alerta")
@@ -777,8 +1029,13 @@ Public Class frmCartaPorte
         End If
     End Sub
 
-
     Private Sub PreparaPestanaOrigen()
+        If CType(_datosEscenario("informacionDisponibleDestino"), Boolean) AndAlso _datosEscenario("fuenteInfoDestino").ToString.Equals("json") Then
+            btnImportarMovPadre.Visible = True
+        Else
+            btnImportarMovPadre.Visible = False
+        End If
+
         'Ver si se puede importar la información o no
         txtTipoUbicacion.Text = "Origen"
         txtTipoUbicacion.Enabled = False
@@ -4141,6 +4398,7 @@ Public Class frmCartaPorte
     Private pestConfirmacionListaDestinos As List(Of OrigenDestino)
     Private pestConfirmacionDestinoSeleccionado As String = String.Empty
     Private nombreDestinoDesplegado As String = String.Empty
+
     Private Sub PreparaPestanaConfirmacion()
         pestConfirmacionDestinoSeleccionado = String.Empty
         nombreDestinoDesplegado = String.Empty
@@ -4455,8 +4713,10 @@ Public Class frmCartaPorte
                 datosAutoTransporte,
                 datosAutoTransporte.Transportista)
 
-        'Ahora es necesario generar el XML de traslado
-        Dim xmlTraslado As String = conexionesCartaPorte.GeneraXmlTraslado(
+        Dim xmlFinal As String = String.Empty
+        If _cartaPorteEsTraslado Then
+            'Ahora es necesario generar el XML de traslado
+            Dim xmlTraslado As String = conexionesCartaPorte.GeneraXmlTraslado(
             datosOrigenParaCartaPorte.RFCRemitenteDestinatario,
             datosOrigenParaCartaPorte.NombreUbicacionParaComplemento,
             datosOrigenParaCartaPorte.DatosDomicilio.CodigoPostal,
@@ -4467,8 +4727,12 @@ Public Class frmCartaPorte
             "601",
             pestConfirmacionListaFinalMercancias
         )
-        Dim xmlFinal As String = String.Format(xmlTraslado, xmlCartaPorte)
-        Dim aaaaa = xmlFinal
+            xmlFinal = String.Format(xmlTraslado, xmlCartaPorte)
+        Else
+            xmlFinal = xmlCartaPorte
+        End If
+        _xmlCartaPorte = xmlFinal
+        _xmlGeneradoCorrectamente = True
     End Sub
 
     Private Sub tlpContenedorSeguroMaterialPeligroso_Paint(sender As Object, e As PaintEventArgs) Handles tlpContenedorSeguroMaterialPeligroso.Paint

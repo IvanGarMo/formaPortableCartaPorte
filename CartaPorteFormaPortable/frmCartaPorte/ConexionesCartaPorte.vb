@@ -14,6 +14,52 @@ Public Class ConexionesCartaPorte
         Return con
     End Function
 
+    Public Function Get_DescripcionEscenario(ByVal incluyeEscenarioDefault As Boolean,
+                                             ByRef empresa As String,
+                                             Optional ByVal idEscenario As Int16 = -1) As DataTable
+        Dim Cm As SqlCommand = Nothing
+        Cm = New SqlCommand("[sat].[SP_CCP_CargaEscenariosCartaPorte]", obtenConexion())
+        Cm.CommandType = CommandType.StoredProcedure
+
+        Cm.Parameters.AddWithValue("@ParBitIncluyeDefault", incluyeEscenarioDefault)
+        Cm.Parameters("@ParBitIncluyeDefault").Direction = ParameterDirection.Input
+
+        Cm.Parameters.AddWithValue("@ParCadEmpresa", empresa)
+        Cm.Parameters("@ParCadEmpresa").Direction = ParameterDirection.Input
+
+        Cm.Parameters.AddWithValue("@ParIntIdEscenario", idEscenario)
+        Cm.Parameters("@ParIntIdEscenario").Direction = ParameterDirection.Input
+
+
+        Dim sqlAdapter As New SqlDataAdapter(Cm)
+        Dim dataSet As New DataSet
+        sqlAdapter.Fill(dataSet)
+        Return dataSet.Tables(0)
+    End Function
+
+
+    Public Function Get_DatosTraslado(ByRef idEmpresa As String,
+                                      ByRef tipoMovimiento As String,
+                                      ByRef idMovimiento As String) As DataSet
+        Dim Cm As SqlCommand = Nothing
+        Cm = New SqlCommand("sat.SP_CCP_ObtenDatosTraslado", obtenConexion())
+        Cm.CommandType = CommandType.StoredProcedure
+
+        Cm.Parameters.AddWithValue("@ParCadEmpresa", idEmpresa)
+        Cm.Parameters("@ParCadEmpresa").Direction = ParameterDirection.Input
+
+        Cm.Parameters.AddWithValue("@ParCadTipoMovimiento", tipoMovimiento)
+        Cm.Parameters("@ParCadTipoMovimiento").Direction = ParameterDirection.Input
+
+        Cm.Parameters.AddWithValue("@ParCadIdMovimiento", idMovimiento)
+        Cm.Parameters("@ParCadIdMovimiento").Direction = ParameterDirection.Input
+
+        Dim sqlAdapter As New SqlDataAdapter(Cm)
+        Dim dataSet As New DataSet
+        sqlAdapter.Fill(dataSet)
+        Return dataSet
+    End Function
+
     Public Function GeneraXmlTraslado(ByVal rfcEmisor As String,
                                       ByRef nombreEmisor As String,
                                       ByRef domicilioFiscalEmisor As String,

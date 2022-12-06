@@ -22,10 +22,10 @@ Partial Class frmCartaPorte
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Dim DataGridViewCellStyle21 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle22 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle23 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle24 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle4 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.TabControl1 = New System.Windows.Forms.TabControl()
         Me.tabOrigen = New System.Windows.Forms.TabPage()
         Me.tlpPrincipalOrigen = New System.Windows.Forms.TableLayoutPanel()
@@ -56,6 +56,7 @@ Partial Class frmCartaPorte
         Me.cbResidenciaFiscalRemitente = New System.Windows.Forms.ComboBox()
         Me.txtHoraSalidaRemitente = New System.Windows.Forms.MaskedTextBox()
         Me.Label4 = New System.Windows.Forms.Label()
+        Me.btnImportarMovPadre = New System.Windows.Forms.Button()
         Me.tlpDetalleDomicilioOrigen = New System.Windows.Forms.TableLayoutPanel()
         Me.Label12 = New System.Windows.Forms.Label()
         Me.Label13 = New System.Windows.Forms.Label()
@@ -592,6 +593,7 @@ Partial Class frmCartaPorte
         Me.tlpContenedorDatosFiscalesOrigen.Controls.Add(Me.cbResidenciaFiscalRemitente, 1, 6)
         Me.tlpContenedorDatosFiscalesOrigen.Controls.Add(Me.txtHoraSalidaRemitente, 3, 7)
         Me.tlpContenedorDatosFiscalesOrigen.Controls.Add(Me.Label4, 2, 2)
+        Me.tlpContenedorDatosFiscalesOrigen.Controls.Add(Me.btnImportarMovPadre, 3, 0)
         Me.tlpContenedorDatosFiscalesOrigen.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tlpContenedorDatosFiscalesOrigen.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.tlpContenedorDatosFiscalesOrigen.Location = New System.Drawing.Point(3, 3)
@@ -878,6 +880,16 @@ Partial Class frmCartaPorte
         Me.Label4.Size = New System.Drawing.Size(143, 20)
         Me.Label4.TabIndex = 24
         Me.Label4.Text = "RFC remitente: *"
+        '
+        'btnImportarMovPadre
+        '
+        Me.btnImportarMovPadre.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.btnImportarMovPadre.Location = New System.Drawing.Point(819, 3)
+        Me.btnImportarMovPadre.Name = "btnImportarMovPadre"
+        Me.btnImportarMovPadre.Size = New System.Drawing.Size(269, 28)
+        Me.btnImportarMovPadre.TabIndex = 25
+        Me.btnImportarMovPadre.Text = "Importar movimiento"
+        Me.btnImportarMovPadre.UseVisualStyleBackColor = True
         '
         'tlpDetalleDomicilioOrigen
         '
@@ -2807,24 +2819,24 @@ Partial Class frmCartaPorte
         'dgvListadoMovimientosPestanaMercancia
         '
         Me.dgvListadoMovimientosPestanaMercancia.AllowUserToAddRows = False
-        DataGridViewCellStyle21.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle21.BackColor = System.Drawing.SystemColors.Control
-        DataGridViewCellStyle21.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle21.ForeColor = System.Drawing.SystemColors.WindowText
-        DataGridViewCellStyle21.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle21.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle21.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.dgvListadoMovimientosPestanaMercancia.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle21
+        DataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control
+        DataGridViewCellStyle1.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText
+        DataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.dgvListadoMovimientosPestanaMercancia.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle1
         Me.dgvListadoMovimientosPestanaMercancia.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
         Me.dgvListadoMovimientosPestanaMercancia.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.MovimientoMercanciaClm, Me.DestinoMercanciaClm, Me.MovimientosTipoMovimientoClm, Me.MercanciasBtnClm, Me.AnadirMercanciaMovimientoClm, Me.IdUbicacionMovimientoPestanaMercanciaClm})
-        DataGridViewCellStyle22.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle22.BackColor = System.Drawing.SystemColors.Window
-        DataGridViewCellStyle22.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle22.ForeColor = System.Drawing.SystemColors.ControlText
-        DataGridViewCellStyle22.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle22.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle22.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
-        Me.dgvListadoMovimientosPestanaMercancia.DefaultCellStyle = DataGridViewCellStyle22
+        DataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window
+        DataGridViewCellStyle2.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText
+        DataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
+        Me.dgvListadoMovimientosPestanaMercancia.DefaultCellStyle = DataGridViewCellStyle2
         Me.dgvListadoMovimientosPestanaMercancia.Dock = System.Windows.Forms.DockStyle.Fill
         Me.dgvListadoMovimientosPestanaMercancia.Location = New System.Drawing.Point(3, 26)
         Me.dgvListadoMovimientosPestanaMercancia.Name = "dgvListadoMovimientosPestanaMercancia"
@@ -2917,24 +2929,24 @@ Partial Class frmCartaPorte
         'dgvMercanciasPorMovimiento
         '
         Me.dgvMercanciasPorMovimiento.AllowUserToAddRows = False
-        DataGridViewCellStyle23.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle23.BackColor = System.Drawing.SystemColors.Control
-        DataGridViewCellStyle23.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle23.ForeColor = System.Drawing.SystemColors.WindowText
-        DataGridViewCellStyle23.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle23.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle23.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.dgvMercanciasPorMovimiento.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle23
+        DataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control
+        DataGridViewCellStyle3.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText
+        DataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.dgvMercanciasPorMovimiento.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle3
         Me.dgvMercanciasPorMovimiento.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
         Me.dgvMercanciasPorMovimiento.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.MercanciaClaveProdServClm, Me.MovimientoDescripcionClm, Me.ClaveUnidadClm, Me.DescripcionUnidadClm, Me.MercanciaCantidadMercClm, Me.MercanciaMovimientoPeligrosaClm, Me.MovimientoComercioIntClm, Me.MovimientoDetallesMercClm, Me.MovimientoMercanciaEliminarClm, Me.MovimientoMercanciaCheckboxMaterialCheckboxClm})
-        DataGridViewCellStyle24.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle24.BackColor = System.Drawing.SystemColors.Window
-        DataGridViewCellStyle24.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle24.ForeColor = System.Drawing.SystemColors.ControlText
-        DataGridViewCellStyle24.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle24.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle24.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
-        Me.dgvMercanciasPorMovimiento.DefaultCellStyle = DataGridViewCellStyle24
+        DataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Window
+        DataGridViewCellStyle4.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.ControlText
+        DataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
+        Me.dgvMercanciasPorMovimiento.DefaultCellStyle = DataGridViewCellStyle4
         Me.dgvMercanciasPorMovimiento.Dock = System.Windows.Forms.DockStyle.Fill
         Me.dgvMercanciasPorMovimiento.Location = New System.Drawing.Point(3, 26)
         Me.dgvMercanciasPorMovimiento.Name = "dgvMercanciasPorMovimiento"
@@ -6003,4 +6015,5 @@ Partial Class frmCartaPorte
     Friend WithEvents RelMercUbiBtnEliminarClm As DataGridViewButtonColumn
     Friend WithEvents RelMercUbiCantidadMaxima As DataGridViewTextBoxColumn
     Friend WithEvents lblKilometrosDisponibles As Label
+    Friend WithEvents btnImportarMovPadre As Button
 End Class
