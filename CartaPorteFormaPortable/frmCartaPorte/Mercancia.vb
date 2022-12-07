@@ -39,6 +39,10 @@
     Private _Pedimento As String
     'Final de sección exclusiva de mercancía importada
 
+    Public Sub New()
+        _Descripcion = String.Empty
+        _DescripcionInterna = String.Empty
+    End Sub
     Public Property ClaveProdServ As String
         Get
             Return _ClaveProdServ
@@ -379,5 +383,25 @@
         Set(value As String)
             _DescripcionInterna = value
         End Set
+    End Property
+
+    Public ReadOnly Property DescripcionInternaModal As String
+        Get
+            If String.IsNullOrEmpty(_DescripcionInterna) Then
+                Return _Descripcion
+            End If
+
+            If String.IsNullOrEmpty(_Descripcion) Then
+                Return _DescripcionInterna
+            End If
+
+            Return String.Format("{0} - ({1})", _DescripcionInterna, _Descripcion)
+        End Get
+    End Property
+
+    Public ReadOnly Property ValorMercanciaCadena As String
+        Get
+            Return _ValorMercancia.ToString("N3")
+        End Get
     End Property
 End Class

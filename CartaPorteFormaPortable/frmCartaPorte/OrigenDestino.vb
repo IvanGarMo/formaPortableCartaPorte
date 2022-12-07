@@ -23,6 +23,10 @@ Public Class OrigenDestino
     Private _DistanciaRecorrida As Int32
     Private _DatosDomicilio As Domicilio
 
+    'Este campo lo necesito para el traslado, no es tan
+    'necesario para la de ingreso
+    Private _regimenFiscal As String
+
     'Este campo no va incluido en la carta porte
     'pero me sirve para calculos
     Private _EsDestinoIntermedio As Boolean
@@ -31,6 +35,14 @@ Public Class OrigenDestino
     'la fecha y hora finales luego de iniciar
     Private _UsuarioCausoProblemasConFecha As Boolean = False
     Private _UsuarioCausoProblemasConKm As Boolean = False
+
+    'Este me sirve para evitar problemas con la validación
+    'de código postal
+    Private _fueImportado As Boolean
+
+    Public Sub New()
+        _fueImportado = False
+    End Sub
 
     Public Property TipoUbicacion As String
         Get
@@ -319,6 +331,24 @@ Public Class OrigenDestino
         End Get
         Set(value As Boolean)
             _UsuarioCausoProblemasConKm = value
+        End Set
+    End Property
+
+    Public Property FueImportado As Boolean
+        Get
+            Return _fueImportado
+        End Get
+        Set(value As Boolean)
+            _fueImportado = value
+        End Set
+    End Property
+
+    Public Property RegimenFiscal As String
+        Get
+            Return _regimenFiscal
+        End Get
+        Set(value As String)
+            _regimenFiscal = value
         End Set
     End Property
 End Class

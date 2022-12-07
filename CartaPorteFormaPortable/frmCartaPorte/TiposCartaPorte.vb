@@ -37,6 +37,9 @@
     Public Function CantidadTransportaTipo() As DataTable
         Dim table As New DataTable
         table.Columns.Add("CadProdServ", GetType(String))
+        table.Columns.Add("ClaveUnidad", GetType(String))
+        table.Columns.Add("MaterialPeligroso", GetType(Boolean))
+        table.Columns.Add("Valor", GetType(String))
         table.Columns.Add("IDOrigen", GetType(String))
         table.Columns.Add("IDDestino", GetType(String))
         table.Columns.Add("Cantidad", GetType(Decimal))
@@ -113,6 +116,9 @@
                                               ByRef relacionCantidadMerc As RelacionMercanciaOrigenDestino)
         Dim row As DataRow = tabla.NewRow()
         row("CadProdServ") = relacionCantidadMerc.ClaveProdServ
+        row("ClaveUnidad") = relacionCantidadMerc.ClaveUnidad
+        row("MaterialPeligroso") = relacionCantidadMerc.EsMaterialPeligroso
+        row("Valor") = relacionCantidadMerc.Valor
         row("IDOrigen") = relacionCantidadMerc.IdOrigen
         row("IDDestino") = relacionCantidadMerc.IdDestino
         row("Cantidad") = relacionCantidadMerc.Cantidad
@@ -133,7 +139,7 @@
         row("CveMaterialPeligroso") = mercancia.ClaveMaterialPeligroso
         row("Embalaje") = mercancia.Embalaje
         row("DescripEmbalaje") = mercancia.DescripcionEmbalaje
-        row("PesoEnKg") = mercancia.PesoEnKg
+        row("PesoEnKg") = mercancia.PesoEnKg.ToString("N2")
         row("ValorMercancia") = mercancia.ValorMercancia
         row("Moneda") = mercancia.Moneda
         row("FraccionArancelaria") = mercancia.FraccionArancelaria

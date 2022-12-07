@@ -2,6 +2,7 @@
     Private _escenario As DataRow
 
     Public Sub New(escenario As DataRow)
+        InitializeComponent()
         _escenario = escenario
     End Sub
 
@@ -26,7 +27,6 @@
             tlpPrincipal.SetColumn(frmCartaPorte, 0)
             tlpPrincipal.SetRow(frmCartaPorte, 2)
             tlpPrincipal.SetColumnSpan(frmCartaPorte, tlpPrincipal.ColumnCount)
-            tlpPrincipal.SetRowSpan(frmCartaPorte, 2)
             frmCartaPorte.Show()
         Else
             Dim frmExportar As New frmMovimientosParaExportar(_escenario)
@@ -34,12 +34,12 @@
             frmExportar.Dock = DockStyle.Fill
             tlpPrincipal.Controls.Add(frmExportar)
             tlpPrincipal.SetColumn(frmExportar, 0)
-            tlpPrincipal.SetRow(frmExportar, 2)
+            tlpPrincipal.SetColumnSpan(frmExportar, tlpPrincipal.ColumnCount)
             frmExportar.Show()
         End If
     End Sub
 
     Private Sub frmInicioProcesoCartaPorte_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        rbConMediosPropios.Checked = True
+        Dim texto = "Hola"
     End Sub
 End Class

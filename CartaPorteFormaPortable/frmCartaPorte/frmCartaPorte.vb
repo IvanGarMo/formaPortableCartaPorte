@@ -35,7 +35,6 @@ Public Class frmCartaPorte
     'Datos que usa la forma para comunicarse con el exterior
     Private _cartaPorteEsTraslado As Boolean = False
     Private _datosEscenario As DataRow = Nothing
-    Private _idMovimientoPadre As String = String.Empty
     Private _tipoMovimeinto As String = String.Empty
     Private utils As Utils
 
@@ -69,15 +68,6 @@ Public Class frmCartaPorte
         End Get
         Set(value As DataRow)
             _datosEscenario = value
-        End Set
-    End Property
-
-    Public Property IdMovimientoPadre As String
-        Get
-            Return _idMovimientoPadre
-        End Get
-        Set(value As String)
-            _idMovimientoPadre = value
         End Set
     End Property
 
@@ -134,6 +124,7 @@ Public Class frmCartaPorte
         Me.numeroEscenario = idEscenario
         Me.idEmpresa = idEmpresa
         Me._datosEscenario = descripcionEscenario
+        _cartaPorteEsTraslado = CType(_datosEscenario("esCFDI_Traslado"), Boolean)
         datosMercancias = New Dictionary(Of String, List(Of Mercancia))
         utils = New Utils
     End Sub
@@ -324,29 +315,61 @@ Public Class frmCartaPorte
         CargaParametros()
         PreparaPestanaOrigen()
 
+        If Not CType(_datosEscenario("esCFDI_Traslado"), Boolean) Then
+            lblRegimenFiscalOrigen.Visible = False
+            txtRegimenFiscalOrigen.Visible = False
+            lblRegimenFiscalDestinoIntermedio.Visible = False
+            txtRegimenFiscalDestinoIntermedio.Visible = False
+            lblRegimenFiscalDestinoFinal.Visible = False
+            txtRegimenFiscalDestino.Visible = False
+        End If
+
         'Para probar, me muevo a la pestaña de confirmacion
-        PreparaPruebasCartaPorte()
-        ESTOY_CAMBIANDO_MEDIANTE_INDICE = True
-        TabControl1.SelectedTab = TabControl1.TabPages("tabTransporte")
-        ESTOY_CAMBIANDO_MEDIANTE_INDICE = False
+        'PreparaPruebasCartaPorte()
+        'ESTOY_CAMBIANDO_MEDIANTE_INDICE = True
+        'TabControl1.SelectedTab = TabControl1.TabPages("tabTransporte")
+        'ESTOY_CAMBIANDO_MEDIANTE_INDICE = False
     End Sub
 #End Region
 
 #Region "Metodos Comunes usados por todas las pestañas"
 
+    'Este método me sirve para cargar un código postal
+    'que haya sido importado, sin preocuparnos por el objeto
+    Private Sub CargaCodigoPostal(ByRef refCbPais As ComboBox,
+                                  ByRef refCbEstado As ComboBox,
+                                  ByRef refCbMunicipio As ComboBox,
+                                  ByRef refCbLocalidad As ComboBox,
+                                  ByRef refTxtCp As TextBox,
+                                  ByRef objUbicacion As OrigenDestino)
+        If objUbicacion Is Nothing OrElse Not objUbicacion.FueImportado Then
+            Return
+        End If
+
+        Dim pais As String = ObtenValorCombobox(refCbPais)
+        Dim estado As String = ObtenValorCombobox(refCbEstado)
+        Dim municipio As String = ObtenValorCombobox(refCbMunicipio)
+        Dim localidad As String = ObtenValorCombobox(refCbLocalidad)
+
+        If pais = "-01" OrElse estado = "-01" OrElse municipio = "-01" OrElse localidad = "-01" Then
+            Return
+        End If
+
+        refTxtCp.Text = objUbicacion.DatosDomicilio.CodigoPostal
+    End Sub
+
     'Este método carga la información del movimiento en los objetos
     'para ahorrar teclazos
-    Private Sub CargaDatosTraslado()
+    Private Sub CargaDatosTrasladoDesdeBd(ByRef idMovimiento As String)
         Dim idEscenario As Int32 = CInt(_datosEscenario("idEscenario"))
         If idEscenario = 1 Then Return 'Escenario de captura abierta
 
-        Dim dataSetMovimiento As DataSet = conexionesCartaPorte.Get_DatosTraslado(idEmpresa, _tipoMovimeinto, _idMovimientoPadre)
+        Dim dataSetMovimiento As DataSet = conexionesCartaPorte.Get_DatosTraslado(idEmpresa, _datosEscenario("tipoMovimiento").ToString(), idMovimiento)
         Dim datosOrigenRow As DataRow = dataSetMovimiento.Tables(0).Rows(0)
 
         'Primero importo los datos del origen
         datosOrigenParaCartaPorte = utils.CreaObjetoOrigenDestino(datosOrigenRow)
 
-        datosOrigenParaCartaPorte.Movimiento = IdMovimientoPadre
         datosOrigenParaCartaPorte.TipoUbicacion = "Origen"
         datosOrigenParaCartaPorte.IDUbicacion = "OR000001"
 
@@ -362,7 +385,6 @@ Public Class frmCartaPorte
 
         'Luego sigue el destino
         datosDestinoParaCartaPorte = New OrigenDestino()
-        datosDestinoParaCartaPorte.Movimiento = _idMovimientoPadre
         datosDestinoParaCartaPorte.TipoUbicacion = "Destino"
         datosDestinoParaCartaPorte.IDUbicacion = "DE000001"
 
@@ -377,11 +399,15 @@ Public Class frmCartaPorte
             datosDestinoParaCartaPorte.TipoUbicacion = "Destino"
             datosDestinoParaCartaPorte.IDUbicacion = "DE000001"
             datosDestinoParaCartaPorte.ResidenciaFiscal = "-01"
+        ElseIf dataSetMovimiento.Tables(1).Rows.Count = 0 Then
+            lblRegimenFiscalDestinoFinal.Visible = True
+            txtRegimenFiscalDestinoIntermedio.Enabled = True
+            txtRegimenFiscalDestinoIntermedio.Visible = True
         End If
-
         datosDestinoParaCartaPorte.EsDestinoIntermedio = False
-        datosDestinoParaCartaPorte.UsuarioCausoProblemasConFecha = False
-        datosDestinoParaCartaPorte.UsuarioCausoProblemasConKm = False
+        datosDestinoParaCartaPorte.UsuarioCausoProblemasConFecha = True
+        datosDestinoParaCartaPorte.UsuarioCausoProblemasConKm = True
+        datosDestinoParaCartaPorte.FueImportado = True
         datosDestinoParaCartaPorte.FechaSalidaLlegada = DateTime.Now.AddDays(1)
         datosDestinoParaCartaPorte.HoraSalidaLlegada = "00:00"
 
@@ -397,6 +423,22 @@ Public Class frmCartaPorte
             listaMercancias.Add(utils.CreaObjetoMercancia(dr))
         Next
         datosMercancias.Add("DE000001", listaMercancias)
+        CargaDatosOrigen()
+
+        ORIGEN_NO_HA_AVISADO_HORA = False 'Esto es para impedir advertencia de hora
+        ORIGEN_NO_HA_AVISADO_FECHA = False 'Esto para impedir la advertencia latosa de fecha
+        YA_CREO_DESTINO = True 'Esto para informar que ya existe un destino y cargue la info
+    End Sub
+
+    Private Sub CargaDatosTrasladoDesdeArchivoJson(ByRef pathFile As String)
+        utils.LeeArchivoJson(pathFile, datosOrigenParaCartaPorte,
+                             datosDestinoParaCartaPorte, datosDestinosIntermediosParaCartaPorte,
+                             datosMercancias)
+        CargaDatosOrigen()
+
+        ORIGEN_NO_HA_AVISADO_HORA = False 'Esto es para impedir advertencia de hora
+        ORIGEN_NO_HA_AVISADO_FECHA = False 'Esto para impedir la advertencia latosa de fecha
+        YA_CREO_DESTINO = True 'Esto para informar que ya existe un destino y cargue la info
     End Sub
 
     Private Function ImportaMovimientoIntermedio(ByRef idMovimientoIntermedio As String) As Boolean
@@ -438,6 +480,12 @@ Public Class frmCartaPorte
             datosDomicilioDestinoIntermedio = New Domicilio
         End If
         datosDestinoIntermedio.DatosDomicilio = datosDomicilioDestinoIntermedio
+
+        If dataSetMovimientoIntermedio.Tables(1).Rows.Count = 0 Then
+            lblRegimenFiscalDestinoIntermedio.Visible = True
+            txtRegimenFiscalDestinoIntermedio.Visible = True
+        End If
+
 
         Dim listaMercancias As New List(Of Mercancia)
         For Each dr As DataRow In dataSetMovimientoIntermedio.Tables(2).Rows
@@ -487,13 +535,13 @@ Public Class frmCartaPorte
 
     'Estos dos métodos son para colorear o quitar colores de fondo, y que sepan que
     'fregaos están haciendo
-    Private Sub textbox_Enter(sender As Object, e As EventArgs) Handles txtRfcRemitente.Enter, txtReferenciaRemitente.Enter, txtPaisResidenciaFiscalRemitente.Enter, txtNumRegidTribRemitente.Enter, txtNombreRemitente.Enter, txtNoIntRemitente.Enter, txtNoExtRemitente.Enter, txtIdUbicacionOrigen.Enter, txtHoraSalidaRemitente.Enter, txtCpRemitente.Enter, txtCalleRemitente.Enter, txtApPaternoRemitente.Enter, txtApMaternoRemitente.Enter, txtTipoUbicacion.Enter, txtTipoUbicacionDestino.Enter, txtRfcDestino.Enter, txtResidenciaFiscalDestino.Enter, txtReferenciaDestino.Enter, txtNumIdRegFiscalDestino.Enter, txtNombreDestino.Enter, txtNoIntDestino.Enter, txtNoExtDestino.Enter, txtIdUbicacionDestino.Enter, txtHoraSalidaDestino.Enter, txtCpDestino.Enter, txtCalleDestino.Enter, txtApPaternoDestino.Enter, txtApMaternoDestino.Enter, nupKmRecorridos.Enter, cbResidenciaFiscalDestino.Enter, txtTipoUbicacionDestinoIntermedio.Enter, txtRfcDestinoIntermedio.Enter, txtReferenciaDestinoIntermedio.Enter, txtNombreDestinoIntermedio.Enter, txtNoIntDestinoIntermedio.Enter, txtNoExtDestinoIntermedio.Enter, txtIdUbicacionDestinoIntermedio.Enter, txtHoraLlegadaDestinoIntermedio.Enter, txtCpDestinoIntermedio.Enter, txtCalleDestinoIntermedio.Enter, txtApPaternoDestinoIntermedio.Enter, txtApMaternoDestinoIntermedio.Enter, nupKmDestinoIntermedio.Enter, txtValor.Enter, txtUnidadMercancia.Enter, txtUnidadClaveMercancia.Enter, txtPeso.Enter, txtPedimento.Enter, txtMoneda.Enter, txtFraccionArancelaria.Enter, txtEmbalaje.Enter, txtDescripcionProducto.Enter, txtDescripcionMaterialPeligroso.Enter, txtDescripcionEmbalaje.Enter, txtClaveProdServMercancia.Enter, txtClaveMaterialPeligroso.Enter, txtCantidadMercancia.Enter, numLongitud.Enter, numAnchura.Enter, numAltura.Enter, txtUnidadPesoTotalMercancias.Enter, txtTipoRemolque2.Enter, txtTipoRemolque1.Enter, txtTipoPermisoSCT.Enter, txtRfcOperador.Enter, txtReferenciaOperador.Enter, txtPrimaSeguroTransporte.Enter, txtPolizaTransporte.Enter, txtPolizaSegurosDanosMedioAmbiente.Enter, txtPolizaCargaTransporte.Enter, txtPlacaTransporte.Enter, txtPlacasRemolque2.Enter, txtPlacasRemolque1.Enter, txtPesoBrutoTotalMercancias.Enter, txtNumRegIdTribFiscOperador.Enter, txtNumPermisoSCT.Enter, txtNumLicenciaOperador.Enter, txtNombreOperador.Enter, txtNoIntOperador.Enter, txtNoExtOperador.Enter, txtDescripConfigVehicular.Enter, txtDescripcionTipoPermisoSCT.Enter, txtCpOperador.Enter, txtConVeh.Enter, txtCalleOperador.Enter, txtAseguradoraTransporte.Enter, txtAseguradoraDanosMedioAmbiente.Enter, txtAseguradoraCargaTransporte.Enter, txtApPaternoOperador.Enter, txtApMaternoOperador.Enter, txtAnioModeloTransporte.Enter, numCantidadRemolquesTransporte.Enter
+    Private Sub textbox_Enter(sender As Object, e As EventArgs) Handles txtRfcRemitente.Enter, txtReferenciaRemitente.Enter, txtPaisResidenciaFiscalRemitente.Enter, txtNumRegidTribRemitente.Enter, txtNombreRemitente.Enter, txtNoIntRemitente.Enter, txtNoExtRemitente.Enter, txtIdUbicacionOrigen.Enter, txtHoraSalidaRemitente.Enter, txtCpRemitente.Enter, txtCalleRemitente.Enter, txtApPaternoRemitente.Enter, txtApMaternoRemitente.Enter, txtTipoUbicacion.Enter, txtTipoUbicacionDestino.Enter, txtRfcDestino.Enter, txtResidenciaFiscalDestino.Enter, txtReferenciaDestino.Enter, txtNumIdRegFiscalDestino.Enter, txtNombreDestino.Enter, txtNoIntDestino.Enter, txtNoExtDestino.Enter, txtIdUbicacionDestino.Enter, txtHoraSalidaDestino.Enter, txtCpDestino.Enter, txtCalleDestino.Enter, txtApPaternoDestino.Enter, txtApMaternoDestino.Enter, nupKmRecorridos.Enter, cbResidenciaFiscalDestino.Enter, txtTipoUbicacionDestinoIntermedio.Enter, txtRfcDestinoIntermedio.Enter, txtReferenciaDestinoIntermedio.Enter, txtNombreDestinoIntermedio.Enter, txtNoIntDestinoIntermedio.Enter, txtNoExtDestinoIntermedio.Enter, txtIdUbicacionDestinoIntermedio.Enter, txtHoraLlegadaDestinoIntermedio.Enter, txtCpDestinoIntermedio.Enter, txtCalleDestinoIntermedio.Enter, txtApPaternoDestinoIntermedio.Enter, txtApMaternoDestinoIntermedio.Enter, nupKmDestinoIntermedio.Enter, txtValor.Enter, txtUnidadMercancia.Enter, txtUnidadClaveMercancia.Enter, txtPeso.Enter, txtPedimento.Enter, txtMoneda.Enter, txtFraccionArancelaria.Enter, txtEmbalaje.Enter, txtDescripcionProducto.Enter, txtDescripcionMaterialPeligroso.Enter, txtDescripcionEmbalaje.Enter, txtClaveProdServMercancia.Enter, txtClaveMaterialPeligroso.Enter, txtCantidadMercancia.Enter, numLongitud.Enter, numAnchura.Enter, numAltura.Enter, txtUnidadPesoTotalMercancias.Enter, txtTipoRemolque2.Enter, txtTipoRemolque1.Enter, txtTipoPermisoSCT.Enter, txtRfcOperador.Enter, txtReferenciaOperador.Enter, txtPrimaSeguroTransporte.Enter, txtPolizaTransporte.Enter, txtPolizaSegurosDanosMedioAmbiente.Enter, txtPolizaCargaTransporte.Enter, txtPlacaTransporte.Enter, txtPlacasRemolque2.Enter, txtPlacasRemolque1.Enter, txtPesoBrutoTotalMercancias.Enter, txtNumRegIdTribFiscOperador.Enter, txtNumPermisoSCT.Enter, txtNumLicenciaOperador.Enter, txtNombreOperador.Enter, txtNoIntOperador.Enter, txtNoExtOperador.Enter, txtDescripConfigVehicular.Enter, txtDescripcionTipoPermisoSCT.Enter, txtCpOperador.Enter, txtConVeh.Enter, txtCalleOperador.Enter, txtAseguradoraTransporte.Enter, txtAseguradoraDanosMedioAmbiente.Enter, txtAseguradoraCargaTransporte.Enter, txtApPaternoOperador.Enter, txtApMaternoOperador.Enter, txtAnioModeloTransporte.Enter, numCantidadRemolquesTransporte.Enter, txtIdMovimientoImportar.Enter, txtIdTrasladoIntermedio.Enter, txtRegimenFiscalOrigen.Enter, txtRegimenFiscalDestino.Enter, txtRegimenFiscalDestinoIntermedio.Enter
         If sender.GetType() IsNot GetType(TextBox) Then Return
         Dim text As TextBox = CType(sender, TextBox)
         text.BackColor = Color.FromName("Info")
     End Sub
 
-    Private Sub textbox_Leave(sender As Object, e As EventArgs) Handles txtTipoUbicacion.Leave, txtRfcRemitente.Leave, txtReferenciaRemitente.Leave, txtPaisResidenciaFiscalRemitente.Leave, txtNumRegidTribRemitente.Leave, txtNombreRemitente.Leave, txtNoIntRemitente.Leave, txtNoExtRemitente.Leave, txtIdUbicacionOrigen.Leave, txtHoraSalidaRemitente.Leave, txtCpRemitente.Leave, txtCalleRemitente.Leave, txtApPaternoRemitente.Leave, txtApMaternoRemitente.Leave, txtTipoUbicacionDestino.Leave, txtRfcDestino.Leave, txtResidenciaFiscalDestino.Leave, txtReferenciaDestino.Leave, txtNumIdRegFiscalDestino.Leave, txtNombreDestino.Leave, txtNoIntDestino.Leave, txtNoExtDestino.Leave, txtIdUbicacionDestino.Leave, txtHoraSalidaDestino.Leave, txtCpDestino.Leave, txtCalleDestino.Leave, txtApPaternoDestino.Leave, txtApMaternoDestino.Leave, nupKmRecorridos.Leave, cbResidenciaFiscalDestino.Leave, txtTipoUbicacionDestinoIntermedio.Leave, txtRfcDestinoIntermedio.Leave, txtReferenciaDestinoIntermedio.Leave, txtNombreDestinoIntermedio.Leave, txtNoIntDestinoIntermedio.Leave, txtNoExtDestinoIntermedio.Leave, txtIdUbicacionDestinoIntermedio.Leave, txtHoraLlegadaDestinoIntermedio.Leave, txtCpDestinoIntermedio.Leave, txtCalleDestinoIntermedio.Leave, txtApPaternoDestinoIntermedio.Leave, txtApMaternoDestinoIntermedio.Leave, nupKmDestinoIntermedio.Leave, txtValor.Leave, txtUnidadMercancia.Leave, txtUnidadClaveMercancia.Leave, txtPeso.Leave, txtPedimento.Leave, txtMoneda.Leave, txtFraccionArancelaria.Leave, txtEmbalaje.Leave, txtDescripcionProducto.Leave, txtDescripcionMaterialPeligroso.Leave, txtDescripcionEmbalaje.Leave, txtClaveProdServMercancia.Leave, txtClaveMaterialPeligroso.Leave, txtCantidadMercancia.Leave, numLongitud.Leave, numAnchura.Leave, numAltura.Leave, txtUnidadPesoTotalMercancias.Leave, txtTipoRemolque2.Leave, txtTipoRemolque1.Leave, txtTipoPermisoSCT.Leave, txtRfcOperador.Leave, txtReferenciaOperador.Leave, txtPrimaSeguroTransporte.Leave, txtPolizaTransporte.Leave, txtPolizaSegurosDanosMedioAmbiente.Leave, txtPolizaCargaTransporte.Leave, txtPlacaTransporte.Leave, txtPlacasRemolque2.Leave, txtPlacasRemolque1.Leave, txtPesoBrutoTotalMercancias.Leave, txtNumRegIdTribFiscOperador.Leave, txtNumPermisoSCT.Leave, txtNumLicenciaOperador.Leave, txtNombreOperador.Leave, txtNoIntOperador.Leave, txtNoExtOperador.Leave, txtDescripConfigVehicular.Leave, txtDescripcionTipoPermisoSCT.Leave, txtCpOperador.Leave, txtConVeh.Leave, txtCalleOperador.Leave, txtAseguradoraTransporte.Leave, txtAseguradoraDanosMedioAmbiente.Leave, txtAseguradoraCargaTransporte.Leave, txtApPaternoOperador.Leave, txtApMaternoOperador.Leave, txtAnioModeloTransporte.Leave, numCantidadRemolquesTransporte.Leave
+    Private Sub textbox_Leave(sender As Object, e As EventArgs) Handles txtTipoUbicacion.Leave, txtRfcRemitente.Leave, txtReferenciaRemitente.Leave, txtPaisResidenciaFiscalRemitente.Leave, txtNumRegidTribRemitente.Leave, txtNombreRemitente.Leave, txtNoIntRemitente.Leave, txtNoExtRemitente.Leave, txtIdUbicacionOrigen.Leave, txtHoraSalidaRemitente.Leave, txtCpRemitente.Leave, txtCalleRemitente.Leave, txtApPaternoRemitente.Leave, txtApMaternoRemitente.Leave, txtTipoUbicacionDestino.Leave, txtRfcDestino.Leave, txtResidenciaFiscalDestino.Leave, txtReferenciaDestino.Leave, txtNumIdRegFiscalDestino.Leave, txtNombreDestino.Leave, txtNoIntDestino.Leave, txtNoExtDestino.Leave, txtIdUbicacionDestino.Leave, txtHoraSalidaDestino.Leave, txtCpDestino.Leave, txtCalleDestino.Leave, txtApPaternoDestino.Leave, txtApMaternoDestino.Leave, nupKmRecorridos.Leave, cbResidenciaFiscalDestino.Leave, txtTipoUbicacionDestinoIntermedio.Leave, txtRfcDestinoIntermedio.Leave, txtReferenciaDestinoIntermedio.Leave, txtNombreDestinoIntermedio.Leave, txtNoIntDestinoIntermedio.Leave, txtNoExtDestinoIntermedio.Leave, txtIdUbicacionDestinoIntermedio.Leave, txtHoraLlegadaDestinoIntermedio.Leave, txtCpDestinoIntermedio.Leave, txtCalleDestinoIntermedio.Leave, txtApPaternoDestinoIntermedio.Leave, txtApMaternoDestinoIntermedio.Leave, nupKmDestinoIntermedio.Leave, txtValor.Leave, txtUnidadMercancia.Leave, txtUnidadClaveMercancia.Leave, txtPeso.Leave, txtPedimento.Leave, txtMoneda.Leave, txtFraccionArancelaria.Leave, txtEmbalaje.Leave, txtDescripcionProducto.Leave, txtDescripcionMaterialPeligroso.Leave, txtDescripcionEmbalaje.Leave, txtClaveProdServMercancia.Leave, txtClaveMaterialPeligroso.Leave, txtCantidadMercancia.Leave, numLongitud.Leave, numAnchura.Leave, numAltura.Leave, txtUnidadPesoTotalMercancias.Leave, txtTipoRemolque2.Leave, txtTipoRemolque1.Leave, txtTipoPermisoSCT.Leave, txtRfcOperador.Leave, txtReferenciaOperador.Leave, txtPrimaSeguroTransporte.Leave, txtPolizaTransporte.Leave, txtPolizaSegurosDanosMedioAmbiente.Leave, txtPolizaCargaTransporte.Leave, txtPlacaTransporte.Leave, txtPlacasRemolque2.Leave, txtPlacasRemolque1.Leave, txtPesoBrutoTotalMercancias.Leave, txtNumRegIdTribFiscOperador.Leave, txtNumPermisoSCT.Leave, txtNumLicenciaOperador.Leave, txtNombreOperador.Leave, txtNoIntOperador.Leave, txtNoExtOperador.Leave, txtDescripConfigVehicular.Leave, txtDescripcionTipoPermisoSCT.Leave, txtCpOperador.Leave, txtConVeh.Leave, txtCalleOperador.Leave, txtAseguradoraTransporte.Leave, txtAseguradoraDanosMedioAmbiente.Leave, txtAseguradoraCargaTransporte.Leave, txtApPaternoOperador.Leave, txtApMaternoOperador.Leave, txtAnioModeloTransporte.Leave, numCantidadRemolquesTransporte.Leave, txtIdMovimientoImportar.Leave, txtIdTrasladoIntermedio.Leave, txtRegimenFiscalOrigen.Leave, txtRegimenFiscalDestino.Leave, txtRegimenFiscalDestinoIntermedio.Leave
         If sender.GetType() IsNot GetType(TextBox) Then Return
         Dim text As TextBox = CType(sender, TextBox)
         text.BackColor = Color.White
@@ -654,6 +702,18 @@ Public Class frmCartaPorte
     End Sub
 
     Private Function ObtenPathParaGuardar(ByRef filtrosCadena As String) As String
+        Dim ofd As New SaveFileDialog()
+        ofd.Filter = filtrosCadena
+        ofd.FilterIndex = 0
+
+        If ofd.ShowDialog() = DialogResult.OK Then
+            Dim fileName = ofd.FileName
+            Return fileName
+        End If
+        Return String.Empty
+    End Function
+
+    Private Function ObtenPathParaLeer(ByRef filtrosCadena As String) As String
         Dim ofd As New OpenFileDialog()
         ofd.Multiselect = False
         ofd.Filter = filtrosCadena
@@ -1008,9 +1068,27 @@ Public Class frmCartaPorte
     Private ORIGEN_NO_HA_AVISADO_HORA As Boolean = True
 
     Private Sub btnImportarMovPadre_Click(sender As Object, e As EventArgs) Handles btnImportarMovPadre.Click
-        Dim filePath As String = String.Empty
+        If datosOrigenParaCartaPorte IsNot Nothing AndAlso datosDestinoParaCartaPorte IsNot Nothing Then
+            Dim rsult = MsgBox(ObtenParametroPorLlave("INFO_CARGADA"), vbQuestion + vbYesNo, "Alerta")
+            If rsult = MsgBoxResult.No Then Return
+            datosMercancias = New Dictionary(Of String, List(Of Mercancia))
+            datosDestinosIntermediosParaCartaPorte = New List(Of OrigenDestino)
+        End If
+
+        If txtIdMovimientoImportar.Visible Then
+            Dim idMovimiento As String = ObtenValorTextbox(txtIdMovimientoImportar)
+            CargaDatosTrasladoDesdeBd(idMovimiento)
+        Else
+            Dim filePath As String = ObtenPathParaLeer("Archivos JSON (*.json)|*.json")
+            CargaDatosTrasladoDesdeArchivoJson(filePath)
+        End If
     End Sub
 
+    Private Sub txtIdMovimientoImportar_KeyDown(sender As Object, e As KeyEventArgs) Handles txtIdMovimientoImportar.KeyDown
+        If e.KeyCode = Keys.Enter Then
+            btnImportarMovPadre_Click(Nothing, Nothing)
+        End If
+    End Sub
     Private Sub txtHoraSalidaRemitente_Click(sender As Object, e As EventArgs) Handles txtHoraSalidaRemitente.Click
         If datosDestinoParaCartaPorte IsNot Nothing And ORIGEN_NO_HA_AVISADO_HORA Then
             Dim rsult = MsgBox(ObtenParametroPorLlave("EXISTE_FECHADF"), vbQuestion + vbYesNo, "Alerta")
@@ -1030,10 +1108,18 @@ Public Class frmCartaPorte
     End Sub
 
     Private Sub PreparaPestanaOrigen()
-        If CType(_datosEscenario("informacionDisponibleDestino"), Boolean) AndAlso _datosEscenario("fuenteInfoDestino").ToString.Equals("json") Then
+        If CType(_datosEscenario("informacionDisponibleDestino"), Boolean) AndAlso _datosEscenario("fuenteInfoDestino").ToString.Equals("bd") Then
             btnImportarMovPadre.Visible = True
+            txtIdMovimientoImportar.Visible = True
+            txtIdMovimientoImportar.Enabled = True
+            txtIdMovimientoImportar.Text = String.Empty
+        ElseIf CType(_datosEscenario("informacionDisponibleDestino"), Boolean) AndAlso _datosEscenario("fuenteInfoDestino").ToString.Equals("json") Then
+            LimpiaDesactivaTextbox(txtIdMovimientoImportar)
+            txtIdMovimientoImportar.Visible = False
         Else
             btnImportarMovPadre.Visible = False
+            LimpiaDesactivaTextbox(txtIdMovimientoImportar)
+            txtIdMovimientoImportar.Visible = False
         End If
 
         'Ver si se puede importar la información o no
@@ -1173,6 +1259,13 @@ Public Class frmCartaPorte
         Dim apPaternoRemitente As String = ObtenValorTextbox(txtApPaternoRemitente)
         Dim apMaternoRemitente As String = ObtenValorTextbox(txtApMaternoRemitente)
         Dim numRegIdTribRemitente As String = ObtenValorTextbox(txtNumRegidTribRemitente)
+        Dim regFisc As String = ObtenValorTextbox(txtRegimenFiscalOrigen)
+
+        If CType(_datosEscenario("esCFDI_Traslado"), Boolean) AndAlso String.IsNullOrWhiteSpace(regFisc) Then
+            AlertaMensaje(ObtenParametroPorLlave("INGRESE_REGFIS"))
+            Return
+        End If
+
 
         'La validación de id de origen es de a fuerza
         Dim regExpIdOrigen = ObtenParametroPorLlave("REGEXP_ID_ORIGEN")
@@ -1311,6 +1404,10 @@ Public Class frmCartaPorte
         datosOrigenParaCartaPorte.HoraSalidaLlegada = horaSalida
         datosOrigenParaCartaPorte.DistanciaRecorrida = 0
 
+        If CType(_datosEscenario("esCFDI_Traslado"), Boolean) Then
+            datosOrigenParaCartaPorte.RegimenFiscal = ObtenValorTextbox(txtRegimenFiscalOrigen)
+        End If
+
         Dim domicilio As New Domicilio
         domicilio.Calle = txtCalleRemitente.Text
         domicilio.NumeroExterior = txtNoExtRemitente.Text
@@ -1334,6 +1431,7 @@ Public Class frmCartaPorte
                                             refCbMunicipioOrigen,
                                             txtCpRemitente,
                                             refCbColoniaOrigen)
+        CargaCodigoPostal(cbPaisRemitente, refCbEstadoOrigen, refCbMunicipioDestino, refCbLocalidadOrigen, txtCpRemitente, datosOrigenParaCartaPorte)
     End Sub
 
     Private Sub cbLocalidadRemitente_SelectedValueChanged(sender As Object, e As EventArgs) Handles cbLocalidadRemitente.SelectedValueChanged
@@ -1343,6 +1441,7 @@ Public Class frmCartaPorte
                                             refCbMunicipioOrigen,
                                             txtCpRemitente,
                                             refCbColoniaOrigen)
+        CargaCodigoPostal(cbPaisRemitente, refCbEstadoOrigen, refCbMunicipioDestino, refCbLocalidadOrigen, txtCpRemitente, datosOrigenParaCartaPorte)
     End Sub
 
     Private Sub btnSiguienteOrigen_Click(sender As Object, e As EventArgs) Handles btnSiguienteOrigen.Click
@@ -1385,6 +1484,7 @@ Public Class frmCartaPorte
                                                         txtLocalidadOrigen,
                                                         txtColoniaOrigen,
                                                         tlpDetalleDomicilioOrigen)
+        CargaCodigoPostal(cbPaisRemitente, refCbEstadoOrigen, refCbMunicipioDestino, refCbLocalidadOrigen, txtCpRemitente, datosOrigenParaCartaPorte)
     End Sub
 
     Private Sub cbEstadoRemitente_SelectedValueChanged(sender As Object, e As EventArgs) Handles cbEstadoRemitente.SelectedValueChanged
@@ -1394,7 +1494,7 @@ Public Class frmCartaPorte
                                             refCbMunicipioOrigen,
                                             txtCpRemitente,
                                             refCbColoniaOrigen)
-
+        CargaCodigoPostal(cbPaisRemitente, refCbEstadoOrigen, refCbMunicipioDestino, refCbLocalidadOrigen, txtCpRemitente, datosOrigenParaCartaPorte)
         If ObtenValorCombobox(refCbEstadoOrigen) = "-01" Then 'No interesa proceder si seleccionó la opc por defecto
             LimpiaDesactivaCombobox(refCbMunicipioOrigen)
             LimpiaDesactivaCombobox(refCbLocalidadOrigen)
@@ -1482,6 +1582,7 @@ Public Class frmCartaPorte
             txtNoIntRemitente.Text = dom.NumeroInterior
             txtCalleRemitente.Text = dom.Calle
             txtReferenciaRemitente.Text = dom.Referencia
+            txtRegimenFiscalOrigen.Text = datosOrigenParaCartaPorte.RegimenFiscal
         End If
     End Sub
 #End Region
@@ -1591,6 +1692,7 @@ Public Class frmCartaPorte
                                             refCbMunicipioDestino,
                                             txtCpDestino,
                                             refCbColoniaDestino)
+        CargaCodigoPostal(cbPaisDestino, refCbEstadoDestino, refCbMunicipioDestino, refCbLocalidadDestino, txtCpDestino, datosDestinoParaCartaPorte)
     End Sub
 
     Private Sub cbLocalidadDestino_SelectedValueChanged(sender As Object, e As EventArgs) Handles cbLocalidadDestino.SelectedValueChanged
@@ -1600,6 +1702,7 @@ Public Class frmCartaPorte
                                            refCbMunicipioDestino,
                                            txtCpDestino,
                                            refCbColoniaDestino)
+        CargaCodigoPostal(cbPaisDestino, refCbEstadoDestino, refCbMunicipioDestino, refCbLocalidadDestino, txtCpDestino, datosDestinoParaCartaPorte)
     End Sub
 
     Private Sub PreparaPestanaDestino()
@@ -1736,6 +1839,7 @@ Public Class frmCartaPorte
                                                         txtLocalidadDestino,
                                                         txtColoniaDestino,
                                                         tlpDetallesDestino)
+        CargaCodigoPostal(cbPaisDestino, refCbEstadoDestino, refCbMunicipioDestino, refCbLocalidadDestino, txtCpDestino, datosDestinoParaCartaPorte)
     End Sub
 
     Private Sub cbEstadoDestino_SelectedValueChanged(sender As Object, e As EventArgs) Handles cbEstadoDestino.SelectedValueChanged
@@ -1745,7 +1849,7 @@ Public Class frmCartaPorte
                                             refCbMunicipioDestino,
                                             txtCpDestino,
                                             refCbColoniaDestino)
-
+        CargaCodigoPostal(cbPaisDestino, refCbEstadoDestino, refCbMunicipioDestino, refCbLocalidadDestino, txtCpDestino, datosDestinoParaCartaPorte)
         If ObtenValorCombobox(refCbEstadoDestino) = "-01" Then
             LimpiaDesactivaCombobox(refCbMunicipioDestino)
             LimpiaDesactivaCombobox(refCbLocalidadDestino)
@@ -1767,7 +1871,7 @@ Public Class frmCartaPorte
     End Sub
 
     Private Sub btnSiguienteDestino_Click(sender As Object, e As EventArgs) Handles btnSiguienteDestino.Click
-        If datosDestinoParaCartaPorte.UsuarioCausoProblemasConFecha Then
+        If datosDestinoParaCartaPorte.UsuarioCausoProblemasConFecha And Not datosDestinoParaCartaPorte.FueImportado Then
             AlertaMensaje(ObtenParametroPorLlave("REVISE_FECHAHORA"))
             Return
             datosDestinoParaCartaPorte.UsuarioCausoProblemasConFecha = False
@@ -1783,6 +1887,8 @@ Public Class frmCartaPorte
     Private Sub btnAtrasDestino_Click(sender As Object, e As EventArgs) Handles btnAtrasDestino.Click
         ESTOY_CAMBIANDO_MEDIANTE_INDICE = True
         TabControl1.SelectedTab = TabControl1.TabPages("tabOrigen")
+        ORIGEN_NO_HA_AVISADO_HORA = True
+        ORIGEN_NO_HA_AVISADO_FECHA = True
         ESTOY_CAMBIANDO_MEDIANTE_INDICE = False
     End Sub
 
@@ -1796,9 +1902,16 @@ Public Class frmCartaPorte
         Dim apMaternoDestino As String = String.Empty
         Dim residenciaFiscalDestino As String = String.Empty
         Dim numRegIdFiscalDestino As String = String.Empty
+        Dim regFiscalDestino As String = String.Empty
 
         Dim regExpIdUbiDestino = ObtenParametroPorLlave("REGEXP_ID_DESTINO")
         If Not Regex.IsMatch(idUbicacion, regExpIdUbiDestino) Then AlertaMensaje(ObtenParametroPorLlave("INGRESE_ID_DESTINO")) : Return
+
+        regFiscalDestino = ObtenValorTextbox(txtRegimenFiscalDestino)
+        If CType(_datosEscenario("esCFDI_Traslado"), Boolean) AndAlso String.IsNullOrWhiteSpace(regFiscalDestino) Then
+            AlertaMensaje(ObtenParametroPorLlave("INGRESE_REGFIS"))
+            Return
+        End If
 
         If ES_PERSONA_FISICA_DESTINO Then 'Validaciones de persona física
             rfcDestino = ObtenValorTextbox(txtRfcDestino)
@@ -1943,6 +2056,14 @@ Public Class frmCartaPorte
         datosDestinoParaCartaPorte.EsPersonaFisica = ES_PERSONA_FISICA_DESTINO
         datosDestinoParaCartaPorte.EsPersonaMoral = ES_PERSONA_MORAL_DESTINO
         datosDestinoParaCartaPorte.EsExtranjero = ES_EXTRANJERO_DESTINO
+        datosDestinoParaCartaPorte.FueImportado = False
+        If CType(_datosEscenario("esCFDI_Traslado"), Boolean) Then
+            datosDestinoParaCartaPorte.RegimenFiscal = regFiscalDestino
+        End If
+
+        If txtRegimenFiscalDestino.Visible Then
+            datosDestinoParaCartaPorte.RegimenFiscal = ObtenValorTextbox(txtRegimenFiscalDestino)
+        End If
 
         Dim domicilio As New Domicilio
         domicilio.Calle = calleDestino
@@ -1965,18 +2086,20 @@ Public Class frmCartaPorte
     Private Sub CargaDatosDestino()
         If YA_CREO_DESTINO Then
             txtTipoUbicacionDestino.Text = "Destino"
+            txtRegimenFiscalDestino.Text = datosDestinoParaCartaPorte.RegimenFiscal
             txtIdUbicacionDestino.Text = datosDestinoParaCartaPorte.IDUbicacion
             rbEsExtranjeroDestino.Checked = datosDestinoParaCartaPorte.EsExtranjero
             rbPersonaFisicaDestino.Checked = datosDestinoParaCartaPorte.EsPersonaFisica
             rbPersonaMoralDestino.Checked = datosDestinoParaCartaPorte.EsPersonaMoral
             txtRfcDestino.Text = datosDestinoParaCartaPorte.RFCRemitenteDestinatario
-            txtNombreDestino.Text = datosDestinoParaCartaPorte.Nombre
+            txtNombreDestino.Text = IIf(datosDestinoParaCartaPorte.EsPersonaFisica, datosDestinoParaCartaPorte.Nombre, datosDestinoParaCartaPorte.NombrePersonaMoral)
             txtApPaternoDestino.Text = datosDestinoParaCartaPorte.ApPaterno
             txtApMaternoDestino.Text = datosDestinoParaCartaPorte.ApMaterno
             txtNumIdRegFiscalDestino.Text = datosDestinoParaCartaPorte.NumRegIdTrib
+            Dim buu As Boolean = datosDestinoParaCartaPorte.FueImportado
 
             If datosDestinoParaCartaPorte.UsuarioCausoProblemasConFecha Then
-                dtFechaSalidaDestino.Value = datosOrigenParaCartaPorte.FechaHora
+                'dtFechaSalidaDestino.Value = datosOrigenParaCartaPorte.FechaHora.AddMinutes(1)
                 txtHoraSalidaDestino.Text = String.Empty
             Else
                 dtFechaSalidaDestino.Value = datosDestinoParaCartaPorte.FechaSalidaLlegada
@@ -2040,6 +2163,51 @@ Public Class frmCartaPorte
     Private ESTA_CREANDO_DESTINO_INTERMEDIO As Boolean = False
     Private ESTA_ACTUALIZANDO_DESTINO_INTERMEDIO As Boolean = False
 
+    Private Sub CargaDatosDestinoIntermedioDesdeBd(ByVal idMovimiento As String)
+        If datosDestinosIntermediosParaCartaPorte.Exists(Function(z) z.Movimiento.Equals(idMovimiento)) Then
+            AlertaMensaje(ObtenParametroPorLlave("MOV_YAIMP"))
+            Return
+        End If
+
+        If String.IsNullOrEmpty(idMovimiento) OrElse Len(idMovimiento) > 30 Then
+            AlertaMensaje(ObtenParametroPorLlave("NO_EXISTE_MOV"))
+            Return
+        End If
+
+        Dim dataSet As DataSet = conexionesCartaPorte.Get_DatosTraslado(idEmpresa, _datosEscenario("tipoMovimiento").ToString(), idMovimiento)
+        If dataSet Is Nothing OrElse dataSet.Tables(1) Is Nothing OrElse dataSet.Tables(1).Rows.Count = 0 Then
+            AlertaMensaje(ObtenParametroPorLlave("NO_EXISTE_MOV"))
+            Return
+        End If
+
+        Dim datosDestino As DataRow = dataSet.Tables(1).Rows(0)
+        If datosDestino("cp").ToString() <> datosOrigenParaCartaPorte.DatosDomicilio.CodigoPostal Then
+            AlertaMensaje(ObtenParametroPorLlave("ORIGEN_DISTINTO"))
+            Return
+        End If
+
+        Dim destinoImportado As OrigenDestino = utils.CreaObjetoOrigenDestino(datosDestino)
+        destinoImportado.TipoUbicacion = "Destino"
+        destinoImportado.IDUbicacion = GeneraIdDestinoIntermedio()
+        destinoImportado.UsuarioCausoProblemasConFecha = True
+        destinoImportado.UsuarioCausoProblemasConKm = True
+        destinoImportado.EsDestinoIntermedio = True
+
+        Dim listaMercancias As List(Of Mercancia) = New List(Of Mercancia)
+        For Each dr As DataRow In dataSet.Tables(2).Rows
+            listaMercancias.Add(utils.CreaObjetoMercancia(dr))
+        Next
+
+        datosDestinosIntermediosParaCartaPorte.Add(destinoImportado)
+        datosMercancias.Add(destinoImportado.IDUbicacion, listaMercancias)
+
+        BindGridDestinosIntermedios()
+    End Sub
+
+    Private Sub btnBuscarMovimientoDestinoIntermedio_Click(sender As Object, e As EventArgs) Handles btnBuscarMovimientoDestinoIntermedio.Click
+        CargaDatosDestinoIntermedioDesdeBd(ObtenValorTextbox(txtIdTrasladoIntermedio))
+    End Sub
+
     Private Sub cbMunicipioDestinoIntermedio_SelectedValueChanged(sender As Object, e As EventArgs) Handles cbMunicipioDestinoIntermedio.SelectedValueChanged
         ValidaOrdenMunicipioLocalidadCodigo(cbPaisDestinoIntermedio,
                                            refCbEstadoDestinoIntermedio,
@@ -2092,6 +2260,14 @@ Public Class frmCartaPorte
     End Sub
 
     Private Sub PreparaPestanaDestinoIntermedio()
+        If CType(_datosEscenario("informacionDisponibleDestino"), Boolean) AndAlso _datosEscenario("fuenteInfoDestino").ToString() = "bd" Then
+            txtIdTrasladoIntermedio.Visible = True
+            btnBuscarMovimientoDestinoIntermedio.Visible = True
+        Else
+            txtIdTrasladoIntermedio.Visible = False
+            btnBuscarMovimientoDestinoIntermedio.Visible = False
+        End If
+
         BloqueaDestinoIntermedio()
         BindGridDestinosIntermedios()
         If datosDestinosIntermediosParaCartaPorte Is Nothing Then
@@ -2242,7 +2418,12 @@ Public Class frmCartaPorte
         INFORMACION_VALIDA_DESTINO_INTERMEDIO = False
         Dim tipoUbicacionDestInter As String = "Destino"
         Dim idUbicacionDestInter As String = ObtenValorTextbox(txtIdUbicacionDestinoIntermedio)
+        Dim regFiscDestInter As String = ObtenValorTextbox(txtReferenciaDestinoIntermedio)
 
+        If CType(_datosEscenario("esCFDI_Traslado"), Boolean) AndAlso String.IsNullOrWhiteSpace(regFiscDestInter) Then
+            AlertaMensaje(ObtenParametroPorLlave("INGRESE_REGFIS"))
+            Return
+        End If
 
         Dim regExpIdUbiDestino = ObtenParametroPorLlave("REGEXP_ID_DESTINO")
         If Not Regex.IsMatch(idUbicacionDestInter, regExpIdUbiDestino) Then AlertaMensaje(ObtenParametroPorLlave("INGRESE_ID_DESTINO")) : Return
@@ -2429,6 +2610,10 @@ Public Class frmCartaPorte
         datosDestinoIntermedioEnModificacion.EsDestinoIntermedio = True
         datosDestinoIntermedioEnModificacion.UsuarioCausoProblemasConKm = False
         datosDestinoIntermedioEnModificacion.UsuarioCausoProblemasConFecha = False
+
+        If CType(_datosEscenario("esCFDI_Traslado"), Boolean) Then
+            datosDestinoIntermedioEnModificacion.RegimenFiscal = ObtenValorTextbox(txtRegimenFiscalDestinoIntermedio)
+        End If
 
         Dim domicilio As New Domicilio
         domicilio.Calle = calleDestino
@@ -2625,6 +2810,7 @@ Public Class frmCartaPorte
             ES_PERSONA_FISICA_DESTINO_INTERMEDIO = rbEsPersonaFisicaDestinoIntermedio.Checked
             ES_PERSONA_MORAL_DESTINO_INTERMEDIO = rbEsPersonaMoralDestinoIntermedio.Checked
             ES_EXTRANJERO_DESTINO_INTERMEDIO = rbEsExtranjeroDestinoIntermedio.Checked
+            txtRegimenFiscalDestinoIntermedio.Text = objDestino.RegimenFiscal
 
             'Primero cargo los detalles de la ubicación
             If ES_PERSONA_FISICA_DESTINO_INTERMEDIO Then
@@ -2783,6 +2969,7 @@ Public Class frmCartaPorte
     Private EXISTE_MERCANCIA_MATERIAL_PELIGROSO As Boolean = False
     Private INFORMACION_VALIDA_MERCANCIA As Boolean = False
     Private PESTANA_MERCANCIAS_ID_MOVIMIENTO_EN_MODIFICACION As String = String.Empty
+    Private modalMercancias As frmModalMercancias = Nothing
 
     Private Function ObtenMercanciasPorMovimiento(ByVal idMovimiento As String) As List(Of Mercancia)
         If Not datosMercancias.ContainsKey(idMovimiento) Then
@@ -2802,8 +2989,9 @@ Public Class frmCartaPorte
     Private Function ObtenMercancia(ByVal idMovimiento As String,
                                    ByVal claveProdServ As String,
                                    ByVal claveUnidad As String,
-                                   ByVal esPeligroso As Boolean) As Mercancia
-        Return ObtenMercanciasPorMovimiento(idMovimiento).FirstOrDefault(Function(m) m.ClaveProdServ.Equals(claveProdServ) And m.ClaveUnidad.Equals(claveUnidad) And m.MaterialPeligroso = esPeligroso)
+                                   ByVal esPeligroso As Boolean,
+                                   ByVal valorUnidad As String) As Mercancia
+        Return ObtenMercanciasPorMovimiento(idMovimiento).FirstOrDefault(Function(m) m.ClaveProdServ.Equals(claveProdServ) AndAlso m.ClaveUnidad.Equals(claveUnidad) AndAlso m.MaterialPeligroso = esPeligroso AndAlso m.ValorMercanciaCadena.Equals(valorUnidad))
     End Function
 
     Private Function ObtenMercancia(ByRef listaABuscar As List(Of Mercancia),
@@ -2816,12 +3004,28 @@ Public Class frmCartaPorte
     Private Sub EliminaMercanciaDeMovimiento(ByVal idMovimiento As String,
                                              ByVal claveProdServ As String,
                                              ByVal claveUnidad As String,
-                                             ByVal esPeligroso As Boolean)
+                                             ByVal esPeligroso As Boolean,
+                                             ByVal valorUnidad As String)
         Dim resp = MsgBox(ObtenParametroPorLlave("ELIMINAR_MERCANCIA"), vbQuestion + vbYesNo, "Alerta")
         If resp = MsgBoxResult.Yes Then
-            ObtenMercanciasPorMovimiento(idMovimiento).Remove(ObtenMercancia(idMovimiento, claveProdServ, claveUnidad, esPeligroso))
+            ObtenMercanciasPorMovimiento(idMovimiento).Remove(ObtenMercancia(idMovimiento, claveProdServ, claveUnidad, esPeligroso, valorUnidad))
             BindGridDetalleMercanciasPorMovimiento(PESTANA_MERCANCIAS_ID_MOVIMIENTO_EN_MODIFICACION)
             LimpiaPanelInformacionMercancias()
+        End If
+    End Sub
+
+    Private Sub AtrapaEventoModal(ByVal operacion As String,
+                                  ByVal idUbicacion As String,
+                                  ByVal claveProdServ As String,
+                                  ByVal claveUnidad As String,
+                                  ByVal esPeligroso As Boolean,
+                                  ByVal valorUnidad As String)
+        modalMercancias.Close()
+        modalMercancias = Nothing
+        If operacion = "DETALLE" Then
+            CargaDetallesMercancia(ObtenMercancia(idUbicacion, claveProdServ, claveUnidad, esPeligroso, valorUnidad))
+        Else
+            EliminaMercanciaDeMovimiento(idUbicacion, claveProdServ, claveUnidad, esPeligroso, valorUnidad)
         End If
     End Sub
 
@@ -2835,6 +3039,7 @@ Public Class frmCartaPorte
         LimpiaPanelInformacionMercancias()
         RecargaLabelGridMercancias(PESTANA_MERCANCIAS_ID_MOVIMIENTO_EN_MODIFICACION)
         BindGridMovimientosMercancias()
+        modalMercancias = Nothing
     End Sub
 
     Private Sub LimpiaPanelInformacionMercancias()
@@ -2924,8 +3129,10 @@ Public Class frmCartaPorte
         Dim mercanciasMovimiento = ObtenMercanciasPorMovimiento(idMovimiento)
         dgvMercanciasPorMovimiento.AutoGenerateColumns = False
         dgvMercanciasPorMovimiento.Columns("MercanciaClaveProdServClm").DataPropertyName = NameOf(Mercancia.ClaveProdServ)
-        dgvMercanciasPorMovimiento.Columns("MovimientoDescripcionClm").DataPropertyName = NameOf(Mercancia.Descripcion)
+        dgvMercanciasPorMovimiento.Columns("MercanciaClasificacionSATClm").DataPropertyName = NameOf(Mercancia.Descripcion)
+        dgvMercanciasPorMovimiento.Columns("MovimientoDescripcionClm").DataPropertyName = NameOf(Mercancia.DescripcionInterna)
         dgvMercanciasPorMovimiento.Columns("MercanciaMovimientoPeligrosaClm").DataPropertyName = NameOf(Mercancia.EsMaterialPeligrosoCad)
+        dgvMercanciasPorMovimiento.Columns("ValorMercanciaClm").DataPropertyName = NameOf(Mercancia.ValorMercanciaCadena)
         dgvMercanciasPorMovimiento.Columns("MercanciaCantidadMercClm").DataPropertyName = NameOf(Mercancia.Cantidad)
         dgvMercanciasPorMovimiento.Columns("MovimientoComercioIntClm").DataPropertyName = NameOf(Mercancia.EsComercioInternacionalCad)
         dgvMercanciasPorMovimiento.Columns("ClaveUnidadClm").DataPropertyName = NameOf(Mercancia.ClaveUnidad)
@@ -2939,6 +3146,7 @@ Public Class frmCartaPorte
             Return
         End If
         Dim columnaVerDetalle As Int32 = dgvListadoMovimientosPestanaMercancia.Columns.IndexOf(dgvListadoMovimientosPestanaMercancia.Columns("MercanciasBtnClm"))
+        Dim columnaVerDetalleEnModal As Int32 = dgvListadoMovimientosPestanaMercancia.Columns("MovimientosVerModalClm").Index
         Dim columnaAnadirMercancia As Int32 = dgvListadoMovimientosPestanaMercancia.Columns.IndexOf(dgvListadoMovimientosPestanaMercancia.Columns("AnadirMercanciaMovimientoClm"))
         Dim columnaIdUbicacion As Int32 = dgvListadoMovimientosPestanaMercancia.Columns.IndexOf(dgvListadoMovimientosPestanaMercancia.Columns("IdUbicacionMovimientoPestanaMercanciaClm"))
         Dim idUbicacion As String = dgvListadoMovimientosPestanaMercancia.Rows(e.RowIndex).Cells(columnaIdUbicacion).Value
@@ -2948,6 +3156,12 @@ Public Class frmCartaPorte
             ESTA_MODIFICANDO_MERCANCIA = False
             ESTA_CREANDO_MERCANCIA = False
             BindGridDetalleMercanciasPorMovimiento(PESTANA_MERCANCIAS_ID_MOVIMIENTO_EN_MODIFICACION)
+        ElseIf e.ColumnIndex = columnaVerDetalleEnModal Then
+            BindGridDetalleMercanciasPorMovimiento(PESTANA_MERCANCIAS_ID_MOVIMIENTO_EN_MODIFICACION)
+            modalMercancias = New frmModalMercancias(idUbicacion, ObtenMercanciasPorMovimiento(idUbicacion))
+            AddHandler modalMercancias.QuiereEliminarMercancia, AddressOf AtrapaEventoModal
+            AddHandler modalMercancias.MercanciaSeleccionada, AddressOf AtrapaEventoModal
+            modalMercancias.ShowDialog()
         ElseIf e.ColumnIndex = columnaAnadirMercancia Then
             HabilitaEdicionPanelMercancias()
             ESTA_MODIFICANDO_MERCANCIA = False
@@ -2980,7 +3194,7 @@ Public Class frmCartaPorte
                 txtPedimento.Text = String.Empty
                 txtFraccionArancelaria.Text = String.Empty
             Else
-                Dim merc = ObtenMercancia(PESTANA_MERCANCIAS_ID_MOVIMIENTO_EN_MODIFICACION, txtClaveProdServMercancia.Text, ObtenValorTextbox(txtUnidadClaveMercancia), rbSiMaterialPeligroso.Checked)
+                Dim merc = ObtenMercancia(PESTANA_MERCANCIAS_ID_MOVIMIENTO_EN_MODIFICACION, txtClaveProdServMercancia.Text, ObtenValorTextbox(txtUnidadClaveMercancia), rbSiMaterialPeligroso.Checked, Double.Parse(ObtenValorTextbox(txtValor)).ToString("N3"))
                 txtPedimento.Text = merc.Pedimento
                 txtFraccionArancelaria.Text = merc.FraccionArancelaria
             End If
@@ -3011,7 +3225,7 @@ Public Class frmCartaPorte
             txtEmbalaje.Enabled = True
             txtDescripcionEmbalaje.Enabled = True
 
-            Dim merc = ObtenMercancia(PESTANA_MERCANCIAS_ID_MOVIMIENTO_EN_MODIFICACION, txtClaveProdServMercancia.Text, ObtenValorTextbox(txtUnidadClaveMercancia), rbSiMaterialPeligroso.Checked)
+            Dim merc = ObtenMercancia(PESTANA_MERCANCIAS_ID_MOVIMIENTO_EN_MODIFICACION, txtClaveProdServMercancia.Text, ObtenValorTextbox(txtUnidadClaveMercancia), rbSiMaterialPeligroso.Checked, Double.Parse(ObtenValorTextbox(txtValor)).ToString("N3"))
             MarcaCampoComoObligatorio(txtClaveMaterialPeligroso, tlpDetallesMercancia)
             MarcaCampoComoObligatorio(txtDescripcionMaterialPeligroso, tlpDetallesMercancia)
             MarcaCampoComoObligatorio(txtEmbalaje, tlpDetallesMercancia)
@@ -3071,6 +3285,7 @@ Public Class frmCartaPorte
 
         txtPeso.Text = mercancia.PesoEnKg.ToString
         txtValor.Text = mercancia.ValorMercancia.ToString
+        txtValor.Enabled = False
         txtMoneda.Text = mercancia.Moneda
         numAltura.Value = mercancia.Altura
         numAnchura.Value = mercancia.Anchura
@@ -3312,7 +3527,7 @@ Public Class frmCartaPorte
         Dim mercanciaEnModificacion As Mercancia
 
         If ESTA_MODIFICANDO_MERCANCIA Then
-            mercanciaEnModificacion = ObtenMercancia(PESTANA_MERCANCIAS_ID_MOVIMIENTO_EN_MODIFICACION, ObtenValorTextbox(txtClaveProdServMercancia), ObtenValorTextbox(txtUnidadClaveMercancia), rbSiMaterialPeligroso.Checked)
+            mercanciaEnModificacion = ObtenMercancia(PESTANA_MERCANCIAS_ID_MOVIMIENTO_EN_MODIFICACION, ObtenValorTextbox(txtClaveProdServMercancia), ObtenValorTextbox(txtUnidadClaveMercancia), rbSiMaterialPeligroso.Checked, Double.Parse(ObtenValorTextbox(txtValor)).ToString("N3"))
         Else
             mercanciaEnModificacion = New Mercancia
         End If
@@ -3350,12 +3565,12 @@ Public Class frmCartaPorte
 
         If ESTA_CREANDO_MERCANCIA Then
 
-            If ObtenMercancia(PESTANA_MERCANCIAS_ID_MOVIMIENTO_EN_MODIFICACION, claveProdServ, claveUnidad, rbSiMaterialPeligroso.Checked) IsNot Nothing Then
+            If ObtenMercancia(PESTANA_MERCANCIAS_ID_MOVIMIENTO_EN_MODIFICACION, claveProdServ, claveUnidad, rbSiMaterialPeligroso.Checked, Double.Parse(ObtenValorTextbox(txtValor)).ToString("N3")) IsNot Nothing Then
                 Dim resp = MsgBox(ObtenParametroPorLlave("POSIBLE_CHOQUE"), vbQuestion + vbYesNo, "Alerta")
                 If resp = MsgBoxResult.No Then
                     Return
                 Else
-                    Dim mercTemporal As Mercancia = ObtenMercancia(PESTANA_MERCANCIAS_ID_MOVIMIENTO_EN_MODIFICACION, claveProdServ, claveUnidad, rbSiMaterialPeligroso.Checked)
+                    Dim mercTemporal As Mercancia = ObtenMercancia(PESTANA_MERCANCIAS_ID_MOVIMIENTO_EN_MODIFICACION, claveProdServ, claveUnidad, rbSiMaterialPeligroso.Checked, Double.Parse(ObtenValorTextbox(txtValor)).ToString("N3"))
                     mercTemporal.Cantidad = mercTemporal.Cantidad + CInt(cantidadMercancia)
                     BindGridDetalleMercanciasPorMovimiento(PESTANA_MERCANCIAS_ID_MOVIMIENTO_EN_MODIFICACION)
                     LimpiaPanelInformacionMercancias()
@@ -3419,9 +3634,10 @@ Public Class frmCartaPorte
         Dim indiceDetalles As Int32 = dgvMercanciasPorMovimiento.Columns().IndexOf(dgvMercanciasPorMovimiento.Columns("MovimientoDetallesMercClm"))
         Dim indiceEliminar As Int32 = dgvMercanciasPorMovimiento.Columns().IndexOf(dgvMercanciasPorMovimiento.Columns("MovimientoMercanciaEliminarClm"))
         Dim claveUnidad As String = dgvMercanciasPorMovimiento.Rows(e.RowIndex).Cells("ClaveUnidadClm").Value
+        Dim valorUnidad As String = dgvMercanciasPorMovimiento.Rows(e.RowIndex).Cells("ValorMercanciaClm").Value
         Dim esPeligroso As Boolean = dgvMercanciasPorMovimiento.Rows(e.RowIndex).Cells("MercanciaMovimientoPeligrosaClm").Value.ToString.ToUpper().Equals("SI")
         If e.ColumnIndex = indiceDetalles Then
-            Dim mercancia As Mercancia = ObtenMercancia(PESTANA_MERCANCIAS_ID_MOVIMIENTO_EN_MODIFICACION, claveProdServ, claveUnidad, esPeligroso)
+            Dim mercancia As Mercancia = ObtenMercancia(PESTANA_MERCANCIAS_ID_MOVIMIENTO_EN_MODIFICACION, claveProdServ, claveUnidad, esPeligroso, valorUnidad)
             LimpiaPanelInformacionMercancias()
             HabilitaEdicionPanelMercancias()
             ESTA_CREANDO_MERCANCIA = False
@@ -3430,7 +3646,7 @@ Public Class frmCartaPorte
         ElseIf e.ColumnIndex = indiceEliminar Then
             ESTA_CREANDO_MERCANCIA = False
             ESTA_MODIFICANDO_MERCANCIA = False
-            EliminaMercanciaDeMovimiento(PESTANA_MERCANCIAS_ID_MOVIMIENTO_EN_MODIFICACION, claveProdServ, claveUnidad, esPeligroso)
+            EliminaMercanciaDeMovimiento(PESTANA_MERCANCIAS_ID_MOVIMIENTO_EN_MODIFICACION, claveProdServ, claveUnidad, esPeligroso, valorUnidad)
             RecargaLabelGridMercancias(PESTANA_MERCANCIAS_ID_MOVIMIENTO_EN_MODIFICACION)
         End If
     End Sub
@@ -3456,7 +3672,11 @@ Public Class frmCartaPorte
 
     Private Sub PreparaPestanaTransporte()
         ValidaExisteMercanciaQueCuenteComoPeligroso()
-        BindCombobox(cbSeleccionarVehiculo, conexionesCartaPorte.Get_ObtenCatalogoVehiculos("LINCOLN"))
+        If CType(_datosEscenario("informacionDisponibleTransporte"), Boolean) Then
+            BindCombobox(cbSeleccionarVehiculo, conexionesCartaPorte.Get_ObtenCatalogoVehiculos("LINCOLN"))
+        Else
+            BindCombobox(cbSeleccionarVehiculo, conexionesCartaPorte.Get_ObtenCatalogoVehiculos(""))
+        End If
         BloqueaDatosTransporte()
         numCantidadRemolquesTransporte.Minimum = 0
         numCantidadRemolquesTransporte.Maximum = 2
@@ -3898,6 +4118,7 @@ Public Class frmCartaPorte
     End Sub
 
     Private Sub PreparaDatosOperador()
+
         BindCombobox(cbOpcionesOperador, conexionesCartaPorte.Get_CatalogoOperadores())
         BloqueaDatosOperador()
     End Sub
@@ -4440,11 +4661,12 @@ Public Class frmCartaPorte
         dgvRelacionMercanciaUbicaciones.AutoGenerateColumns = False
         dgvRelacionMercanciaUbicaciones.Columns("RelMercUbiIdUbiClm").ReadOnly = True
         dgvRelacionMercanciaUbicaciones.Columns("RelMercUbiClaveProdServClm").DataPropertyName = NameOf(Mercancia.ClaveProdServ)
-        dgvRelacionMercanciaUbicaciones.Columns("RelMercUbiDescMercClm").DataPropertyName = NameOf(Mercancia.Descripcion)
+        dgvRelacionMercanciaUbicaciones.Columns("RelMercUbiDescMercClm").DataPropertyName = NameOf(Mercancia.DescripcionInternaModal)
         dgvRelacionMercanciaUbicaciones.Columns("RelMercUbiClaveUnidadClm").DataPropertyName = NameOf(Mercancia.ClaveUnidad)
         dgvRelacionMercanciaUbicaciones.Columns("RelMercUbiDescUnidadClm").DataPropertyName = NameOf(Mercancia.Unidad)
         dgvRelacionMercanciaUbicaciones.Columns("RelacionMercUbiPeligrosaClm").DataPropertyName = NameOf(Mercancia.EsMaterialPeligrosoCad)
         'dgvRelacionMercanciaUbicaciones.Columns("RelMercUbiCantidadParaRemoverClm").DataPropertyName = NameOf(Mercancia.Cero)
+        dgvRelacionMercanciaUbicaciones.Columns("RelMercUbiValorClm").DataPropertyName = NameOf(Mercancia.ValorMercanciaCadena)
         dgvRelacionMercanciaUbicaciones.Columns("RelMercUbiCantidadMaxima").DataPropertyName = NameOf(Mercancia.Cantidad)
         dgvRelacionMercanciaUbicaciones.Columns("RelMercUbiCantidadMercClm").DataPropertyName = NameOf(Mercancia.Cantidad)
         dgvRelacionMercanciaUbicaciones.Columns("RelMercUbiCantidadParaRemoverClm").ReadOnly = False
@@ -4471,7 +4693,7 @@ Public Class frmCartaPorte
 
         dgvMercanciasSinUbicaciones.AutoGenerateColumns = False
         dgvMercanciasSinUbicaciones.Columns("AsignarClaveProdServClm").DataPropertyName = NameOf(Mercancia.ClaveProdServ)
-        dgvMercanciasSinUbicaciones.Columns("AsignarDescripcionMercClm").DataPropertyName = NameOf(Mercancia.Descripcion)
+        dgvMercanciasSinUbicaciones.Columns("AsignarDescripcionMercClm").DataPropertyName = NameOf(Mercancia.DescripcionInternaModal)
         dgvMercanciasSinUbicaciones.Columns("AsignarClaveUnidadClm").DataPropertyName = NameOf(Mercancia.ClaveUnidad)
         dgvMercanciasSinUbicaciones.Columns("AsignarDescUnidadClm").DataPropertyName = NameOf(Mercancia.Unidad)
         dgvMercanciasSinUbicaciones.Columns("AsignarPeligrosoClm").DataPropertyName = NameOf(Mercancia.EsMaterialPeligrosoCad)
@@ -4506,6 +4728,7 @@ Public Class frmCartaPorte
         Dim claveProdServ As String = dgvRelacionMercanciaUbicaciones.Rows(e.RowIndex).Cells("RelMercUbiClaveProdServClm").Value
         Dim claveUnidad As String = dgvRelacionMercanciaUbicaciones.Rows(e.RowIndex).Cells("RelMercUbiClaveUnidadClm").Value
         Dim esPeligrosa As Boolean = dgvRelacionMercanciaUbicaciones.Rows(e.RowIndex).Cells("RelacionMercUbiPeligrosaClm").Value.ToString().ToUpper().Equals("SI")
+        Dim valorUnidad As String = dgvRelacionMercanciaUbicaciones.Rows(e.RowIndex).Cells("RelMercUbiValorClm").Value
         Dim cantidadParaEliminarCad As String = dgvRelacionMercanciaUbicaciones.Rows(e.RowIndex).Cells("RelMercUbiCantidadParaRemoverClm").Value
         Dim cantidadParaEliminar As Int32 = -1
         Dim cantidadMaxima As Int32 = CInt(dgvRelacionMercanciaUbicaciones.Rows(e.RowIndex).Cells("RelMercUbiCantidadMaxima").Value)
@@ -4518,7 +4741,7 @@ Public Class frmCartaPorte
         End If
 
         'Si no, si puedo proceder a la eliminación
-        RemueveMercanciaDeRelacion(pestConfirmacionDestinoSeleccionado, claveProdServ, claveUnidad, esPeligrosa, cantidadParaEliminar)
+        RemueveMercanciaDeRelacion(pestConfirmacionDestinoSeleccionado, claveProdServ, claveUnidad, esPeligrosa, valorUnidad, cantidadParaEliminar)
     End Sub
 
     Private Sub dgvRelacionMercanciaUbicaciones_CellFormatting(sender As Object, e As DataGridViewCellFormattingEventArgs) Handles dgvRelacionMercanciaUbicaciones.CellFormatting
@@ -4533,9 +4756,10 @@ Public Class frmCartaPorte
                                            ByVal claveProdServ As String,
                                            ByVal claveUnidad As String,
                                            ByVal esPeligrosa As Boolean,
+                                           ByVal valorUnidad As String,
                                            ByVal cantidadARemover As Int32)
         Dim listaMercancias As List(Of Mercancia) = ObtenMercanciasPorMovimiento(idMovimiento)
-        Dim mercARemover As Mercancia = ObtenMercancia(idMovimiento, claveProdServ, claveUnidad, esPeligrosa)
+        Dim mercARemover As Mercancia = ObtenMercancia(idMovimiento, claveProdServ, claveUnidad, esPeligrosa, valorUnidad)
 
         'Primero, tengo que revisar si no existe un posible duplicado de cantidades
         Dim posibleColision As Mercancia = ObtenMercancia(pestConfirmacionListaMercanciaSinDestino, claveProdServ, claveUnidad, esPeligrosa)
@@ -4578,10 +4802,11 @@ Public Class frmCartaPorte
                                         ByVal claveProdServ As String,
                                         ByVal claveUnidad As String,
                                         ByVal esPeligrosa As Boolean,
+                                        ByVal valorUnidad As String,
                                         ByVal cantidadAnadir As Int32)
         'Primero, tengo que ver si no existe una mercancía con las mismas características
         'para notificar de posibles problemas
-        Dim mercPosibleChoque As Mercancia = ObtenMercancia(idMovimiento, claveProdServ, claveUnidad, esPeligrosa)
+        Dim mercPosibleChoque As Mercancia = ObtenMercancia(idMovimiento, claveProdServ, claveUnidad, esPeligrosa, valorUnidad)
         Dim mercanciaParaAnadir As Mercancia = ObtenMercancia(pestConfirmacionListaMercanciaSinDestino, claveProdServ, claveUnidad, esPeligrosa)
         If mercPosibleChoque IsNot Nothing Then
             Dim rsult = MsgBox(ObtenParametroPorLlave("POSIBLE_CHOQUE"), vbQuestion + vbYesNo, "Alerta")
@@ -4637,8 +4862,9 @@ Public Class frmCartaPorte
         Dim claveProdServ As String = dgvMercanciasSinUbicaciones.Rows(e.RowIndex).Cells("AsignarClaveProdServClm").Value
         Dim claveUnidad As String = dgvMercanciasSinUbicaciones.Rows(e.RowIndex).Cells("AsignarClaveUnidadClm").Value
         Dim materialPeligroso As Boolean = dgvMercanciasSinUbicaciones.Rows(e.RowIndex).Cells("AsignarPeligrosoClm").Value.ToString.ToUpper().Equals("SI")
+        Dim valorUnidad As String = dgvMercanciasSinUbicaciones.Rows(e.RowIndex).Cells("RelMercUbiValorClm").Value
 
-        AnadeMercanciaARelacion(destino, claveProdServ, claveUnidad, materialPeligroso, cantidadParaAsignar)
+        AnadeMercanciaARelacion(destino, claveProdServ, claveUnidad, materialPeligroso, valorUnidad, cantidadParaAsignar)
     End Sub
 #End Region
 
@@ -4654,20 +4880,20 @@ Public Class frmCartaPorte
         'Preparamos la lista final de mercancías, porque la carta porte solo recibe
         'una lista de mercancías
 
-        '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-        'Para facilitar las cosas, primero vamos a ordenar, esto nos ahorrará problemas a futuro
-        '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+        ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+        ''Para facilitar las cosas, primero vamos a ordenar, esto nos ahorrará problemas a futuro
+        ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
-        For Each key As String In datosMercancias.Keys
-            datosMercancias(key) = datosMercancias(key).OrderBy(Of String)(Function(m) m.ClaveProdServ).ToList
-        Next
+        'For Each key As String In datosMercancias.Keys
+        '    datosMercancias(key) = datosMercancias(key).OrderBy(Of String)(Function(m) m.ClaveProdServ).ToList
+        'Next
 
         '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
         'Ahora, recorremos toda la lista de mercancías, y la iremos añadiendo y creando la relación
         '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
         pestConfirmacionListaFinalMercancias = New List(Of Mercancia)
         For Each key As String In datosMercancias.Keys
-            Dim listaMercanciasParaAnadir As List(Of Mercancia) = datosMercancias(key)
+            Dim listaMercanciasParaAnadir As List(Of Mercancia) = datosMercancias(key).OrderBy(Of String)(Function(m) m.ClaveProdServ).ToList
             For Each mer As Mercancia In listaMercanciasParaAnadir
 
                 'Creamos la relación para el detalle del nodo
@@ -4680,6 +4906,7 @@ Public Class frmCartaPorte
                 relMercUbi.Cantidad = mer.Cantidad
                 relMercUbi.ClaveUnidad = mer.ClaveUnidad
                 relMercUbi.EsMaterialPeligroso = mer.MaterialPeligroso
+                relMercUbi.Valor = mer.ValorMercancia
 
                 'Luego, vemos si existe una mercancía exactamente igual
                 Dim existeMercancia As Boolean = False
@@ -4720,11 +4947,11 @@ Public Class frmCartaPorte
             datosOrigenParaCartaPorte.RFCRemitenteDestinatario,
             datosOrigenParaCartaPorte.NombreUbicacionParaComplemento,
             datosOrigenParaCartaPorte.DatosDomicilio.CodigoPostal,
-            "601",
+            datosOrigenParaCartaPorte.RegimenFiscal,
             datosDestinoParaCartaPorte.RFCRemitenteDestinatario,
             datosDestinoParaCartaPorte.NombreUbicacionParaComplemento,
             datosDestinoParaCartaPorte.DatosDomicilio.CodigoPostal,
-            "601",
+            datosDestinoParaCartaPorte.RegimenFiscal,
             pestConfirmacionListaFinalMercancias
         )
             xmlFinal = String.Format(xmlTraslado, xmlCartaPorte)
@@ -4737,6 +4964,43 @@ Public Class frmCartaPorte
 
     Private Sub tlpContenedorSeguroMaterialPeligroso_Paint(sender As Object, e As PaintEventArgs) Handles tlpContenedorSeguroMaterialPeligroso.Paint
 
+    End Sub
+
+    Private Sub txtRegimenFiscalDestino_DoubleClick(sender As Object, e As EventArgs) Handles txtRegimenFiscalDestino.DoubleClick
+        Dim formaBusqueda As New frmBusqueda(AddressOf conexionesCartaPorte.Get_ObtenCatalogoRegimenFiscal)
+        esperandoBusqueda = txtRegimenFiscalDestino
+        AddHandler formaBusqueda.ElementoSeleccionado, AddressOf AtrapaEvento
+        formaBusqueda.ShowDialog()
+    End Sub
+
+    Private Sub txtRegimenFiscalDestinoIntermedio_DoubleClick(sender As Object, e As EventArgs) Handles txtRegimenFiscalDestinoIntermedio.DoubleClick
+        Dim formaBusqueda As New frmBusqueda(AddressOf conexionesCartaPorte.Get_ObtenCatalogoRegimenFiscal)
+        esperandoBusqueda = txtRegimenFiscalDestinoIntermedio
+        AddHandler formaBusqueda.ElementoSeleccionado, AddressOf AtrapaEvento
+        formaBusqueda.ShowDialog()
+    End Sub
+
+    Private Sub txtRegimenFiscalOrigen_DoubleClick(sender As Object, e As EventArgs) Handles txtRegimenFiscalOrigen.DoubleClick
+        Dim formaBusqueda As New frmBusqueda(AddressOf conexionesCartaPorte.Get_ObtenCatalogoRegimenFiscal)
+        esperandoBusqueda = txtRegimenFiscalOrigen
+        AddHandler formaBusqueda.ElementoSeleccionado, AddressOf AtrapaEvento
+        formaBusqueda.ShowDialog()
+    End Sub
+
+    Private Sub txtRegimenFiscalOrigen_KeyDown(sender As Object, e As KeyEventArgs) Handles txtRegimenFiscalOrigen.KeyDown
+        AbreSiEsEnter(e, AddressOf txtRegimenFiscalOrigen_DoubleClick)
+    End Sub
+
+    Private Sub txtRegimenFiscalDestino_KeyDown(sender As Object, e As KeyEventArgs) Handles txtRegimenFiscalDestino.KeyDown
+        AbreSiEsEnter(e, AddressOf txtRegimenFiscalDestino_DoubleClick)
+    End Sub
+
+    Private Sub TabControl1_KeyDown(sender As Object, e As KeyEventArgs) Handles TabControl1.KeyDown
+
+    End Sub
+
+    Private Sub txtRegimenFiscalDestinoIntermedio_KeyDown(sender As Object, e As KeyEventArgs) Handles txtRegimenFiscalDestinoIntermedio.KeyDown
+        AbreSiEsEnter(e, AddressOf txtRegimenFiscalDestinoIntermedio_DoubleClick)
     End Sub
 #End Region
 

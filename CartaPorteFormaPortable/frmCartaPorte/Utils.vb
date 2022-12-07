@@ -6,6 +6,7 @@ Public Class Utils
     'de un datarow, dejando los aspectos más específicos para el que lo llama
     Public Function CreaObjetoOrigenDestino(ByRef rowDatos As DataRow) As OrigenDestino
         Dim datosUbicacion As New OrigenDestino
+        datosUbicacion.Movimiento = rowDatos("idMovimiento").ToString()
         datosUbicacion.RFCRemitenteDestinatario = rowDatos("rfc").ToString()
         datosUbicacion.EsPersonaFisica = CType(rowDatos("esPersonaFisica"), Boolean)
         datosUbicacion.EsPersonaMoral = CType(rowDatos("esPersonaMoral"), Boolean)
@@ -15,6 +16,8 @@ Public Class Utils
         datosUbicacion.NombrePersonaMoral = rowDatos("razonSocial").ToString()
         datosUbicacion.EsExtranjero = CType(rowDatos("esOrigenExtranjero"), Boolean)
         datosUbicacion.NumRegIdTrib = rowDatos("numRegIdTrib").ToString()
+        datosUbicacion.RegimenFiscal = rowDatos("regimenFiscal").ToString()
+        datosUbicacion.FueImportado = True
         Return datosUbicacion
     End Function
 
@@ -32,6 +35,8 @@ Public Class Utils
         objetoSinDatos.EsExtranjero = objetoConDatos.EsExtranjero
         objetoSinDatos.NumRegIdTrib = objetoConDatos.NumRegIdTrib
         objetoSinDatos.ResidenciaFiscal = objetoConDatos.ResidenciaFiscal
+        objetoSinDatos.Movimiento = objetoConDatos.Movimiento
+        objetoSinDatos.RegimenFiscal = objetoConDatos.RegimenFiscal
     End Sub
 
     'Este método recibe un objeto DataRow y lo convierte en domicilio,
@@ -68,9 +73,11 @@ Public Class Utils
     Public Function CreaObjetoMercancia(ByRef rowDatos As DataRow) As Mercancia
         Dim mercancia As New Mercancia
         mercancia.ClaveProdServ = rowDatos("claveProdServ").ToString()
+        mercancia.Descripcion = rowDatos("descripcionSAT").ToString()
         mercancia.DescripcionInterna = rowDatos("descripcion").ToString()
         mercancia.Cantidad = CInt(rowDatos("cantidad"))
         mercancia.ClaveUnidad = rowDatos("claveUnidad").ToString()
+        mercancia.Unidad = rowDatos("descripcionUnidad").ToString()
         mercancia.Longitud = CInt(rowDatos("longitud"))
         mercancia.Anchura = CInt(rowDatos("anchura"))
         mercancia.Altura = CInt(rowDatos("altura"))
@@ -83,6 +90,7 @@ Public Class Utils
         mercancia.Embalaje = rowDatos("embalaje").ToString()
         mercancia.PesoEnKg = CType(rowDatos("pesoEnKg"), Double)
         mercancia.ValorMercancia = CType(rowDatos("valorMercancia"), Double)
+        mercancia.Moneda = rowDatos("moneda").ToString()
         mercancia.EsComercioInternacional = CType(rowDatos("esComercioInternacional"), Boolean)
         mercancia.FraccionArancelaria = rowDatos("fraccionArancelaria").ToString()
         mercancia.Pedimento = rowDatos("pedimento").ToString()
@@ -113,7 +121,7 @@ Public Class Utils
         EscribeArchivo(path, json)
     End Sub
 
-    Private Sub LeeArchivoJson(ByRef path As String,
+    Public Sub LeeArchivoJson(ByRef path As String,
                                ByRef ubicacionOrigen As OrigenDestino,
                                ByRef ubicacionDestino As OrigenDestino,
                                ByRef listaDestinosIntermedios As List(Of OrigenDestino),

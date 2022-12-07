@@ -10,6 +10,19 @@
     Private _Referencia As String
     Private _CodigoPostal As String
 
+    Public Sub New()
+        _Calle = String.Empty
+        _NumeroExterior = String.Empty
+        _NumeroInterior = String.Empty
+        _Colonia = "-01"
+        _Localidad = "-01"
+        _Municipio = "-01"
+        _Estado = "-01"
+        _Pais = "-01"
+        _Referencia = String.Empty
+        _CodigoPostal = String.Empty
+    End Sub
+
     Public Property Calle As String
         Get
             Return _Calle

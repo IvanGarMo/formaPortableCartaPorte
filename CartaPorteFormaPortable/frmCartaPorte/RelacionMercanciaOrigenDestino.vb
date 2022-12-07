@@ -6,6 +6,7 @@
     Private _DescripcionProductoServicio As String
     Private _Cantidad As Int32
     Private _EsMaterialPeligroso As Boolean
+    Private _Valor As String
 
     Public Property IdOrigen As String
         Get
@@ -67,6 +68,15 @@
         End Get
         Set(value As String)
             _ClaveUnidad = value
+        End Set
+    End Property
+
+    Public Property Valor As String
+        Get
+            Return _Valor
+        End Get
+        Set(value As String)
+            _Valor = value
         End Set
     End Property
 

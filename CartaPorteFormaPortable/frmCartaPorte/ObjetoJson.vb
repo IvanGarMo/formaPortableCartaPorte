@@ -6,7 +6,7 @@ Public Class ObjetoJson
     Private _mercancias As List(Of Mercancia)
     Private _destinosIntermedios As List(Of ObjetoConMercancias)
 
-    <JsonProperty(PropertyName:="Origen")>
+    <JsonProperty(PropertyName:="Origen", Order:=1)>
     Public Property DatosOrigen As OrigenDestino
         Get
             Return _datosOrigen
@@ -16,7 +16,7 @@ Public Class ObjetoJson
         End Set
     End Property
 
-    <JsonProperty(PropertyName:="Carga")>
+    <JsonProperty(PropertyName:="Carga", Order:=3)>
     Public Property Mercancias As List(Of Mercancia)
         Get
             Return _mercancias
@@ -26,7 +26,7 @@ Public Class ObjetoJson
         End Set
     End Property
 
-    <JsonProperty(PropertyName:="Destino")>
+    <JsonProperty(PropertyName:="Destino", Order:=2)>
     Public Property DatosDestino As OrigenDestino
         Get
             Return _datosDestino
@@ -36,7 +36,7 @@ Public Class ObjetoJson
         End Set
     End Property
 
-    <JsonProperty(PropertyName:="DestinosAdicionales")>
+    <JsonProperty(PropertyName:="DestinosAdicionales", Order:=4)>
     Friend Property DestinosIntermedios As List(Of ObjetoConMercancias)
         Get
             Return _destinosIntermedios
@@ -80,7 +80,7 @@ Class ObjetoConMercancias
     Private _detalleUbicacion As OrigenDestino
     Private _mercancias As List(Of Mercancia)
 
-    <JsonProperty(PropertyName:="Destino")>
+    <JsonProperty(PropertyName:="Destino", Order:=1)>
     Public Property DetalleUbicacion As OrigenDestino
         Get
             Return _detalleUbicacion
@@ -90,7 +90,7 @@ Class ObjetoConMercancias
         End Set
     End Property
 
-    <JsonProperty(PropertyName:="Carga")>
+    <JsonProperty(PropertyName:="Carga", Order:=2)>
     Public Property Mercancias As List(Of Mercancia)
         Get
             Return _mercancias

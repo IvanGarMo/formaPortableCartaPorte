@@ -41,7 +41,8 @@
                     Dim frm As New frmInicioProcesoCartaPorte(drEscenario)
                     frm.Show()
                 Else
-
+                    Dim frm As New frmCartaPorte("EAGLE", CInt(drEscenario("idEscenario")), drEscenario)
+                    frm.Show()
                 End If
             End If
         Next

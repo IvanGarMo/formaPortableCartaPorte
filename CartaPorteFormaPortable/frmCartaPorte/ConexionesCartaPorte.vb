@@ -182,8 +182,8 @@ Public Class ConexionesCartaPorte
         Cm.Parameters.AddWithValue("@ParTabMercancia", datosMercancias)
         Cm.Parameters("@ParTabMercancia").Direction = ParameterDirection.Input
 
-        Cm.Parameters.AddWithValue("@ParTabMercanciaConDestinos", destinosMercancias)
-        Cm.Parameters("@ParTabMercanciaConDestinos").Direction = ParameterDirection.Input
+        'Cm.Parameters.AddWithValue("@ParTabMercanciaConDestinos", destinosMercancias)
+        'Cm.Parameters("@ParTabMercanciaConDestinos").Direction = ParameterDirection.Input
 
         Cm.Parameters.AddWithValue("@ParCadPermSCT", datosAutoTransporte.PermSCT)
         Cm.Parameters("@ParCadPermSCT").Direction = ParameterDirection.Input
@@ -263,6 +263,12 @@ Public Class ConexionesCartaPorte
 
         Cm.Parameters.Add("@ParCadResultado", SqlDbType.Text, Int32.MaxValue)
         Cm.Parameters("@ParCadResultado").Direction = ParameterDirection.ReturnValue
+
+        'For Each rd As DataRow In CType(Cm.Parameters("@ParTabMercanciaConDestinos").Value, DataTable).Rows
+        '    System.Diagnostics.Debug.WriteLine(String.Format("CadProdServ: {0} ClaveUnidad: {1} MaterialPeligroso: {2} Valor: {3} IDOrigen: {4} IDDestino {5} Cantidad {6}",
+        '                                                     rd("CadProdServ"), rd("ClaveUnidad"), rd("MaterialPeligroso"), rd("Valor"), rd("IDOrigen"),
+        '                                                     rd("IDDestino"), rd("Cantidad")))
+        'Next
 
         Cm.ExecuteScalar()
         Return Cm.Parameters("@ParCadResultado").Value
@@ -367,6 +373,20 @@ Public Class ConexionesCartaPorte
         Dim Cm As SqlCommand = Nothing
         Cm = New SqlCommand("sat.SP_CCP_ObtenParametros", obtenConexion())
         Cm.CommandType = CommandType.StoredProcedure
+
+        Dim sqlAdapter As New SqlDataAdapter(Cm)
+        Dim dataSet As New DataSet
+        sqlAdapter.Fill(dataSet)
+        Return dataSet.Tables(0)
+    End Function
+
+    Public Function Get_ObtenCatalogoRegimenFiscal(Optional ByRef RegimenFiscal As String = "") As DataTable
+        Dim Cm As SqlCommand = Nothing
+        Cm = New SqlCommand("sat.SP_CCP_ObtenListaRegimenFiscal", obtenConexion())
+        Cm.CommandType = CommandType.StoredProcedure
+
+        Cm.Parameters.AddWithValue("@ParCadDescripcionRegimen", RegimenFiscal)
+        Cm.Parameters("@ParCadDescripcionRegimen").Direction = ParameterDirection.Input
 
         Dim sqlAdapter As New SqlDataAdapter(Cm)
         Dim dataSet As New DataSet

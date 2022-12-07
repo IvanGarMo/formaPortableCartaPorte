@@ -120,6 +120,12 @@
     <Compile Include="frmCartaPorte\frmInicioProcesoCartaPorte.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="frmCartaPorte\frmModalMercancias.Designer.vb">
+      <DependentUpon>frmModalMercancias.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmCartaPorte\frmModalMercancias.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="frmCartaPorte\frmMovimientosParaExportar.Designer.vb">
       <DependentUpon>frmMovimientosParaExportar.vb</DependentUpon>
     </Compile>
@@ -167,6 +173,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="frmCartaPorte\frmInicioProcesoCartaPorte.resx">
       <DependentUpon>frmInicioProcesoCartaPorte.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmCartaPorte\frmModalMercancias.resx">
+      <DependentUpon>frmModalMercancias.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmCartaPorte\frmMovimientosParaExportar.resx">
       <DependentUpon>frmMovimientosParaExportar.vb</DependentUpon>
