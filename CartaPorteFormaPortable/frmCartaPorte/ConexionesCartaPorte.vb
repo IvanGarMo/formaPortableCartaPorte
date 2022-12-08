@@ -60,6 +60,47 @@ Public Class ConexionesCartaPorte
         Return dataSet
     End Function
 
+    Public Function Get_PuedeImportarMovimientoIntermedio(ByRef idEmpresa As String,
+                                                          ByRef tipoMovimiento As String,
+                                                          ByRef idMovimientoPadre As String,
+                                                          ByRef idMovimientoIntermedio As String,
+                                                          ByRef mensaje As String) As Boolean()
+        Dim respuestas(2) As Boolean
+
+        Dim Cm As SqlCommand = Nothing
+        Cm = New SqlCommand("sat.SP_CCP_PuedeUsarDestinoIntermedio", obtenConexion())
+        Cm.CommandType = CommandType.StoredProcedure
+
+        Cm.Parameters.AddWithValue("@ParCadEmpresa", idEmpresa)
+        Cm.Parameters("@ParCadEmpresa").Direction = ParameterDirection.Input
+
+        Cm.Parameters.AddWithValue("@ParCadTipoMovimiento", tipoMovimiento)
+        Cm.Parameters("@ParCadTipoMovimiento").Direction = ParameterDirection.Input
+
+        Cm.Parameters.AddWithValue("@ParCadIdMovimientoOrigen", idMovimientoPadre)
+        Cm.Parameters("@ParCadIdMovimientoOrigen").Direction = ParameterDirection.Input
+
+        Cm.Parameters.AddWithValue("@ParCadIdMovimientoIntermedio", idMovimientoIntermedio)
+        Cm.Parameters("@ParCadIdMovimientoIntermedio").Direction = ParameterDirection.Input
+
+        Cm.Parameters.Add("@ParBitPuedeImportar", SqlDbType.Bit, 1)
+        Cm.Parameters("@ParBitPuedeImportar").Direction = ParameterDirection.Output
+
+        Cm.Parameters.Add("@ParBitEsMismoDestino", SqlDbType.Bit, 1)
+        Cm.Parameters("@ParBitEsMismoDestino").Direction = ParameterDirection.Output
+
+        Cm.Parameters.Add("@ParCadMensaje", SqlDbType.VarChar, 500)
+        Cm.Parameters("@ParCadMensaje").Direction = ParameterDirection.Output
+
+        Cm.ExecuteNonQuery()
+
+        respuestas(0) = CType(Cm.Parameters("@ParBitEsMismoDestino").Value, Boolean)
+        respuestas(1) = CType(Cm.Parameters("@ParBitEsMismoDestino").Value, Boolean)
+
+        mensaje = Cm.Parameters("@ParCadMensaje").Value.ToString()
+        Return respuestas
+    End Function
+
     Public Function GeneraXmlTraslado(ByVal rfcEmisor As String,
                                       ByRef nombreEmisor As String,
                                       ByRef domicilioFiscalEmisor As String,

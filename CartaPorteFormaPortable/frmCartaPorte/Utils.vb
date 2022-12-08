@@ -6,7 +6,7 @@ Public Class Utils
     'de un datarow, dejando los aspectos más específicos para el que lo llama
     Public Function CreaObjetoOrigenDestino(ByRef rowDatos As DataRow) As OrigenDestino
         Dim datosUbicacion As New OrigenDestino
-        datosUbicacion.Movimiento = rowDatos("idMovimiento").ToString()
+        datosUbicacion.AnadeMovimiento(rowDatos("idMovimiento").ToString())
         datosUbicacion.RFCRemitenteDestinatario = rowDatos("rfc").ToString()
         datosUbicacion.EsPersonaFisica = CType(rowDatos("esPersonaFisica"), Boolean)
         datosUbicacion.EsPersonaMoral = CType(rowDatos("esPersonaMoral"), Boolean)

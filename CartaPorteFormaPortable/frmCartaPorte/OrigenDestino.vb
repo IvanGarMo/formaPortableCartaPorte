@@ -1,7 +1,7 @@
 ﻿Imports System.Text.RegularExpressions
 
 Public Class OrigenDestino
-    Private _Movimiento As String
+    Private _Movimiento As List(Of String)
     Private _TipoUbicacion As String
     Private _IDUbicacion As String
     Private _RFCRemitenteDestinatario As String
@@ -221,14 +221,12 @@ Public Class OrigenDestino
         End Set
     End Property
 
-    Public Property Movimiento As String
-        Get
-            Return _Movimiento
-        End Get
-        Set(value As String)
-            _Movimiento = value
-        End Set
-    End Property
+    Public Sub AnadeMovimiento(ByVal idMovimiento As String)
+        If Movimiento Is Nothing Then
+            Movimiento = New List(Of String)
+        End If
+        Movimiento.Add(idMovimiento)
+    End Sub
 
     Public ReadOnly Property NombreUbicacionParaComplemento As String
         Get
@@ -349,6 +347,15 @@ Public Class OrigenDestino
         End Get
         Set(value As String)
             _regimenFiscal = value
+        End Set
+    End Property
+
+    Public Property Movimiento As List(Of String)
+        Get
+            Return _Movimiento
+        End Get
+        Set(value As List(Of String))
+            _Movimiento = value
         End Set
     End Property
 End Class

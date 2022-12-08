@@ -129,7 +129,7 @@
                                     ByRef mercancia As Mercancia)
         Dim row As DataRow = tabla.NewRow()
         row("CadProdServ") = mercancia.ClaveProdServ
-        row("Descripcion") = mercancia.Descripcion
+        row("Descripcion") = mercancia.DescripcionInternaModal
         row("Cantidad") = mercancia.Cantidad
         row("ClaveUnidad") = mercancia.ClaveUnidad
         row("Unidad") = mercancia.Unidad

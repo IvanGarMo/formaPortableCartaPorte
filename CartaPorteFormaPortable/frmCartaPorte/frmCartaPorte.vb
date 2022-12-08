@@ -2164,43 +2164,71 @@ Public Class frmCartaPorte
     Private ESTA_ACTUALIZANDO_DESTINO_INTERMEDIO As Boolean = False
 
     Private Sub CargaDatosDestinoIntermedioDesdeBd(ByVal idMovimiento As String)
-        If datosDestinosIntermediosParaCartaPorte.Exists(Function(z) z.Movimiento.Equals(idMovimiento)) Then
-            AlertaMensaje(ObtenParametroPorLlave("MOV_YAIMP"))
-            Return
-        End If
-
         If String.IsNullOrEmpty(idMovimiento) OrElse Len(idMovimiento) > 30 Then
             AlertaMensaje(ObtenParametroPorLlave("NO_EXISTE_MOV"))
             Return
         End If
 
+        Dim mensajeSalidaVerificacion As String = String.Empty
+        Dim puedeImportarMovimiento() As Boolean = conexionesCartaPorte.Get_PuedeImportarMovimientoIntermedio(idEmpresa, _tipoMovimeinto, datosOrigenParaCartaPorte.Movimiento(0), idMovimiento, mensajeSalidaVerificacion)
+
+        'Si no puede importar movimiento
+        If Not puedeImportarMovimiento(0) AndAlso Not puedeImportarMovimiento(1) Then
+            AlertaMensaje(mensajeSalidaVerificacion)
+            Return
+        End If
+
         Dim dataSet As DataSet = conexionesCartaPorte.Get_DatosTraslado(idEmpresa, _datosEscenario("tipoMovimiento").ToString(), idMovimiento)
-        If dataSet Is Nothing OrElse dataSet.Tables(1) Is Nothing OrElse dataSet.Tables(1).Rows.Count = 0 Then
-            AlertaMensaje(ObtenParametroPorLlave("NO_EXISTE_MOV"))
-            Return
-        End If
 
-        Dim datosDestino As DataRow = dataSet.Tables(1).Rows(0)
-        If datosDestino("cp").ToString() <> datosOrigenParaCartaPorte.DatosDomicilio.CodigoPostal Then
-            AlertaMensaje(ObtenParametroPorLlave("ORIGEN_DISTINTO"))
-            Return
-        End If
-
+        Dim datosDestino As DataRow = dataSet.Tables(0).Rows(1)
         Dim destinoImportado As OrigenDestino = utils.CreaObjetoOrigenDestino(datosDestino)
         destinoImportado.TipoUbicacion = "Destino"
         destinoImportado.IDUbicacion = GeneraIdDestinoIntermedio()
         destinoImportado.UsuarioCausoProblemasConFecha = True
         destinoImportado.UsuarioCausoProblemasConKm = True
         destinoImportado.EsDestinoIntermedio = True
+        destinoImportado.AnadeMovimiento(idMovimiento)
+
+        Dim datosDomicilioIntermedio As Domicilio = utils.CreaObjetoDomicilio(datosDestino)
+        destinoImportado.DatosDomicilio = datosDomicilioIntermedio
 
         Dim listaMercancias As List(Of Mercancia) = New List(Of Mercancia)
         For Each dr As DataRow In dataSet.Tables(2).Rows
             listaMercancias.Add(utils.CreaObjetoMercancia(dr))
         Next
 
-        datosDestinosIntermediosParaCartaPorte.Add(destinoImportado)
-        datosMercancias.Add(destinoImportado.IDUbicacion, listaMercancias)
+        'Si son para el mismo destino
+        If puedeImportarMovimiento(1) Then
+            Dim result = MsgBox(mensajeSalidaVerificacion, vbQuestion + vbYesNo, "Alerta")
+            If result = MsgBoxResult.No Then Return
 
+            'Si acepta que se junten, tengo que ver que no se dupliquen las mercancías
+            Dim listaMercRepetidas As List(Of Mercancia) = New List(Of Mercancia)
+            listaMercancias.ForEach(Sub(x)
+                                        If ObtenMercancia(datosDestinoParaCartaPorte.IDUbicacion, x.ClaveProdServ, x.ClaveUnidad, x.MaterialPeligroso, x.ValorMercanciaCadena) IsNot Nothing Then
+                                            listaMercRepetidas.Add(x)
+                                        End If
+                                    End Sub)
+
+            If listaMercRepetidas.Count > 0 Then
+                Dim result2 = MsgBox(ObtenParametroPorLlave("POSIBLE_CHOQUE"), vbQuestion + vbYesNo, "Alerta")
+                If result2 = MsgBoxResult.No Then Return
+
+                listaMercRepetidas.ForEach(Sub(x)
+                                               Dim mercRep = ObtenMercancia(datosDestinoParaCartaPorte.IDUbicacion, x.ClaveProdServ, x.ClaveUnidad, x.MaterialPeligroso, x.ValorMercanciaCadena)
+                                               mercRep.Cantidad = mercRep.Cantidad + x.Cantidad
+                                               listaMercancias.Remove(x)
+                                           End Sub)
+            End If
+
+            listaMercancias.ForEach(Sub(x)
+                                        datosMercancias(datosDestinoParaCartaPorte.IDUbicacion).Add(x)
+                                    End Sub)
+            datosDestinoParaCartaPorte.AnadeMovimiento(idMovimiento)
+        Else
+            datosDestinosIntermediosParaCartaPorte.Add(destinoImportado)
+            datosMercancias.Add(destinoImportado.IDUbicacion, listaMercancias)
+        End If
         BindGridDestinosIntermedios()
     End Sub
 
@@ -2418,7 +2446,7 @@ Public Class frmCartaPorte
         INFORMACION_VALIDA_DESTINO_INTERMEDIO = False
         Dim tipoUbicacionDestInter As String = "Destino"
         Dim idUbicacionDestInter As String = ObtenValorTextbox(txtIdUbicacionDestinoIntermedio)
-        Dim regFiscDestInter As String = ObtenValorTextbox(txtReferenciaDestinoIntermedio)
+        Dim regFiscDestInter As String = ObtenValorTextbox(txtRegimenFiscalDestinoIntermedio)
 
         If CType(_datosEscenario("esCFDI_Traslado"), Boolean) AndAlso String.IsNullOrWhiteSpace(regFiscDestInter) Then
             AlertaMensaje(ObtenParametroPorLlave("INGRESE_REGFIS"))
