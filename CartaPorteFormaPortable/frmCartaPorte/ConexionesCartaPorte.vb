@@ -71,8 +71,8 @@ Public Class ConexionesCartaPorte
         Cm = New SqlCommand("sat.SP_CCP_PuedeUsarDestinoIntermedio", obtenConexion())
         Cm.CommandType = CommandType.StoredProcedure
 
-        Cm.Parameters.AddWithValue("@ParCadEmpresa", idEmpresa)
-        Cm.Parameters("@ParCadEmpresa").Direction = ParameterDirection.Input
+        Cm.Parameters.AddWithValue("@ParCadIdEmpresa", idEmpresa)
+        Cm.Parameters("@ParCadIdEmpresa").Direction = ParameterDirection.Input
 
         Cm.Parameters.AddWithValue("@ParCadTipoMovimiento", tipoMovimiento)
         Cm.Parameters("@ParCadTipoMovimiento").Direction = ParameterDirection.Input
@@ -83,18 +83,18 @@ Public Class ConexionesCartaPorte
         Cm.Parameters.AddWithValue("@ParCadIdMovimientoIntermedio", idMovimientoIntermedio)
         Cm.Parameters("@ParCadIdMovimientoIntermedio").Direction = ParameterDirection.Input
 
-        Cm.Parameters.Add("@ParBitPuedeImportar", SqlDbType.Bit, 1)
+        Cm.Parameters.Add("@ParBitPuedeImportar", SqlDbType.Bit, 2)
         Cm.Parameters("@ParBitPuedeImportar").Direction = ParameterDirection.Output
 
-        Cm.Parameters.Add("@ParBitEsMismoDestino", SqlDbType.Bit, 1)
+        Cm.Parameters.Add("@ParBitEsMismoDestino", SqlDbType.Bit, 2)
         Cm.Parameters("@ParBitEsMismoDestino").Direction = ParameterDirection.Output
 
-        Cm.Parameters.Add("@ParCadMensaje", SqlDbType.VarChar, 500)
+        Cm.Parameters.Add("@ParCadMensaje", SqlDbType.VarChar, 2000)
         Cm.Parameters("@ParCadMensaje").Direction = ParameterDirection.Output
 
         Cm.ExecuteNonQuery()
 
-        respuestas(0) = CType(Cm.Parameters("@ParBitEsMismoDestino").Value, Boolean)
+        respuestas(0) = CType(Cm.Parameters("@ParBitPuedeImportar").Value, Boolean)
         respuestas(1) = CType(Cm.Parameters("@ParBitEsMismoDestino").Value, Boolean)
 
         mensaje = Cm.Parameters("@ParCadMensaje").Value.ToString()
@@ -156,6 +156,17 @@ Public Class ConexionesCartaPorte
         Return Cm.Parameters("@ParCadResultado").Value
     End Function
 
+    'Estos dos se fueron debido a que son calculados directo
+    'en la BD para ahorrar trabajo y evitar posibles complicaciones
+    'ByVal pesoBrutoTotal As Decimal,
+    'ByVal unidadPesoTotal As String,
+
+    'Dim pesoBrutoTotal As String = ObtenValorTextbox(txtPesoBrutoTotalMercancias)
+    'Dim unidadPeso As String = ObtenValorTextbox(txtUnidadPesoTotalMercancias)
+
+    'Dim regExpDec As String = ObtenParametroPorLlave("REGEXP_NUMERO_DECIMAL")
+    'If Not Regex.IsMatch(pesoBrutoTotal, regExpDec) Then AlertaMensaje(ObtenParametroPorLlave("INGRESE_PESOBRUTO_TOT")) : Return
+    'If EsCadenaVacia(unidadPeso) Then AlertaMensaje(ObtenParametroPorLlave("INGRESE_UNIDAD_TOT")) : Return
     Public Function GeneraXmlCartaPorte(ByVal tipoCfdi As String,
                                         ByVal transporteInternacional As Boolean,
                                         ByVal entradaSalida As String,
@@ -163,8 +174,6 @@ Public Class ConexionesCartaPorte
                                         ByVal viaEntradaSalida As String,
                                         ByVal totalDistRecorrida As Decimal,
                                         ByRef listadoUbicaciones As List(Of OrigenDestino),
-                                        ByVal pesoBrutoTotal As Decimal,
-                                        ByVal unidadPesoTotal As String,
                                         ByRef listaMercancias As List(Of Mercancia),
                                         ByRef datosAutoTransporte As Autotransporte,
                                         ByRef datosOperador As DatosTransportista
@@ -205,11 +214,11 @@ Public Class ConexionesCartaPorte
         Cm.Parameters.AddWithValue("@ParTabDomicilio", datosDomiciliosUbicaciones)
         Cm.Parameters("@ParTabDomicilio").Direction = ParameterDirection.Input
 
-        Cm.Parameters.AddWithValue("@ParNumPesoBrutoTotal", pesoBrutoTotal)
-        Cm.Parameters("@ParNumPesoBrutoTotal").Direction = ParameterDirection.Input
+        'Cm.Parameters.AddWithValue("@ParNumPesoBrutoTotal", pesoBrutoTotal)
+        'Cm.Parameters("@ParNumPesoBrutoTotal").Direction = ParameterDirection.Input
 
-        Cm.Parameters.AddWithValue("@ParCadUnidadPeso", unidadPesoTotal)
-        Cm.Parameters("@ParCadUnidadPeso").Direction = ParameterDirection.Input
+        'Cm.Parameters.AddWithValue("@ParCadUnidadPeso", unidadPesoTotal)
+        'Cm.Parameters("@ParCadUnidadPeso").Direction = ParameterDirection.Input
 
         Dim datosMercancias As DataTable = tiposCartaPorte.CantidadMercanciaTipo()
         Dim destinosMercancias As DataTable = tiposCartaPorte.CantidadTransportaTipo()

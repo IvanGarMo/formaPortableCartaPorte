@@ -34,6 +34,7 @@
             frmExportar.Dock = DockStyle.Fill
             tlpPrincipal.Controls.Add(frmExportar)
             tlpPrincipal.SetColumn(frmExportar, 0)
+            tlpPrincipal.SetRow(frmExportar, 2)
             tlpPrincipal.SetColumnSpan(frmExportar, tlpPrincipal.ColumnCount)
             frmExportar.Show()
         End If

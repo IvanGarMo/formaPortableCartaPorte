@@ -1,4 +1,5 @@
 ﻿Imports System.Text.RegularExpressions
+Imports Newtonsoft.Json
 
 Public Class OrigenDestino
     Private _Movimiento As List(Of String)
@@ -161,6 +162,7 @@ Public Class OrigenDestino
         End Set
     End Property
 
+    <JsonIgnore>
     Public ReadOnly Property FechaSalidaLlegadaCadena As String
         Get
             If _UsuarioCausoProblemasConFecha Then
@@ -184,6 +186,7 @@ Public Class OrigenDestino
         End Set
     End Property
 
+    <JsonIgnore>
     Public ReadOnly Property DistanciaRecorridaCadena As String
         Get
             If _UsuarioCausoProblemasConKm Then
@@ -222,12 +225,13 @@ Public Class OrigenDestino
     End Property
 
     Public Sub AnadeMovimiento(ByVal idMovimiento As String)
-        If Movimiento Is Nothing Then
-            Movimiento = New List(Of String)
+        If _Movimiento Is Nothing Then
+            _Movimiento = New List(Of String)
         End If
-        Movimiento.Add(idMovimiento)
+        _Movimiento.Add(idMovimiento)
     End Sub
 
+    <JsonIgnore>
     Public ReadOnly Property NombreUbicacionParaComplemento As String
         Get
             If _EsPersonaFisica Then
@@ -239,6 +243,8 @@ Public Class OrigenDestino
             End If
         End Get
     End Property
+
+    <JsonIgnore>
     Public ReadOnly Property DestinoDesplegado As String
         Get
             If _DatosDomicilio Is Nothing Then
@@ -253,6 +259,7 @@ Public Class OrigenDestino
         End Get
     End Property
 
+    <JsonIgnore>
     Public ReadOnly Property FechaHora As DateTime
         Get
             Dim hora As Int32
@@ -268,6 +275,7 @@ Public Class OrigenDestino
         End Get
     End Property
 
+    <JsonIgnore>
     Public ReadOnly Property FechaHoraCadena As String
         Get
             If String.IsNullOrWhiteSpace(_HoraSalidaLlegada) Then
@@ -277,6 +285,7 @@ Public Class OrigenDestino
         End Get
     End Property
 
+    <JsonIgnore>
     Public ReadOnly Property TipoMovimiento As String
         Get
             If _EsDestinoIntermedio Then
@@ -287,24 +296,28 @@ Public Class OrigenDestino
         End Get
     End Property
 
+    <JsonIgnore>
     Public ReadOnly Property UbicacionEsOrigen As Boolean
         Get
             Return TipoUbicacion.Equals("Origen")
         End Get
     End Property
 
+    <JsonIgnore>
     Public ReadOnly Property UbicacionEsDestinoIntermedio As Boolean
         Get
             Return TipoUbicacion.Equals("Destino")
         End Get
     End Property
 
+    <JsonIgnore>
     Public ReadOnly Property UbicacionEsDestinoFinal As Boolean
         Get
             Return TipoUbicacion.Equals("Destino") And EsDestinoIntermedio
         End Get
     End Property
 
+    <JsonIgnore>
     Public ReadOnly Property CodigoPostalUbicacion As String
         Get
             If _DatosDomicilio IsNot Nothing Then

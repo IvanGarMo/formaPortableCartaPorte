@@ -19,6 +19,24 @@ Public Class frmMovimientosParaExportar
         Me.datosEscenario = datosEscenario
     End Sub
 
+    Private Sub Textbox_Enter(sender As Object, e As EventArgs) Handles txtIdMovimientoPadre.Enter, txtIdMovimientoIntermedio.Enter
+        If sender.GetType() IsNot GetType(TextBox) Then Return
+        Dim text As TextBox = CType(sender, TextBox)
+        text.BackColor = Color.FromName("Info")
+    End Sub
+
+    Private Sub Textbox_Leave(sender As Object, e As EventArgs) Handles txtIdMovimientoPadre.Leave, txtIdMovimientoIntermedio.Leave
+        If sender.GetType() IsNot GetType(TextBox) Then Return
+        Dim text As TextBox = CType(sender, TextBox)
+        text.BackColor = Color.White
+    End Sub
+
+    Private Sub AbreSiEsEnter(ByRef key As KeyEventArgs, ByRef handler As EventHandler)
+        If key.KeyCode = Keys.Enter Then
+            handler(Nothing, Nothing)
+        End If
+    End Sub
+
     Private Sub frmMovimientosParaExportar_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         btnReiniciar_Click(Nothing, Nothing)
         conexionesCartaPorte = New ConexionesCartaPorte
@@ -60,10 +78,14 @@ Public Class frmMovimientosParaExportar
     Private Sub BindGridMercanciasDeUbicacion(ByVal idUbicacion As String)
         LimpiaGrid(dgvMercanciasDeMovimiento)
         dgvMercanciasDeMovimiento.Columns("MercClaveProdServClm").DataPropertyName = NameOf(Mercancia.ClaveProdServ)
-        dgvMercanciasDeMovimiento.Columns("MercDescripcionClm").DataPropertyName = NameOf(Mercancia.DescripcionInterna)
+        dgvMercanciasDeMovimiento.Columns("MercClasificacionSatClm").DataPropertyName = NameOf(Mercancia.Descripcion)
+        dgvMercanciasDeMovimiento.Columns("MercDescripcionClm").DataPropertyName = NameOf(Mercancia.DescripcionInternaModal)
         dgvMercanciasDeMovimiento.Columns("MercClaveUnidadClm").DataPropertyName = NameOf(Mercancia.ClaveUnidad)
+        dgvMercanciasDeMovimiento.Columns("MercDescripcionUnidadClm").DataPropertyName = NameOf(Mercancia.Unidad)
         dgvMercanciasDeMovimiento.Columns("MercPesoEnKgClm").DataPropertyName = NameOf(Mercancia.PesoEnKg)
-        dgvMercanciasDeMovimiento.Columns("MercValorClm").DataPropertyName = NameOf(Mercancia.ValorMercancia)
+        dgvMercanciasDeMovimiento.Columns("MercValorClm").DataPropertyName = NameOf(Mercancia.ValorMercanciaCadena)
+        dgvMercanciasDeMovimiento.Columns("MercCantidadClm").DataPropertyName = NameOf(Mercancia.Cantidad)
+        dgvMercanciasDeMovimiento.Columns("MercPeligrosoClm").DataPropertyName = NameOf(Mercancia.EsMaterialPeligrosoCad)
 
         Dim listadoMercancias As List(Of Mercancia) = datosMercancias(idUbicacion)
         dgvMercanciasDeMovimiento.DataSource = listadoMercancias
@@ -158,51 +180,6 @@ Public Class frmMovimientosParaExportar
         btnExportar.Enabled = True
     End Sub
 
-    Private Sub CargaTrasladoIntermedio(ByRef idTipoMovimiento As String, ByRef idMovimiento As String)
-        If Len(idMovimiento) > 30 Then
-            AlertaMensaje(ObtenParametroPorLlave("NO_EXISTE_MOV"))
-            txtIdMovimientoIntermedio.Text = String.Empty
-        End If
-
-        Dim datos As DataSet = conexionesCartaPorte.Get_DatosTraslado(empresa, idTipoMovimiento, idMovimiento)
-        If datos Is Nothing OrElse datos.Tables(0) Is Nothing OrElse datos.Tables(0).Rows.Count = 0 Then
-            AlertaMensaje(ObtenParametroPorLlave("NO_EXISTE_MOV"))
-            txtIdMovimientoIntermedio.Text = String.Empty
-        End If
-
-        Dim cpUbicacion As String = datos.Tables(0).Rows(0)("cp").ToString()
-        If cpUbicacion <> listaUbicaciones(0).CodigoPostalUbicacion Then
-            AlertaMensaje(ObtenParametroPorLlave("ORIGEN_DISTINTO"))
-            txtIdMovimientoIntermedio.Text = String.Empty
-            Return
-        End If
-
-
-        Dim ubicacion As OrigenDestino
-        If datosEscenario("tipoMovimiento").ToString() = "TRASPASO" Then
-            ubicacion = New OrigenDestino
-            utils.CopiaDatosFiscales(ubicacion, listaUbicaciones(0))
-        ElseIf datos.Tables(1).Rows.Count > 0 Then
-            ubicacion = utils.CreaObjetoOrigenDestino(datos.Tables(1).Rows(0))
-        Else
-            ubicacion = New OrigenDestino
-        End If
-        ubicacion.TipoUbicacion = "Destino"
-        ubicacion.EsDestinoIntermedio = True
-        ubicacion.UsuarioCausoProblemasConFecha = True
-        ubicacion.UsuarioCausoProblemasConKm = True
-        ubicacion.IDUbicacion = GeneraIdDestinoIntermedio()
-
-        Dim listadoMercancia As New List(Of Mercancia)
-        For Each dr As DataRow In datos.Tables(2).Rows
-            listadoMercancia.Add(utils.CreaObjetoMercancia(dr))
-        Next
-
-        listaUbicaciones.Add(ubicacion)
-        datosMercancias.Add(ubicacion.IDUbicacion, listadoMercancia)
-        BindGridMercanciasDeUbicacion(ubicacion.IDUbicacion)
-    End Sub
-
     Private Sub DesactivaBusquedaIntermedios()
         txtIdMovimientoIntermedio.Enabled = False
         txtIdMovimientoIntermedio.Text = String.Empty
@@ -276,4 +253,87 @@ Public Class frmMovimientosParaExportar
         End If
         Return String.Empty
     End Function
+
+    Private Sub btnBuscarMovimientoIntermedio_Click(sender As Object, e As EventArgs) Handles btnBuscarMovimientoIntermedio.Click
+        Dim idMovimiento As String = Trim(txtIdMovimientoIntermedio.Text)
+        If String.IsNullOrEmpty(idMovimiento) OrElse Len(idMovimiento) > 30 Then
+            AlertaMensaje(ObtenParametroPorLlave("NO_EXISTE_MOV"))
+            Return
+        End If
+
+        Dim mensajeSalidaVerificacion As String = String.Empty
+        Dim puedeImportarMovimiento() As Boolean = conexionesCartaPorte.Get_PuedeImportarMovimientoIntermedio(datosEscenario("idEmpresa").ToString(),
+                                                                                                              datosEscenario("tipoMovimiento").ToString(),
+                                                                                                              listaUbicaciones(1).Movimiento(0),
+                                                                                                              idMovimiento,
+                                                                                                              mensajeSalidaVerificacion)
+        'Si no puede importar movimiento
+        If Not puedeImportarMovimiento(0) AndAlso Not puedeImportarMovimiento(1) Then
+            AlertaMensaje(mensajeSalidaVerificacion)
+            Return
+        End If
+
+        Dim dataSet As DataSet = conexionesCartaPorte.Get_DatosTraslado(datosEscenario("idEmpresa").ToString(), datosEscenario("tipoMovimiento").ToString(), idMovimiento)
+
+        Dim datosDestino As DataRow = dataSet.Tables(0).Rows(1)
+        Dim destinoImportado As OrigenDestino = utils.CreaObjetoOrigenDestino(datosDestino)
+        destinoImportado.TipoUbicacion = "Destino"
+        destinoImportado.IDUbicacion = GeneraIdDestinoIntermedio()
+        destinoImportado.UsuarioCausoProblemasConFecha = True
+        destinoImportado.UsuarioCausoProblemasConKm = True
+        destinoImportado.EsDestinoIntermedio = True
+        destinoImportado.AnadeMovimiento(idMovimiento)
+
+        Dim datosDomicilioIntermedio As Domicilio = utils.CreaObjetoDomicilio(datosDestino)
+        destinoImportado.DatosDomicilio = datosDomicilioIntermedio
+
+        Dim listaMercancias As List(Of Mercancia) = New List(Of Mercancia)
+        For Each dr As DataRow In dataSet.Tables(2).Rows
+            listaMercancias.Add(utils.CreaObjetoMercancia(dr))
+        Next
+
+        'Si son para el mismo destino
+        If puedeImportarMovimiento(1) Then
+            Dim result = MsgBox(mensajeSalidaVerificacion, vbQuestion + vbYesNo, "Alerta")
+            If result = MsgBoxResult.No Then Return
+
+            'Si acepta que se junten, tengo que ver que no se dupliquen las mercancías
+            Dim listaMercRepetidas As List(Of Mercancia) = New List(Of Mercancia)
+            listaMercancias.ForEach(Sub(x)
+                                        If datosMercancias(listaUbicaciones(0).IDUbicacion).Exists(Function(y) y.ClaveProdServ.Equals(x.ClaveProdServ) AndAlso y.ClaveUnidad.Equals(x.ClaveUnidad) AndAlso x.MaterialPeligroso = y.MaterialPeligroso AndAlso x.ValorMercanciaCadena.Equals(y.ValorMercanciaCadena)) Then
+                                            listaMercRepetidas.Add(x)
+                                        End If
+                                    End Sub)
+
+            If listaMercRepetidas.Count > 0 Then
+                Dim result2 = MsgBox(ObtenParametroPorLlave("POSIBLE_CHOQUE"), vbQuestion + vbYesNo, "Alerta")
+                If result2 = MsgBoxResult.No Then Return
+
+                listaMercRepetidas.ForEach(Sub(x)
+                                               Dim mercRep = datosMercancias(listaUbicaciones(0).IDUbicacion).First(Function(y) y.ClaveProdServ.Equals(x.ClaveProdServ) AndAlso y.ClaveUnidad.Equals(x.ClaveUnidad) AndAlso x.MaterialPeligroso = y.MaterialPeligroso AndAlso x.ValorMercanciaCadena.Equals(y.ValorMercanciaCadena))
+                                               mercRep.Cantidad = mercRep.Cantidad + x.Cantidad
+                                               listaMercancias.Remove(x)
+                                           End Sub)
+            End If
+
+            listaMercancias.ForEach(Sub(x)
+                                        datosMercancias(listaUbicaciones(0).IDUbicacion).Add(x)
+                                    End Sub)
+            listaUbicaciones(1).AnadeMovimiento(idMovimiento)
+            BindGridMercanciasDeUbicacion(listaUbicaciones(1).IDUbicacion)
+        Else
+            listaUbicaciones.Add(destinoImportado)
+            datosMercancias.Add(destinoImportado.IDUbicacion, listaMercancias)
+            BindGridMercanciasDeUbicacion(destinoImportado.IDUbicacion)
+        End If
+        BindGridUbicaciones()
+    End Sub
+
+    Private Sub txtIdMovimientoPadre_KeyDown(sender As Object, e As KeyEventArgs) Handles txtIdMovimientoPadre.KeyDown
+        AbreSiEsEnter(e, AddressOf btnBuscarMovimientoPadre_Click)
+    End Sub
+
+    Private Sub txtIdMovimientoIntermedio_KeyDown(sender As Object, e As KeyEventArgs) Handles txtIdMovimientoIntermedio.KeyDown
+        AbreSiEsEnter(e, AddressOf btnBuscarMovimientoIntermedio_Click)
+    End Sub
 End Class

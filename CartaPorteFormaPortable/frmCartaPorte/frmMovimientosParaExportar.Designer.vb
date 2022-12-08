@@ -43,10 +43,14 @@ Partial Class frmMovimientosParaExportar
         Me.MovimientosDetalleBtnClm = New System.Windows.Forms.DataGridViewButtonColumn()
         Me.dgvMercanciasDeMovimiento = New System.Windows.Forms.DataGridView()
         Me.MercClaveProdServClm = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.MercClasificacionSatClm = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.MercDescripcionClm = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.MercClaveUnidadClm = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.MercDescripcionUnidadClm = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.MercPesoEnKgClm = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.MercValorClm = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.MercCantidadClm = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.MercPeligrosoClm = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.btnReiniciar = New System.Windows.Forms.Button()
         Me.lblDescripcionEscenario = New System.Windows.Forms.Label()
         Me.tlpPrincipal.SuspendLayout()
@@ -94,27 +98,32 @@ Partial Class frmMovimientosParaExportar
         'Label1
         '
         Me.Label1.AutoSize = True
+        Me.Label1.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label1.Location = New System.Drawing.Point(3, 0)
         Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(119, 40)
+        Me.Label1.Size = New System.Drawing.Size(134, 40)
         Me.Label1.TabIndex = 0
         Me.Label1.Text = "Exportación de movimientos"
         '
         'Label2
         '
         Me.Label2.AutoSize = True
+        Me.tlpPrincipal.SetColumnSpan(Me.Label2, 2)
+        Me.Label2.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label2.Location = New System.Drawing.Point(3, 124)
         Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(162, 20)
+        Me.Label2.Size = New System.Drawing.Size(183, 20)
         Me.Label2.TabIndex = 1
         Me.Label2.Text = "Movimientos incluidos"
         '
         'lblMercanciasMovimiento
         '
         Me.lblMercanciasMovimiento.AutoSize = True
+        Me.tlpPrincipal.SetColumnSpan(Me.lblMercanciasMovimiento, 3)
+        Me.lblMercanciasMovimiento.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblMercanciasMovimiento.Location = New System.Drawing.Point(3, 343)
         Me.lblMercanciasMovimiento.Name = "lblMercanciasMovimiento"
-        Me.lblMercanciasMovimiento.Size = New System.Drawing.Size(198, 31)
+        Me.lblMercanciasMovimiento.Size = New System.Drawing.Size(328, 20)
         Me.lblMercanciasMovimiento.TabIndex = 2
         Me.lblMercanciasMovimiento.Text = "No hay ningún movimiento seleccionado"
         '
@@ -161,6 +170,7 @@ Partial Class frmMovimientosParaExportar
         'txtIdMovimientoIntermedio
         '
         Me.txtIdMovimientoIntermedio.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.txtIdMovimientoIntermedio.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtIdMovimientoIntermedio.Location = New System.Drawing.Point(633, 65)
         Me.txtIdMovimientoIntermedio.Name = "txtIdMovimientoIntermedio"
         Me.txtIdMovimientoIntermedio.Size = New System.Drawing.Size(204, 26)
@@ -169,6 +179,7 @@ Partial Class frmMovimientosParaExportar
         'txtIdMovimientoPadre
         '
         Me.txtIdMovimientoPadre.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.txtIdMovimientoPadre.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtIdMovimientoPadre.Location = New System.Drawing.Point(633, 3)
         Me.txtIdMovimientoPadre.Name = "txtIdMovimientoPadre"
         Me.txtIdMovimientoPadre.Size = New System.Drawing.Size(204, 26)
@@ -178,6 +189,7 @@ Partial Class frmMovimientosParaExportar
         '
         Me.Label4.AutoSize = True
         Me.Label4.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.Label4.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label4.Location = New System.Drawing.Point(423, 0)
         Me.Label4.Name = "Label4"
         Me.Label4.Size = New System.Drawing.Size(204, 62)
@@ -189,6 +201,7 @@ Partial Class frmMovimientosParaExportar
         '
         Me.Label5.AutoSize = True
         Me.Label5.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.Label5.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label5.Location = New System.Drawing.Point(423, 62)
         Me.Label5.Name = "Label5"
         Me.Label5.Size = New System.Drawing.Size(204, 62)
@@ -265,7 +278,7 @@ Partial Class frmMovimientosParaExportar
         '
         Me.dgvMercanciasDeMovimiento.AllowUserToAddRows = False
         Me.dgvMercanciasDeMovimiento.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        Me.dgvMercanciasDeMovimiento.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.MercClaveProdServClm, Me.MercDescripcionClm, Me.MercClaveUnidadClm, Me.MercPesoEnKgClm, Me.MercValorClm})
+        Me.dgvMercanciasDeMovimiento.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.MercClaveProdServClm, Me.MercClasificacionSatClm, Me.MercDescripcionClm, Me.MercClaveUnidadClm, Me.MercDescripcionUnidadClm, Me.MercPesoEnKgClm, Me.MercValorClm, Me.MercCantidadClm, Me.MercPeligrosoClm})
         Me.tlpPrincipal.SetColumnSpan(Me.dgvMercanciasDeMovimiento, 5)
         Me.dgvMercanciasDeMovimiento.Dock = System.Windows.Forms.DockStyle.Fill
         Me.dgvMercanciasDeMovimiento.Location = New System.Drawing.Point(3, 377)
@@ -284,6 +297,14 @@ Partial Class frmMovimientosParaExportar
         Me.MercClaveProdServClm.ReadOnly = True
         Me.MercClaveProdServClm.Width = 150
         '
+        'MercClasificacionSatClm
+        '
+        Me.MercClasificacionSatClm.HeaderText = "ClasificacionSat"
+        Me.MercClasificacionSatClm.MinimumWidth = 8
+        Me.MercClasificacionSatClm.Name = "MercClasificacionSatClm"
+        Me.MercClasificacionSatClm.ReadOnly = True
+        Me.MercClasificacionSatClm.Width = 150
+        '
         'MercDescripcionClm
         '
         Me.MercDescripcionClm.HeaderText = "Descripcion"
@@ -299,6 +320,14 @@ Partial Class frmMovimientosParaExportar
         Me.MercClaveUnidadClm.Name = "MercClaveUnidadClm"
         Me.MercClaveUnidadClm.ReadOnly = True
         Me.MercClaveUnidadClm.Width = 150
+        '
+        'MercDescripcionUnidadClm
+        '
+        Me.MercDescripcionUnidadClm.HeaderText = "DescripcionUnidad"
+        Me.MercDescripcionUnidadClm.MinimumWidth = 8
+        Me.MercDescripcionUnidadClm.Name = "MercDescripcionUnidadClm"
+        Me.MercDescripcionUnidadClm.ReadOnly = True
+        Me.MercDescripcionUnidadClm.Width = 150
         '
         'MercPesoEnKgClm
         '
@@ -316,6 +345,22 @@ Partial Class frmMovimientosParaExportar
         Me.MercValorClm.ReadOnly = True
         Me.MercValorClm.Width = 150
         '
+        'MercCantidadClm
+        '
+        Me.MercCantidadClm.HeaderText = "Cantidad"
+        Me.MercCantidadClm.MinimumWidth = 8
+        Me.MercCantidadClm.Name = "MercCantidadClm"
+        Me.MercCantidadClm.ReadOnly = True
+        Me.MercCantidadClm.Width = 150
+        '
+        'MercPeligrosoClm
+        '
+        Me.MercPeligrosoClm.HeaderText = "¿Peligroso?"
+        Me.MercPeligrosoClm.MinimumWidth = 8
+        Me.MercPeligrosoClm.Name = "MercPeligrosoClm"
+        Me.MercPeligrosoClm.ReadOnly = True
+        Me.MercPeligrosoClm.Width = 150
+        '
         'btnReiniciar
         '
         Me.btnReiniciar.Dock = System.Windows.Forms.DockStyle.Fill
@@ -330,6 +375,7 @@ Partial Class frmMovimientosParaExportar
         '
         Me.lblDescripcionEscenario.AutoSize = True
         Me.lblDescripcionEscenario.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.lblDescripcionEscenario.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblDescripcionEscenario.Location = New System.Drawing.Point(213, 0)
         Me.lblDescripcionEscenario.Name = "lblDescripcionEscenario"
         Me.lblDescripcionEscenario.Size = New System.Drawing.Size(204, 62)
@@ -366,11 +412,6 @@ Partial Class frmMovimientosParaExportar
     Friend WithEvents Label5 As Label
     Friend WithEvents dgvMovimientos As DataGridView
     Friend WithEvents dgvMercanciasDeMovimiento As DataGridView
-    Friend WithEvents MercClaveProdServClm As DataGridViewTextBoxColumn
-    Friend WithEvents MercDescripcionClm As DataGridViewTextBoxColumn
-    Friend WithEvents MercClaveUnidadClm As DataGridViewTextBoxColumn
-    Friend WithEvents MercPesoEnKgClm As DataGridViewTextBoxColumn
-    Friend WithEvents MercValorClm As DataGridViewTextBoxColumn
     Friend WithEvents btnReiniciar As Button
     Friend WithEvents MovimientosTipoMovimientoClm As DataGridViewTextBoxColumn
     Friend WithEvents MovimientosIdUbicacionClm As DataGridViewTextBoxColumn
@@ -379,4 +420,13 @@ Partial Class frmMovimientosParaExportar
     Friend WithEvents MovimientosCpClm As DataGridViewTextBoxColumn
     Friend WithEvents MovimientosDetalleBtnClm As DataGridViewButtonColumn
     Friend WithEvents lblDescripcionEscenario As Label
+    Friend WithEvents MercClaveProdServClm As DataGridViewTextBoxColumn
+    Friend WithEvents MercClasificacionSatClm As DataGridViewTextBoxColumn
+    Friend WithEvents MercDescripcionClm As DataGridViewTextBoxColumn
+    Friend WithEvents MercClaveUnidadClm As DataGridViewTextBoxColumn
+    Friend WithEvents MercDescripcionUnidadClm As DataGridViewTextBoxColumn
+    Friend WithEvents MercPesoEnKgClm As DataGridViewTextBoxColumn
+    Friend WithEvents MercValorClm As DataGridViewTextBoxColumn
+    Friend WithEvents MercCantidadClm As DataGridViewTextBoxColumn
+    Friend WithEvents MercPeligrosoClm As DataGridViewTextBoxColumn
 End Class

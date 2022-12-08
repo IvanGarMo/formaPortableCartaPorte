@@ -1,4 +1,6 @@
-﻿Public Class Mercancia
+﻿Imports Newtonsoft.Json
+
+Public Class Mercancia
     Private _ClaveProdServ As String
     Private _Descripcion As String
     Private _DescripcionInterna As String
@@ -38,6 +40,9 @@
     Private _FraccionArancelaria As String
     Private _Pedimento As String
     'Final de sección exclusiva de mercancía importada
+
+    'Esto es para control interno, por motivos de problemas para traslado
+    Private _mercanciaIncluidaEnCartaPorteSegunSat As Boolean
 
     Public Sub New()
         _Descripcion = String.Empty
@@ -232,6 +237,7 @@
         End Set
     End Property
 
+    <JsonIgnore>
     Public ReadOnly Property EsComercioInternacionalCad As String
         Get
             Dim res As String = IIf(_EsComercioInternacional, "SI", "NO")
@@ -239,6 +245,7 @@
         End Get
     End Property
 
+    <JsonIgnore>
     Public ReadOnly Property EsMaterialPeligrosoCad As String
         Get
             Dim res As String = IIf(_MaterialPeligroso, "SI", "NO")
@@ -268,6 +275,7 @@
         End Set
     End Property
 
+    <JsonIgnore>
     Public ReadOnly Property Dimensiones As String
         Get
             Return ""
@@ -370,6 +378,7 @@
         End Set
     End Property
 
+    <JsonIgnore>
     Public ReadOnly Property Cero As String
         Get
             Return "0"
@@ -385,6 +394,7 @@
         End Set
     End Property
 
+    <JsonIgnore>
     Public ReadOnly Property DescripcionInternaModal As String
         Get
             If String.IsNullOrEmpty(_DescripcionInterna) Then
@@ -399,9 +409,19 @@
         End Get
     End Property
 
+    <JsonIgnore>
     Public ReadOnly Property ValorMercanciaCadena As String
         Get
             Return _ValorMercancia.ToString("N3")
         End Get
+    End Property
+
+    Public Property MercanciaIncluidaEnCartaPorteSegunSat As Boolean
+        Get
+            Return _mercanciaIncluidaEnCartaPorteSegunSat
+        End Get
+        Set(value As Boolean)
+            _mercanciaIncluidaEnCartaPorteSegunSat = value
+        End Set
     End Property
 End Class

@@ -1,5 +1,6 @@
 ﻿Imports System.IO
 Imports System.Text.RegularExpressions
+Imports System.Windows.Forms
 
 Public Class Utils
     'Este método crea un objeto de OrigenDestino con base en los datos
@@ -94,6 +95,7 @@ Public Class Utils
         mercancia.EsComercioInternacional = CType(rowDatos("esComercioInternacional"), Boolean)
         mercancia.FraccionArancelaria = rowDatos("fraccionArancelaria").ToString()
         mercancia.Pedimento = rowDatos("pedimento").ToString()
+        mercancia.MercanciaIncluidaEnCartaPorteSegunSat = CType(rowDatos("esIncluidoEnCartaPorte"), Boolean)
         Return mercancia
     End Function
 
@@ -141,5 +143,13 @@ Public Class Utils
     Private Function LeeArchivo(ByRef path As String) As String
         Return File.ReadAllText(path)
     End Function
+
+    Public Sub ImportaMovimientoIntermedio(ByVal idUbicacionPadre As String,
+                                           ByVal idMovimientoOrigen As String,
+                                           ByVal idMovimientoIntermedio As String,
+                                           ByRef listaUbicaciones As List(Of OrigenDestino),
+                                           ByRef datosMercancias As Dictionary(Of String, List(Of Mercancia)))
+
+    End Sub
 
 End Class
