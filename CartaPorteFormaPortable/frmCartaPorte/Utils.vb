@@ -133,6 +133,10 @@ Public Class Utils
         ubicacionOrigen = objJson.DatosOrigen
         ubicacionDestino = objJson.DatosDestino
         listaDestinosIntermedios = objJson.Get_ListadoDestinosIntermedios()
+        listaDestinosIntermedios.ForEach(Sub(x)
+                                             x.UsuarioCausoProblemasConFecha = True
+                                             x.UsuarioCausoProblemasConKm = True
+                                         End Sub)
         dictMercancias = objJson.Get_DatosMercancias()
     End Sub
 

@@ -436,6 +436,7 @@ Public Class frmCartaPorte
         utils.LeeArchivoJson(pathFile, datosOrigenParaCartaPorte,
                              datosDestinoParaCartaPorte, datosDestinosIntermediosParaCartaPorte,
                              datosMercancias)
+        datosDestinoParaCartaPorte.FueImportado = True
         CargaDatosOrigen()
 
         ORIGEN_NO_HA_AVISADO_HORA = False 'Esto es para impedir advertencia de hora
@@ -1720,7 +1721,7 @@ Public Class frmCartaPorte
         If datosDestinoParaCartaPorte Is Nothing Then
             datosDestinoParaCartaPorte = New OrigenDestino
         End If
-        dtFechaSalidaDestino.MinDate = dtFechaSalidaRemitente.Value
+        dtFechaSalidaDestino.MinDate = datosOrigenParaCartaPorte.FechaSalidaLlegada.Date
         BindCombobox(cbPaisDestino, ObtenListadoPaises())
         LimpiarDatosDestino()
         LimpiarDatosOrigen()
@@ -2113,7 +2114,7 @@ Public Class frmCartaPorte
                 'dtFechaSalidaDestino.Value = datosOrigenParaCartaPorte.FechaHora.AddMinutes(1)
                 txtHoraSalidaDestino.Text = String.Empty
             Else
-                dtFechaSalidaDestino.Value = datosDestinoParaCartaPorte.FechaSalidaLlegada
+                dtFechaSalidaDestino.Value = datosDestinoParaCartaPorte.FechaSalidaLlegada.Date
                 txtHoraSalidaDestino.Text = datosDestinoParaCartaPorte.HoraSalidaLlegada
             End If
 
@@ -3794,17 +3795,30 @@ Public Class frmCartaPorte
 
     Private Sub CargaDatosTransporte()
         If datosAutoTransporte IsNot Nothing Then
+            RemoveHandler cbSeleccionarVehiculo.SelectedValueChanged, AddressOf cbSeleccionarVehiculo_SelectedValueChanged
             cbSeleccionarVehiculo.SelectedValue = datosAutoTransporte.CveInternaVehiculo
+            AddHandler cbSeleccionarVehiculo.SelectedValueChanged, AddressOf cbSeleccionarVehiculo_SelectedValueChanged
+            cbSeleccionarVehiculo.Enabled = True
             txtTipoPermisoSCT.Text = datosAutoTransporte.PermSCT
+            txtTipoPermisoSCT.Enabled = True
             txtNumPermisoSCT.Text = datosAutoTransporte.NumPermisoSCT
+            txtNumPermisoSCT.Enabled = True
             txtConVeh.Text = datosAutoTransporte.ConfigVehicular
+            txtConVeh.Enabled = True
             txtPlacaTransporte.Text = datosAutoTransporte.PlacaVM
+            txtPlacaTransporte.Enabled = True
             txtAnioModeloTransporte.Text = datosAutoTransporte.AnioModeloVM
+            txtAnioModeloTransporte.Enabled = True
             txtAseguradoraTransporte.Text = datosAutoTransporte.AseguraRespCivil
+            txtAseguradoraTransporte.Enabled = True
             txtPolizaTransporte.Text = datosAutoTransporte.PolizaRespCivil
+            txtPolizaCargaTransporte.Enabled = True
             txtPrimaSeguroTransporte.Text = datosAutoTransporte.PrimaSeguro.ToString()
+            txtPrimaSeguroTransporte.Enabled = True
             txtAseguradoraCargaTransporte.Text = datosAutoTransporte.AseguraCarga
+            txtAseguradoraCargaTransporte.Enabled = True
             txtPolizaCargaTransporte.Text = datosAutoTransporte.PolizaCarga
+            txtPolizaCargaTransporte.Enabled = True
 
             'Cargo la información de los remolques
             Dim noRemolques As Int16 = datosAutoTransporte.NoRemolques
@@ -4158,7 +4172,10 @@ Public Class frmCartaPorte
             Return
         End If
 
-        Dim codigoPostalOp As String = datosAutoTransporte.Transportista.Domicilio.CodigoPostal
+        Dim codigoPostalOp As String = String.Empty
+        If datosAutoTransporte.Transportista IsNot Nothing AndAlso datosAutoTransporte.Transportista.Domicilio IsNot Nothing Then
+            codigoPostalOp = datosAutoTransporte.Transportista.Domicilio.CodigoPostal
+        End If
         Dim valido = conexionesCartaPorte.Get_ValidaCodigoPostal(codigoPostalOp, edoOp, munOp, locOp, String.Empty)
         If valido Then
             txtCpOperador.Text = codigoPostalOp
@@ -4187,9 +4204,9 @@ Public Class frmCartaPorte
     End Sub
 
     Private Sub PreparaDatosOperador()
-
         BindCombobox(cbOpcionesOperador, conexionesCartaPorte.Get_CatalogoOperadores())
         BloqueaDatosOperador()
+        CargaInformacionOperador()
     End Sub
 
     Private Sub BloqueaDatosOperador()
@@ -4317,20 +4334,31 @@ Public Class frmCartaPorte
 
     Private Sub CargaInformacionOperador()
         If datosAutoTransporte.Transportista IsNot Nothing Then
+            RemoveHandler cbOpcionesOperador.SelectedValueChanged, AddressOf cbOpcionesOperador_SelectedValueChanged
             Dim datosOperador As DatosTransportista = datosAutoTransporte.Transportista
             cbOpcionesOperador.SelectedValue = datosOperador.CveInternaOperador
+            AddHandler cbOpcionesOperador.SelectedValueChanged, AddressOf cbOpcionesOperador_SelectedValueChanged
             txtNombreOperador.Text = datosOperador.NombreTransportista
+            txtNombreOperador.Enabled = True
             txtApPaternoOperador.Text = datosOperador.ApellidoPaternoTransportista
+            txtApPaternoOperador.Enabled = True
             txtApMaternoOperador.Text = datosOperador.ApellidoMaternoTransportista
+            txtApMaternoOperador.Enabled = True
             rbOperadorExtranjero.Checked = datosOperador.EsTransportistaExtranjero
+            rbOperadorExtranjero.Enabled = True
             rbOperadorMexicano.Checked = datosOperador.EsTransportistaNacional
+            rbOperadorMexicano.Enabled = True
             txtRfcOperador.Text = datosOperador.RFCFigura
+            txtRfcOperador.Enabled = True
             txtNumRegIdTribFiscOperador.Text = datosOperador.NumRegIdTribFigura
             cbTipoFiguraOperador.SelectedValue = datosOperador.TipoFigura
             txtNumLicenciaOperador.Text = datosOperador.NumLicencia
+            txtNumLicenciaOperador.Enabled = True
             listaParteTransporte = datosOperador.ParteTransporte
             cbPaisOperador.SelectedValue = datosOperador.Domicilio.Pais
+            cbPaisOperador.Enabled = True
             txtCpOperador.Text = datosOperador.Domicilio.CodigoPostal
+            txtCpOperador.Enabled = True
             BindGridPartesTransporteOperador()
 
             If datosOperador.EsTransportistaNacional Then
@@ -4552,7 +4580,8 @@ Public Class frmCartaPorte
         Dim noExtOperador As String = String.Empty
         Dim noIntOperador As String = String.Empty
 
-        If ObtenValorCombobox(cbOpcionesOperador) = "-01" Then AlertaMensaje(ObtenParametroPorLlave("SELECCIONE_OPERADOR")) : Return
+        cveInternaOperador = ObtenValorCombobox(cbOpcionesOperador)
+        If cveInternaOperador = "-01" Then AlertaMensaje(ObtenParametroPorLlave("SELECCIONE_OPERADOR")) : Return
         esOperadorNacional = rbOperadorMexicano.Checked
         esOperadorExtranjero = rbOperadorExtranjero.Checked
         rfcOperador = ObtenValorTextbox(txtRfcOperador)
@@ -4674,7 +4703,6 @@ Public Class frmCartaPorte
         End If
         If claveOperador <> "00" Then
             ObtenInformacionOperadorDeBd()
-            CargaInformacionOperador()
         End If
     End Sub
 #End Region

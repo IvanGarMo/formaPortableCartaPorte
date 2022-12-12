@@ -9,7 +9,7 @@
     End Sub
 
     Private Sub CreaOpciones()
-        Dim opciones As DataTable = conexion.Get_DescripcionEscenario(True, "EAGLE")
+        Dim opciones As DataTable = conexion.Get_DescripcionEscenario(True, "PLUSSM")
         _escenarios = opciones
 
         Dim indiceRow As Int16 = 1
@@ -41,7 +41,14 @@
                     Dim frm As New frmInicioProcesoCartaPorte(drEscenario)
                     frm.Show()
                 Else
-                    Dim frm As New frmCartaPorte("EAGLE", CInt(drEscenario("idEscenario")), drEscenario)
+                    Dim frm As New frmCartaPorte(drEscenario("idEmpresa").ToString(), CInt(drEscenario("idEscenario")), drEscenario)
+                    frm.TopLevel = False
+                    TableLayoutPanel1.Controls.Add(frm)
+                    TableLayoutPanel1.SetRow(frm, 1)
+                    TableLayoutPanel1.SetColumn(frm, 1)
+                    TableLayoutPanel1.SetColumnSpan(frm, TableLayoutPanel1.ColumnCount)
+                    TableLayoutPanel1.SetRowSpan(frm, TableLayoutPanel1.RowCount - 1)
+                    frm.Dock = DockStyle.Fill
                     frm.Show()
                 End If
             End If

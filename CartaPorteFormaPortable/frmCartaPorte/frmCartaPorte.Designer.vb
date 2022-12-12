@@ -22,10 +22,10 @@ Partial Class frmCartaPorte
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Dim DataGridViewCellStyle65 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle66 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle67 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle68 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle4 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.TabControl1 = New System.Windows.Forms.TabControl()
         Me.tabOrigen = New System.Windows.Forms.TabPage()
         Me.tlpPrincipalOrigen = New System.Windows.Forms.TableLayoutPanel()
@@ -2935,24 +2935,24 @@ Partial Class frmCartaPorte
         'dgvListadoMovimientosPestanaMercancia
         '
         Me.dgvListadoMovimientosPestanaMercancia.AllowUserToAddRows = False
-        DataGridViewCellStyle65.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle65.BackColor = System.Drawing.SystemColors.Control
-        DataGridViewCellStyle65.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle65.ForeColor = System.Drawing.SystemColors.WindowText
-        DataGridViewCellStyle65.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle65.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle65.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.dgvListadoMovimientosPestanaMercancia.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle65
+        DataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control
+        DataGridViewCellStyle1.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText
+        DataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.dgvListadoMovimientosPestanaMercancia.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle1
         Me.dgvListadoMovimientosPestanaMercancia.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
         Me.dgvListadoMovimientosPestanaMercancia.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.MovimientoMercanciaClm, Me.DestinoMercanciaClm, Me.MovimientosTipoMovimientoClm, Me.MercanciasBtnClm, Me.AnadirMercanciaMovimientoClm, Me.IdUbicacionMovimientoPestanaMercanciaClm, Me.MovimientosVerModalClm})
-        DataGridViewCellStyle66.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle66.BackColor = System.Drawing.SystemColors.Window
-        DataGridViewCellStyle66.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle66.ForeColor = System.Drawing.SystemColors.ControlText
-        DataGridViewCellStyle66.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle66.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle66.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
-        Me.dgvListadoMovimientosPestanaMercancia.DefaultCellStyle = DataGridViewCellStyle66
+        DataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window
+        DataGridViewCellStyle2.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText
+        DataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
+        Me.dgvListadoMovimientosPestanaMercancia.DefaultCellStyle = DataGridViewCellStyle2
         Me.dgvListadoMovimientosPestanaMercancia.Dock = System.Windows.Forms.DockStyle.Fill
         Me.dgvListadoMovimientosPestanaMercancia.Location = New System.Drawing.Point(3, 26)
         Me.dgvListadoMovimientosPestanaMercancia.Name = "dgvListadoMovimientosPestanaMercancia"
@@ -3055,24 +3055,24 @@ Partial Class frmCartaPorte
         'dgvMercanciasPorMovimiento
         '
         Me.dgvMercanciasPorMovimiento.AllowUserToAddRows = False
-        DataGridViewCellStyle67.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle67.BackColor = System.Drawing.SystemColors.Control
-        DataGridViewCellStyle67.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle67.ForeColor = System.Drawing.SystemColors.WindowText
-        DataGridViewCellStyle67.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle67.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle67.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.dgvMercanciasPorMovimiento.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle67
+        DataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control
+        DataGridViewCellStyle3.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText
+        DataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.dgvMercanciasPorMovimiento.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle3
         Me.dgvMercanciasPorMovimiento.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
         Me.dgvMercanciasPorMovimiento.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.MercanciaClaveProdServClm, Me.MercanciaClasificacionSATClm, Me.MovimientoDescripcionClm, Me.ClaveUnidadClm, Me.DescripcionUnidadClm, Me.ValorMercanciaClm, Me.MercanciaCantidadMercClm, Me.MercanciaMovimientoPeligrosaClm, Me.MovimientoComercioIntClm, Me.MovimientoDetallesMercClm, Me.MovimientoMercanciaEliminarClm, Me.MovimientoMercanciaCheckboxMaterialCheckboxClm})
-        DataGridViewCellStyle68.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle68.BackColor = System.Drawing.SystemColors.Window
-        DataGridViewCellStyle68.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle68.ForeColor = System.Drawing.SystemColors.ControlText
-        DataGridViewCellStyle68.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle68.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle68.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
-        Me.dgvMercanciasPorMovimiento.DefaultCellStyle = DataGridViewCellStyle68
+        DataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Window
+        DataGridViewCellStyle4.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.ControlText
+        DataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
+        Me.dgvMercanciasPorMovimiento.DefaultCellStyle = DataGridViewCellStyle4
         Me.dgvMercanciasPorMovimiento.Dock = System.Windows.Forms.DockStyle.Fill
         Me.dgvMercanciasPorMovimiento.Location = New System.Drawing.Point(3, 26)
         Me.dgvMercanciasPorMovimiento.Name = "dgvMercanciasPorMovimiento"
@@ -3890,6 +3890,7 @@ Partial Class frmCartaPorte
         Me.tlpContenedorDatosTransporte.Controls.Add(Me.txtTipoPermisoSCT, 1, 2)
         Me.tlpContenedorDatosTransporte.Controls.Add(Me.txtDescripcionTipoPermisoSCT, 2, 2)
         Me.tlpContenedorDatosTransporte.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.tlpContenedorDatosTransporte.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.tlpContenedorDatosTransporte.Location = New System.Drawing.Point(3, 3)
         Me.tlpContenedorDatosTransporte.Name = "tlpContenedorDatosTransporte"
         Me.tlpContenedorDatosTransporte.RowCount = 7
@@ -3929,6 +3930,7 @@ Partial Class frmCartaPorte
         '
         Me.cbSeleccionarVehiculo.BackColor = System.Drawing.Color.White
         Me.cbSeleccionarVehiculo.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.cbSeleccionarVehiculo.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.cbSeleccionarVehiculo.FormattingEnabled = True
         Me.cbSeleccionarVehiculo.Location = New System.Drawing.Point(277, 27)
         Me.cbSeleccionarVehiculo.Name = "cbSeleccionarVehiculo"
@@ -3963,6 +3965,7 @@ Partial Class frmCartaPorte
         '
         Me.txtNumPermisoSCT.BackColor = System.Drawing.Color.White
         Me.txtNumPermisoSCT.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.txtNumPermisoSCT.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtNumPermisoSCT.Location = New System.Drawing.Point(825, 27)
         Me.txtNumPermisoSCT.Name = "txtNumPermisoSCT"
         Me.txtNumPermisoSCT.Size = New System.Drawing.Size(269, 26)
@@ -3974,6 +3977,7 @@ Partial Class frmCartaPorte
         Me.tlpContenedorDatosTransporte.SetColumnSpan(Me.txtDescripConfigVehicular, 2)
         Me.txtDescripConfigVehicular.Dock = System.Windows.Forms.DockStyle.Fill
         Me.txtDescripConfigVehicular.Enabled = False
+        Me.txtDescripConfigVehicular.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtDescripConfigVehicular.Location = New System.Drawing.Point(551, 99)
         Me.txtDescripConfigVehicular.Name = "txtDescripConfigVehicular"
         Me.txtDescripConfigVehicular.Size = New System.Drawing.Size(543, 26)
@@ -4017,6 +4021,7 @@ Partial Class frmCartaPorte
         '
         Me.txtPlacaTransporte.BackColor = System.Drawing.Color.White
         Me.txtPlacaTransporte.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.txtPlacaTransporte.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtPlacaTransporte.Location = New System.Drawing.Point(277, 135)
         Me.txtPlacaTransporte.Name = "txtPlacaTransporte"
         Me.txtPlacaTransporte.Size = New System.Drawing.Size(268, 26)
@@ -4026,6 +4031,7 @@ Partial Class frmCartaPorte
         '
         Me.txtAnioModeloTransporte.BackColor = System.Drawing.Color.White
         Me.txtAnioModeloTransporte.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.txtAnioModeloTransporte.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtAnioModeloTransporte.Location = New System.Drawing.Point(825, 135)
         Me.txtAnioModeloTransporte.Name = "txtAnioModeloTransporte"
         Me.txtAnioModeloTransporte.Size = New System.Drawing.Size(269, 26)
@@ -4057,6 +4063,7 @@ Partial Class frmCartaPorte
         '
         Me.txtAseguradoraTransporte.BackColor = System.Drawing.Color.White
         Me.txtAseguradoraTransporte.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.txtAseguradoraTransporte.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtAseguradoraTransporte.Location = New System.Drawing.Point(277, 171)
         Me.txtAseguradoraTransporte.Name = "txtAseguradoraTransporte"
         Me.txtAseguradoraTransporte.Size = New System.Drawing.Size(268, 26)
@@ -4066,6 +4073,7 @@ Partial Class frmCartaPorte
         '
         Me.txtPolizaTransporte.BackColor = System.Drawing.Color.White
         Me.txtPolizaTransporte.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.txtPolizaTransporte.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtPolizaTransporte.Location = New System.Drawing.Point(825, 171)
         Me.txtPolizaTransporte.Name = "txtPolizaTransporte"
         Me.txtPolizaTransporte.Size = New System.Drawing.Size(269, 26)
@@ -4074,6 +4082,7 @@ Partial Class frmCartaPorte
         'txtAseguradoraCargaTransporte
         '
         Me.txtAseguradoraCargaTransporte.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.txtAseguradoraCargaTransporte.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtAseguradoraCargaTransporte.Location = New System.Drawing.Point(277, 207)
         Me.txtAseguradoraCargaTransporte.Name = "txtAseguradoraCargaTransporte"
         Me.txtAseguradoraCargaTransporte.Size = New System.Drawing.Size(268, 26)
@@ -4121,6 +4130,7 @@ Partial Class frmCartaPorte
         'txtPolizaCargaTransporte
         '
         Me.txtPolizaCargaTransporte.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.txtPolizaCargaTransporte.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtPolizaCargaTransporte.Location = New System.Drawing.Point(137, 3)
         Me.txtPolizaCargaTransporte.Name = "txtPolizaCargaTransporte"
         Me.txtPolizaCargaTransporte.Size = New System.Drawing.Size(128, 26)
@@ -4157,6 +4167,7 @@ Partial Class frmCartaPorte
         'txtPrimaSeguroTransporte
         '
         Me.txtPrimaSeguroTransporte.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.txtPrimaSeguroTransporte.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtPrimaSeguroTransporte.Location = New System.Drawing.Point(137, 3)
         Me.txtPrimaSeguroTransporte.Name = "txtPrimaSeguroTransporte"
         Me.txtPrimaSeguroTransporte.Size = New System.Drawing.Size(129, 26)
@@ -4166,6 +4177,7 @@ Partial Class frmCartaPorte
         '
         Me.txtConVeh.BackColor = System.Drawing.Color.White
         Me.txtConVeh.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.txtConVeh.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtConVeh.Location = New System.Drawing.Point(277, 99)
         Me.txtConVeh.Name = "txtConVeh"
         Me.txtConVeh.Size = New System.Drawing.Size(268, 26)
@@ -4175,6 +4187,7 @@ Partial Class frmCartaPorte
         '
         Me.txtTipoPermisoSCT.BackColor = System.Drawing.Color.White
         Me.txtTipoPermisoSCT.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.txtTipoPermisoSCT.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtTipoPermisoSCT.Location = New System.Drawing.Point(277, 63)
         Me.txtTipoPermisoSCT.Name = "txtTipoPermisoSCT"
         Me.txtTipoPermisoSCT.Size = New System.Drawing.Size(268, 26)
@@ -4186,6 +4199,7 @@ Partial Class frmCartaPorte
         Me.tlpContenedorDatosTransporte.SetColumnSpan(Me.txtDescripcionTipoPermisoSCT, 2)
         Me.txtDescripcionTipoPermisoSCT.Dock = System.Windows.Forms.DockStyle.Fill
         Me.txtDescripcionTipoPermisoSCT.Enabled = False
+        Me.txtDescripcionTipoPermisoSCT.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtDescripcionTipoPermisoSCT.Location = New System.Drawing.Point(551, 63)
         Me.txtDescripcionTipoPermisoSCT.Name = "txtDescripcionTipoPermisoSCT"
         Me.txtDescripcionTipoPermisoSCT.Size = New System.Drawing.Size(543, 26)
@@ -4217,6 +4231,7 @@ Partial Class frmCartaPorte
         Me.tlpContenedorRemolques.Controls.Add(Me.txtPlacasRemolque1, 5, 2)
         Me.tlpContenedorRemolques.Controls.Add(Me.txtPlacasRemolque2, 5, 3)
         Me.tlpContenedorRemolques.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.tlpContenedorRemolques.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.tlpContenedorRemolques.Location = New System.Drawing.Point(3, 252)
         Me.tlpContenedorRemolques.Name = "tlpContenedorRemolques"
         Me.tlpContenedorRemolques.RowCount = 4
@@ -4300,6 +4315,7 @@ Partial Class frmCartaPorte
         'cbPropiedadRemolque1
         '
         Me.cbPropiedadRemolque1.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.cbPropiedadRemolque1.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.cbPropiedadRemolque1.FormattingEnabled = True
         Me.cbPropiedadRemolque1.Location = New System.Drawing.Point(3, 75)
         Me.cbPropiedadRemolque1.Name = "cbPropiedadRemolque1"
@@ -4309,6 +4325,7 @@ Partial Class frmCartaPorte
         'cbPropiedadRemolque2
         '
         Me.cbPropiedadRemolque2.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.cbPropiedadRemolque2.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.cbPropiedadRemolque2.FormattingEnabled = True
         Me.cbPropiedadRemolque2.Location = New System.Drawing.Point(3, 129)
         Me.cbPropiedadRemolque2.Name = "cbPropiedadRemolque2"
@@ -4318,6 +4335,7 @@ Partial Class frmCartaPorte
         'cbTipoRemolque1
         '
         Me.cbTipoRemolque1.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.cbTipoRemolque1.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.cbTipoRemolque1.FormattingEnabled = True
         Me.cbTipoRemolque1.Location = New System.Drawing.Point(309, 75)
         Me.cbTipoRemolque1.Name = "cbTipoRemolque1"
@@ -4327,6 +4345,7 @@ Partial Class frmCartaPorte
         'cbTipoRemolque2
         '
         Me.cbTipoRemolque2.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.cbTipoRemolque2.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.cbTipoRemolque2.FormattingEnabled = True
         Me.cbTipoRemolque2.Location = New System.Drawing.Point(309, 129)
         Me.cbTipoRemolque2.Name = "cbTipoRemolque2"
@@ -4336,6 +4355,7 @@ Partial Class frmCartaPorte
         'txtTipoRemolque1
         '
         Me.txtTipoRemolque1.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.txtTipoRemolque1.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtTipoRemolque1.Location = New System.Drawing.Point(506, 75)
         Me.txtTipoRemolque1.Name = "txtTipoRemolque1"
         Me.txtTipoRemolque1.Size = New System.Drawing.Size(191, 26)
@@ -4345,6 +4365,7 @@ Partial Class frmCartaPorte
         'txtTipoRemolque2
         '
         Me.txtTipoRemolque2.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.txtTipoRemolque2.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtTipoRemolque2.Location = New System.Drawing.Point(506, 129)
         Me.txtTipoRemolque2.Name = "txtTipoRemolque2"
         Me.txtTipoRemolque2.Size = New System.Drawing.Size(191, 26)
@@ -4354,6 +4375,7 @@ Partial Class frmCartaPorte
         'txtPlacasRemolque1
         '
         Me.txtPlacasRemolque1.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.txtPlacasRemolque1.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtPlacasRemolque1.Location = New System.Drawing.Point(900, 75)
         Me.txtPlacasRemolque1.Name = "txtPlacasRemolque1"
         Me.txtPlacasRemolque1.Size = New System.Drawing.Size(194, 26)
@@ -4362,6 +4384,7 @@ Partial Class frmCartaPorte
         'txtPlacasRemolque2
         '
         Me.txtPlacasRemolque2.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.txtPlacasRemolque2.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtPlacasRemolque2.Location = New System.Drawing.Point(900, 129)
         Me.txtPlacasRemolque2.Name = "txtPlacasRemolque2"
         Me.txtPlacasRemolque2.Size = New System.Drawing.Size(194, 26)
@@ -4423,6 +4446,7 @@ Partial Class frmCartaPorte
         'txtAseguradoraDanosMedioAmbiente
         '
         Me.txtAseguradoraDanosMedioAmbiente.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.txtAseguradoraDanosMedioAmbiente.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtAseguradoraDanosMedioAmbiente.Location = New System.Drawing.Point(441, 26)
         Me.txtAseguradoraDanosMedioAmbiente.Name = "txtAseguradoraDanosMedioAmbiente"
         Me.txtAseguradoraDanosMedioAmbiente.Size = New System.Drawing.Size(653, 26)
@@ -4431,6 +4455,7 @@ Partial Class frmCartaPorte
         'txtPolizaSegurosDanosMedioAmbiente
         '
         Me.txtPolizaSegurosDanosMedioAmbiente.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.txtPolizaSegurosDanosMedioAmbiente.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtPolizaSegurosDanosMedioAmbiente.Location = New System.Drawing.Point(441, 73)
         Me.txtPolizaSegurosDanosMedioAmbiente.Name = "txtPolizaSegurosDanosMedioAmbiente"
         Me.txtPolizaSegurosDanosMedioAmbiente.Size = New System.Drawing.Size(653, 26)
@@ -4619,6 +4644,7 @@ Partial Class frmCartaPorte
         '
         Me.txtRfcOperador.BackColor = System.Drawing.Color.White
         Me.txtRfcOperador.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.txtRfcOperador.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtRfcOperador.Location = New System.Drawing.Point(221, 113)
         Me.txtRfcOperador.Name = "txtRfcOperador"
         Me.txtRfcOperador.Size = New System.Drawing.Size(168, 26)
@@ -4628,6 +4654,7 @@ Partial Class frmCartaPorte
         '
         Me.tlpSeleccionOperador.SetColumnSpan(Me.txtNumRegIdTribFiscOperador, 2)
         Me.txtNumRegIdTribFiscOperador.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.txtNumRegIdTribFiscOperador.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtNumRegIdTribFiscOperador.Location = New System.Drawing.Point(569, 113)
         Me.txtNumRegIdTribFiscOperador.Name = "txtNumRegIdTribFiscOperador"
         Me.txtNumRegIdTribFiscOperador.Size = New System.Drawing.Size(342, 26)
@@ -4637,6 +4664,7 @@ Partial Class frmCartaPorte
         '
         Me.txtNombreOperador.BackColor = System.Drawing.Color.White
         Me.txtNombreOperador.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.txtNombreOperador.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtNombreOperador.Location = New System.Drawing.Point(221, 156)
         Me.txtNombreOperador.Name = "txtNombreOperador"
         Me.txtNombreOperador.Size = New System.Drawing.Size(168, 26)
@@ -4646,6 +4674,7 @@ Partial Class frmCartaPorte
         '
         Me.txtApPaternoOperador.BackColor = System.Drawing.Color.White
         Me.txtApPaternoOperador.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.txtApPaternoOperador.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtApPaternoOperador.Location = New System.Drawing.Point(569, 156)
         Me.txtApPaternoOperador.Name = "txtApPaternoOperador"
         Me.txtApPaternoOperador.Size = New System.Drawing.Size(168, 26)
@@ -4655,6 +4684,7 @@ Partial Class frmCartaPorte
         '
         Me.txtApMaternoOperador.BackColor = System.Drawing.Color.White
         Me.txtApMaternoOperador.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.txtApMaternoOperador.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtApMaternoOperador.Location = New System.Drawing.Point(917, 156)
         Me.txtApMaternoOperador.Name = "txtApMaternoOperador"
         Me.txtApMaternoOperador.Size = New System.Drawing.Size(171, 26)
@@ -4664,6 +4694,7 @@ Partial Class frmCartaPorte
         '
         Me.cbTipoFiguraOperador.BackColor = System.Drawing.Color.White
         Me.cbTipoFiguraOperador.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.cbTipoFiguraOperador.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.cbTipoFiguraOperador.FormattingEnabled = True
         Me.cbTipoFiguraOperador.Location = New System.Drawing.Point(221, 199)
         Me.cbTipoFiguraOperador.Name = "cbTipoFiguraOperador"
@@ -4705,6 +4736,7 @@ Partial Class frmCartaPorte
         Me.cbOpcionesOperador.Dock = System.Windows.Forms.DockStyle.Fill
         Me.cbOpcionesOperador.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cbOpcionesOperador.FlatStyle = System.Windows.Forms.FlatStyle.System
+        Me.cbOpcionesOperador.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.cbOpcionesOperador.FormattingEnabled = True
         Me.cbOpcionesOperador.Location = New System.Drawing.Point(221, 27)
         Me.cbOpcionesOperador.Name = "cbOpcionesOperador"
@@ -4727,6 +4759,7 @@ Partial Class frmCartaPorte
         Me.txtNumLicenciaOperador.BackColor = System.Drawing.Color.White
         Me.tlpSeleccionOperador.SetColumnSpan(Me.txtNumLicenciaOperador, 2)
         Me.txtNumLicenciaOperador.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.txtNumLicenciaOperador.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtNumLicenciaOperador.Location = New System.Drawing.Point(743, 199)
         Me.txtNumLicenciaOperador.Name = "txtNumLicenciaOperador"
         Me.txtNumLicenciaOperador.Size = New System.Drawing.Size(345, 26)
@@ -4879,6 +4912,7 @@ Partial Class frmCartaPorte
         '
         Me.txtNoExtOperador.BackColor = System.Drawing.Color.White
         Me.txtNoExtOperador.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.txtNoExtOperador.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtNoExtOperador.Location = New System.Drawing.Point(136, 3)
         Me.txtNoExtOperador.Name = "txtNoExtOperador"
         Me.txtNoExtOperador.Size = New System.Drawing.Size(127, 26)
@@ -4913,6 +4947,7 @@ Partial Class frmCartaPorte
         'txtNoIntOperador
         '
         Me.txtNoIntOperador.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.txtNoIntOperador.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtNoIntOperador.Location = New System.Drawing.Point(137, 3)
         Me.txtNoIntOperador.Name = "txtNoIntOperador"
         Me.txtNoIntOperador.Size = New System.Drawing.Size(129, 26)
@@ -4945,6 +4980,7 @@ Partial Class frmCartaPorte
         Me.cbPaisOperador.Dock = System.Windows.Forms.DockStyle.Fill
         Me.cbPaisOperador.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cbPaisOperador.FlatStyle = System.Windows.Forms.FlatStyle.System
+        Me.cbPaisOperador.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.cbPaisOperador.FormattingEnabled = True
         Me.cbPaisOperador.Location = New System.Drawing.Point(275, 20)
         Me.cbPaisOperador.Name = "cbPaisOperador"
@@ -4957,6 +4993,7 @@ Partial Class frmCartaPorte
         Me.cbEstadoOperador.Dock = System.Windows.Forms.DockStyle.Fill
         Me.cbEstadoOperador.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cbEstadoOperador.FlatStyle = System.Windows.Forms.FlatStyle.System
+        Me.cbEstadoOperador.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.cbEstadoOperador.FormattingEnabled = True
         Me.cbEstadoOperador.Location = New System.Drawing.Point(819, 20)
         Me.cbEstadoOperador.Name = "cbEstadoOperador"
@@ -4969,6 +5006,7 @@ Partial Class frmCartaPorte
         Me.cbMunicipioOperador.Dock = System.Windows.Forms.DockStyle.Fill
         Me.cbMunicipioOperador.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cbMunicipioOperador.FlatStyle = System.Windows.Forms.FlatStyle.System
+        Me.cbMunicipioOperador.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.cbMunicipioOperador.FormattingEnabled = True
         Me.cbMunicipioOperador.Location = New System.Drawing.Point(275, 52)
         Me.cbMunicipioOperador.Name = "cbMunicipioOperador"
@@ -4981,6 +5019,7 @@ Partial Class frmCartaPorte
         Me.cbLocalidadOperador.Dock = System.Windows.Forms.DockStyle.Fill
         Me.cbLocalidadOperador.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cbLocalidadOperador.FlatStyle = System.Windows.Forms.FlatStyle.System
+        Me.cbLocalidadOperador.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.cbLocalidadOperador.FormattingEnabled = True
         Me.cbLocalidadOperador.Location = New System.Drawing.Point(819, 52)
         Me.cbLocalidadOperador.Name = "cbLocalidadOperador"
@@ -4993,6 +5032,7 @@ Partial Class frmCartaPorte
         Me.cbColoniaOperador.Dock = System.Windows.Forms.DockStyle.Fill
         Me.cbColoniaOperador.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cbColoniaOperador.FlatStyle = System.Windows.Forms.FlatStyle.System
+        Me.cbColoniaOperador.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.cbColoniaOperador.FormattingEnabled = True
         Me.cbColoniaOperador.Location = New System.Drawing.Point(819, 84)
         Me.cbColoniaOperador.Name = "cbColoniaOperador"
@@ -5003,6 +5043,7 @@ Partial Class frmCartaPorte
         '
         Me.txtCpOperador.BackColor = System.Drawing.Color.White
         Me.txtCpOperador.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.txtCpOperador.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtCpOperador.Location = New System.Drawing.Point(275, 84)
         Me.txtCpOperador.Name = "txtCpOperador"
         Me.txtCpOperador.Size = New System.Drawing.Size(266, 26)
@@ -5012,6 +5053,7 @@ Partial Class frmCartaPorte
         '
         Me.txtCalleOperador.BackColor = System.Drawing.Color.White
         Me.txtCalleOperador.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.txtCalleOperador.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtCalleOperador.Location = New System.Drawing.Point(275, 116)
         Me.txtCalleOperador.Name = "txtCalleOperador"
         Me.txtCalleOperador.Size = New System.Drawing.Size(266, 26)
@@ -5021,6 +5063,7 @@ Partial Class frmCartaPorte
         '
         Me.tlpDireccionOperador.SetColumnSpan(Me.txtReferenciaOperador, 2)
         Me.txtReferenciaOperador.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.txtReferenciaOperador.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtReferenciaOperador.Location = New System.Drawing.Point(275, 148)
         Me.txtReferenciaOperador.Name = "txtReferenciaOperador"
         Me.txtReferenciaOperador.Size = New System.Drawing.Size(538, 26)
@@ -5111,6 +5154,7 @@ Partial Class frmCartaPorte
         Me.cbParteTransporteOperador.Dock = System.Windows.Forms.DockStyle.Fill
         Me.cbParteTransporteOperador.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cbParteTransporteOperador.FlatStyle = System.Windows.Forms.FlatStyle.System
+        Me.cbParteTransporteOperador.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.cbParteTransporteOperador.FormattingEnabled = True
         Me.cbParteTransporteOperador.Location = New System.Drawing.Point(221, 20)
         Me.cbParteTransporteOperador.Name = "cbParteTransporteOperador"

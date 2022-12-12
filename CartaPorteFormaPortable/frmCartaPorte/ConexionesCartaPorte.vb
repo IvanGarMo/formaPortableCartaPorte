@@ -3,7 +3,6 @@
 Public Class ConexionesCartaPorte
     Private mockConexion As SqlConnection
     Private tiposCartaPorte As TiposCartaPorte
-
     Public Sub New()
         tiposCartaPorte = New TiposCartaPorte
     End Sub
@@ -29,7 +28,6 @@ Public Class ConexionesCartaPorte
 
         Cm.Parameters.AddWithValue("@ParIntIdEscenario", idEscenario)
         Cm.Parameters("@ParIntIdEscenario").Direction = ParameterDirection.Input
-
 
         Dim sqlAdapter As New SqlDataAdapter(Cm)
         Dim dataSet As New DataSet

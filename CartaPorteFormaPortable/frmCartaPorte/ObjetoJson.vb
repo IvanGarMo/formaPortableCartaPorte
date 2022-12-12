@@ -59,15 +59,22 @@ Public Class ObjetoJson
 
     Public Function Get_ListadoDestinosIntermedios() As List(Of OrigenDestino)
         Dim listaUbis As New List(Of OrigenDestino)
-        For Each item As ObjetoConMercancias In _destinosIntermedios
-            listaUbis.Add(item.DetalleUbicacion)
-        Next
+        If _destinosIntermedios Is Nothing Then
+            listaUbis = New List(Of OrigenDestino)
+        Else
+            For Each item As ObjetoConMercancias In _destinosIntermedios
+                listaUbis.Add(item.DetalleUbicacion)
+            Next
+        End If
         Return listaUbis
     End Function
 
     Public Function Get_DatosMercancias() As Dictionary(Of String, List(Of Mercancia))
         Dim dict As New Dictionary(Of String, List(Of Mercancia))
         dict.Add(_datosDestino.IDUbicacion, _mercancias)
+        If _destinosIntermedios Is Nothing Then
+            Return dict
+        End If
         For Each item As ObjetoConMercancias In _destinosIntermedios
             dict.Add(item.DetalleUbicacion.IDUbicacion, Mercancias)
         Next

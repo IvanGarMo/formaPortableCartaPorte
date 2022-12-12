@@ -151,7 +151,7 @@ Public Class frmMovimientosParaExportar
         End If
         datosDestino.UsuarioCausoProblemasConFecha = True
         datosDestino.UsuarioCausoProblemasConKm = True
-        datosDestino.IDUbicacion = "DE0000001"
+        datosDestino.IDUbicacion = "DE000001"
         datosDestino.TipoUbicacion = "Destino"
 
         Dim datosDomicilioDestino As Domicilio
