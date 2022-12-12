@@ -58,6 +58,50 @@ Public Class ConexionesCartaPorte
         Return dataSet
     End Function
 
+    Public Function RegistraRelacionCartaPorteMovimiento(ByRef idMovimiento As String,
+                                                         ByRef tipoMovimiento As String,
+                                                         ByRef movimientoOrigen As String,
+                                                         ByRef tipoOrigen As String,
+                                                         ByRef uuid As String,
+                                                         ByRef usuario As String,
+                                                         ByRef empresa As String,
+                                                         ByRef mensaje As String) As Boolean
+        Dim Cm As SqlCommand = Nothing
+        Cm = New SqlCommand("sat.SP_CCP_PuedeUsarDestinoIntermedio", obtenConexion())
+        Cm.CommandType = CommandType.StoredProcedure
+
+        Cm.Parameters.AddWithValue("@ParCadIdMovimiento", idMovimiento)
+        Cm.Parameters("@ParCadIdMovimiento").Direction = ParameterDirection.Input
+
+        Cm.Parameters.AddWithValue("@ParCadTipoMovimiento", tipoMovimiento)
+        Cm.Parameters("@ParCadTipoMovimiento").Direction = ParameterDirection.Input
+
+        Cm.Parameters.AddWithValue("@ParCadMovimientoOrigen", movimientoOrigen)
+        Cm.Parameters("@ParCadMovimientoOrigen").Direction = ParameterDirection.Input
+
+        Cm.Parameters.AddWithValue("@ParCadTipoOrigen", tipoOrigen)
+        Cm.Parameters("@ParCadTipoOrigen").Direction = ParameterDirection.Input
+
+        Cm.Parameters.AddWithValue("@ParCadUuid", uuid)
+        Cm.Parameters("@ParCadUuid").Direction = ParameterDirection.Input
+
+        Cm.Parameters.AddWithValue("@ParCadUsuario", usuario)
+        Cm.Parameters("@ParCadUsuario").Direction = ParameterDirection.Input
+
+        Cm.Parameters.AddWithValue("@ParCadEmpresa", empresa)
+        Cm.Parameters("@ParCadEmpresa").Direction = ParameterDirection.Input
+
+        Cm.Parameters.Add("@ParBitRegistroExitoso", SqlDbType.Bit, 1)
+        Cm.Parameters("@ParBitRegistroExitoso").Direction = ParameterDirection.Output
+
+        Cm.Parameters.Add("@ParCadMensaje", SqlDbType.VarChar, 500)
+        Cm.Parameters("@ParCadMensaje").Direction = ParameterDirection.Output
+
+        Cm.ExecuteNonQuery()
+        mensaje = Cm.Parameters("@ParCadMensaje").Value.ToString()
+        Return CType(Cm.Parameters("@ParBitRegistroExitoso").Value, Boolean)
+    End Function
+
     Public Function Get_PuedeImportarMovimientoIntermedio(ByRef idEmpresa As String,
                                                           ByRef tipoMovimiento As String,
                                                           ByRef idMovimientoPadre As String,

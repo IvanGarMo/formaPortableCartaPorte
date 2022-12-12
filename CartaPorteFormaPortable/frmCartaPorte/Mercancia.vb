@@ -44,6 +44,9 @@ Public Class Mercancia
     'Esto es para control interno, por motivos de problemas para traslado
     Private _mercanciaIncluidaEnCartaPorteSegunSat As Boolean
 
+    'Esto es para evitar problemas al registrar el peso
+    Private _PesoCorrrecto As Boolean
+
     Public Sub New()
         _Descripcion = String.Empty
         _DescripcionInterna = String.Empty
@@ -185,6 +188,9 @@ Public Class Mercancia
 
     Public Property PesoEnKg As Double
         Get
+            If _PesoEnKg < 1 Then
+                _PesoCorrrecto = False
+            End If
             Return _PesoEnKg
         End Get
         Set(value As Double)
@@ -422,6 +428,15 @@ Public Class Mercancia
         End Get
         Set(value As Boolean)
             _mercanciaIncluidaEnCartaPorteSegunSat = value
+        End Set
+    End Property
+
+    Public Property PesoCorrrecto As Boolean
+        Get
+            Return _PesoCorrrecto
+        End Get
+        Set(value As Boolean)
+            _PesoCorrrecto = value
         End Set
     End Property
 End Class
