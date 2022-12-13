@@ -13,6 +13,28 @@ Public Class ConexionesCartaPorte
         Return con
     End Function
 
+    Public Function Get_DatosMovimientoPadre(ByRef tipoMovimiento As String,
+                                             ByRef idEmpresa As String,
+                                             ByRef idMovimiento As String) As DataTable
+        Dim Cm As SqlCommand = Nothing
+        Cm = New SqlCommand("sat.SP_CCP_CargaDatosMovimientoPadre", obtenConexion())
+        Cm.CommandType = CommandType.StoredProcedure
+
+        Cm.Parameters.AddWithValue("@ParCadTipoMovimiento", tipoMovimiento)
+        Cm.Parameters("@ParCadTipoMovimiento").Direction = ParameterDirection.Input
+
+        Cm.Parameters.AddWithValue("@ParCadIdEmpresa", idEmpresa)
+        Cm.Parameters("@ParCadIdEmpresa").Direction = ParameterDirection.Input
+
+        Cm.Parameters.AddWithValue("@ParCadIdMovimiento", idMovimiento)
+        Cm.Parameters("@ParCadIdMovimiento").Direction = ParameterDirection.Input
+
+        Dim sqlAdapter As New SqlDataAdapter(Cm)
+        Dim dataSet As New DataSet
+        sqlAdapter.Fill(dataSet)
+        Return dataSet.Tables(0)
+    End Function
+
     Public Function Get_DescripcionEscenario(ByVal incluyeEscenarioDefault As Boolean,
                                              ByRef empresa As String,
                                              Optional ByVal idEscenario As Int16 = -1) As DataTable
@@ -56,6 +78,141 @@ Public Class ConexionesCartaPorte
         Dim dataSet As New DataSet
         sqlAdapter.Fill(dataSet)
         Return dataSet
+    End Function
+
+    Public Function Get_PosiblesFiltrosCartaPorte(ByRef idEmpresa As String) As DataSet
+        Dim Cm As SqlCommand = Nothing
+        Cm = New SqlCommand("sat.SP_CCP_CargaFiltrosPantallaAbcCartaPorte", obtenConexion())
+        Cm.CommandType = CommandType.StoredProcedure
+
+        Cm.Parameters.AddWithValue("@ParCadIdEmpresa", idEmpresa)
+        Cm.Parameters("@ParCadIdEmpresa").Direction = ParameterDirection.Input
+
+        Dim sqlAdapter As New SqlDataAdapter(Cm)
+        Dim dataSet As New DataSet
+        sqlAdapter.Fill(dataSet)
+        Return dataSet
+    End Function
+
+    Public Function Get_MovimientosDisponibles(ByRef tipoMovimiento As String,
+                                               ByRef idEmpresa As String,
+                                               ByRef fechaInicio As DateTime,
+                                               ByRef fechaFin As DateTime,
+                                               ByRef nivelUno As String,
+                                               ByRef nivelDos As String,
+                                               ByRef nivelTres As String) As DataTable
+        Dim Cm As SqlCommand = Nothing
+        Cm = New SqlCommand("sat.SP_CCP_BuscaMovimientosDisponibles", obtenConexion())
+        Cm.CommandType = CommandType.StoredProcedure
+
+        Cm.Parameters.AddWithValue("@ParCadTipoMovimiento", tipoMovimiento)
+        Cm.Parameters("@ParCadTipoMovimiento").Direction = ParameterDirection.Input
+
+        Cm.Parameters.AddWithValue("@ParCadIdEmpresa", idEmpresa)
+        Cm.Parameters("@ParCadIdEmpresa").Direction = ParameterDirection.Input
+
+        Cm.Parameters.AddWithValue("@ParDatFechaInicioBusqueda", fechaInicio)
+        Cm.Parameters("@ParDatFechaInicioBusqueda").Direction = ParameterDirection.Input
+
+        Cm.Parameters.AddWithValue("@ParDatFechaFinBusqueda", fechaFin)
+        Cm.Parameters("@ParDatFechaFinBusqueda").Direction = ParameterDirection.Input
+
+        Cm.Parameters.AddWithValue("@ParCadFiltroNivelUno", nivelUno)
+        Cm.Parameters("@ParCadFiltroNivelUno").Direction = ParameterDirection.Input
+
+        Cm.Parameters.AddWithValue("@ParCadFiltroNivelDos", nivelDos)
+        Cm.Parameters("@ParCadFiltroNivelDos").Direction = ParameterDirection.Input
+
+        Cm.Parameters.AddWithValue("@ParCadFiltroNivelTres", nivelTres)
+        Cm.Parameters("@ParCadFiltroNivelTres").Direction = ParameterDirection.Input
+
+        Dim sqlAdapter As New SqlDataAdapter(Cm)
+        Dim dataSet As New DataSet
+        sqlAdapter.Fill(dataSet)
+        Return dataSet.Tables(0)
+    End Function
+
+    Public Function Get_FiltrosConsultaMovimiento(ByRef tipoMovimiento As String,
+                                                  ByRef idEmpresa As String,
+                                                  ByRef nivel As Int32,
+                                                  Optional ByRef filtroNivelUno As String = "-01",
+                                                  Optional ByRef filtroNivelDos As String = "-01") As DataSet
+        Dim Cm As SqlCommand = Nothing
+        Cm = New SqlCommand("sat.SP_CPP_ObtenFiltros", obtenConexion())
+        Cm.CommandType = CommandType.StoredProcedure
+
+        Cm.Parameters.AddWithValue("@ParCadTipoMovimiento", tipoMovimiento)
+        Cm.Parameters("@ParCadTipoMovimiento").Direction = ParameterDirection.Input
+
+        Cm.Parameters.AddWithValue("@ParCadIdEmpresa", idEmpresa)
+        Cm.Parameters("@ParCadIdEmpresa").Direction = ParameterDirection.Input
+
+        Cm.Parameters.AddWithValue("@ParIntNivel", nivel)
+        Cm.Parameters("@ParIntNivel").Direction = ParameterDirection.Input
+
+        Cm.Parameters.AddWithValue("@ParCadNivelUno", filtroNivelUno)
+        Cm.Parameters("@ParCadNivelUno").Direction = ParameterDirection.Input
+
+        Cm.Parameters.AddWithValue("@ParCadNivelDos", filtroNivelDos)
+        Cm.Parameters("@ParCadNivelDos").Direction = ParameterDirection.Input
+
+        Dim sqlAdapter As New SqlDataAdapter(Cm)
+        Dim dataSet As New DataSet
+        sqlAdapter.Fill(dataSet)
+        Return dataSet
+    End Function
+    Public Function Get_ConsultaAbcRelMovimientosCartaPorte(ByRef idEmpresa As String,
+                                                            ByRef idMovimiento As String,
+                                                            ByRef tipoMovimiento As String,
+                                                            ByRef idSucursal As String,
+                                                            ByRef estatus As String,
+                                                            ByRef tipoCfdi As String,
+                                                            ByRef opcAgrupadoIndividual As String,
+                                                            ByVal consultaHistoricaActiva As Boolean,
+                                                            ByRef fechaInicioConsulta As DateTime,
+                                                            ByRef fechaFinConsulta As DateTime,
+                                                            ByVal soloTimbrados As Boolean) As DataTable
+        Dim Cm As SqlCommand = Nothing
+        Cm = New SqlCommand("sat.SP_CCP_CargaFiltrosPantallaAbcCartaPorte", obtenConexion())
+        Cm.CommandType = CommandType.StoredProcedure
+
+        Cm.Parameters.AddWithValue("@ParCadIdEmpresa", idEmpresa)
+        Cm.Parameters("@ParCadIdEmpresa").Direction = ParameterDirection.Input
+
+        Cm.Parameters.AddWithValue("@ParCadIdMovimiento", idMovimiento)
+        Cm.Parameters("@ParCadIdMovimiento").Direction = ParameterDirection.Input
+
+        Cm.Parameters.AddWithValue("@ParCadTipoMovimiento", tipoMovimiento)
+        Cm.Parameters("@ParCadTipoMovimiento").Direction = ParameterDirection.Input
+
+        Cm.Parameters.AddWithValue("@ParCadSucursal", idSucursal)
+        Cm.Parameters("@ParCadSucursal").Direction = ParameterDirection.Input
+
+        Cm.Parameters.AddWithValue("@ParCadEstatus", estatus)
+        Cm.Parameters("@ParCadEstatus").Direction = ParameterDirection.Input
+
+        Cm.Parameters.AddWithValue("@ParCadTipoCfdi", tipoCfdi)
+        Cm.Parameters("@ParCadTipoCfdi").Direction = ParameterDirection.Input
+
+        Cm.Parameters.AddWithValue("@ParCadAgrupadoIndividual", opcAgrupadoIndividual)
+        Cm.Parameters("@ParCadAgrupadoIndividual").Direction = ParameterDirection.Input
+
+        Cm.Parameters.AddWithValue("@ParBitConsultaHistorica", consultaHistoricaActiva)
+        Cm.Parameters("@ParBitConsultaHistorica").Direction = ParameterDirection.Input
+
+        Cm.Parameters.AddWithValue("@ParDatFechaInicio", fechaInicioConsulta)
+        Cm.Parameters("@ParDatFechaInicio").Direction = ParameterDirection.Input
+
+        Cm.Parameters.AddWithValue("@ParDatFechaFin", fechaFinConsulta)
+        Cm.Parameters("@ParDatFechaFin").Direction = ParameterDirection.Input
+
+        Cm.Parameters.AddWithValue("@ParBitSoloTimbrados", idEmpresa)
+        Cm.Parameters("@ParBitSoloTimbrados").Direction = ParameterDirection.Input
+
+        Dim sqlAdapter As New SqlDataAdapter(Cm)
+        Dim dataSet As New DataSet
+        sqlAdapter.Fill(dataSet)
+        Return dataSet.Tables(0)
     End Function
 
     Public Function RegistraRelacionCartaPorteMovimiento(ByRef idMovimiento As String,

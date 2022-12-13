@@ -359,6 +359,19 @@ Public Class frmCartaPorte
         refTxtCp.Text = objUbicacion.DatosDomicilio.CodigoPostal
     End Sub
 
+    Private Sub AtrapaEventoBusquedaMovimiento(ByVal movtos As List(Of String), ByVal esOrigen As Boolean)
+        If movtos.Count = 0 Then Return
+        If esOrigen Then
+            txtIdMovimientoImportar.Text = movtos(0)
+            btnImportarMovPadre_Click(Nothing, Nothing)
+        Else
+            For i As Int32 = 0 To movtos.Count Step 1
+                txtIdTrasladoIntermedio.Text = movtos(i)
+                btnBuscarMovimientoDestinoIntermedio_Click(Nothing, Nothing)
+            Next
+        End If
+    End Sub
+
     'Este método carga la información del movimiento en los objetos
     'para ahorrar teclazos
     Private Sub CargaDatosTrasladoDesdeBd(ByRef idMovimiento As String)
@@ -5093,6 +5106,29 @@ Public Class frmCartaPorte
 
     Private Sub txtIdTrasladoIntermedio_KeyDown(sender As Object, e As KeyEventArgs) Handles txtIdTrasladoIntermedio.KeyDown
         AbreSiEsEnter(e, AddressOf btnBuscarMovimientoDestinoIntermedio_Click)
+    End Sub
+
+    Private Sub txtIdMovimientoImportar_DoubleClick(sender As Object, e As EventArgs) Handles txtIdMovimientoImportar.DoubleClick
+        Dim frmIncorporaMovimiento As New frmIncorporarMovimientos(TipoMovimiento, True)
+        AddHandler frmIncorporaMovimiento.FinalizarSeleccion, AddressOf AtrapaEventoBusquedaMovimiento
+        frmIncorporaMovimiento.ShowDialog()
+    End Sub
+
+    Private Sub txtIdTrasladoIntermedio_DoubleClick(sender As Object, e As EventArgs) Handles txtIdTrasladoIntermedio.DoubleClick
+        Dim frmIncorporaMovimiento As frmIncorporarMovimientos
+        If datosDestinosIntermediosParaCartaPorte IsNot Nothing AndAlso datosDestinosIntermediosParaCartaPorte.Count > 0 Then
+            frmIncorporaMovimiento = New frmIncorporarMovimientos(TipoMovimiento, False, idPadre:=datosOrigenParaCartaPorte.Movimiento(0))
+        Else
+            Dim listaMovtos As New List(Of String)
+            For Each ubi As OrigenDestino In datosDestinosIntermediosParaCartaPorte
+                For Each movto As String In ubi.Movimiento
+                    listaMovtos.Add(movto)
+                Next
+            Next
+            frmIncorporaMovimiento = New frmIncorporarMovimientos(TipoMovimiento, False, idPadre:=datosOrigenParaCartaPorte.Movimiento(0), listaMovtos:=listaMovtos)
+        End If
+        AddHandler frmIncorporaMovimiento.FinalizarSeleccion, AddressOf AtrapaEventoBusquedaMovimiento
+        frmIncorporaMovimiento.ShowDialog()
     End Sub
 #End Region
 
