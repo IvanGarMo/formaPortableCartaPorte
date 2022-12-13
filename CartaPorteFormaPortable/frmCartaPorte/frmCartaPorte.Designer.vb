@@ -22,10 +22,11 @@ Partial Class frmCartaPorte
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Dim DataGridViewCellStyle29 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle30 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle31 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle32 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle5 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle6 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle7 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle8 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmCartaPorte))
         Me.TabControl1 = New System.Windows.Forms.TabControl()
         Me.tabOrigen = New System.Windows.Forms.TabPage()
         Me.tlpPrincipalOrigen = New System.Windows.Forms.TableLayoutPanel()
@@ -203,7 +204,6 @@ Partial Class frmCartaPorte
         Me.lblRegimenFiscalDestinoIntermedio = New System.Windows.Forms.Label()
         Me.txtRegimenFiscalDestinoIntermedio = New System.Windows.Forms.TextBox()
         Me.tlpGridDestinosIntermedios = New System.Windows.Forms.TableLayoutPanel()
-        Me.Label45 = New System.Windows.Forms.Label()
         Me.dgvCartaPorteDestinosIntermedios = New System.Windows.Forms.DataGridView()
         Me.DIMovimientoClm = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.DIDestinoClm = New System.Windows.Forms.DataGridViewTextBoxColumn()
@@ -455,6 +455,10 @@ Partial Class frmCartaPorte
         Me.tlpBotonesGenerarAtras = New System.Windows.Forms.TableLayoutPanel()
         Me.btnAtrasConfirmacion = New System.Windows.Forms.Button()
         Me.btnGenerarCartaPorte = New System.Windows.Forms.Button()
+        Me.btnAbreModalBusquedaMovtoPadre = New System.Windows.Forms.Button()
+        Me.tlpTitulosDestinosIntermedios = New System.Windows.Forms.TableLayoutPanel()
+        Me.Label45 = New System.Windows.Forms.Label()
+        Me.btnAbreModalBusquedaMovtosIntermedios = New System.Windows.Forms.Button()
         Me.TabControl1.SuspendLayout()
         Me.tabOrigen.SuspendLayout()
         Me.tlpPrincipalOrigen.SuspendLayout()
@@ -524,6 +528,7 @@ Partial Class frmCartaPorte
         Me.tlpRelacionMercanciaUbicaciones.SuspendLayout()
         CType(Me.dgvRelacionMercanciaUbicaciones, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.tlpBotonesGenerarAtras.SuspendLayout()
+        Me.tlpTitulosDestinosIntermedios.SuspendLayout()
         Me.SuspendLayout()
         '
         'TabControl1
@@ -578,6 +583,7 @@ Partial Class frmCartaPorte
         Me.tlpContenedorDatosFiscalesOrigen.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25.0!))
         Me.tlpContenedorDatosFiscalesOrigen.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25.0!))
         Me.tlpContenedorDatosFiscalesOrigen.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25.0!))
+        Me.tlpContenedorDatosFiscalesOrigen.Controls.Add(Me.btnAbreModalBusquedaMovtoPadre, 1, 0)
         Me.tlpContenedorDatosFiscalesOrigen.Controls.Add(Me.Label1, 0, 0)
         Me.tlpContenedorDatosFiscalesOrigen.Controls.Add(Me.Label2, 0, 1)
         Me.tlpContenedorDatosFiscalesOrigen.Controls.Add(Me.Label3, 2, 1)
@@ -618,6 +624,7 @@ Partial Class frmCartaPorte
         Me.tlpContenedorDatosFiscalesOrigen.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 12.67606!))
         Me.tlpContenedorDatosFiscalesOrigen.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 12.67606!))
         Me.tlpContenedorDatosFiscalesOrigen.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 12.67606!))
+        Me.tlpContenedorDatosFiscalesOrigen.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
         Me.tlpContenedorDatosFiscalesOrigen.Size = New System.Drawing.Size(1091, 303)
         Me.tlpContenedorDatosFiscalesOrigen.TabIndex = 0
         '
@@ -2658,10 +2665,10 @@ Partial Class frmCartaPorte
         Me.tlpGridDestinosIntermedios.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
         Me.tlpGridDestinosIntermedios.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25.0!))
         Me.tlpGridDestinosIntermedios.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25.0!))
-        Me.tlpGridDestinosIntermedios.Controls.Add(Me.Label45, 0, 0)
         Me.tlpGridDestinosIntermedios.Controls.Add(Me.dgvCartaPorteDestinosIntermedios, 0, 1)
         Me.tlpGridDestinosIntermedios.Controls.Add(Me.txtIdTrasladoIntermedio, 1, 0)
         Me.tlpGridDestinosIntermedios.Controls.Add(Me.btnBuscarMovimientoDestinoIntermedio, 2, 0)
+        Me.tlpGridDestinosIntermedios.Controls.Add(Me.tlpTitulosDestinosIntermedios, 0, 0)
         Me.tlpGridDestinosIntermedios.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tlpGridDestinosIntermedios.Location = New System.Drawing.Point(3, 3)
         Me.tlpGridDestinosIntermedios.Name = "tlpGridDestinosIntermedios"
@@ -2670,16 +2677,6 @@ Partial Class frmCartaPorte
         Me.tlpGridDestinosIntermedios.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 77.0!))
         Me.tlpGridDestinosIntermedios.Size = New System.Drawing.Size(1091, 148)
         Me.tlpGridDestinosIntermedios.TabIndex = 0
-        '
-        'Label45
-        '
-        Me.Label45.AutoSize = True
-        Me.Label45.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label45.Location = New System.Drawing.Point(3, 0)
-        Me.Label45.Name = "Label45"
-        Me.Label45.Size = New System.Drawing.Size(178, 20)
-        Me.Label45.TabIndex = 0
-        Me.Label45.Text = "Destinos intermedios"
         '
         'dgvCartaPorteDestinosIntermedios
         '
@@ -2935,24 +2932,24 @@ Partial Class frmCartaPorte
         'dgvListadoMovimientosPestanaMercancia
         '
         Me.dgvListadoMovimientosPestanaMercancia.AllowUserToAddRows = False
-        DataGridViewCellStyle29.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle29.BackColor = System.Drawing.SystemColors.Control
-        DataGridViewCellStyle29.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle29.ForeColor = System.Drawing.SystemColors.WindowText
-        DataGridViewCellStyle29.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle29.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle29.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.dgvListadoMovimientosPestanaMercancia.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle29
+        DataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Control
+        DataGridViewCellStyle5.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle5.ForeColor = System.Drawing.SystemColors.WindowText
+        DataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.dgvListadoMovimientosPestanaMercancia.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle5
         Me.dgvListadoMovimientosPestanaMercancia.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
         Me.dgvListadoMovimientosPestanaMercancia.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.MovimientoMercanciaClm, Me.DestinoMercanciaClm, Me.MovimientosTipoMovimientoClm, Me.MercanciasBtnClm, Me.AnadirMercanciaMovimientoClm, Me.IdUbicacionMovimientoPestanaMercanciaClm, Me.MovimientosVerModalClm})
-        DataGridViewCellStyle30.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle30.BackColor = System.Drawing.SystemColors.Window
-        DataGridViewCellStyle30.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle30.ForeColor = System.Drawing.SystemColors.ControlText
-        DataGridViewCellStyle30.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle30.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle30.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
-        Me.dgvListadoMovimientosPestanaMercancia.DefaultCellStyle = DataGridViewCellStyle30
+        DataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle6.BackColor = System.Drawing.SystemColors.Window
+        DataGridViewCellStyle6.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle6.ForeColor = System.Drawing.SystemColors.ControlText
+        DataGridViewCellStyle6.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
+        Me.dgvListadoMovimientosPestanaMercancia.DefaultCellStyle = DataGridViewCellStyle6
         Me.dgvListadoMovimientosPestanaMercancia.Dock = System.Windows.Forms.DockStyle.Fill
         Me.dgvListadoMovimientosPestanaMercancia.Location = New System.Drawing.Point(3, 26)
         Me.dgvListadoMovimientosPestanaMercancia.Name = "dgvListadoMovimientosPestanaMercancia"
@@ -3055,24 +3052,24 @@ Partial Class frmCartaPorte
         'dgvMercanciasPorMovimiento
         '
         Me.dgvMercanciasPorMovimiento.AllowUserToAddRows = False
-        DataGridViewCellStyle31.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle31.BackColor = System.Drawing.SystemColors.Control
-        DataGridViewCellStyle31.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle31.ForeColor = System.Drawing.SystemColors.WindowText
-        DataGridViewCellStyle31.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle31.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle31.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.dgvMercanciasPorMovimiento.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle31
+        DataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle7.BackColor = System.Drawing.SystemColors.Control
+        DataGridViewCellStyle7.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle7.ForeColor = System.Drawing.SystemColors.WindowText
+        DataGridViewCellStyle7.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle7.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.dgvMercanciasPorMovimiento.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle7
         Me.dgvMercanciasPorMovimiento.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
         Me.dgvMercanciasPorMovimiento.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.MercanciaClaveProdServClm, Me.MercanciaClasificacionSATClm, Me.MovimientoDescripcionClm, Me.ClaveUnidadClm, Me.DescripcionUnidadClm, Me.ValorMercanciaClm, Me.MercanciaCantidadMercClm, Me.MercanciaMovimientoPeligrosaClm, Me.MovimientoComercioIntClm, Me.MovimientoDetallesMercClm, Me.MovimientoMercanciaEliminarClm, Me.MovimientoMercanciaCheckboxMaterialCheckboxClm})
-        DataGridViewCellStyle32.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle32.BackColor = System.Drawing.SystemColors.Window
-        DataGridViewCellStyle32.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle32.ForeColor = System.Drawing.SystemColors.ControlText
-        DataGridViewCellStyle32.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle32.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle32.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
-        Me.dgvMercanciasPorMovimiento.DefaultCellStyle = DataGridViewCellStyle32
+        DataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle8.BackColor = System.Drawing.SystemColors.Window
+        DataGridViewCellStyle8.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle8.ForeColor = System.Drawing.SystemColors.ControlText
+        DataGridViewCellStyle8.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle8.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle8.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
+        Me.dgvMercanciasPorMovimiento.DefaultCellStyle = DataGridViewCellStyle8
         Me.dgvMercanciasPorMovimiento.Dock = System.Windows.Forms.DockStyle.Fill
         Me.dgvMercanciasPorMovimiento.Location = New System.Drawing.Point(3, 26)
         Me.dgvMercanciasPorMovimiento.Name = "dgvMercanciasPorMovimiento"
@@ -5625,6 +5622,53 @@ Partial Class frmCartaPorte
         Me.btnGenerarCartaPorte.Text = "Generar carta porte"
         Me.btnGenerarCartaPorte.UseVisualStyleBackColor = True
         '
+        'btnAbreModalBusquedaMovtoPadre
+        '
+        Me.btnAbreModalBusquedaMovtoPadre.Dock = System.Windows.Forms.DockStyle.Right
+        Me.btnAbreModalBusquedaMovtoPadre.Image = CType(resources.GetObject("btnAbreModalBusquedaMovtoPadre.Image"), System.Drawing.Image)
+        Me.btnAbreModalBusquedaMovtoPadre.Location = New System.Drawing.Point(508, 5)
+        Me.btnAbreModalBusquedaMovtoPadre.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
+        Me.btnAbreModalBusquedaMovtoPadre.Name = "btnAbreModalBusquedaMovtoPadre"
+        Me.btnAbreModalBusquedaMovtoPadre.Size = New System.Drawing.Size(32, 24)
+        Me.btnAbreModalBusquedaMovtoPadre.TabIndex = 465
+        Me.btnAbreModalBusquedaMovtoPadre.UseVisualStyleBackColor = True
+        '
+        'tlpTitulosDestinosIntermedios
+        '
+        Me.tlpTitulosDestinosIntermedios.ColumnCount = 2
+        Me.tlpTitulosDestinosIntermedios.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
+        Me.tlpTitulosDestinosIntermedios.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
+        Me.tlpTitulosDestinosIntermedios.Controls.Add(Me.btnAbreModalBusquedaMovtosIntermedios, 0, 0)
+        Me.tlpTitulosDestinosIntermedios.Controls.Add(Me.Label45, 0, 0)
+        Me.tlpTitulosDestinosIntermedios.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.tlpTitulosDestinosIntermedios.Location = New System.Drawing.Point(3, 3)
+        Me.tlpTitulosDestinosIntermedios.Name = "tlpTitulosDestinosIntermedios"
+        Me.tlpTitulosDestinosIntermedios.RowCount = 1
+        Me.tlpTitulosDestinosIntermedios.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
+        Me.tlpTitulosDestinosIntermedios.Size = New System.Drawing.Size(539, 28)
+        Me.tlpTitulosDestinosIntermedios.TabIndex = 4
+        '
+        'Label45
+        '
+        Me.Label45.AutoSize = True
+        Me.Label45.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label45.Location = New System.Drawing.Point(3, 0)
+        Me.Label45.Name = "Label45"
+        Me.Label45.Size = New System.Drawing.Size(178, 20)
+        Me.Label45.TabIndex = 1
+        Me.Label45.Text = "Destinos intermedios"
+        '
+        'btnAbreModalBusquedaMovtosIntermedios
+        '
+        Me.btnAbreModalBusquedaMovtosIntermedios.Dock = System.Windows.Forms.DockStyle.Right
+        Me.btnAbreModalBusquedaMovtosIntermedios.Image = CType(resources.GetObject("btnAbreModalBusquedaMovtosIntermedios.Image"), System.Drawing.Image)
+        Me.btnAbreModalBusquedaMovtosIntermedios.Location = New System.Drawing.Point(503, 5)
+        Me.btnAbreModalBusquedaMovtosIntermedios.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
+        Me.btnAbreModalBusquedaMovtosIntermedios.Name = "btnAbreModalBusquedaMovtosIntermedios"
+        Me.btnAbreModalBusquedaMovtosIntermedios.Size = New System.Drawing.Size(32, 18)
+        Me.btnAbreModalBusquedaMovtosIntermedios.TabIndex = 466
+        Me.btnAbreModalBusquedaMovtosIntermedios.UseVisualStyleBackColor = True
+        '
         'frmCartaPorte
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(9.0!, 20.0!)
@@ -5738,6 +5782,8 @@ Partial Class frmCartaPorte
         Me.tlpRelacionMercanciaUbicaciones.PerformLayout()
         CType(Me.dgvRelacionMercanciaUbicaciones, System.ComponentModel.ISupportInitialize).EndInit()
         Me.tlpBotonesGenerarAtras.ResumeLayout(False)
+        Me.tlpTitulosDestinosIntermedios.ResumeLayout(False)
+        Me.tlpTitulosDestinosIntermedios.PerformLayout()
         Me.ResumeLayout(False)
 
     End Sub
@@ -5846,7 +5892,6 @@ Partial Class frmCartaPorte
     Friend WithEvents cbColoniaDestino As ComboBox
     Friend WithEvents tlpMainDestinosIntermedios As TableLayoutPanel
     Friend WithEvents tlpGridDestinosIntermedios As TableLayoutPanel
-    Friend WithEvents Label45 As Label
     Friend WithEvents dgvCartaPorteDestinosIntermedios As DataGridView
     Friend WithEvents tlpDetallesDestinoIntermedio As TableLayoutPanel
     Friend WithEvents Label57 As Label
@@ -6171,4 +6216,8 @@ Partial Class frmCartaPorte
     Friend WithEvents txtRegimenFiscalOrigen As TextBox
     Friend WithEvents lblRegimenFiscalDestinoIntermedio As Label
     Friend WithEvents txtRegimenFiscalDestinoIntermedio As TextBox
+    Friend WithEvents btnAbreModalBusquedaMovtoPadre As Button
+    Friend WithEvents tlpTitulosDestinosIntermedios As TableLayoutPanel
+    Friend WithEvents btnAbreModalBusquedaMovtosIntermedios As Button
+    Friend WithEvents Label45 As Label
 End Class

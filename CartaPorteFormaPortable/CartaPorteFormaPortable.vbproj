@@ -120,6 +120,12 @@
     <Compile Include="frmCartaPorte\frmCartaPorte.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="frmCartaPorte\frmIncorporarMovimientos.Designer.vb">
+      <DependentUpon>frmIncorporarMovimientos.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmCartaPorte\frmIncorporarMovimientos.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="frmCartaPorte\frmInicioProcesoCartaPorte.Designer.vb">
       <DependentUpon>frmInicioProcesoCartaPorte.vb</DependentUpon>
     </Compile>
@@ -179,6 +185,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="frmCartaPorte\frmCartaPorte.resx">
       <DependentUpon>frmCartaPorte.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmCartaPorte\frmIncorporarMovimientos.resx">
+      <DependentUpon>frmIncorporarMovimientos.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmCartaPorte\frmInicioProcesoCartaPorte.resx">
       <DependentUpon>frmInicioProcesoCartaPorte.vb</DependentUpon>

@@ -18,6 +18,7 @@ Public Class Utils
         datosUbicacion.EsExtranjero = CType(rowDatos("esOrigenExtranjero"), Boolean)
         datosUbicacion.NumRegIdTrib = rowDatos("numRegIdTrib").ToString()
         datosUbicacion.RegimenFiscal = rowDatos("regimenFiscal").ToString()
+        datosUbicacion.Sucursal = rowDatos("sucursal").ToString()
         datosUbicacion.FueImportado = True
         Return datosUbicacion
     End Function
@@ -38,6 +39,7 @@ Public Class Utils
         objetoSinDatos.ResidenciaFiscal = objetoConDatos.ResidenciaFiscal
         objetoSinDatos.Movimiento = objetoConDatos.Movimiento
         objetoSinDatos.RegimenFiscal = objetoConDatos.RegimenFiscal
+        objetoSinDatos.Sucursal = objetoConDatos.Sucursal
     End Sub
 
     'Este método recibe un objeto DataRow y lo convierte en domicilio,

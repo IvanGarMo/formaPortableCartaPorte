@@ -4,7 +4,7 @@
 
         ' This call is required by the designer.
         InitializeComponent()
-        Dim forma As New frmSeleccionEscenario
+        Dim forma As New frmAbcCartaPorte()
         ' Add any initialization after the InitializeComponent() call.
         forma.TopLevel = False
         forma.Show()

@@ -5,6 +5,7 @@ Imports System.Text.RegularExpressions
 Public Class frmCartaPorte
     Private parametrosFormaCartaPorte As DataTable
     Private conexionesCartaPorte As ConexionesCartaPorte
+    Private _empresa As String
 
     'Datos de la carta porte 
     Private datosOrigenParaCartaPorte As OrigenDestino
@@ -126,6 +127,7 @@ Public Class frmCartaPorte
         Me.idEmpresa = idEmpresa
         Me._datosEscenario = descripcionEscenario
         _cartaPorteEsTraslado = CType(_datosEscenario("esCFDI_Traslado"), Boolean)
+        _tipoMovimeinto = _datosEscenario("tipoMovimiento").ToString()
         datosMercancias = New Dictionary(Of String, List(Of Mercancia))
         utils = New Utils
     End Sub
@@ -552,15 +554,25 @@ Public Class frmCartaPorte
     'Estos dos métodos son para colorear o quitar colores de fondo, y que sepan que
     'fregaos están haciendo
     Private Sub textbox_Enter(sender As Object, e As EventArgs) Handles txtRfcRemitente.Enter, txtReferenciaRemitente.Enter, txtPaisResidenciaFiscalRemitente.Enter, txtNumRegidTribRemitente.Enter, txtNombreRemitente.Enter, txtNoIntRemitente.Enter, txtNoExtRemitente.Enter, txtIdUbicacionOrigen.Enter, txtHoraSalidaRemitente.Enter, txtCpRemitente.Enter, txtCalleRemitente.Enter, txtApPaternoRemitente.Enter, txtApMaternoRemitente.Enter, txtTipoUbicacion.Enter, txtTipoUbicacionDestino.Enter, txtRfcDestino.Enter, txtResidenciaFiscalDestino.Enter, txtReferenciaDestino.Enter, txtNumIdRegFiscalDestino.Enter, txtNombreDestino.Enter, txtNoIntDestino.Enter, txtNoExtDestino.Enter, txtIdUbicacionDestino.Enter, txtHoraSalidaDestino.Enter, txtCpDestino.Enter, txtCalleDestino.Enter, txtApPaternoDestino.Enter, txtApMaternoDestino.Enter, nupKmRecorridos.Enter, cbResidenciaFiscalDestino.Enter, txtTipoUbicacionDestinoIntermedio.Enter, txtRfcDestinoIntermedio.Enter, txtReferenciaDestinoIntermedio.Enter, txtNombreDestinoIntermedio.Enter, txtNoIntDestinoIntermedio.Enter, txtNoExtDestinoIntermedio.Enter, txtIdUbicacionDestinoIntermedio.Enter, txtHoraLlegadaDestinoIntermedio.Enter, txtCpDestinoIntermedio.Enter, txtCalleDestinoIntermedio.Enter, txtApPaternoDestinoIntermedio.Enter, txtApMaternoDestinoIntermedio.Enter, nupKmDestinoIntermedio.Enter, txtValor.Enter, txtUnidadMercancia.Enter, txtUnidadClaveMercancia.Enter, txtPeso.Enter, txtPedimento.Enter, txtMoneda.Enter, txtFraccionArancelaria.Enter, txtEmbalaje.Enter, txtDescripcionProducto.Enter, txtDescripcionMaterialPeligroso.Enter, txtDescripcionEmbalaje.Enter, txtClaveProdServMercancia.Enter, txtClaveMaterialPeligroso.Enter, txtCantidadMercancia.Enter, numLongitud.Enter, numAnchura.Enter, numAltura.Enter, txtTipoRemolque2.Enter, txtTipoRemolque1.Enter, txtTipoPermisoSCT.Enter, txtRfcOperador.Enter, txtReferenciaOperador.Enter, txtPrimaSeguroTransporte.Enter, txtPolizaTransporte.Enter, txtPolizaSegurosDanosMedioAmbiente.Enter, txtPolizaCargaTransporte.Enter, txtPlacaTransporte.Enter, txtPlacasRemolque2.Enter, txtPlacasRemolque1.Enter, txtNumRegIdTribFiscOperador.Enter, txtNumPermisoSCT.Enter, txtNumLicenciaOperador.Enter, txtNombreOperador.Enter, txtNoIntOperador.Enter, txtNoExtOperador.Enter, txtDescripConfigVehicular.Enter, txtDescripcionTipoPermisoSCT.Enter, txtCpOperador.Enter, txtConVeh.Enter, txtCalleOperador.Enter, txtAseguradoraTransporte.Enter, txtAseguradoraDanosMedioAmbiente.Enter, txtAseguradoraCargaTransporte.Enter, txtApPaternoOperador.Enter, txtApMaternoOperador.Enter, txtAnioModeloTransporte.Enter, numCantidadRemolquesTransporte.Enter, txtIdMovimientoImportar.Enter, txtIdTrasladoIntermedio.Enter, txtRegimenFiscalOrigen.Enter, txtRegimenFiscalDestino.Enter, txtRegimenFiscalDestinoIntermedio.Enter
-        If sender.GetType() IsNot GetType(TextBox) Then Return
-        Dim text As TextBox = CType(sender, TextBox)
-        text.BackColor = Color.FromName("Info")
+        If sender.GetType() IsNot GetType(TextBox) AndAlso sender.GetType() IsNot GetType(MaskedTextBox) Then Return
+        If sender.GetType() Is GetType(TextBox) Then
+            Dim text As TextBox = CType(sender, TextBox)
+            text.BackColor = Color.FromName("Info")
+        Else
+            Dim text As MaskedTextBox = CType(sender, MaskedTextBox)
+            text.BackColor = Color.FromName("Info")
+        End If
     End Sub
 
     Private Sub textbox_Leave(sender As Object, e As EventArgs) Handles txtTipoUbicacion.Leave, txtRfcRemitente.Leave, txtReferenciaRemitente.Leave, txtPaisResidenciaFiscalRemitente.Leave, txtNumRegidTribRemitente.Leave, txtNombreRemitente.Leave, txtNoIntRemitente.Leave, txtNoExtRemitente.Leave, txtIdUbicacionOrigen.Leave, txtHoraSalidaRemitente.Leave, txtCpRemitente.Leave, txtCalleRemitente.Leave, txtApPaternoRemitente.Leave, txtApMaternoRemitente.Leave, txtTipoUbicacionDestino.Leave, txtRfcDestino.Leave, txtResidenciaFiscalDestino.Leave, txtReferenciaDestino.Leave, txtNumIdRegFiscalDestino.Leave, txtNombreDestino.Leave, txtNoIntDestino.Leave, txtNoExtDestino.Leave, txtIdUbicacionDestino.Leave, txtHoraSalidaDestino.Leave, txtCpDestino.Leave, txtCalleDestino.Leave, txtApPaternoDestino.Leave, txtApMaternoDestino.Leave, nupKmRecorridos.Leave, cbResidenciaFiscalDestino.Leave, txtTipoUbicacionDestinoIntermedio.Leave, txtRfcDestinoIntermedio.Leave, txtReferenciaDestinoIntermedio.Leave, txtNombreDestinoIntermedio.Leave, txtNoIntDestinoIntermedio.Leave, txtNoExtDestinoIntermedio.Leave, txtIdUbicacionDestinoIntermedio.Leave, txtHoraLlegadaDestinoIntermedio.Leave, txtCpDestinoIntermedio.Leave, txtCalleDestinoIntermedio.Leave, txtApPaternoDestinoIntermedio.Leave, txtApMaternoDestinoIntermedio.Leave, nupKmDestinoIntermedio.Leave, txtValor.Leave, txtUnidadMercancia.Leave, txtUnidadClaveMercancia.Leave, txtPeso.Leave, txtPedimento.Leave, txtMoneda.Leave, txtFraccionArancelaria.Leave, txtEmbalaje.Leave, txtDescripcionProducto.Leave, txtDescripcionMaterialPeligroso.Leave, txtDescripcionEmbalaje.Leave, txtClaveProdServMercancia.Leave, txtClaveMaterialPeligroso.Leave, txtCantidadMercancia.Leave, numLongitud.Leave, numAnchura.Leave, numAltura.Leave, txtTipoRemolque2.Leave, txtTipoRemolque1.Leave, txtTipoPermisoSCT.Leave, txtRfcOperador.Leave, txtReferenciaOperador.Leave, txtPrimaSeguroTransporte.Leave, txtPolizaTransporte.Leave, txtPolizaSegurosDanosMedioAmbiente.Leave, txtPolizaCargaTransporte.Leave, txtPlacaTransporte.Leave, txtPlacasRemolque2.Leave, txtPlacasRemolque1.Leave, txtNumRegIdTribFiscOperador.Leave, txtNumPermisoSCT.Leave, txtNumLicenciaOperador.Leave, txtNombreOperador.Leave, txtNoIntOperador.Leave, txtNoExtOperador.Leave, txtDescripConfigVehicular.Leave, txtDescripcionTipoPermisoSCT.Leave, txtCpOperador.Leave, txtConVeh.Leave, txtCalleOperador.Leave, txtAseguradoraTransporte.Leave, txtAseguradoraDanosMedioAmbiente.Leave, txtAseguradoraCargaTransporte.Leave, txtApPaternoOperador.Leave, txtApMaternoOperador.Leave, txtAnioModeloTransporte.Leave, numCantidadRemolquesTransporte.Leave, txtIdMovimientoImportar.Leave, txtIdTrasladoIntermedio.Leave, txtRegimenFiscalOrigen.Leave, txtRegimenFiscalDestino.Leave, txtRegimenFiscalDestinoIntermedio.Leave
-        If sender.GetType() IsNot GetType(TextBox) Then Return
-        Dim text As TextBox = CType(sender, TextBox)
-        text.BackColor = Color.White
+        If sender.GetType() IsNot GetType(TextBox) AndAlso sender.GetType() IsNot GetType(MaskedTextBox) Then Return
+        If sender.GetType() Is GetType(TextBox) Then
+            Dim text As TextBox = CType(sender, TextBox)
+            text.BackColor = Color.White
+        Else
+            Dim text As MaskedTextBox = CType(sender, MaskedTextBox)
+            text.BackColor = Color.White
+        End If
     End Sub
 
     'Este realiza la validación de cuando el SAT cuenta con catalogos de 
@@ -1276,8 +1288,10 @@ Public Class frmCartaPorte
         Dim regFisc As String = ObtenValorTextbox(txtRegimenFiscalOrigen)
 
         Dim listaIdMovimientos As List(Of String) = Nothing
+        Dim sucursal As String = String.Empty
         If datosOrigenParaCartaPorte IsNot Nothing Then
             listaIdMovimientos = datosOrigenParaCartaPorte.Movimiento
+            sucursal = datosOrigenParaCartaPorte.Sucursal
         End If
 
         If CType(_datosEscenario("esCFDI_Traslado"), Boolean) AndAlso String.IsNullOrWhiteSpace(regFisc) Then
@@ -1402,6 +1416,7 @@ Public Class frmCartaPorte
         datosOrigenParaCartaPorte.EsPersonaFisica = REMITENTE_ES_PERSONA_FISICA
         datosOrigenParaCartaPorte.EsPersonaMoral = REMITENTE_ES_PERSONA_MORAL
         datosOrigenParaCartaPorte.EsExtranjero = REMITENTE_ES_EXTRANJERO
+        datosOrigenParaCartaPorte.Sucursal = sucursal
 
         If listaIdMovimientos IsNot Nothing Then
             datosOrigenParaCartaPorte.Movimiento = listaIdMovimientos
@@ -3689,13 +3704,13 @@ Public Class frmCartaPorte
             datosMercancias(llave).ForEach(Sub(x)
                                                If Not x.MercanciaIncluidaEnCartaPorteSegunSat Then
                                                    hayProblemas = hayProblemas Or True
-                                                   sb.AppendLine(String.Format(cadenaMercancias, x.DescripcionInterna, x.ClaveProdServ, x.Descripcion, llave))
+                                                   sb.Append(String.Format(cadenaMercancias, x.DescripcionInterna, x.ClaveProdServ, x.Descripcion, llave))
                                                End If
                                            End Sub)
         Next
 
         If hayProblemas Then
-            Dim rsult = MsgBox(sb.ToString(), vbQuestion + vbYesNo, "Alerta")
+            Dim rsult = MsgBox(sb.ToString().Replace("*", Environment.NewLine), vbQuestion + vbYesNo, "Alerta")
             If rsult = MsgBoxResult.No Then Return
         End If
         'Finalización de validación de mercancias no incluidas en CCP según reglas SAT
@@ -4295,7 +4310,7 @@ Public Class frmCartaPorte
 
     Private Sub ObtenInformacionOperadorDeBd()
         Dim claveOperador As String = ObtenValorCombobox(cbOpcionesOperador)
-        Dim empresa As String = "EAGLE"
+        Dim empresa As String = _empresa
         Dim tablaDatosOperador As DataTable = conexionesCartaPorte.Get_ObtenDetalleChofer(empresa, claveOperador)
         If tablaDatosOperador.Rows.Count = 0 Then
             AlertaMensaje(ObtenParametroPorLlave("ERROR_CARGAROPERADOR"))
@@ -4716,6 +4731,7 @@ Public Class frmCartaPorte
         End If
         If claveOperador <> "00" Then
             ObtenInformacionOperadorDeBd()
+            CargaInformacionOperador()
         End If
     End Sub
 #End Region
@@ -5042,9 +5058,10 @@ Public Class frmCartaPorte
                 datosAutoTransporte.Transportista)
 
         Dim xmlFinal As String = String.Empty
+        Dim xmlTraslado As String = String.Empty
         If _cartaPorteEsTraslado Then
             'Ahora es necesario generar el XML de traslado
-            Dim xmlTraslado As String = conexionesCartaPorte.GeneraXmlTraslado(
+            xmlTraslado = conexionesCartaPorte.GeneraXmlTraslado(
             datosOrigenParaCartaPorte.RFCRemitenteDestinatario,
             datosOrigenParaCartaPorte.NombreUbicacionParaComplemento,
             datosOrigenParaCartaPorte.DatosDomicilio.CodigoPostal,
@@ -5055,12 +5072,28 @@ Public Class frmCartaPorte
             datosDestinoParaCartaPorte.RegimenFiscal,
             pestConfirmacionListaFinalMercancias
         )
-            xmlFinal = String.Format(xmlTraslado, xmlCartaPorte)
         Else
-            xmlFinal = xmlCartaPorte
         End If
         _xmlCartaPorte = xmlFinal
         _xmlGeneradoCorrectamente = True
+        RegistraCartaPorte(xmlCartaPorte, xmlTraslado)
+    End Sub
+
+    Private Sub RegistraCartaPorte(ByRef xmlFinal As String, ByRef xmlTraslado As String)
+        Dim mensaje As String = String.Empty
+        Dim agrupado As Boolean = datosDestinosIntermediosParaCartaPorte.Count > 0
+        Dim opExitosa As Boolean = conexionesCartaPorte.Write_GuardaRelMovtoCartaPorte(TipoMovimiento,
+                                                            datosOrigenParaCartaPorte.Movimiento(0),
+                                                            datosOrigenParaCartaPorte.Movimiento(0),
+                                                            idEmpresa,
+                                                            datosOrigenParaCartaPorte.Sucursal,
+                                                            IIf(EsTraslado, "T", "I"),
+                                                            Glb_IdUsuario,
+                                                            xml:=xmlFinal,
+                                                            mensaje:=mensaje,
+                                                            agrupado,
+                                                            xmlTraslado:=xmlTraslado)
+        Dim ooo = opExitosa
     End Sub
 
     Private Sub tlpContenedorSeguroMaterialPeligroso_Paint(sender As Object, e As PaintEventArgs) Handles tlpContenedorSeguroMaterialPeligroso.Paint
@@ -5129,6 +5162,14 @@ Public Class frmCartaPorte
         End If
         AddHandler frmIncorporaMovimiento.FinalizarSeleccion, AddressOf AtrapaEventoBusquedaMovimiento
         frmIncorporaMovimiento.ShowDialog()
+    End Sub
+
+    Private Sub btnAbreModalBusquedaMovtoPadre_Click(sender As Object, e As EventArgs) Handles btnAbreModalBusquedaMovtoPadre.Click
+        txtIdMovimientoImportar_DoubleClick(Nothing, Nothing)
+    End Sub
+
+    Private Sub btnAbreModalBusquedaMovtosIntermedios_Click(sender As Object, e As EventArgs) Handles btnAbreModalBusquedaMovtosIntermedios.Click
+        txtIdTrasladoIntermedio_DoubleClick(Nothing, Nothing)
     End Sub
 #End Region
 

@@ -5,6 +5,7 @@
     Private _idPadre As String
     Private _listaMovtos As List(Of String)
     Public Event FinalizarSeleccion(ByVal movimientos As List(Of String), ByVal esOrigen As Boolean)
+    Private _empresa As String
 
     Public Sub New(ByVal tipoMovimiento As String, ByVal esOrigen As Boolean,
                    Optional ByVal idPadre As String = "",
@@ -42,7 +43,7 @@
 
         If Not _esOrigen Then
             Dim datosMovtoPadre As DataTable = _conexiones.Get_DatosMovimientoPadre(_tipoMovimiento,
-                                                                                    "EAGLE",
+                                                                                    _empresa,
                                                                                     _idPadre)
             cbFiltroNivel1.SelectedValue = datosMovtoPadre.Rows(0)("filtroNivel1").ToString()
             cbFiltroNivel1.Enabled = False
@@ -57,21 +58,21 @@
         AddHandler cbFiltroNivel1.SelectedValueChanged, AddressOf cbFiltroNivel1_SelectedValueChanged
         Dim dataSet As DataSet
         If nivel = 1 Then
-            dataSet = _conexiones.Get_FiltrosConsultaMovimiento(_tipoMovimiento, "EAGLE", nivel:=nivel)
+            dataSet = _conexiones.Get_FiltrosConsultaMovimiento(_tipoMovimiento, _empresa, nivel:=nivel)
             BindCombobox(cbFiltroNivel2, dataSet.Tables(0))
             BindCombobox(cbFiltroNivel3, dataSet.Tables(0))
             BindCombobox(cbFiltroNivel1, dataSet.Tables(1))
             cbFiltroNivel2.Enabled = False
             cbFiltroNivel3.Enabled = False
         ElseIf nivel = 2 Then
-            dataSet = _conexiones.Get_FiltrosConsultaMovimiento(_tipoMovimiento, "EAGLE", nivel:=nivel, filtroNivelUno:=cbFiltroNivel1.SelectedValue)
+            dataSet = _conexiones.Get_FiltrosConsultaMovimiento(_tipoMovimiento, _empresa, nivel:=nivel, filtroNivelUno:=cbFiltroNivel1.SelectedValue)
             BindCombobox(cbFiltroNivel3, dataSet.Tables(0))
             BindCombobox(cbFiltroNivel2, dataSet.Tables(1))
             cbFiltroNivel2.Enabled = True
             cbFiltroNivel3.Enabled = False
             AddHandler cbFiltroNivel2.SelectedValueChanged, AddressOf cbFiltroNivel2_SelectedValueChanged
         ElseIf nivel = 3 Then
-            dataSet = _conexiones.Get_FiltrosConsultaMovimiento(_tipoMovimiento, "EAGLE", nivel:=nivel, filtroNivelUno:=cbFiltroNivel1.SelectedValue, filtroNivelDos:=cbFiltroNivel2.SelectedValue)
+            dataSet = _conexiones.Get_FiltrosConsultaMovimiento(_tipoMovimiento, _empresa, nivel:=nivel, filtroNivelUno:=cbFiltroNivel1.SelectedValue, filtroNivelDos:=cbFiltroNivel2.SelectedValue)
             BindCombobox(cbFiltroNivel3, dataSet.Tables(1))
             cbFiltroNivel3.Enabled = True
             AddHandler cbFiltroNivel2.SelectedValueChanged, AddressOf cbFiltroNivel2_SelectedValueChanged
@@ -164,7 +165,7 @@
 
     Private Sub btnBuscar_Click(sender As Object, e As EventArgs) Handles btnBuscar.Click
         Dim listadoMovimientos As DataTable = _conexiones.Get_MovimientosDisponibles(_tipoMovimiento,
-                                                            "EAGLE",
+                                                            _empresa,
                                                             dtFechaInicioBusqueda.Value,
                                                             dtFechaFinBusqueda.Value,
                                                             cbFiltroNivel1.SelectedValue,

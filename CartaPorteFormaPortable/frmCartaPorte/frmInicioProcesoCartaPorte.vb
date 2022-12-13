@@ -1,5 +1,6 @@
 ﻿Public Class frmInicioProcesoCartaPorte
     Private _escenario As DataRow
+    Private _empresa As String
 
     Public Sub New(escenario As DataRow)
         InitializeComponent()
@@ -20,7 +21,7 @@
         Next
 
         If rbConMediosPropios.Checked Then
-            Dim frmCartaPorte As New frmCartaPorte("EAGLE", CInt(_escenario("idEscenario")), _escenario)
+            Dim frmCartaPorte As New frmCartaPorte(_empresa, CInt(_escenario("idEscenario")), _escenario)
             frmCartaPorte.TopLevel = False
             frmCartaPorte.Dock = DockStyle.Fill
             tlpPrincipal.Controls.Add(frmCartaPorte)

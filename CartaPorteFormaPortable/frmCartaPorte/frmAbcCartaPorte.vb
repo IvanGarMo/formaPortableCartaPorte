@@ -2,7 +2,7 @@
 
 Public Class frmAbcCartaPorte
     Private _conexiones As ConexionesCartaPorte
-
+    Private _empresa As String
     Public Sub New()
         InitializeComponent()
         _conexiones = New ConexionesCartaPorte
@@ -28,7 +28,7 @@ Public Class frmAbcCartaPorte
     End Sub
 
     Private Sub CargaFiltros()
-        Dim datosFiltros As DataSet = _conexiones.Get_PosiblesFiltrosCartaPorte("EAGLE")
+        Dim datosFiltros As DataSet = _conexiones.Get_PosiblesFiltrosCartaPorte(_empresa)
         BindCombobox(cbSucursal, datosFiltros.Tables(0))
         BindCombobox(cbTipoMovimiento, datosFiltros.Tables(1))
         BindCombobox(cbEstatus, datosFiltros.Tables(2))
@@ -72,7 +72,7 @@ Public Class frmAbcCartaPorte
     End Sub
 
     Private Sub RealizaBusqueda()
-        Dim idEmpresa As String = "EAGLE"
+        Dim idEmpresa As String = _empresa
         Dim idMovimiento As String = Trim(txtMovimiento.Text)
         Dim tipoMovimiento As String = cbTipoMovimiento.SelectedValue
         Dim sucursal As String = cbSucursal.SelectedValue
@@ -92,5 +92,14 @@ Public Class frmAbcCartaPorte
 
     Private Sub frmAbcCartaPorte_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         ReiniciaFiltros()
+    End Sub
+
+    Private Sub btnRefrescar_Click(sender As Object, e As EventArgs) Handles btnRefrescar.Click
+
+    End Sub
+
+    Private Sub cmdNuevo_Click(sender As Object, e As EventArgs) Handles cmdNuevo.Click
+        Dim frmSeleccionEscenario As New frmSeleccionEscenario
+        frmSeleccionEscenario.ShowDialog()
     End Sub
 End Class

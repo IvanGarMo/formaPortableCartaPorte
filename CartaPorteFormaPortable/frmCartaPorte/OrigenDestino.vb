@@ -41,6 +41,9 @@ Public Class OrigenDestino
     'de código postal
     Private _fueImportado As Boolean
 
+    'Este me sirve para facilitar la localización de los datos
+    Private _sucursal As String
+
     Public Sub New()
         _fueImportado = False
     End Sub
@@ -369,6 +372,15 @@ Public Class OrigenDestino
         End Get
         Set(value As List(Of String))
             _Movimiento = value
+        End Set
+    End Property
+
+    Public Property Sucursal As String
+        Get
+            Return _sucursal
+        End Get
+        Set(value As String)
+            _sucursal = value
         End Set
     End Property
 End Class

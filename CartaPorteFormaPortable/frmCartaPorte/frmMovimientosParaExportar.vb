@@ -7,7 +7,7 @@ Public Class frmMovimientosParaExportar
     Private utils As Utils
     Private conexionesCartaPorte As ConexionesCartaPorte
     Private parametrosFormaCartaPorte As DataTable
-    Private empresa As String = "EAGLE"
+    Private _empresa As String
     Private datosEscenario As DataRow
 
     Public Sub New(ByVal datosEscenario As DataRow)
@@ -123,7 +123,7 @@ Public Class frmMovimientosParaExportar
             DesactivaBusquedaIntermedios()
         End If
 
-        Dim datos As DataSet = conexionesCartaPorte.Get_DatosTraslado(empresa, tipoMovimiento, idMovimiento)
+        Dim datos As DataSet = conexionesCartaPorte.Get_DatosTraslado(_empresa, tipoMovimiento, idMovimiento)
         If datos Is Nothing OrElse datos.Tables(0) Is Nothing OrElse datos.Tables(0).Rows.Count = 0 Then
             AlertaMensaje(ObtenParametroPorLlave("NO_EXISTE_MOV"))
             txtIdMovimientoPadre.Text = String.Empty

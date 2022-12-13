@@ -8,7 +8,7 @@ Public Class ConexionesCartaPorte
     End Sub
 
     Private Function obtenConexion() As SqlConnection
-        Dim con = New SqlConnection("Server=dwh.eimportacion.com.mx,65069;Database=BD_IJGM;User Id=ijgm;Password=qw3ry22@;")
+        Dim con = New SqlConnection("Server=dwh.eimportacion.com.mx,65069;Database=IJGM_CFDI;User Id=ijgm;Password=qw3ry22@;")
         con.Open()
         Return con
     End Function
@@ -173,7 +173,7 @@ Public Class ConexionesCartaPorte
                                                             ByRef fechaFinConsulta As DateTime,
                                                             ByVal soloTimbrados As Boolean) As DataTable
         Dim Cm As SqlCommand = Nothing
-        Cm = New SqlCommand("sat.SP_CCP_CargaFiltrosPantallaAbcCartaPorte", obtenConexion())
+        Cm = New SqlCommand("sat.SP_CCP_ConsultaAbcCartaPorte", obtenConexion())
         Cm.CommandType = CommandType.StoredProcedure
 
         Cm.Parameters.AddWithValue("@ParCadIdEmpresa", idEmpresa)
@@ -206,7 +206,7 @@ Public Class ConexionesCartaPorte
         Cm.Parameters.AddWithValue("@ParDatFechaFin", fechaFinConsulta)
         Cm.Parameters("@ParDatFechaFin").Direction = ParameterDirection.Input
 
-        Cm.Parameters.AddWithValue("@ParBitSoloTimbrados", idEmpresa)
+        Cm.Parameters.AddWithValue("@ParBitSoloTimbrados", soloTimbrados)
         Cm.Parameters("@ParBitSoloTimbrados").Direction = ParameterDirection.Input
 
         Dim sqlAdapter As New SqlDataAdapter(Cm)
@@ -215,16 +215,21 @@ Public Class ConexionesCartaPorte
         Return dataSet.Tables(0)
     End Function
 
-    Public Function RegistraRelacionCartaPorteMovimiento(ByRef idMovimiento As String,
-                                                         ByRef tipoMovimiento As String,
-                                                         ByRef movimientoOrigen As String,
-                                                         ByRef tipoOrigen As String,
-                                                         ByRef uuid As String,
-                                                         ByRef usuario As String,
-                                                         ByRef empresa As String,
-                                                         ByRef mensaje As String) As Boolean
+    Public Function Write_GuardaRelMovtoCartaPorte(ByRef tipoMovimiento As String,
+                                                   ByRef idMovimiento As String,
+                                                   ByRef movimientoOrigen As String,
+                                                   ByRef idEmpresa As String,
+                                                   ByRef idSucursal As String,
+                                                   ByRef tipoOrigen As String,
+                                                   ByRef usuario As String,
+                                                   ByRef xml As String,
+                                                   ByRef mensaje As String,
+                                                   ByVal agrupado As Boolean,
+                                                   ByRef xmlTraslado As String,
+                                                   Optional ByRef uuid As String = "",
+                                                   Optional ByRef xmlTimbrado As String = "") As Boolean
         Dim Cm As SqlCommand = Nothing
-        Cm = New SqlCommand("sat.SP_CCP_PuedeUsarDestinoIntermedio", obtenConexion())
+        Cm = New SqlCommand("sat.SP_CCP_RegistraRelMovimientoCartaPorte", obtenConexion())
         Cm.CommandType = CommandType.StoredProcedure
 
         Cm.Parameters.AddWithValue("@ParCadIdMovimiento", idMovimiento)
@@ -236,6 +241,9 @@ Public Class ConexionesCartaPorte
         Cm.Parameters.AddWithValue("@ParCadMovimientoOrigen", movimientoOrigen)
         Cm.Parameters("@ParCadMovimientoOrigen").Direction = ParameterDirection.Input
 
+        Cm.Parameters.AddWithValue("@ParCadIdSucursal", idSucursal)
+        Cm.Parameters("@ParCadIdSucursal").Direction = ParameterDirection.Input
+
         Cm.Parameters.AddWithValue("@ParCadTipoOrigen", tipoOrigen)
         Cm.Parameters("@ParCadTipoOrigen").Direction = ParameterDirection.Input
 
@@ -245,16 +253,74 @@ Public Class ConexionesCartaPorte
         Cm.Parameters.AddWithValue("@ParCadUsuario", usuario)
         Cm.Parameters("@ParCadUsuario").Direction = ParameterDirection.Input
 
-        Cm.Parameters.AddWithValue("@ParCadEmpresa", empresa)
+        Cm.Parameters.AddWithValue("@ParCadEmpresa", idEmpresa)
         Cm.Parameters("@ParCadEmpresa").Direction = ParameterDirection.Input
+
+        Cm.Parameters.AddWithValue("@ParBitAgrupado", agrupado)
+        Cm.Parameters("@ParBitAgrupado").Direction = ParameterDirection.Input
+
+        Cm.Parameters.AddWithValue("@ParCadXml", xml)
+        Cm.Parameters("@ParCadXml").Direction = ParameterDirection.Input
+
+        Cm.Parameters.AddWithValue("@ParCadXmlTraslado", xmlTraslado)
+        Cm.Parameters("@ParCadXmlTraslado").Direction = ParameterDirection.Input
+
+        Cm.Parameters.AddWithValue("@ParCadXmlTimbrado", xmlTimbrado)
+        Cm.Parameters("@ParCadXmlTimbrado").Direction = ParameterDirection.Input
 
         Cm.Parameters.Add("@ParBitRegistroExitoso", SqlDbType.Bit, 1)
         Cm.Parameters("@ParBitRegistroExitoso").Direction = ParameterDirection.Output
 
-        Cm.Parameters.Add("@ParCadMensaje", SqlDbType.VarChar, 500)
+        Cm.Parameters.Add("@ParCadMensaje", SqlDbType.VarChar, 2000)
         Cm.Parameters("@ParCadMensaje").Direction = ParameterDirection.Output
 
         Cm.ExecuteNonQuery()
+
+        mensaje = Cm.Parameters("@ParCadMensaje").Value.ToString()
+        Return CType(Cm.Parameters("@ParBitRegistroExitoso").Value, Boolean)
+    End Function
+
+    Public Function Write_GuardaTimbradoCartaPorte(ByRef idEmpresa As String,
+                                                   ByRef idSucursal As String,
+                                                   ByRef idUsuario As String,
+                                                   ByRef uuid As String,
+                                                   ByRef xmlTimbrado As String,
+                                                   ByRef tipoMovimiento As String,
+                                                   ByRef idMovimiento As String,
+                                                   ByRef mensaje As String) As Boolean
+        Dim Cm As SqlCommand = Nothing
+        Cm = New SqlCommand("sat.SP_CCP_RegistraRelMovimientoCartaPorte", obtenConexion())
+        Cm.CommandType = CommandType.StoredProcedure
+
+        Cm.Parameters.AddWithValue("@ParCadEmpresa", idEmpresa)
+        Cm.Parameters("@ParCadEmpresa").Direction = ParameterDirection.Input
+
+        Cm.Parameters.AddWithValue("@ParCadIdSucursal", idSucursal)
+        Cm.Parameters("@ParCadIdSucursal").Direction = ParameterDirection.Input
+
+        Cm.Parameters.AddWithValue("@ParCadUuid", uuid)
+        Cm.Parameters("@ParCadUuid").Direction = ParameterDirection.Input
+
+        Cm.Parameters.AddWithValue("@ParCadUsuario", idUsuario)
+        Cm.Parameters("@ParCadUsuario").Direction = ParameterDirection.Input
+
+        Cm.Parameters.AddWithValue("@ParCadXmlTimbrado", xmlTimbrado)
+        Cm.Parameters("@ParCadXmlTimbrado").Direction = ParameterDirection.Input
+
+        Cm.Parameters.AddWithValue("@ParCadIdMovimiento", idMovimiento)
+        Cm.Parameters("@ParCadIdMovimiento").Direction = ParameterDirection.Input
+
+        Cm.Parameters.AddWithValue("@ParCadTipoMovimiento", tipoMovimiento)
+        Cm.Parameters("@ParCadTipoMovimiento").Direction = ParameterDirection.Input
+
+        Cm.Parameters.Add("@ParBitRegistroExitoso", SqlDbType.Bit, 1)
+        Cm.Parameters("@ParBitRegistroExitoso").Direction = ParameterDirection.Output
+
+        Cm.Parameters.Add("@ParCadMensaje", SqlDbType.VarChar, 2000)
+        Cm.Parameters("@ParCadMensaje").Direction = ParameterDirection.Output
+
+        Cm.ExecuteNonQuery()
+
         mensaje = Cm.Parameters("@ParCadMensaje").Value.ToString()
         Return CType(Cm.Parameters("@ParBitRegistroExitoso").Value, Boolean)
     End Function

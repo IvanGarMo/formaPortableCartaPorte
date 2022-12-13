@@ -2,6 +2,7 @@
 
     Private conexion As ConexionesCartaPorte
     Private _escenarios As DataTable
+    Private _empresa As String
 
     Public Sub New()
         InitializeComponent()
@@ -9,7 +10,7 @@
     End Sub
 
     Private Sub CreaOpciones()
-        Dim opciones As DataTable = conexion.Get_DescripcionEscenario(True, "PLUSSM")
+        Dim opciones As DataTable = conexion.Get_DescripcionEscenario(True, _empresa)
         _escenarios = opciones
 
         Dim indiceRow As Int16 = 1
@@ -21,6 +22,7 @@
             TableLayoutPanel1.Controls.Add(rb)
             TableLayoutPanel1.SetColumn(rb, indiceColumna)
             TableLayoutPanel1.SetRow(rb, indiceRow)
+            TableLayoutPanel1.SetColumnSpan(rb, 2)
             indiceRow = indiceRow + 1
             rb.Dock = DockStyle.Fill
             rb.Show()
